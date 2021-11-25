@@ -19,6 +19,8 @@ def Init(families, world):
             member = PersonObj()
             sex = InitRandomSex(family, sexes, number)
             randomAge = Utils.randomRange(15, 20)
+            # if sex == "F":
+            #     randomAge = 40
             randomLifespan = Utils.randomRange(40, 50)
             member.setInitValues(world.getYear(), randomAge, randomLifespan, sex, family.familyName)
             family.addNewMember(member)

@@ -43,4 +43,3 @@ def birthChild (world, people, parent1, parent2, trueParent1 = '', trueParent2 =
 
     return person
 
-

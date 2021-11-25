@@ -1,10 +1,30 @@
 
 initialFamilyNames = [
-    'Alarius',
+    'Alfarius',
     'Betarius',
     'Gammarius',
     'Deltius',
-    'Etius'
+    'Eplsilonius',
+    'Zetius',
+    'Etius',
+    'Thetius',
+    'Iotius',
+    'Kappius',
+    'Lambdius',
+    'Mius',
+    'Nius',
+    'Xius',
+    'Omnicronius',
+    'Pius',
+    'Sigmius',
+    'Tauius',
+    'Upsilorius',
+    'Phius',
+    'Chius',
+    'Psius',
+    'Omegius'
+
+
 ]
 
 def getInitFamilyName(variable):

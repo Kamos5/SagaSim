@@ -28,6 +28,9 @@ class Person(FamilyObj):
         self.maritalStatus = MaritalStatus.SINGLE
         self.deadSpouses = []
         self.lifeStatus = LifeStatus.ALIVE
+        self.traits = []
+        self.childrens = []
+        self.deadChildrens = []
         pass
 
     def setInitValues(self, yearOfBirth, age, randomLifespan, sex, familyName):

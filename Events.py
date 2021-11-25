@@ -9,7 +9,7 @@ def increaseAge (people):
     for person in people:
         if person.lifeStatus != LifeStatus.DEAD:
             person.increaseAge()
-        if deathChanceFromAge(person.age, person.modifiedLifespan):
+        if deathChanceFromAge(person.age, person.modifiedLifespan) or person.age >= person.modifiedLifespan:
             person.changeAgeStatus(LifeStatus.DEAD)
             person.maritalStatus = MaritalStatus.DEAD
             person.lifeStatus = LifeStatus.DEAD
@@ -25,7 +25,7 @@ def birthPeople (world, families, people):
 
     for person in people:
 
-        if person.sex == "F" and 15 <= person.age <= 40 and person.lifeStatus == LifeStatus.ALIVE and person.spouse != '':
+        if person.sex == "F" and 15 <= person.age <= 45 and person.lifeStatus == LifeStatus.ALIVE and person.spouse != '':
             if (PI.findOnePersonObj(people, person.spouse).lifeStatus == LifeStatus.ALIVE):
 
                 chanceOfBirth = Utils.randomRange(1, 100)
@@ -66,7 +66,7 @@ def deathChanceFromAge (age, lifespan):
         if chanceOfDeath <= 3:
             dead = True
     if lifespan-age <= 5:
-        if chanceOfDeath <= 100 - (lifespan-age) * 2:
+        if chanceOfDeath >= 100 - (lifespan-age) * 2:
             dead = True
 
     return dead

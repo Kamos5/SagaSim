@@ -12,6 +12,20 @@ def findOneFirstName (people, UUID):
     else:
         return ''
 
+def findOneFamilyName (people, UUID):
+
+    if (UUID != ''):
+        try:
+            index = [x.personUUID for x in people].index(UUID)
+        except ValueError:
+            index = -1
+        if (index >= 0):
+            return people[index].familyName
+        else:
+            return ''
+    else:
+        return ''
+
 def findOneLifeSpan (people, UUID):
 
     if (UUID != ''):
