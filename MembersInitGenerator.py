@@ -47,7 +47,7 @@ def setUpHairColorsToFamilies (family):
         hairColor = HairColor.BROWN
     elif family.familyName == FNG.initialFamilyNames[2]:
         hairColor = HairColor.RED
-    elif family.familyName == FNG.initialFamilyNames[4]:
+    elif family.familyName == FNG.initialFamilyNames[3]:
         hairColor = HairColor.YELLOW
     elif family.familyName == FNG.initialFamilyNames[4]:
         hairColor = HairColor.WHITE

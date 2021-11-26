@@ -31,6 +31,8 @@ class HairColor(Enum):
     RED = 3, 'red'
     YELLOW = 2, 'yellow'
     WHITE = 1, 'white'
+    GRAY = 0, 'gray'
+    BOLD = 0, 'bold'
     UNDEFINED = -1, 'undefined'
 
 class EyeColor(Enum):

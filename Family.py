@@ -11,8 +11,8 @@ class Family:
         self.maleList = []
         self.maleNumber = 0
         self.childrenNumber = 0
-        self.AdultMaleList = 0
-        self.AdultFemaleList = 0
+        self.adultMaleList = []
+        self.adultFemaleList = []
         self.unmarriedAdultMaleList = []
         self.unmarriedAdultFemaleList = []
         self.deadMemberList = []
@@ -91,9 +91,21 @@ class Family:
     def getFamilyMembersNumber(self):
         return self.femaleNumber + self.maleNumber
 
-
     def removeFromUnmarriedAdultMalesUUIDsList(self, uuid):
         self.unmarriedAdultMaleList.remove(uuid)
 
     def removeFromUnmarriedAdultFemalesUUIDsList(self, uuid):
         self.unmarriedAdultFemaleList.remove(uuid)
+
+    def addToAdultMalesUUIDsList(self, uuid):
+        self.adultMaleList.append(uuid)
+
+    def addToAdultFemalesUUIDsList(self, uuid):
+        self.adultFemaleList.append(uuid)
+
+    # def removeFromAdultMalesUUIDsList(self, uuid):
+    #     self.adultMaleList.remove(uuid)
+    #
+    # def removeFromAdultFemalesUUIDsList(self, uuid):
+    #     self.adultFemaleList.remove(uuid)
+    #

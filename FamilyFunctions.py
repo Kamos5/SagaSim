@@ -50,6 +50,16 @@ def FindAvailableSpouses (families, person):
     return availableSpouses
 
 
+def RemoveFromAdultMemberList (families, person):
+
+    for family in families:
+        if family.familyName == person.familyName:
+            if person.sex == "M":
+                family.removeFromAdultMalesUUIDsList(person.personUUID)
+            if person.sex == "F":
+                family.removeFromAdultFemalesUUIDsList(person.personUUID)
+
+
 def RemoveFromUnmarriedList (families, people, person):
 
     for family in families:
@@ -82,3 +92,8 @@ def SpouseMatchmaking (families, people):
                 PIF.findOnePersonObj(people, person.spouse).maritalStatus = Enums.MaritalStatus.MARRIED
                 RemoveFromUnmarriedList(families, people, PIF.findOnePersonObj(people, person.spouse))
                 ChangeFamilyName(people, person)
+
+
+def FindNextHeir (families, people):
+
+    return

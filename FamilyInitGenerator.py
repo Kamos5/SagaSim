@@ -6,7 +6,7 @@ def Init(world):
     initFamilityNumber = 1
     var = 0
     families = []
-    while var < 2:
+    while var < 5:
 
         familyName = FamilyNameGenerator.getInitFamilyName(var)
         family = FamilyObj(familyName)

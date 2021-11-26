@@ -15,7 +15,6 @@ def removeSpouses (people, pip1, pip2):
 
     return
 
-
 def birthChild (world, people, parent1, parent2, trueParent1 = '', trueParent2 = ''):
 
     sexes = ["M", "F"]

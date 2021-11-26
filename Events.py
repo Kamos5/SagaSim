@@ -12,6 +12,7 @@ def increaseAge (people):
         if deathChanceFromAge(person.age, person.modifiedLifespan, person) or person.age >= person.modifiedLifespan:
             PF.deathProcedures(people, person)
 
+
 def birthPeople (world, families, people):
 
     for person in people:
@@ -42,6 +43,7 @@ def birthPeople (world, families, people):
 
                             if (motherDeath):
                                 PF.deathProcedures(people, person)
+                                #FF.RemoveFromAdultMemberList(families, person)
                             if (childdeath):
                                 PF.deathProcedures(people, personObj)
 
@@ -55,7 +57,7 @@ def deathChanceFromAge (age, lifespan, person):
     dead = False
 
     if age == 1:
-        if chanceOfDeath <= 25:
+        if chanceOfDeath <= 20:
             dead = True
             person.causeOfDeath = CauseOfDeath.SICKNESS
     if age == 2:

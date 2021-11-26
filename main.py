@@ -7,6 +7,7 @@ import PeopleFunctions as MF
 import FamilyFunctions as FF
 import PeopleInterface as PIF
 import random
+import time
 
 world = World()
 
@@ -35,14 +36,18 @@ def main():
     sun = 'true'
 
     while (sun):
+
+        start = time.time()
         print(world.getYear())
 
         # for val in families:
         #     print(val.familyName)
-        #     print("Female Number:" + " " + str(val.getFemaleNumber()))
-        #     print("Male Number:" + " " + str(val.getMaleNumber()))
-        #     print("Children Number: " + " " + str(val.getChildrenNumber()))
-        #     print("Members Number:" + " " + str(val.getFamilyMembersNumber()))
+        #     print("Children Number: " + str(val.getChildrenNumber()))
+        #     print("Male Adults:" + str(len(val.adultMaleList)))
+        #     print("Female Adults:" + str(len(val.adultFemaleList)))
+        #     print("Members Number:" + str(val.getFamilyMembersNumber()))
+        #     print("Female Number:" + str(val.getFemaleNumber()))
+        #     print("Male Number:" + str(val.getMaleNumber()))
         #     print("LEN UAM: " + str(len(val.unmarriedAdultMaleList)))
         #     print("LEN UAF: " + str(len(val.unmarriedAdultFemaleList)))
             # for UAM in val.unmarriedAdultMaleList:
@@ -51,20 +56,28 @@ def main():
             #     print("Unmarried female family member: " + " " + UAF)
 
 
-        isAliveFlag = False
+        isAliveFlag = True
         personUUIDFLAG = True
         personFirstNameFLAG = True
         personLastNameFLAG = True
         personSexFLAG = True
         personAgeFLAG = True
         personLifeSpanFLAG = False
-        personModLifeSpanFLAG = False
-        personLifeStatFLAG = True
+        personModLifeSpanFLAG = True
+        personLifeStatFLAG = False
         fatherFLAG = True
+        fatherIDFLAG = True
         motherFLAG = True
+        motherIDFLAG = True
         spouseFLAG = True
-        causeOfDeathFLAG = True
+        causeOfDeathFLAG = False
         hairColorFLAG = True
+
+        blackCount = 0
+        brownCount = 0
+        yellowCount = 0
+        redCount = 0
+        whiteCount = 0
 
         for person in people:
             printString = ''
@@ -87,16 +100,37 @@ def main():
                     printString += "Status: " + person.lifeStatus.value + " "
                 if (fatherFLAG):
                     printString += "Father: " + PIF.findOneFirstName(people, person.father) + " "
+                if (fatherIDFLAG):
+                    printString += "Father-id: " + person.father + " "
                 if (motherFLAG):
                     printString += "Mother: " + PIF.findOneFirstName(people, person.mother) + " "
+                if (motherIDFLAG):
+                    printString += "Mother-id: " + person.mother + " "
                 if (spouseFLAG):
                     printString += "Spouse: " + PIF.findOneFirstName(people, person.spouse) + " "
                 if (causeOfDeathFLAG):
                     printString += "Status: " + person.causeOfDeath.value + " "
                 if (hairColorFLAG):
                     printString += "HairColor: " + person.hairColor.value[1] + " "
+                    if (person.hairColor == Enums.HairColor.BLACK):
+                        blackCount += 1
+                    if (person.hairColor == Enums.HairColor.BROWN):
+                        brownCount += 1
+                    if (person.hairColor == Enums.HairColor.RED):
+                        redCount += 1
+                    if (person.hairColor == Enums.HairColor.YELLOW):
+                        yellowCount += 1
+                    if (person.hairColor == Enums.HairColor.WHITE):
+                        whiteCount += 1
 
-            print(printString)
+            #if len(printString) > 0:
+            #    print(printString)
+
+        print("Black count: " + str(blackCount))
+        print("Brown count: " + str(brownCount))
+        print("Yellow count: " + str(yellowCount))
+        print("Red count: " + str(redCount))
+        print("White count: " + str(whiteCount))
 
             # if len(person.deadSpouses) > 0:
             #     print("   Dead spouses:")
@@ -113,9 +147,10 @@ def main():
         FF.SpouseMatchmaking(families, people)
         FF.UpdateLists(families, people)
 
-        if world.getYear() == 535:
+        if world.getYear() == 700:
             break
-
+        end = time.time()
+        print(end - start)
 
 def menuCall():
 

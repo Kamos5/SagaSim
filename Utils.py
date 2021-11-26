@@ -57,8 +57,10 @@ def HairColorMap (randomNumber, color1, color2, color3, color4, color5):
 
 def geneticHairColor(val1, val2):
 
+    #TODO zastanowic sie czy nie modyfikować też % dla recesywnego (drugiego) koloru
+
     # HAIR1	    HAIR2			                    OUTCOME	LIKELINESS
-    # 				                80	         10	        5	        3	        2
+    # 				                89	         5	        3	        2	        1
     # BLACK	 5   BLACK	5		BLACK	5    BROWN	 4   YELLOW	 3   RED	2    WHITE  1
     # BLACK	 5   BROWN	4		BLACK	5    BROWN	 4   YELLOW	 3   RED	2    WHITE  1
     # BLACK	 5   YELLOW	3		BLACK	5    BROWN	 4   YELLOW	 3   RED	2    WHITE  1
