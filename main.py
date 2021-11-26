@@ -37,12 +37,12 @@ def main():
     while (sun):
         print(world.getYear())
 
-        for val in families:
-            print(val.familyName)
-            print("Female Number:" + " " + str(val.getFemaleNumber()))
-            print("Male Number:" + " " + str(val.getMaleNumber()))
-            print("Children Number: " + " " + str(val.getChildrenNumber()))
-            print("Members Number:" + " " + str(val.getFamilyMembersNumber()))
+        # for val in families:
+        #     print(val.familyName)
+        #     print("Female Number:" + " " + str(val.getFemaleNumber()))
+        #     print("Male Number:" + " " + str(val.getMaleNumber()))
+        #     print("Children Number: " + " " + str(val.getChildrenNumber()))
+        #     print("Members Number:" + " " + str(val.getFamilyMembersNumber()))
         #     print("LEN UAM: " + str(len(val.unmarriedAdultMaleList)))
         #     print("LEN UAF: " + str(len(val.unmarriedAdultFemaleList)))
             # for UAM in val.unmarriedAdultMaleList:
@@ -54,7 +54,7 @@ def main():
             stringText = ''
             personSuperObj = person
             if (person.lifeStatus == Enums.LifeStatus.ALIVE):
-                print(stringText + " " + person.personUUID + " " + person.firstName + " " + person.lastName + " Sex:" + person.sex + " Age:" + str(person.age) + " Lifespan:" + str(person.lifespan) + " ModLifespan:" + str(person.modifiedLifespan) + " Status:" + str(person.lifeStatus.value) + " Parents: " + PIF.findOneFirstName(people, person.father) + ";" + PIF.findOneFirstName(people, person.mother) + "-" + PIF.findOneFamilyName(people, person.father) + " Spouse:" + PIF.findOneFirstName(people, person.spouse))
+                print(stringText + " " + person.personUUID + " " + person.firstName + " " + person.lastName + " Sex:" + person.sex + " Age:" + str(person.age) + " Lifespan:" + str(person.lifespan) + " ModLifespan:" + str(person.modifiedLifespan) + " Status:" + str(person.lifeStatus.value) + " Parents: " + PIF.findOneFirstName(people, person.father) + ";" + PIF.findOneFirstName(people, person.mother) + "-" + PIF.findOneFamilyName(people, person.father) + " Spouse:" + PIF.findOneFirstName(people, person.spouse) + " CauseOfDeath: " + person.causeOfDeath.value)
             # if len(person.deadSpouses) > 0:
             #     print("   Dead spouses:")
             #     for dspouse in person.deadSpouses:

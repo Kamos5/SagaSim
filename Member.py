@@ -1,7 +1,7 @@
 from Family import Family as FamilyObj
 import Utils
 import NameGenerator
-from Enums import LifeStatus, MaritalStatus
+from Enums import LifeStatus, MaritalStatus, HairColor, CauseOfDeath
 
 
 class Person(FamilyObj):
@@ -28,6 +28,8 @@ class Person(FamilyObj):
         self.maritalStatus = MaritalStatus.SINGLE
         self.deadSpouses = []
         self.lifeStatus = LifeStatus.ALIVE
+        self.causeOfDeath = CauseOfDeath.NULL
+        self.hairColor = HairColor.UNDEFINED
         self.traits = []
         self.childrens = []
         self.deadChildrens = []
@@ -78,6 +80,6 @@ class Person(FamilyObj):
     def increaseAge(self):
         self.age += 1
 
-    def changeAgeStatus(self, newAgeStatus):
-        self.lifeStatus = newAgeStatus
+    def changeLifeStatus(self, newLifeStatus):
+        self.lifeStatus = newLifeStatus
 

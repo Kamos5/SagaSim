@@ -81,5 +81,4 @@ def SpouseMatchmaking (families, people):
                 PIF.findOnePersonObj(people, person.spouse).spouse = person.personUUID
                 PIF.findOnePersonObj(people, person.spouse).maritalStatus = Enums.MaritalStatus.MARRIED
                 RemoveFromUnmarriedList(families, people, PIF.findOnePersonObj(people, person.spouse))
-                print("Here")
                 ChangeFamilyName(people, person)
