@@ -1,7 +1,7 @@
 import random
 from Member import Person as PersonObj
-import NameGenerator
-from Enums import MaritalStatus
+import FamilyNameGenerator as FNG
+from Enums import MaritalStatus, HairColor
 import Utils
 
 people = []
@@ -22,16 +22,39 @@ def Init(families, world):
             # if sex == "F":
             #     randomAge = 40
             randomLifespan = Utils.randomRange(40, 50)
-            member.setInitValues(world.getYear(), randomAge, randomLifespan, sex, family.familyName)
+            hairColor = setUpHairColorsToFamilies(family)
+            member.setInitValues(world.getYear(), randomAge, randomLifespan, sex, hairColor, family.familyName)
             family.addNewMember(member)
             family.addNewUnmarriedMember(member)
             people.append(member)
 
     return people
 
+
 def addNewPerson (person):
 
     people.append(person)
+
+
+def setUpHairColorsToFamilies (family):
+
+
+    hairColor = HairColor.UNDEFINED
+
+    if family.familyName == FNG.initialFamilyNames[0]:
+        hairColor = HairColor.BLACK
+    elif family.familyName == FNG.initialFamilyNames[1]:
+        hairColor = HairColor.BROWN
+    elif family.familyName == FNG.initialFamilyNames[2]:
+        hairColor = HairColor.RED
+    elif family.familyName == FNG.initialFamilyNames[4]:
+        hairColor = HairColor.YELLOW
+    elif family.familyName == FNG.initialFamilyNames[4]:
+        hairColor = HairColor.WHITE
+    else:
+        hairColor = HairColor.BROWN
+
+    return hairColor
 
 
 def initInitMarrieges(family, people):

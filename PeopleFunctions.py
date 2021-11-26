@@ -2,7 +2,7 @@ from Member import Person as PersonObj
 import Utils
 import PeopleInterface as PI
 import NameGenerator
-from Enums import LifeStatus,MaritalStatus
+from Enums import LifeStatus,MaritalStatus,HairColor
 
 def removeSpouses (people, pip1, pip2):
 
@@ -39,8 +39,10 @@ def birthChild (world, people, parent1, parent2, trueParent1 = '', trueParent2 =
 
     fertility = Utils.geneticRandomFromValues(PI.findOneFertility(people, trueParent1), PI.findOneFertility(people, trueParent2))
 
+    hairColor = Utils.geneticHairColor(PI.findOneHairColor(people, trueParent1), PI.findOneHairColor(people, trueParent2))
+
     person = PersonObj()
-    person.addNewPerson(firstName, PI.findOneFamilyName(people, parent2), PI.findOneFamilyName(people, parent2), world.getYear(), lifespan, sex, fertility, parent1, parent2, trueParent1, trueParent2)
+    person.addNewPerson(firstName, PI.findOneFamilyName(people, parent2), PI.findOneFamilyName(people, parent2), world.getYear(), lifespan, sex, fertility, hairColor, parent1, parent2, trueParent1, trueParent2)
 
     return person
 

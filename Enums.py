@@ -33,6 +33,17 @@ class HairColor(Enum):
     WHITE = 1, 'white'
     UNDEFINED = -1, 'undefined'
 
+class EyeColor(Enum):
+    BLACK = 7, 'black'
+    BROWN = 6, 'brown'
+    AMBER = 5, 'amber'
+    HAZEL = 4, 'hazel'
+    GREEN = 3, 'green'
+    BLUE = 2, 'yellow'
+    GRAY = 1, 'gray'
+    ALBINO = 0, 'albino'
+    UNDEFINED = -1, 'undefined'
+
 
 class SkinColor(Enum):
     BLACK = 4, 'black'

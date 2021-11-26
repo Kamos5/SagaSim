@@ -50,11 +50,54 @@ def main():
             # for UAF in val.unmarriedAdultFemaleList:
             #     print("Unmarried female family member: " + " " + UAF)
 
+
+        isAliveFlag = False
+        personUUIDFLAG = True
+        personFirstNameFLAG = True
+        personLastNameFLAG = True
+        personSexFLAG = True
+        personAgeFLAG = True
+        personLifeSpanFLAG = False
+        personModLifeSpanFLAG = False
+        personLifeStatFLAG = True
+        fatherFLAG = True
+        motherFLAG = True
+        spouseFLAG = True
+        causeOfDeathFLAG = True
+        hairColorFLAG = True
+
         for person in people:
-            stringText = ''
-            personSuperObj = person
-            if (person.lifeStatus == Enums.LifeStatus.ALIVE):
-                print(stringText + " " + person.personUUID + " " + person.firstName + " " + person.lastName + " Sex:" + person.sex + " Age:" + str(person.age) + " Lifespan:" + str(person.lifespan) + " ModLifespan:" + str(person.modifiedLifespan) + " Status:" + str(person.lifeStatus.value) + " Parents: " + PIF.findOneFirstName(people, person.father) + ";" + PIF.findOneFirstName(people, person.mother) + "-" + PIF.findOneFamilyName(people, person.father) + " Spouse:" + PIF.findOneFirstName(people, person.spouse) + " CauseOfDeath: " + person.causeOfDeath.value)
+            printString = ''
+            if (person.lifeStatus == Enums.LifeStatus.ALIVE or not isAliveFlag):
+                if (personUUIDFLAG):
+                    printString += "UUID: " + person.personUUID + " "
+                if (personFirstNameFLAG):
+                    printString += "FirstName: " + person.firstName + " "
+                if (personLastNameFLAG):
+                    printString += "LastName: " + person.lastName + " "
+                if (personSexFLAG):
+                    printString += "Sex: " + str(person.sex) + " "
+                if personAgeFLAG:
+                    printString += "Age: " + str(person.age) + " "
+                if (personLifeSpanFLAG):
+                    printString += "Lifespan: " + str(person.lifespan) + " "
+                if (personModLifeSpanFLAG):
+                    printString += "ModLifespan: " + str(person.modifiedLifespan) + " "
+                if (personLifeStatFLAG):
+                    printString += "Status: " + person.lifeStatus.value + " "
+                if (fatherFLAG):
+                    printString += "Father: " + PIF.findOneFirstName(people, person.father) + " "
+                if (motherFLAG):
+                    printString += "Mother: " + PIF.findOneFirstName(people, person.mother) + " "
+                if (spouseFLAG):
+                    printString += "Spouse: " + PIF.findOneFirstName(people, person.spouse) + " "
+                if (causeOfDeathFLAG):
+                    printString += "Status: " + person.causeOfDeath.value + " "
+                if (hairColorFLAG):
+                    printString += "HairColor: " + person.hairColor.value[1] + " "
+
+            print(printString)
+
             # if len(person.deadSpouses) > 0:
             #     print("   Dead spouses:")
             #     for dspouse in person.deadSpouses:

@@ -35,7 +35,7 @@ class Person(FamilyObj):
         self.deadChildrens = []
         pass
 
-    def setInitValues(self, yearOfBirth, age, randomLifespan, sex, familyName):
+    def setInitValues(self, yearOfBirth, age, randomLifespan, sex, hairColor, familyName):
 
         if (sex == "M"):
             self.firstName = NameGenerator.randomMName()
@@ -50,8 +50,9 @@ class Person(FamilyObj):
         self.modifiedLifespan = self.lifespan
         self.sex = sex
         self.fertility = 80
+        self.hairColor = hairColor
 
-    def addNewPerson(self, firstName, lastName, familyName, yearOfBirth, lifespan, sex, fertility, mother, father, trueMother, trueFather):
+    def addNewPerson(self, firstName, lastName, familyName, yearOfBirth, lifespan, sex, fertility, hairdColor, mother, father, trueMother, trueFather):
 
         self.firstName = firstName
         self.lastName = lastName
@@ -61,6 +62,7 @@ class Person(FamilyObj):
         self.modifiedLifespan = lifespan
         self.sex = sex
         self.fertility = fertility
+        self.hairColor = hairdColor
         self.mother = mother
         self.father = father
         self.trueMother = trueMother
