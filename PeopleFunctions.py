@@ -7,12 +7,18 @@ from Enums import LifeStatus,MaritalStatus, HairColor, Sexes
 
 def removeSpouses (people, pip1, pip2):
 
+    foundFirst = False
+    foundSecond = False
     for person in people:
         if person.personUUID == pip1:
             person.spouse = ''
+            foundFirst = True
         if person.personUUID == pip2:
             person.deadSpouses.append(person.spouse)
             person.spouse = ''
+            foundSecond = True
+        if foundFirst and foundSecond:
+            break
 
     return
 
@@ -55,6 +61,7 @@ def deathProcedures(people, person):
     person.changeLifeStatus(LifeStatus.DEAD)
     person.maritalStatus = MaritalStatus.DEAD
 
+    spouseObj = PI.findOnePersonObj(people, person.spouse)
     # adding dead kids to the list od dead children
     if person.mother != '' and person.father != '':
         PI.findOnePersonObj(people, person.father).deadChildrens.append(person.personUUID)
@@ -62,10 +69,10 @@ def deathProcedures(people, person):
 
     # changing status of the spouse to WIDOW* and clearing spouse field
     if person.spouse != '':
-        if PI.findOnePersonObj(people, person.spouse).sex == Sexes.MALE:
-            PI.findOnePersonObj(people, person.spouse).maritalStatus = MaritalStatus.WIDOWER
+        if spouseObj.sex == Sexes.MALE:
+            spouseObj.maritalStatus = MaritalStatus.WIDOWER
         else:
-            PI.findOnePersonObj(people, person.spouse).maritalStatus = MaritalStatus.WIDOW
+            spouseObj.maritalStatus = MaritalStatus.WIDOW
     removeSpouses(people, person.personUUID, person.spouse)
 
     return

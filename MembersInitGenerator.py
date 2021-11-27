@@ -72,13 +72,20 @@ def initInitMarrieges(family, people):
 
 def InitMarriegies (pip1, pip2, people):
 
+    foundFirst = False
+    foundSecond = False
+
     for pips in people:
         if pips.personUUID == pip1:
             pips.maritalStatus = MaritalStatus.MARRIED
             pips.spouse = pip2
+            foundFirst = True
         if pips.personUUID == pip2:
             pips.maritalStatus = MaritalStatus.MARRIED
             pips.spouse = pip1
+            foundSecond = True
+        if foundFirst and foundSecond:
+            break
 
     return
 
