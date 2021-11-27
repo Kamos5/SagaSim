@@ -60,7 +60,7 @@ def RemoveFromAdultMemberList (families, person):
                 family.removeFromAdultFemalesUUIDsList(person.personUUID)
 
 
-def RemoveFromUnmarriedList (families, people, person):
+def RemoveFromUnmarriedList (families, person):
 
     for family in families:
         if family.familyName == person.familyName:
@@ -70,13 +70,15 @@ def RemoveFromUnmarriedList (families, people, person):
                 family.removeFromUnmarriedAdultFemalesUUIDsList(person.personUUID)
 
 
-def ChangeFamilyName (people, person):
+def ChangeFamilyName (person, spouse):
+
+    spouseObj = spouse
 
     if person.sex == Sexes.FEMALE:
-        person.lastName = PIF.findOnePersonObj(people, person.spouse).lastName
+        person.lastName = spouseObj.lastName
     else:
-        if PIF.findOnePersonObj(people, person.spouse).sex == Sexes.FEMALE:
-            PIF.findOnePersonObj(people, person.spouse).lastName = person.lastName
+        if spouseObj.sex == Sexes.FEMALE:
+            spouseObj.lastName = person.lastName
 
 
 def SpouseMatchmaking (families, people):
@@ -87,11 +89,13 @@ def SpouseMatchmaking (families, people):
             availableSpouesesList = FindAvailableSpouses(families, person)
             if (len(availableSpouesesList) > 0):
                 person.spouse = Utils.randomFromCollection(FindAvailableSpouses(families, person))
+                spouseObj = PIF.findOnePersonObj(people, person.spouse)
+
                 person.maritalStatus = Enums.MaritalStatus.MARRIED
-                PIF.findOnePersonObj(people, person.spouse).spouse = person.personUUID
-                PIF.findOnePersonObj(people, person.spouse).maritalStatus = Enums.MaritalStatus.MARRIED
-                RemoveFromUnmarriedList(families, people, PIF.findOnePersonObj(people, person.spouse))
-                ChangeFamilyName(people, person)
+                spouseObj.spouse = person.personUUID
+                spouseObj.maritalStatus = Enums.MaritalStatus.MARRIED
+                RemoveFromUnmarriedList(families, spouseObj)
+                ChangeFamilyName(person, spouseObj)
 
 
 def FindNextHeir (families, people):

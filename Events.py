@@ -17,12 +17,15 @@ def birthPeople (world, families, people):
 
     for person in people:
 
+        # person here is MOTHER
         # only Females can give birth beetween 15 and 45y old + must be alive and have spouse
         if person.sex == Sexes.FEMALE and 15 <= person.age <= 45 and person.lifeStatus == LifeStatus.ALIVE and person.spouse != '':
             # is spouse alive
-            if (PI.findOnePersonObj(people, person.spouse).lifeStatus == LifeStatus.ALIVE):
+            spouseObj = PI.findOnePersonObj(people, person.spouse)
+
+            if (spouseObj.lifeStatus == LifeStatus.ALIVE):
                 chanceOfBirth = Utils.randomRange(1, 100)
-                if chanceOfBirth <= min(person.fertility, PI.findOnePersonObj(people, person.spouse).fertility):
+                if chanceOfBirth <= min(person.fertility, spouseObj.fertility):
                     # child object
                     personObj = PF.birthChild(world, people, person.personUUID, person.spouse)
                     # add child to proper family
@@ -32,11 +35,11 @@ def birthPeople (world, families, people):
                             family.increaseChildrenNumber()
                             people.append(personObj)
                             person.numberOfChildren += 1
-                            PI.findOnePersonObj(people, person.spouse).numberOfChildren += 1
+                            spouseObj.numberOfChildren += 1
                             if person.modifiedLifespan-person.age > 1:
                                 person.modifiedLifespan -= 1
                             person.childrens.append(personObj.personUUID)
-                            PI.findOnePersonObj(people, person.spouse).childrens.append(personObj.personUUID)
+                            spouseObj.childrens.append(personObj.personUUID)
 
                             # change of dying from childbirth (mother and child)
                             motherDeath, childdeath = deathChangeFromGivingBirth (person, personObj)
@@ -44,6 +47,7 @@ def birthPeople (world, families, people):
                             if (motherDeath):
                                 PF.deathProcedures(people, person)
                                 #FF.RemoveFromAdultMemberList(families, person)
+
                             if (childdeath):
                                 PF.deathProcedures(people, personObj)
 
@@ -56,11 +60,11 @@ def deathChanceFromAge (age, lifespan, person):
     dead = False
 
     if age == 1:
-        if chanceOfDeath <= 20:
+        if chanceOfDeath <= 10:
             dead = True
             person.causeOfDeath = CauseOfDeath.SICKNESS
     if age == 2:
-        if chanceOfDeath <= 15:
+        if chanceOfDeath <= 10:
             person.causeOfDeath = CauseOfDeath.SICKNESS
             dead = True
     if age == 3:

@@ -47,12 +47,12 @@ def running (world, families, people, manualOverride):
 
     isAliveFlag = False
     personUUIDFLAG = False
-    personFirstNameFLAG = False
+    personFirstNameFLAG = True
     personLastNameFLAG = False
     personSexFLAG = False
     personSexGen1FLAG = False
     personSexGen2FLAG = False
-    personAgeFLAG = False
+    personAgeFLAG = True
     personLifeSpanFLAG = False
     personModLifeSpanFLAG = False
     personLifeStatFLAG = False
@@ -125,7 +125,7 @@ def running (world, families, people, manualOverride):
                 printString += "HairColorGen1: " + str(person.hairColorGen1) + " "
                 printString += "HairColorGen2: " + str(person.hairColorGen2) + " "
         #if len(printString) > 0:
-        #   print(printString)
+        #  print(printString)
 
     print("Black count: " + str(blackCount))
     print("Brown count: " + str(brownCount))

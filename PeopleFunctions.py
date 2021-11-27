@@ -46,6 +46,8 @@ def birthChild (world, people, parent1, parent2, trueParent1 = '', trueParent2 =
 
 def deathProcedures(people, person):
 
+    #Todo optymalization for not calling PersonInterface
+
     # changing statutes
     person.changeLifeStatus(LifeStatus.DEAD)
     person.maritalStatus = MaritalStatus.DEAD
