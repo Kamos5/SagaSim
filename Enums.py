@@ -32,7 +32,6 @@ class HairColor(Enum):
     YELLOW = 2, 'yellow'
     WHITE = 1, 'white'
     GRAY = 0, 'gray'
-    BOLD = 0, 'bold'
     UNDEFINED = -1, 'undefined'
 
 class EyeColor(Enum):
@@ -46,7 +45,6 @@ class EyeColor(Enum):
     ALBINO = 0, 'albino'
     UNDEFINED = -1, 'undefined'
 
-
 class SkinColor(Enum):
     BLACK = 4, 'black'
     BROWN = 3, 'brown'
@@ -54,3 +52,8 @@ class SkinColor(Enum):
     WHITE = 1, 'white'
     ALBINO = 0, 'albino'
     UNDEFINED = -1, 'undefined'
+
+#0 means healthy gen
+class Sex(Enum):
+    MAN = 0, 'M'
+    FEMALE = 0, 'F'
