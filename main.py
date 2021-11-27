@@ -168,7 +168,7 @@ def main():
 
     sun = True
 
-    pCount = 30
+    pCount = 2
     pTime = 1000 / pCount
 
     tickStartTime = time.time() * 1000.0
