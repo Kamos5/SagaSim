@@ -19,7 +19,7 @@ class Person(FamilyObj):
         self.sex = Sexes.FEMALE
         # treated as always X chromosome + health : 0 always healty
         self.sexGen1 = [Sexes.FEMALE, 0]
-        # treated as X or Y chromosome
+        # treated as X or Y chromosome : [sex,health]
         self.sexGen2 = [Sexes.FEMALE, 0]
         self.fertility = 0
         self.numberOfChildren = 0
@@ -33,13 +33,18 @@ class Person(FamilyObj):
         self.deadSpouses = []
         self.lifeStatus = LifeStatus.ALIVE
         self.causeOfDeath = CauseOfDeath.NULL
-        self.hairColor = HairColor.UNDEFINED
+        self.hairColor = HairColor.GRAY
+        #TODO implement hairstyle
+        self.hairStyle = ''
+        # hair color gen + type : [haircolor, type] 0 - straight 1 - wavy 2 - curly 3 - coiled
+        self.hairColorGen1 = [HairColor.GRAY, 0]
+        self.hairColorGen2 = self.hairColorGen1
         self.traits = []
         self.childrens = []
         self.deadChildrens = []
         pass
 
-    def setInitValues(self, yearOfBirth, age, randomLifespan, sex, hairColor, familyName):
+    def setInitValues(self, yearOfBirth, age, randomLifespan, sex, hairColor, hairColorGen1, hairColorGen2, familyName):
 
         if sex == Sexes.MALE:
             self.firstName = NameGenerator.randomMName()
@@ -62,8 +67,11 @@ class Person(FamilyObj):
 
         self.fertility = 80
         self.hairColor = hairColor
+        self.hairColorGen1 = hairColorGen1
+        self.hairColorGen2 = hairColorGen2
 
-    def addNewPerson(self, firstName, lastName, familyName, yearOfBirth, lifespan, sex, sexGen1, sexGen2, fertility, hairdColor, mother, father, trueMother, trueFather):
+
+    def addNewPerson(self, firstName, lastName, familyName, yearOfBirth, lifespan, sex, sexGen1, sexGen2, fertility, hairColor, hairColorGen1, hairColorGen2, mother, father, trueMother, trueFather):
 
         self.firstName = firstName
         self.lastName = lastName
@@ -75,7 +83,9 @@ class Person(FamilyObj):
         self.sexGen1 = sexGen1
         self.sexGen2 = sexGen2
         self.fertility = fertility
-        self.hairColor = hairdColor
+        self.hairColor = hairColor
+        self.hairColorGen1 = hairColorGen1
+        self.hairColorGen2 = hairColorGen2
         self.mother = mother
         self.father = father
         self.trueMother = trueMother

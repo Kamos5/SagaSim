@@ -30,7 +30,6 @@ def birthChild (world, people, parent1, parent2, trueParent1 = '', trueParent2 =
 
     sex, sexGen1, sexGen2 = Utils.geneticSex(parent1Obj, parent2Obj)
 
-    print('Dupa')
     if sex == Sexes.MALE:
         firstName = NameGenerator.randomMName()
     else:
@@ -43,10 +42,10 @@ def birthChild (world, people, parent1, parent2, trueParent1 = '', trueParent2 =
 
     fertility = Utils.geneticRandomFromValues(PI.findOneFertility(people, trueParent1), PI.findOneFertility(people, trueParent2))
 
-    hairColor = Utils.geneticHairColor(PI.findOneHairColor(people, trueParent1), PI.findOneHairColor(people, trueParent2))
+    hairColor, hairColorGen1, hairColorGen2 = Utils.geneticHairColor(people, trueParent1, trueParent2)
 
     person = PersonObj()
-    person.addNewPerson(firstName, PI.findOneFamilyName(people, parent2), PI.findOneFamilyName(people, parent2), world.getYear(), lifespan, sex, sexGen1, sexGen2, fertility, hairColor, parent1, parent2, trueParent1, trueParent2)
+    person.addNewPerson(firstName, PI.findOneFamilyName(people, parent2), PI.findOneFamilyName(people, parent2), world.getYear(), lifespan, sex, sexGen1, sexGen2, fertility, hairColor, hairColorGen1, hairColorGen2, parent1, parent2, trueParent1, trueParent2)
 
     return person
 

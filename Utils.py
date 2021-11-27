@@ -1,6 +1,7 @@
 import uuid
 import random
 import Enums
+import PeopleInterface as PI
 
 def createUUID():
 
@@ -65,59 +66,67 @@ def geneticSex (parent1, parent2):
     else:
         return Enums.Sexes.FEMALE, sexGen1, sexGen2
 
-def hairColorMap (randomNumber, color1, color2, color3, color4, color5):
-
-    #sum must equal 100
-    threshold1 = 89
-    threshold2 = 5
-    threshold3 = 3
-    threshold4 = 2
-    threshold5 = 1
-
-    if randomNumber <= threshold1:
-        return color1
-    if threshold1 < randomNumber <= threshold1 + threshold2:
-        return color2
-    if threshold1 + threshold2 < randomNumber <= threshold1 + threshold2 + threshold3:
-        return color3
-    if threshold1 + threshold2 + threshold3 < randomNumber <= threshold1 + threshold2 + threshold3 + threshold4:
-        return color4
-    if threshold1 + threshold2 + threshold3 + threshold4 < randomNumber <= threshold1 + threshold2 + threshold3 + threshold4 + threshold5:
-        return color5
-
-
-def geneticHairColor(val1, val2):
-
-    #TODO zastanowic sie czy nie modyfikować też % dla recesywnego (drugiego) koloru
-
-    # HAIR1	    HAIR2			                    OUTCOME	LIKELINESS
-    # 				                89	         5	        3	        2	        1
-    # BLACK	 5   BLACK	5		BLACK	5    BROWN	 4   YELLOW	 3   RED	2    WHITE  1
-    # BLACK	 5   BROWN	4		BLACK	5    BROWN	 4   YELLOW	 3   RED	2    WHITE  1
-    # BLACK	 5   YELLOW	3		BLACK	5    BROWN	 4   YELLOW	 3   RED	2    WHITE  1
-    # BLACK	 5   RED	2		BLACK	5    BROWN	 4   YELLOW	 3   RED	2    WHITE  1
-    # BLACK	 5   WHITE	1		BLACK	5    BROWN	 4   YELLOW	 3   RED	2    WHITE  1
-    # BROWN	 4   BROWN	4		BROWN	4    BLACK	 5   YELLOW	 3   RED	2    WHITE  1
-    # BROWN	 4   YELLOW	3		BROWN	4    BLACK	 5   YELLOW	 3   RED	2    WHITE  1
-    # BROWN	 4   RED	2		BROWN	4    BLACK	 5   YELLOW	 3   RED	2    WHITE  1
-    # BROWN	 4   WHITE	1		BROWN	4    BLACK	 5   YELLOW	 3   RED	2    WHITE  1
-    # YELLOW 3   YELLOW	3		YELLOW	3    BLACK	 5   BROWN	 4   RED	2    WHITE  1
-    # YELLOW 3   RED 	2		YELLOW	3    BLACK	 5   BROWN	 4   RED	2    WHITE  1
-    # YELLOW 3   WHITE	1		YELLOW	3    BLACK	 5   BROWN	 4   RED	2    WHITE  1
-    # RED	 2   RED	2       RED	    2    BLACK	 5   BROWN	 4   YELLOW	3    WHITE  1
-    # RED	 2   WHITE	1		RED	    2    BLACK	 5   BROWN	 4   YELLOW	3    WHITE  1
-    # WHITE	 1   WHITE	1		WHITE	1    BLACK	 5   BROWN	 4   YELLOW	3    RED    2
+def hairColorMap (hairColorGen1, hairColorGen2):
 
     randomNumber = randomRange(1, 100)
 
-    if val1.value[0] == 5 or val2.value[0] == 5:
-        return hairColorMap(randomNumber, Enums.HairColor.BLACK, Enums.HairColor.BROWN, Enums.HairColor.YELLOW, Enums.HairColor.RED, Enums.HairColor.WHITE)
-    if val1.value[0] == 4 or val2.value[0] == 4:
-        return hairColorMap(randomNumber, Enums.HairColor.BROWN, Enums.HairColor.BLACK, Enums.HairColor.YELLOW, Enums.HairColor.RED, Enums.HairColor.WHITE)
-    if val1.value[0] == 3 or val2.value[0] == 3:
-        return hairColorMap(randomNumber, Enums.HairColor.YELLOW, Enums.HairColor.BLACK, Enums.HairColor.BROWN, Enums.HairColor.RED, Enums.HairColor.WHITE)
-    if val1.value[0] == 2 or val2.value[0] == 2:
-        return hairColorMap(randomNumber, Enums.HairColor.RED, Enums.HairColor.BLACK, Enums.HairColor.BROWN, Enums.HairColor.YELLOW, Enums.HairColor.WHITE)
-    if val1.value[0] == 1 or val2.value[0] == 1:
-        return hairColorMap(randomNumber, Enums.HairColor.WHITE, Enums.HairColor.RED, Enums.HairColor.BLACK, Enums.HairColor.BROWN, Enums.HairColor.YELLOW)
+    #sum must equal 100
+    threshold1 = 90
+    threshold2 = 10
 
+    #print(hairColorGen1)
+    #print(hairColorGen2)
+
+    if hairColorGen1[0].value[0] >= hairColorGen2[0].value[0]:
+        if randomNumber <= threshold1:
+            return hairColorGen1
+        else:
+            return hairColorGen2
+    else:
+        if randomNumber <= threshold1:
+            return hairColorGen2
+        else:
+            return hairColorGen1
+
+def geneticHairColor(people, trueParent1, trueParent2):
+
+
+    mutationChance = randomRange(1, 1000)
+    mutationGene = randomRange(1, 2)
+
+    personParent1HairColorGen1 = PI.findOneHairColorGen1(people, trueParent1)
+    personParent1HairColorGen2 = PI.findOneHairColorGen2(people, trueParent1)
+    personParent2HairColorGen1 = PI.findOneHairColorGen1(people, trueParent2)
+    personParent2HairColorGen2 = PI.findOneHairColorGen2(people, trueParent2)
+
+    randomGen1 = randomRange(1, 2)
+    randomGen2 = randomRange(1, 2)
+
+    childHairColorGen1 = personParent1HairColorGen1
+    childHairColorGen2 = personParent1HairColorGen2
+
+    if randomGen1 == 1 and randomGen2 == 1:
+        childHairColorGen1 = personParent1HairColorGen1
+        childHairColorGen2 = personParent2HairColorGen1
+
+    if randomGen1 == 1 and randomGen2 == 2:
+        childHairColorGen1 = personParent1HairColorGen1
+        childHairColorGen2 = personParent2HairColorGen2
+
+    if randomGen1 == 2 and randomGen2 == 1:
+        childHairColorGen1 = personParent2HairColorGen2
+        childHairColorGen2 = personParent1HairColorGen1
+
+    if randomGen1 == 2 and randomGen2 == 2:
+        childHairColorGen1 = personParent2HairColorGen2
+        childHairColorGen2 = personParent2HairColorGen2
+
+    if mutationGene == 1 and mutationChance <= 5:
+        childHairColorGen1 = [randomFromEnumCollection(Enums.HairColor), 0]
+
+    if mutationGene == 2 and mutationChance <= 5:
+        childHairColorGen2 = [randomFromEnumCollection(Enums.HairColor), 0]
+
+    childHairColor = hairColorMap(childHairColorGen1, childHairColorGen2)[0]
+
+    return childHairColor, childHairColorGen1, childHairColorGen2

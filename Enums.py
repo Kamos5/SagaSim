@@ -32,7 +32,7 @@ class HairColor(Enum):
     YELLOW = 2, 'yellow'
     WHITE = 1, 'white'
     GRAY = 0, 'gray'
-    UNDEFINED = -1, 'undefined'
+
 
 class EyeColor(Enum):
     BLACK = 7, 'black'

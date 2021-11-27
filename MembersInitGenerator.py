@@ -21,7 +21,10 @@ def Init(families, world):
             #     randomAge = 40
             randomLifespan = Utils.randomRange(40, 50)
             hairColor = setUpHairColorsToFamilies(family)
-            member.setInitValues(world.getYear(), randomAge, randomLifespan, sex, hairColor, family.familyName)
+            hairColorGen1 = [hairColor, 0]
+            hairColorGen2 = [hairColor, 0]
+
+            member.setInitValues(world.getYear(), randomAge, randomLifespan, sex, hairColor, hairColorGen1, hairColorGen2, family.familyName)
             family.addNewMember(member)
             family.addNewUnmarriedMember(member)
             people.append(member)
@@ -37,7 +40,7 @@ def addNewPerson (person):
 def setUpHairColorsToFamilies (family):
 
 
-    hairColor = HairColor.UNDEFINED
+    hairColor = HairColor.GRAY
 
     if family.familyName == FNG.initialFamilyNames[0]:
         hairColor = HairColor.BLACK

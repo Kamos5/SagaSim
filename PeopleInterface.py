@@ -68,6 +68,34 @@ def findOneHairColor (people, UUID):
     else:
         return ''
 
+def findOneHairColorGen1 (people, UUID):
+
+    if (UUID != ''):
+        try:
+            index = [x.personUUID for x in people].index(UUID)
+        except ValueError:
+            index = -1
+        if (index >= 0):
+            return people[index].hairColorGen1
+        else:
+            return ''
+    else:
+        return ''
+
+def findOneHairColorGen2 (people, UUID):
+
+    if (UUID != ''):
+        try:
+            index = [x.personUUID for x in people].index(UUID)
+        except ValueError:
+            index = -1
+        if (index >= 0):
+            return people[index].hairColorGen2
+        else:
+            return ''
+    else:
+        return ''
+
 def findOneFamilyName (people, UUID):
 
     if (UUID != ''):
