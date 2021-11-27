@@ -17,7 +17,7 @@ class Person(FamilyObj):
         self.lifespan = 0
         self.modifiedLifespan = 0
         self.sex = Sexes.FEMALE
-        # treated as always X chromosome + health : 0 always healty
+        # treated as always X chromosome + health : 0 always healthy
         self.sexGen1 = [Sexes.FEMALE, 0]
         # treated as X or Y chromosome : [sex,health]
         self.sexGen2 = [Sexes.FEMALE, 0]

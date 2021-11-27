@@ -31,8 +31,8 @@ def birthChild (world, people, parent1, parent2, trueParent1 = '', trueParent2 =
     if trueParent2 == '':
         trueParent2 = parent2
 
-    parent1Obj = PI.findOnePersonObj(people, parent1)
-    parent2Obj = PI.findOnePersonObj(people, parent2)
+    parent1Obj = PI.findOnePersonObj(people, trueParent1)
+    parent2Obj = PI.findOnePersonObj(people, trueParent2)
 
     sex, sexGen1, sexGen2 = Utils.geneticSex(parent1Obj, parent2Obj)
 
@@ -41,17 +41,17 @@ def birthChild (world, people, parent1, parent2, trueParent1 = '', trueParent2 =
     else:
         firstName = NameGenerator.randomFName()
 
-    lifespan = Utils.geneticRandomFromValues(PI.findOneLifeSpan(people, trueParent1), PI.findOneLifeSpan(people, trueParent2))
+    lifespan = Utils.geneticRandomFromValues(parent1Obj.lifespan, parent2Obj.lifespan)
 
     if lifespan > 100:
         lifespan = 100
 
-    fertility = Utils.geneticRandomFromValues(PI.findOneFertility(people, trueParent1), PI.findOneFertility(people, trueParent2))
+    fertility = Utils.geneticRandomFromValues(parent1Obj.fertility, parent2Obj.fertility)
 
     hairColor, hairColorGen1, hairColorGen2 = Utils.geneticHairColor(people, trueParent1, trueParent2)
 
     person = PersonObj()
-    person.addNewPerson(firstName, PI.findOneFamilyName(people, parent2), PI.findOneFamilyName(people, parent2), world.getYear(), lifespan, sex, sexGen1, sexGen2, fertility, hairColor, hairColorGen1, hairColorGen2, parent1, parent2, trueParent1, trueParent2)
+    person.addNewPerson(firstName, parent2Obj.familyName, parent2Obj.familyName, world.getYear(), lifespan, sex, sexGen1, sexGen2, fertility, hairColor, hairColorGen1, hairColorGen2, parent1, parent2, trueParent1, trueParent2)
 
     return person
 

@@ -42,6 +42,8 @@ def geneticRandomFromValues(val1, val2):
 
 def geneticSex (parent1, parent2):
 
+    mutationChance = randomRange(1, 1000)
+    mutationGene = randomRange(1, 2)
     gen1 = randomRange(1, 2)
     gen2 = randomRange(1, 2)
     sexGen1 = parent1.sexGen1
@@ -59,6 +61,12 @@ def geneticSex (parent1, parent2):
     if gen1 == 1 and gen2 == 2:
         sexGen1 = parent1.sexGen2
         sexGen2 = parent2.sexGen2
+
+    if mutationGene == 1 and mutationChance <= 5:
+        sexGen1 = [sexGen1[0], 1]
+
+    if mutationGene == 2 and mutationChance <= 5:
+        sexGen2 = [sexGen1[0], 1]
 
     if sexGen1[0] == Enums.Sexes.MALE or sexGen2[0] == Enums.Sexes.MALE:
 
@@ -94,10 +102,13 @@ def geneticHairColor(people, trueParent1, trueParent2):
     mutationChance = randomRange(1, 1000)
     mutationGene = randomRange(1, 2)
 
-    personParent1HairColorGen1 = PI.findOneHairColorGen1(people, trueParent1)
-    personParent1HairColorGen2 = PI.findOneHairColorGen2(people, trueParent1)
-    personParent2HairColorGen1 = PI.findOneHairColorGen1(people, trueParent2)
-    personParent2HairColorGen2 = PI.findOneHairColorGen2(people, trueParent2)
+    trueParent1Obj = PI.findOnePersonObj(people, trueParent1)
+    trueParent2Obj = PI.findOnePersonObj(people, trueParent2)
+
+    personParent1HairColorGen1 = trueParent1Obj.hairColorGen1
+    personParent1HairColorGen2 = trueParent1Obj.hairColorGen2
+    personParent2HairColorGen1 = trueParent2Obj.hairColorGen1
+    personParent2HairColorGen2 = trueParent2Obj.hairColorGen2
 
     randomGen1 = randomRange(1, 2)
     randomGen2 = randomRange(1, 2)

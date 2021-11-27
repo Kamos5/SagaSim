@@ -49,9 +49,9 @@ def running (world, families, people, manualOverride):
     personUUIDFLAG = False
     personFirstNameFLAG = True
     personLastNameFLAG = True
-    personSexFLAG = False
-    personSexGen1FLAG = False
-    personSexGen2FLAG = False
+    personSexFLAG = True
+    personSexGen1FLAG = True
+    personSexGen2FLAG = True
     personAgeFLAG = False
     personLifeSpanFLAG = False
     personModLifeSpanFLAG = False
@@ -63,7 +63,7 @@ def running (world, families, people, manualOverride):
     spouseFLAG = False
     causeOfDeathFLAG = False
     hairColorFLAG = True
-    personHairColorGensFLAG = True
+    personHairColorGensFLAG = False
 
     blackCount = 0
     brownCount = 0
@@ -124,8 +124,8 @@ def running (world, families, people, manualOverride):
             if (personHairColorGensFLAG):
                 printString += "HairColorGen1: " + str(person.hairColorGen1) + " "
                 printString += "HairColorGen2: " + str(person.hairColorGen2) + " "
-        #if len(printString) > 0:
-        #   print(printString)
+    #     if len(printString) > 0:
+    #        print(printString)
 
     print("Black count: " + str(blackCount))
     print("Brown count: " + str(brownCount))
@@ -183,21 +183,12 @@ def main():
             running(world, families, people, manualOverride)
 
         if world.getYear() == 700:
+
             return
 
 def menuCall():
 
     input = input()
-
-
-
-
-
-
-
-
-
-
 
 
 main()

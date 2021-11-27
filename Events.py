@@ -53,7 +53,6 @@ def birthPeople (world, families, people):
 def deathChanceFromAge (age, lifespan, person):
 
     chanceOfDeath = Utils.randomRange(1, 100)
-
     dead = False
 
     if age == 1:
@@ -88,7 +87,7 @@ def deathChangeFromGivingBirth (person, child, modifier=0):
     motherDeath = False
     childDeath = False
     numberOfChildren = person.childrenNumber
-    chanceOfMotherDeath = 0
+    chanceOfMotherDeath = 100
 
     if numberOfChildren == 0:
         chanceOfMotherDeath = Utils.randomRange(1, 100)

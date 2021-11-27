@@ -28,8 +28,8 @@ class CauseOfDeath(Enum):
 class HairColor(Enum):
     BLACK = 5, 'black'
     BROWN = 4, 'brown'
-    RED = 3, 'red'
-    YELLOW = 2, 'yellow'
+    YELLOW = 3, 'yellow'
+    RED = 2, 'red'
     WHITE = 1, 'white'
     GRAY = 0, 'gray'
 
