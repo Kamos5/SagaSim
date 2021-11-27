@@ -2,7 +2,8 @@ from Member import Person as PersonObj
 import Utils
 import PeopleInterface as PI
 import NameGenerator
-from Enums import LifeStatus,MaritalStatus,HairColor
+from Enums import LifeStatus,MaritalStatus, HairColor, Sexes
+
 
 def removeSpouses (people, pip1, pip2):
 
@@ -17,16 +18,20 @@ def removeSpouses (people, pip1, pip2):
 
 def birthChild (world, people, parent1, parent2, trueParent1 = '', trueParent2 = ''):
 
-    sexes = ["M", "F"]
+    # parent2 is father
 
     if trueParent1 == '':
         trueParent1 = parent1
     if trueParent2 == '':
         trueParent2 = parent2
 
-    sex = Utils.randomFromCollection(sexes)
+    parent1Obj = PI.findOnePersonObj(people, parent1)
+    parent2Obj = PI.findOnePersonObj(people, parent2)
 
-    if sex == "M":
+    sex, sexGen1, sexGen2 = Utils.geneticSex(parent1Obj, parent2Obj)
+
+    print('Dupa')
+    if sex == Sexes.MALE:
         firstName = NameGenerator.randomMName()
     else:
         firstName = NameGenerator.randomFName()
@@ -41,7 +46,7 @@ def birthChild (world, people, parent1, parent2, trueParent1 = '', trueParent2 =
     hairColor = Utils.geneticHairColor(PI.findOneHairColor(people, trueParent1), PI.findOneHairColor(people, trueParent2))
 
     person = PersonObj()
-    person.addNewPerson(firstName, PI.findOneFamilyName(people, parent2), PI.findOneFamilyName(people, parent2), world.getYear(), lifespan, sex, fertility, hairColor, parent1, parent2, trueParent1, trueParent2)
+    person.addNewPerson(firstName, PI.findOneFamilyName(people, parent2), PI.findOneFamilyName(people, parent2), world.getYear(), lifespan, sex, sexGen1, sexGen2, fertility, hairColor, parent1, parent2, trueParent1, trueParent2)
 
     return person
 
@@ -58,7 +63,7 @@ def deathProcedures(people, person):
 
     # changing status of the spouse to WIDOW* and clearing spouse field
     if person.spouse != '':
-        if PI.findOnePersonObj(people, person.spouse).sex == "M":
+        if PI.findOnePersonObj(people, person.spouse).sex == Sexes.MALE:
             PI.findOnePersonObj(people, person.spouse).maritalStatus = MaritalStatus.WIDOWER
         else:
             PI.findOnePersonObj(people, person.spouse).maritalStatus = MaritalStatus.WIDOW

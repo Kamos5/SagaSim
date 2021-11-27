@@ -54,6 +54,6 @@ class SkinColor(Enum):
     UNDEFINED = -1, 'undefined'
 
 #0 means healthy gen
-class Sex(Enum):
-    MAN = 0, 'M'
+class Sexes(Enum):
+    MALE = 0, 'M'
     FEMALE = 0, 'F'

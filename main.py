@@ -45,22 +45,24 @@ def running (world, families, people, manualOverride):
     # for UAF in val.unmarriedAdultFemaleList:
     #     print("Unmarried female family member: " + " " + UAF)
 
-    isAliveFlag = True
-    personUUIDFLAG = True
+    isAliveFlag = False
+    personUUIDFLAG = False
     personFirstNameFLAG = True
     personLastNameFLAG = True
     personSexFLAG = True
-    personAgeFLAG = True
+    personSexGen1FLAG = True
+    personSexGen2FLAG = True
+    personAgeFLAG = False
     personLifeSpanFLAG = False
-    personModLifeSpanFLAG = True
+    personModLifeSpanFLAG = False
     personLifeStatFLAG = False
     fatherFLAG = True
     fatherIDFLAG = True
     motherFLAG = True
     motherIDFLAG = True
-    spouseFLAG = True
+    spouseFLAG = False
     causeOfDeathFLAG = False
-    hairColorFLAG = True
+    hairColorFLAG = False
 
     blackCount = 0
     brownCount = 0
@@ -78,7 +80,11 @@ def running (world, families, people, manualOverride):
             if (personLastNameFLAG):
                 printString += "LastName: " + person.lastName + " "
             if (personSexFLAG):
-                printString += "Sex: " + str(person.sex) + " "
+                printString += "Sex: " + str(person.sex.value[1]) + " "
+            if (personSexGen1FLAG):
+                printString += "SexGen1: " + str(person.sexGen1[0].value[1]) + " "
+            if (personSexGen2FLAG):
+                printString += "SexGen2: " + str(person.sexGen2[0].value[1]) + " "
             if personAgeFLAG:
                 printString += "Age: " + str(person.age) + " "
             if (personLifeSpanFLAG):
@@ -112,14 +118,14 @@ def running (world, families, people, manualOverride):
                 if (person.hairColor == Enums.HairColor.WHITE):
                     whiteCount += 1
 
-        # if len(printString) > 0:
-        #    print(printString)
+        if len(printString) > 0:
+           print(printString)
 
-    print("Black count: " + str(blackCount))
-    print("Brown count: " + str(brownCount))
-    print("Yellow count: " + str(yellowCount))
-    print("Red count: " + str(redCount))
-    print("White count: " + str(whiteCount))
+    # print("Black count: " + str(blackCount))
+    # print("Brown count: " + str(brownCount))
+    # print("Yellow count: " + str(yellowCount))
+    # print("Red count: " + str(redCount))
+    # print("White count: " + str(whiteCount))
 
     # if len(person.deadSpouses) > 0:
     #     print("   Dead spouses:")
@@ -149,7 +155,7 @@ def main():
     world = World()
     families = initFamilies()
     people = initPeople(families)
-    manualOverride = False
+    manualOverride = True
 
     sun = 'true'
 

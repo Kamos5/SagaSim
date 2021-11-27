@@ -1,7 +1,7 @@
 import random
 from Member import Person as PersonObj
 import FamilyNameGenerator as FNG
-from Enums import MaritalStatus, HairColor
+from Enums import MaritalStatus, HairColor, Sexes
 import Utils
 
 people = []
@@ -9,15 +9,13 @@ people = []
 def Init(families, world):
 
     random.seed(random.SystemRandom().random())
-    sexes = ["M", "F"]
-
 
     for family in families:
         randomNumber = random.randint(2, 2)
 
         for number in range(randomNumber):
             member = PersonObj()
-            sex = InitRandomSex(family, sexes, number)
+            sex = InitRandomSex(family, Sexes, number)
             randomAge = Utils.randomRange(15, 20)
             # if sex == "F":
             #     randomAge = 40
@@ -84,11 +82,11 @@ def InitMarriegies (pip1, pip2, people):
 def InitRandomSex(family, sexes, initPeopleNumber):
 
     if family.getFamilyMembersNumber() < 1:
-        return Utils.randomFromCollection(sexes)
+        return Utils.randomFromEnumCollection(sexes)
     elif initPeopleNumber == 1:
         if family.femaleNumber == 1:
-            return sexes[0]
+            return sexes.MALE
         else:
-            return sexes[1]
+            return sexes.FEMALE
     else:
-        return Utils.randomFromCollection(sexes)
+        return Utils.randomFromEnumCollection(sexes)

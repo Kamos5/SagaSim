@@ -1,4 +1,4 @@
-from Enums import LifeStatus, MaritalStatus,CauseOfDeath
+from Enums import LifeStatus, MaritalStatus,CauseOfDeath,Sexes
 import Utils
 import PeopleFunctions as PF
 import PeopleInterface as PI
@@ -18,7 +18,7 @@ def birthPeople (world, families, people):
     for person in people:
 
         # only Females can give birth beetween 15 and 45y old + must be alive and have spouse
-        if person.sex == "F" and 15 <= person.age <= 45 and person.lifeStatus == LifeStatus.ALIVE and person.spouse != '':
+        if person.sex == Sexes.FEMALE and 15 <= person.age <= 45 and person.lifeStatus == LifeStatus.ALIVE and person.spouse != '':
             # is spouse alive
             if (PI.findOnePersonObj(people, person.spouse).lifeStatus == LifeStatus.ALIVE):
                 chanceOfBirth = Utils.randomRange(1, 100)

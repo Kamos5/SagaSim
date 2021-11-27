@@ -1,5 +1,6 @@
 import Utils
 import NameGenerator
+from Enums import Sexes
 
 class Family:
 
@@ -53,21 +54,21 @@ class Family:
         self.membersObj['UUID'] = person.personUUID
         self.aliveMembers.append(self.membersObj)
 
-        if person.sex == "M":
+        if person.sex == Sexes.MALE:
             self.increaseMaleNumber()
         else:
             self.increaseFemaleNumber()
 
     def addNewUnmarriedMember(self, person):
 
-        if person.sex == "M":
+        if person.sex == Sexes.MALE:
             self.unmarriedAdultMaleList.append(person.personUUID)
         else:
             self.unmarriedAdultFemaleList.append(person.personUUID)
 
     def setChildToAdultMember(self, person):
 
-        if person.sex == "M":
+        if person.sex == Sexes.MALE:
             self.unmarriedAdultMaleList.append(person.personUUID)
         else:
             self.unmarriedAdultFemaleList.append(person.personUUID)

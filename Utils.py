@@ -18,6 +18,11 @@ def randomFromCollection(collection):
     return random.choice(collection)
 
 
+def randomFromEnumCollection(collection):
+
+    return random.choice(list(collection))
+
+
 def geneticRandomFromValues(val1, val2):
 
     if val1 <= val2:
@@ -34,7 +39,33 @@ def geneticRandomFromValues(val1, val2):
     return returnValue
 
 
-def HairColorMap (randomNumber, color1, color2, color3, color4, color5):
+def geneticSex (parent1, parent2):
+
+    gen1 = randomRange(1, 2)
+    gen2 = randomRange(1, 2)
+    sexGen1 = parent1.sexGen1
+    sexGen2 = parent1.sexGen2
+
+    if gen1 == 1 and gen2 == 1:
+        sexGen1 = parent1.sexGen1
+        sexGen2 = parent2.sexGen1
+    if gen1 == 1 and gen2 == 2:
+        sexGen1 = parent1.sexGen1
+        sexGen2 = parent2.sexGen2
+    if gen1 == 2 and gen2 == 1:
+        sexGen1 = parent1.sexGen2
+        sexGen2 = parent2.sexGen1
+    if gen1 == 1 and gen2 == 2:
+        sexGen1 = parent1.sexGen2
+        sexGen2 = parent2.sexGen2
+
+    if sexGen1[0] == Enums.Sexes.MALE or sexGen2[0] == Enums.Sexes.MALE:
+
+        return Enums.Sexes.MALE, sexGen1, sexGen2
+    else:
+        return Enums.Sexes.FEMALE, sexGen1, sexGen2
+
+def hairColorMap (randomNumber, color1, color2, color3, color4, color5):
 
     #sum must equal 100
     threshold1 = 89
@@ -80,13 +111,13 @@ def geneticHairColor(val1, val2):
     randomNumber = randomRange(1, 100)
 
     if val1.value[0] == 5 or val2.value[0] == 5:
-        return HairColorMap(randomNumber, Enums.HairColor.BLACK, Enums.HairColor.BROWN, Enums.HairColor.YELLOW, Enums.HairColor.RED, Enums.HairColor.WHITE)
+        return hairColorMap(randomNumber, Enums.HairColor.BLACK, Enums.HairColor.BROWN, Enums.HairColor.YELLOW, Enums.HairColor.RED, Enums.HairColor.WHITE)
     if val1.value[0] == 4 or val2.value[0] == 4:
-        return HairColorMap(randomNumber, Enums.HairColor.BROWN, Enums.HairColor.BLACK, Enums.HairColor.YELLOW, Enums.HairColor.RED, Enums.HairColor.WHITE)
+        return hairColorMap(randomNumber, Enums.HairColor.BROWN, Enums.HairColor.BLACK, Enums.HairColor.YELLOW, Enums.HairColor.RED, Enums.HairColor.WHITE)
     if val1.value[0] == 3 or val2.value[0] == 3:
-        return HairColorMap(randomNumber, Enums.HairColor.YELLOW, Enums.HairColor.BLACK, Enums.HairColor.BROWN, Enums.HairColor.RED, Enums.HairColor.WHITE)
+        return hairColorMap(randomNumber, Enums.HairColor.YELLOW, Enums.HairColor.BLACK, Enums.HairColor.BROWN, Enums.HairColor.RED, Enums.HairColor.WHITE)
     if val1.value[0] == 2 or val2.value[0] == 2:
-        return HairColorMap(randomNumber, Enums.HairColor.RED, Enums.HairColor.BLACK, Enums.HairColor.BROWN, Enums.HairColor.YELLOW, Enums.HairColor.WHITE)
+        return hairColorMap(randomNumber, Enums.HairColor.RED, Enums.HairColor.BLACK, Enums.HairColor.BROWN, Enums.HairColor.YELLOW, Enums.HairColor.WHITE)
     if val1.value[0] == 1 or val2.value[0] == 1:
-        return HairColorMap(randomNumber, Enums.HairColor.WHITE, Enums.HairColor.RED, Enums.HairColor.BLACK, Enums.HairColor.BROWN, Enums.HairColor.YELLOW)
+        return hairColorMap(randomNumber, Enums.HairColor.WHITE, Enums.HairColor.RED, Enums.HairColor.BLACK, Enums.HairColor.BROWN, Enums.HairColor.YELLOW)
 
