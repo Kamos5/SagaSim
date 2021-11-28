@@ -34,9 +34,7 @@ def birthChild (world, parent1, parent2, trueParent1 = '', trueParent2 = ''):
 
     return person
 
-def deathProcedures(people, person):
-
-    #Todo optymalization for not calling PersonInterface
+def deathProcedures(people, person, motherObj=None, fatherObj=None):
 
     # changing statutes
     person.changeLifeStatus(LifeStatus.DEAD)
@@ -56,7 +54,12 @@ def deathProcedures(people, person):
 
     # adding dead kids to the list od dead children
     if person.mother != '' and person.father != '':
-        PI.findOnePersonObj(people, person.father).deadChildrens.append(person.personUUID)
-        PI.findOnePersonObj(people, person.mother).deadChildrens.append(person.personUUID)
+        if motherObj is not None and fatherObj is not None:
+            fatherList = fatherObj.deadChildrens
+            motherList = motherObj.deadChildrens
+        else:
+            fatherList, motherList = PI.findParentsDeadChildrensList(people, person)
+        fatherList.append(person.personUUID)
+        motherList.append(person.personUUID)
 
     return

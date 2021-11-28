@@ -45,25 +45,26 @@ def running (world, families, people, manualOverride):
     # for UAF in val.unmarriedAdultFemaleList:
     #     print("Unmarried female family member: " + " " + UAF)
 
-    isAliveFlag = False
-    personUUIDFLAG = False
+    isAliveFlag = True
+    personUUIDFLAG = True
     personFirstNameFLAG = True
     personLastNameFLAG = False
-    personSexFLAG = False
-    personSexGen1FLAG = False
-    personSexGen2FLAG = False
-    personAgeFLAG = True
+    personSexFLAG = True
+    personSexGen1FLAG = True
+    personSexGen2FLAG = True
+    personAgeFLAG = False
     personLifeSpanFLAG = False
     personModLifeSpanFLAG = False
-    personLifeStatFLAG = False
+    personLifeStatFLAG = True
     fatherFLAG = False
-    fatherIDFLAG = False
+    fatherIDFLAG = True
     motherFLAG = False
-    motherIDFLAG = False
-    spouseFLAG = False
+    motherIDFLAG = True
+    spouseFLAG = True
     causeOfDeathFLAG = False
     hairColorFLAG = True
-    personHairColorGensFLAG = False
+    personHairColorGensFLAG = True
+    deadChildrenListFLAG = True
 
     blackCount = 0
     brownCount = 0
@@ -71,9 +72,18 @@ def running (world, families, people, manualOverride):
     redCount = 0
     whiteCount = 0
     grayCount = 0
+    timers = False
 
+    isAlive = 0
+    isDead = 0
     for person in people:
+
         printString = ''
+        if person.lifeStatus == Enums.LifeStatus.ALIVE:
+            isAlive += 1
+        else:
+            isDead += 1
+
         if (person.lifeStatus == Enums.LifeStatus.ALIVE or not isAliveFlag):
             if (personUUIDFLAG):
                 printString += "UUID: " + person.personUUID + " "
@@ -124,17 +134,22 @@ def running (world, families, people, manualOverride):
             if (personHairColorGensFLAG):
                 printString += "HairColorGen1: " + str(person.hairColorGen1) + " "
                 printString += "HairColorGen2: " + str(person.hairColorGen2) + " "
+            if (deadChildrenListFLAG):
+                printString += "DeadChildrenList: " + str(person.deadChildrens) + " "
         #if len(printString) > 0:
         #  print(printString)
 
-    print("Black count: " + str(blackCount))
-    print("Brown count: " + str(brownCount))
-    print("Yellow count: " + str(yellowCount))
-    print("Red count: " + str(redCount))
-    print("White count: " + str(whiteCount))
-    print("Gray count: " + str(grayCount))
-    print("Sum: " + str(blackCount + brownCount + yellowCount + redCount + whiteCount + grayCount))
+    # print("Black count: " + str(blackCount))
+    # print("Brown count: " + str(brownCount))
+    # print("Yellow count: " + str(yellowCount))
+    # print("Red count: " + str(redCount))
+    # print("White count: " + str(whiteCount))
+    # print("Gray count: " + str(grayCount))
+    # print("Sum: " + str(blackCount + brownCount + yellowCount + redCount + whiteCount + grayCount))
 
+    #print("People Alive: " + str(isAlive))
+    #print("People Dead: " + str(isDead))
+    print("Population: " + str(isAlive + isDead))
 
     # if len(person.deadSpouses) > 0:
     #     print("   Dead spouses:")
@@ -146,12 +161,37 @@ def running (world, families, people, manualOverride):
     if manualOverride:
         input()
 
+    if timers:
+        start1 = time.time()
     world.increaseYear()
+    if timers:
+        end1 = time.time()
+        print("WorldTime: " + str(end1 - start1))
+        start1 = time.time()
     Events.increaseAge(people)
+    if timers:
+        end1 = time.time()
+        print("IncAgeTime: " + str(end1 - start1))
+        start1 = time.time()
     Events.birthPeople(world, families, people)
+    if timers:
+        end1 = time.time()
+        print("BirthTime: " + str(end1 - start1))
+        start1 = time.time()
     FF.UpdateLists(families, people)
+    if timers:
+        end1 = time.time()
+        print("UPD1Time: " + str(end1 - start1))
+        start1 = time.time()
     FF.SpouseMatchmaking(families, people)
+    if timers:
+        end1 = time.time()
+        print("SpouseMMTime: " + str(end1 - start1))
+        start1 = time.time()
     FF.UpdateLists(families, people)
+    if timers:
+        end1 = time.time()
+        print("UDP2Time: " + str(end1 - start1))
 
     end = time.time()
     print(end - start)

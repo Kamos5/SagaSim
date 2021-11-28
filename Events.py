@@ -1,5 +1,6 @@
 from Enums import LifeStatus, MaritalStatus,CauseOfDeath,Sexes
 import Utils
+import time
 import PeopleFunctions as PF
 import PeopleInterface as PI
 import FamilyFunctions as FF
@@ -11,7 +12,6 @@ def increaseAge (people):
             person.increaseAge()
         if deathChanceFromAge(person.age, person.modifiedLifespan, person) or person.age >= person.modifiedLifespan:
             PF.deathProcedures(people, person)
-
 
 def birthPeople (world, families, people):
 
@@ -49,7 +49,8 @@ def birthPeople (world, families, people):
                                 #FF.RemoveFromAdultMemberList(families, person)
 
                             if childdeath:
-                                PF.deathProcedures(people, personObj)
+                                #parameters: people, child, mother, father
+                                PF.deathProcedures(people, personObj, person, spouseObj)
 
     return
 

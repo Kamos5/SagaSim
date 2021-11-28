@@ -123,3 +123,20 @@ def findOnePersonObj (people, UUID):
             return ''
     else:
         return ''
+
+def findParentsDeadChildrensList(people, UUID):
+
+    fatherList = []
+    foundFather = 0
+    motherList = []
+    foundMother = 0
+    for x in people:
+        if (x.personUUID == UUID.father):
+            fatherList = x.deadChildrens
+            foundFather = 1
+        if (x.personUUID == UUID.mother):
+            motherList = x.deadChildrens
+            foundMother = 1
+        if foundFather == 1 and foundMother == 1:
+            return fatherList, motherList
+    return fatherList, motherList
