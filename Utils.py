@@ -96,19 +96,16 @@ def hairColorMap (hairColorGen1, hairColorGen2):
         else:
             return hairColorGen1
 
-def geneticHairColor(people, trueParent1, trueParent2):
+def geneticHairColor(trueParent1, trueParent2):
 
 
     mutationChance = randomRange(1, 1000)
     mutationGene = randomRange(1, 2)
 
-    trueParent1Obj = PI.findOnePersonObj(people, trueParent1)
-    trueParent2Obj = PI.findOnePersonObj(people, trueParent2)
-
-    personParent1HairColorGen1 = trueParent1Obj.hairColorGen1
-    personParent1HairColorGen2 = trueParent1Obj.hairColorGen2
-    personParent2HairColorGen1 = trueParent2Obj.hairColorGen1
-    personParent2HairColorGen2 = trueParent2Obj.hairColorGen2
+    personParent1HairColorGen1 = trueParent1.hairColorGen1
+    personParent1HairColorGen2 = trueParent1.hairColorGen2
+    personParent2HairColorGen1 = trueParent2.hairColorGen1
+    personParent2HairColorGen2 = trueParent2.hairColorGen2
 
     randomGen1 = randomRange(1, 2)
     randomGen2 = randomRange(1, 2)

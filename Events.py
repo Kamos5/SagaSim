@@ -23,11 +23,11 @@ def birthPeople (world, families, people):
             # is spouse alive
             spouseObj = PI.findOnePersonObj(people, person.spouse)
 
-            if (spouseObj.lifeStatus == LifeStatus.ALIVE):
+            if spouseObj.lifeStatus == LifeStatus.ALIVE:
                 chanceOfBirth = Utils.randomRange(1, 100)
                 if chanceOfBirth <= min(person.fertility, spouseObj.fertility):
-                    # child object
-                    personObj = PF.birthChild(world, people, person.personUUID, person.spouse)
+                    # CHILD object
+                    personObj = PF.birthChild(world, person, spouseObj)
                     # add child to proper family
                     for family in families:
                         if family.familyName == personObj.familyName:
@@ -44,11 +44,11 @@ def birthPeople (world, families, people):
                             # change of dying from childbirth (mother and child)
                             motherDeath, childdeath = deathChangeFromGivingBirth (person, personObj)
 
-                            if (motherDeath):
+                            if motherDeath:
                                 PF.deathProcedures(people, person)
                                 #FF.RemoveFromAdultMemberList(families, person)
 
-                            if (childdeath):
+                            if childdeath:
                                 PF.deathProcedures(people, personObj)
 
     return
@@ -60,11 +60,11 @@ def deathChanceFromAge (age, lifespan, person):
     dead = False
 
     if age == 1:
-        if chanceOfDeath <= 10:
+        if chanceOfDeath <= 20:
             dead = True
             person.causeOfDeath = CauseOfDeath.SICKNESS
     if age == 2:
-        if chanceOfDeath <= 10:
+        if chanceOfDeath <= 15:
             person.causeOfDeath = CauseOfDeath.SICKNESS
             dead = True
     if age == 3:

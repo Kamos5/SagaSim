@@ -4,14 +4,7 @@ import PeopleInterface as PI
 import NameGenerator
 from Enums import LifeStatus,MaritalStatus, HairColor, Sexes
 
-
-def removeSpouses (person, spouse):
-
-
-
-    return
-
-def birthChild (world, people, parent1, parent2, trueParent1 = '', trueParent2 = ''):
+def birthChild (world, parent1, parent2, trueParent1 = '', trueParent2 = ''):
 
     # parent2 is father
 
@@ -20,27 +13,24 @@ def birthChild (world, people, parent1, parent2, trueParent1 = '', trueParent2 =
     if trueParent2 == '':
         trueParent2 = parent2
 
-    parent1Obj = PI.findOnePersonObj(people, trueParent1)
-    parent2Obj = PI.findOnePersonObj(people, trueParent2)
-
-    sex, sexGen1, sexGen2 = Utils.geneticSex(parent1Obj, parent2Obj)
+    sex, sexGen1, sexGen2 = Utils.geneticSex(trueParent1, trueParent2)
 
     if sex == Sexes.MALE:
         firstName = NameGenerator.randomMName()
     else:
         firstName = NameGenerator.randomFName()
 
-    lifespan = Utils.geneticRandomFromValues(parent1Obj.lifespan, parent2Obj.lifespan)
+    lifespan = Utils.geneticRandomFromValues(trueParent1.lifespan, trueParent2.lifespan)
 
     if lifespan > 100:
         lifespan = 100
 
-    fertility = Utils.geneticRandomFromValues(parent1Obj.fertility, parent2Obj.fertility)
+    fertility = Utils.geneticRandomFromValues(trueParent1.fertility, trueParent2.fertility)
 
-    hairColor, hairColorGen1, hairColorGen2 = Utils.geneticHairColor(people, trueParent1, trueParent2)
+    hairColor, hairColorGen1, hairColorGen2 = Utils.geneticHairColor(trueParent1, trueParent2)
 
     person = PersonObj()
-    person.addNewPerson(firstName, parent2Obj.familyName, parent2Obj.familyName, world.getYear(), lifespan, sex, sexGen1, sexGen2, fertility, hairColor, hairColorGen1, hairColorGen2, parent1, parent2, trueParent1, trueParent2)
+    person.addNewPerson(firstName, trueParent2.familyName, trueParent2.familyName, world.getYear(), lifespan, sex, sexGen1, sexGen2, fertility, hairColor, hairColorGen1, hairColorGen2, parent1.personUUID, parent2.personUUID, trueParent1.personUUID, trueParent2.personUUID)
 
     return person
 

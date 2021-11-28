@@ -166,14 +166,14 @@ def main():
     people = initPeople(families)
     manualOverride = False
 
-    sun = 'true'
+    sun = True
 
     pCount = 30
     pTime = 1000 / pCount
 
     tickStartTime = time.time() * 1000.0
 
-    while (sun):
+    while sun:
 
         tickCurrentTime = time.time() * 1000.0
 
@@ -186,10 +186,6 @@ def main():
         if world.getYear() == 700:
 
             return
-
-def menuCall():
-
-    input = input()
 
 
 main()
