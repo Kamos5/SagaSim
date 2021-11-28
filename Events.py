@@ -19,7 +19,7 @@ def birthPeople (world, families, people):
 
         # person here is MOTHER
         # only Females can give birth beetween 15 and 45y old + must be alive and have spouse
-        if person.sex == Sexes.FEMALE and 15 <= person.age <= 45 and person.lifeStatus == LifeStatus.ALIVE and person.spouse != '':
+        if person.lifeStatus == LifeStatus.ALIVE and person.sex == Sexes.FEMALE and 15 <= person.age <= 45 and person.spouse != '':
             # is spouse alive
             spouseObj = PI.findOnePersonObj(people, person.spouse)
 
@@ -52,6 +52,8 @@ def birthPeople (world, families, people):
                                 #parameters: people, child, mother, father
                                 PF.deathProcedures(people, personObj, person, spouseObj)
 
+                            break
+
     return
 
 
@@ -64,23 +66,23 @@ def deathChanceFromAge (age, lifespan, person):
         if chanceOfDeath <= 20:
             dead = True
             person.causeOfDeath = CauseOfDeath.SICKNESS
-    if age == 2:
+    elif age == 2:
         if chanceOfDeath <= 15:
             person.causeOfDeath = CauseOfDeath.SICKNESS
             dead = True
-    if age == 3:
+    elif age == 3:
         if chanceOfDeath <= 10:
             person.causeOfDeath = CauseOfDeath.SICKNESS
             dead = True
-    if age == 4:
+    elif age == 4:
         if chanceOfDeath <= 5:
             person.causeOfDeath = CauseOfDeath.SICKNESS
             dead = True
-    if age == 5:
+    elif age == 5:
         if chanceOfDeath <= 3:
             person.causeOfDeath = CauseOfDeath.SICKNESS
             dead = True
-    if lifespan-age <= 5:
+    elif lifespan-age <= 5:
         if chanceOfDeath >= 100 - (lifespan-age) * 2:
             person.causeOfDeath = CauseOfDeath.AGE
             dead = True
@@ -96,11 +98,11 @@ def deathChangeFromGivingBirth (person, child, modifier=0):
 
     if numberOfChildren == 0:
         chanceOfMotherDeath = Utils.randomRange(1, 100)
-    if numberOfChildren == 1:
+    elif numberOfChildren == 1:
         chanceOfMotherDeath = Utils.randomRange(1, 95)
-    if numberOfChildren == 2:
+    elif numberOfChildren == 2:
         chanceOfMotherDeath = Utils.randomRange(1, 90)
-    if numberOfChildren >= 3:
+    else:
         chanceOfMotherDeath = Utils.randomRange(1, 85)
 
     if chanceOfMotherDeath > 80 + modifier:

@@ -13,15 +13,16 @@ def UpdateLists (families, people):
         adultMalesNumer = 0
         adultFemalesNumber = 0
         for person in people:
-            if (family.familyName == person.familyName):
+            if family.familyName == person.familyName:
                 if person.maritalStatus == MaritalStatus.DEAD:
                     deadMembersList.append(person.personUUID)
+                    continue
                 if person.age < 15 and person.maritalStatus != MaritalStatus.DEAD:
                     childrenNumber += 1
                 if person.maritalStatus != MaritalStatus.DEAD and person.sex == Sexes.MALE:
                     adultMalesNumer += 1
                 if person.maritalStatus != MaritalStatus.DEAD and person.sex == Sexes.FEMALE:
-                    adultFemalesNumber +=1
+                    adultFemalesNumber += 1
                 if person.age > 15 and person.maritalStatus != MaritalStatus.DEAD and person.sex == Sexes.MALE and person.maritalStatus != MaritalStatus.MARRIED:
                     unmarriedAdultMaleList.append(person.personUUID)
                 if person.age > 15 and person.maritalStatus != MaritalStatus.DEAD and person.sex == Sexes.FEMALE and person.maritalStatus != MaritalStatus.MARRIED:
@@ -87,8 +88,8 @@ def SpouseMatchmaking (families, people):
         if person.lifeStatus == Enums.LifeStatus.ALIVE and person.spouse == '' and (person.maritalStatus == Enums.MaritalStatus.SINGLE or person.maritalStatus == Enums.MaritalStatus.WIDOW or person.maritalStatus == Enums.MaritalStatus.WIDOWER or person.maritalStatus == Enums.MaritalStatus.DIVORCED):
 
             availableSpouesesList = FindAvailableSpouses(families, person)
-            if (len(availableSpouesesList) > 0):
-                person.spouse = Utils.randomFromCollection(FindAvailableSpouses(families, person))
+            if len(availableSpouesesList) > 0:
+                person.spouse = Utils.randomFromCollection(availableSpouesesList)
                 spouseObj = PIF.findOnePersonObj(people, person.spouse)
 
                 person.maritalStatus = Enums.MaritalStatus.MARRIED

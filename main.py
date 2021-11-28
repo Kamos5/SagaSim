@@ -45,26 +45,26 @@ def running (world, families, people, manualOverride):
     # for UAF in val.unmarriedAdultFemaleList:
     #     print("Unmarried female family member: " + " " + UAF)
 
-    isAliveFlag = True
-    personUUIDFLAG = True
-    personFirstNameFLAG = True
+    isAliveFlag = False
+    personUUIDFLAG = False
+    personFirstNameFLAG = False
     personLastNameFLAG = False
-    personSexFLAG = True
-    personSexGen1FLAG = True
-    personSexGen2FLAG = True
+    personSexFLAG = False
+    personSexGen1FLAG = False
+    personSexGen2FLAG = False
     personAgeFLAG = False
     personLifeSpanFLAG = False
     personModLifeSpanFLAG = False
-    personLifeStatFLAG = True
+    personLifeStatFLAG = False
     fatherFLAG = False
-    fatherIDFLAG = True
+    fatherIDFLAG = False
     motherFLAG = False
-    motherIDFLAG = True
-    spouseFLAG = True
+    motherIDFLAG = False
+    spouseFLAG = False
     causeOfDeathFLAG = False
-    hairColorFLAG = True
-    personHairColorGensFLAG = True
-    deadChildrenListFLAG = True
+    hairColorFLAG = False
+    personHairColorGensFLAG = False
+    deadChildrenListFLAG = False
 
     blackCount = 0
     brownCount = 0
@@ -72,70 +72,70 @@ def running (world, families, people, manualOverride):
     redCount = 0
     whiteCount = 0
     grayCount = 0
-    timers = False
+    timers = True
 
     isAlive = 0
     isDead = 0
-    for person in people:
-
-        printString = ''
-        if person.lifeStatus == Enums.LifeStatus.ALIVE:
-            isAlive += 1
-        else:
-            isDead += 1
-
-        if (person.lifeStatus == Enums.LifeStatus.ALIVE or not isAliveFlag):
-            if (personUUIDFLAG):
-                printString += "UUID: " + person.personUUID + " "
-            if (personFirstNameFLAG):
-                printString += "FirstName: " + person.firstName + " "
-            if (personLastNameFLAG):
-                printString += "LastName: " + person.lastName + " "
-            if (personSexFLAG):
-                printString += "Sex: " + str(person.sex.value[1]) + " "
-            if (personSexGen1FLAG):
-                printString += "SexGen1: " + str(person.sexGen1[0].value[1]) + " "
-            if (personSexGen2FLAG):
-                printString += "SexGen2: " + str(person.sexGen2[0].value[1]) + " "
-            if personAgeFLAG:
-                printString += "Age: " + str(person.age) + " "
-            if (personLifeSpanFLAG):
-                printString += "Lifespan: " + str(person.lifespan) + " "
-            if (personModLifeSpanFLAG):
-                printString += "ModLifespan: " + str(person.modifiedLifespan) + " "
-            if (personLifeStatFLAG):
-                printString += "Status: " + person.lifeStatus.value + " "
-            if (fatherFLAG):
-                printString += "Father: " + PIF.findOneFirstName(people, person.father) + " "
-            if (fatherIDFLAG):
-                printString += "Father-id: " + person.father + " "
-            if (motherFLAG):
-                printString += "Mother: " + PIF.findOneFirstName(people, person.mother) + " "
-            if (motherIDFLAG):
-                printString += "Mother-id: " + person.mother + " "
-            if (spouseFLAG):
-                printString += "Spouse: " + PIF.findOneFirstName(people, person.spouse) + " "
-            if (causeOfDeathFLAG):
-                printString += "Status: " + person.causeOfDeath.value + " "
-            if (hairColorFLAG):
-                printString += "HairColor: " + str(person.hairColor) + " "
-                if (person.hairColor == Enums.HairColor.BLACK):
-                    blackCount += 1
-                if (person.hairColor == Enums.HairColor.BROWN):
-                    brownCount += 1
-                if (person.hairColor == Enums.HairColor.RED):
-                    redCount += 1
-                if (person.hairColor == Enums.HairColor.YELLOW):
-                    yellowCount += 1
-                if (person.hairColor == Enums.HairColor.WHITE):
-                    whiteCount += 1
-                if (person.hairColor == Enums.HairColor.GRAY):
-                    grayCount += 1
-            if (personHairColorGensFLAG):
-                printString += "HairColorGen1: " + str(person.hairColorGen1) + " "
-                printString += "HairColorGen2: " + str(person.hairColorGen2) + " "
-            if (deadChildrenListFLAG):
-                printString += "DeadChildrenList: " + str(person.deadChildrens) + " "
+    # for person in people:
+    #
+    #     printString = ''
+    #     if person.lifeStatus == Enums.LifeStatus.ALIVE:
+    #         isAlive += 1
+    #     else:
+    #         isDead += 1
+    #
+    #     if (person.lifeStatus == Enums.LifeStatus.ALIVE or not isAliveFlag):
+    #         if (personUUIDFLAG):
+    #             printString += "UUID: " + person.personUUID + " "
+    #         if (personFirstNameFLAG):
+    #             printString += "FirstName: " + person.firstName + " "
+    #         if (personLastNameFLAG):
+    #             printString += "LastName: " + person.lastName + " "
+    #         if (personSexFLAG):
+    #             printString += "Sex: " + str(person.sex.value[1]) + " "
+    #         if (personSexGen1FLAG):
+    #             printString += "SexGen1: " + str(person.sexGen1[0].value[1]) + " "
+    #         if (personSexGen2FLAG):
+    #             printString += "SexGen2: " + str(person.sexGen2[0].value[1]) + " "
+    #         if personAgeFLAG:
+    #             printString += "Age: " + str(person.age) + " "
+    #         if (personLifeSpanFLAG):
+    #             printString += "Lifespan: " + str(person.lifespan) + " "
+    #         if (personModLifeSpanFLAG):
+    #             printString += "ModLifespan: " + str(person.modifiedLifespan) + " "
+    #         if (personLifeStatFLAG):
+    #             printString += "Status: " + person.lifeStatus.value + " "
+    #         if (fatherFLAG):
+    #             printString += "Father: " + PIF.findOneFirstName(people, person.father) + " "
+    #         if (fatherIDFLAG):
+    #             printString += "Father-id: " + person.father + " "
+    #         if (motherFLAG):
+    #             printString += "Mother: " + PIF.findOneFirstName(people, person.mother) + " "
+    #         if (motherIDFLAG):
+    #             printString += "Mother-id: " + person.mother + " "
+    #         if (spouseFLAG):
+    #             printString += "Spouse: " + PIF.findOneFirstName(people, person.spouse) + " "
+    #         if (causeOfDeathFLAG):
+    #             printString += "Status: " + person.causeOfDeath.value + " "
+    #         if (hairColorFLAG):
+    #             printString += "HairColor: " + str(person.hairColor) + " "
+    #             if (person.hairColor == Enums.HairColor.BLACK):
+    #                 blackCount += 1
+    #             if (person.hairColor == Enums.HairColor.BROWN):
+    #                 brownCount += 1
+    #             if (person.hairColor == Enums.HairColor.RED):
+    #                 redCount += 1
+    #             if (person.hairColor == Enums.HairColor.YELLOW):
+    #                 yellowCount += 1
+    #             if (person.hairColor == Enums.HairColor.WHITE):
+    #                 whiteCount += 1
+    #             if (person.hairColor == Enums.HairColor.GRAY):
+    #                 grayCount += 1
+    #         if (personHairColorGensFLAG):
+    #             printString += "HairColorGen1: " + str(person.hairColorGen1) + " "
+    #             printString += "HairColorGen2: " + str(person.hairColorGen2) + " "
+    #         if (deadChildrenListFLAG):
+    #             printString += "DeadChildrenList: " + str(person.deadChildrens) + " "
         #if len(printString) > 0:
         #  print(printString)
 
@@ -149,7 +149,7 @@ def running (world, families, people, manualOverride):
 
     #print("People Alive: " + str(isAlive))
     #print("People Dead: " + str(isDead))
-    print("Population: " + str(isAlive + isDead))
+    print("Population: " + str(len(people)))
 
     # if len(person.deadSpouses) > 0:
     #     print("   Dead spouses:")
@@ -208,7 +208,7 @@ def main():
 
     sun = True
 
-    pCount = 2
+    pCount = 30
     pTime = 1000 / pCount
 
     tickStartTime = time.time() * 1000.0
@@ -217,9 +217,11 @@ def main():
 
         tickCurrentTime = time.time() * 1000.0
 
-        if tickCurrentTime - tickStartTime >= pTime:
+        if tickCurrentTime - tickStartTime >= pTime or not manualOverride:
             running(world, families, people, manualOverride)
             tickStartTime = time.time() * 1000.0
+        else:
+            running(world, families, people, manualOverride)
 
         if world.getYear() == 700:
 
