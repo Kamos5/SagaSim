@@ -177,11 +177,9 @@ def main():
 
         tickCurrentTime = time.time() * 1000.0
 
-        if tickCurrentTime - tickStartTime >= pTime or not manualOverride:
+        if tickCurrentTime - tickStartTime >= pTime:
             running(world, families, people, manualOverride)
             tickStartTime = time.time() * 1000.0
-        else:
-            running(world, families, people, manualOverride)
 
         if world.getYear() == 700:
 
