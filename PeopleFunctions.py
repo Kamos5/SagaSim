@@ -2,10 +2,10 @@ from Member import Person as PersonObj
 import Utils
 import PeopleInterface as PI
 import NameGenerator
-from Enums import LifeStatus,MaritalStatus, HairColor, Sexes
+from Enums import LifeStatus, MaritalStatus, HairColor, Sexes
 
-def birthChild (world, parent1, parent2, trueParent1 = '', trueParent2 = ''):
 
+def birthChild(world, parent1, parent2, trueParent1='', trueParent2=''):
     # parent2 is father
 
     if trueParent1 == '':
@@ -30,18 +30,20 @@ def birthChild (world, parent1, parent2, trueParent1 = '', trueParent2 = ''):
     hairColor, hairColorGen1, hairColorGen2 = Utils.geneticHairColor(trueParent1, trueParent2)
 
     person = PersonObj()
-    person.addNewPerson(firstName, trueParent2.familyName, trueParent2.familyName, world.getYear(), lifespan, sex, sexGen1, sexGen2, fertility, hairColor, hairColorGen1, hairColorGen2, parent1.personUUID, parent2.personUUID, trueParent1.personUUID, trueParent2.personUUID)
+    person.addNewPerson(firstName, trueParent2.familyName, trueParent2.familyName, world.getYear(), lifespan, sex,
+                        sexGen1, sexGen2, fertility, hairColor, hairColorGen1, hairColorGen2, parent1, parent2,
+                        trueParent1, trueParent2)
 
     return person
 
-def deathProcedures(people, person, motherObj=None, fatherObj=None):
 
+def deathProcedures(people, person, motherObj=None, fatherObj=None):
     # changing statutes
     person.changeLifeStatus(LifeStatus.DEAD)
     person.maritalStatus = MaritalStatus.DEAD
 
     if person.spouse != '':
-        spouseObj = PI.findOnePersonObj(people, person.spouse)
+        spouseObj = person.spouse
         person.spouse = ''
         spouseObj.deadSpouses.append(person.spouse)
         spouseObj.spouse = ''
@@ -53,13 +55,6 @@ def deathProcedures(people, person, motherObj=None, fatherObj=None):
             spouseObj.maritalStatus = MaritalStatus.WIDOW
 
     # adding dead kids to the list od dead children
-    if person.mother != '' and person.father != '':
-        if motherObj is not None and fatherObj is not None:
-            fatherList = fatherObj.deadChildrens
-            motherList = motherObj.deadChildrens
-        else:
-            fatherList, motherList = PI.findParentsDeadChildrensList(people, person)
-        fatherList.append(person.personUUID)
-        motherList.append(person.personUUID)
+    # not needed. all kids that have Status.DEAD in child list is what we need
 
     return

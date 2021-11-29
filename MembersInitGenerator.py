@@ -76,11 +76,11 @@ def InitMarriegies (pip1, pip2, people):
     foundSecond = False
 
     for pips in people:
-        if pips.personUUID == pip1:
+        if pips.personUUID == pip1.personUUID:
             pips.maritalStatus = MaritalStatus.MARRIED
             pips.spouse = pip2
             foundFirst = True
-        if pips.personUUID == pip2:
+        if pips.personUUID == pip2.personUUID:
             pips.maritalStatus = MaritalStatus.MARRIED
             pips.spouse = pip1
             foundSecond = True

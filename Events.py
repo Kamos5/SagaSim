@@ -21,7 +21,7 @@ def birthPeople (world, families, people):
         # only Females can give birth beetween 15 and 45y old + must be alive and have spouse
         if person.lifeStatus == LifeStatus.ALIVE and person.sex == Sexes.FEMALE and 15 <= person.age <= 45 and person.spouse != '':
             # is spouse alive
-            spouseObj = PI.findOnePersonObj(people, person.spouse)
+            spouseObj = person.spouse
 
             if spouseObj.lifeStatus == LifeStatus.ALIVE:
                 chanceOfBirth = Utils.randomRange(1, 100)
@@ -38,8 +38,8 @@ def birthPeople (world, families, people):
                             spouseObj.numberOfChildren += 1
                             if person.modifiedLifespan-person.age > 1:
                                 person.modifiedLifespan -= 1
-                            person.childrens.append(personObj.personUUID)
-                            spouseObj.childrens.append(personObj.personUUID)
+                            person.childrens.append(personObj)
+                            spouseObj.childrens.append(personObj)
 
                             # change of dying from childbirth (mother and child)
                             motherDeath, childdeath = deathChangeFromGivingBirth (person, personObj)

@@ -62,16 +62,16 @@ class Family:
     def addNewUnmarriedMember(self, person):
 
         if person.sex == Sexes.MALE:
-            self.unmarriedAdultMaleList.append(person.personUUID)
+            self.unmarriedAdultMaleList.append(person)
         else:
-            self.unmarriedAdultFemaleList.append(person.personUUID)
+            self.unmarriedAdultFemaleList.append(person)
 
     def setChildToAdultMember(self, person):
 
         if person.sex == Sexes.MALE:
-            self.unmarriedAdultMaleList.append(person.personUUID)
+            self.unmarriedAdultMaleList.append(person)
         else:
-            self.unmarriedAdultFemaleList.append(person.personUUID)
+            self.unmarriedAdultFemaleList.append(person)
         self.decreaseChildrenNumber()
 
     def getAllAliveMembersUUIDs(self):

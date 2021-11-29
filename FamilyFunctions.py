@@ -15,7 +15,7 @@ def UpdateLists (families, people):
         for person in people:
             if family.familyName == person.familyName:
                 if person.maritalStatus == MaritalStatus.DEAD:
-                    deadMembersList.append(person.personUUID)
+                    deadMembersList.append(person)
                     continue
                 if person.age < 15 and person.maritalStatus != MaritalStatus.DEAD:
                     childrenNumber += 1
@@ -24,9 +24,9 @@ def UpdateLists (families, people):
                 if person.maritalStatus != MaritalStatus.DEAD and person.sex == Sexes.FEMALE:
                     adultFemalesNumber += 1
                 if person.age > 15 and person.maritalStatus != MaritalStatus.DEAD and person.sex == Sexes.MALE and person.maritalStatus != MaritalStatus.MARRIED:
-                    unmarriedAdultMaleList.append(person.personUUID)
+                    unmarriedAdultMaleList.append(person)
                 if person.age > 15 and person.maritalStatus != MaritalStatus.DEAD and person.sex == Sexes.FEMALE and person.maritalStatus != MaritalStatus.MARRIED:
-                    unmarriedAdultFemaleList.append(person.personUUID)
+                    unmarriedAdultFemaleList.append(person)
         family.deadMemberList = deadMembersList
         family.childrenNumber = childrenNumber
         family.unmarriedAdultMaleList = unmarriedAdultMaleList
@@ -56,9 +56,9 @@ def RemoveFromAdultMemberList (families, person):
     for family in families:
         if family.familyName == person.familyName:
             if person.sex == Sexes.MALE:
-                family.removeFromAdultMalesUUIDsList(person.personUUID)
+                family.removeFromAdultMalesUUIDsList(person)
             if person.sex == Sexes.FEMALE:
-                family.removeFromAdultFemalesUUIDsList(person.personUUID)
+                family.removeFromAdultFemalesUUIDsList(person)
 
 
 def RemoveFromUnmarriedList (families, person):
@@ -66,9 +66,9 @@ def RemoveFromUnmarriedList (families, person):
     for family in families:
         if family.familyName == person.familyName:
             if person.sex == Sexes.MALE:
-                family.removeFromUnmarriedAdultMalesUUIDsList(person.personUUID)
+                family.removeFromUnmarriedAdultMalesUUIDsList(person)
             if person.sex == Sexes.FEMALE:
-                family.removeFromUnmarriedAdultFemalesUUIDsList(person.personUUID)
+                family.removeFromUnmarriedAdultFemalesUUIDsList(person)
 
 
 def ChangeFamilyName (person, spouse):
@@ -90,10 +90,10 @@ def SpouseMatchmaking (families, people):
             availableSpouesesList = FindAvailableSpouses(families, person)
             if len(availableSpouesesList) > 0:
                 person.spouse = Utils.randomFromCollection(availableSpouesesList)
-                spouseObj = PIF.findOnePersonObj(people, person.spouse)
+                spouseObj = person.spouse
 
                 person.maritalStatus = Enums.MaritalStatus.MARRIED
-                spouseObj.spouse = person.personUUID
+                spouseObj.spouse = person
                 spouseObj.maritalStatus = Enums.MaritalStatus.MARRIED
                 RemoveFromUnmarriedList(families, spouseObj)
                 ChangeFamilyName(person, spouseObj)

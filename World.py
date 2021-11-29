@@ -18,6 +18,6 @@ class World:
 
         aliveMembersNames = []
         for person in people:
-            if str(person.personUUID) in str(family.getAliveAllMembersUUIDs()) and person.lifeStatus == LifeStatus.ALIVE:
+            if person in family.getAliveAllMembersUUIDs() and person.lifeStatus == LifeStatus.ALIVE:
                 aliveMembersNames.append(person.firstName)
         return aliveMembersNames
