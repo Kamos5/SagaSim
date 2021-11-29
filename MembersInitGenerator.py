@@ -60,13 +60,13 @@ def setUpHairColorsToFamilies (family):
 
 def initInitMarrieges(family, people):
 
-    while len(family.getAllUnmarriedAdultMalesUUIDs()) > 0 and len(family.getAllUnmarriedAdultFemalesUUIDs()) > 0:
+    while len(family.getAllUnmarriedAdultMales()) > 0 and len(family.getAllUnmarriedAdultFemales()) > 0:
 
-            pip1 = random.choice(family.getAllUnmarriedAdultMalesUUIDs())
-            pip2 = random.choice(family.getAllUnmarriedAdultFemalesUUIDs())
+            pip1 = random.choice(family.getAllUnmarriedAdultMales())
+            pip2 = random.choice(family.getAllUnmarriedAdultFemales())
             InitMarriegies(pip1, pip2, people)
-            family.removeFromUnmarriedAdultMalesUUIDsList(pip1)
-            family.removeFromUnmarriedAdultFemalesUUIDsList(pip2)
+            family.removeFromUnmarriedAdultMalesList(pip1)
+            family.removeFromUnmarriedAdultFemalesList(pip2)
 
     return
 

@@ -66,9 +66,9 @@ def RemoveFromUnmarriedList (families, person):
     for family in families:
         if family.familyName == person.familyName:
             if person.sex == Sexes.MALE:
-                family.removeFromUnmarriedAdultMalesUUIDsList(person)
+                family.removeFromUnmarriedAdultMalesList(person)
             if person.sex == Sexes.FEMALE:
-                family.removeFromUnmarriedAdultFemalesUUIDsList(person)
+                family.removeFromUnmarriedAdultFemalesList(person)
 
 
 def ChangeFamilyName (person, spouse):

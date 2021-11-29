@@ -77,32 +77,32 @@ class Family:
     def getAllAliveMembersUUIDs(self):
         return self.aliveMembers
 
-    def getAllUnmarriedAdultMalesUUIDs(self):
+    def getAllUnmarriedAdultMales(self):
         return self.unmarriedAdultMaleList
 
-    def setAllUnmarriedAdultMalesUUIDs(self, list):
+    def setAllUnmarriedAdultMales(self, list):
         self.unmarriedAdultMaleList = list
 
-    def getAllUnmarriedAdultFemalesUUIDs(self):
+    def getAllUnmarriedAdultFemales(self):
         return self.unmarriedAdultFemaleList
 
-    def setAllUnmarriedAdultFemalesUUIDs(self, list):
+    def setAllUnmarriedAdultFemales(self, list):
         self.unmarriedAdultFemaleList = list
 
     def getFamilyMembersNumber(self):
         return self.femaleNumber + self.maleNumber
 
-    def removeFromUnmarriedAdultMalesUUIDsList(self, uuid):
-        self.unmarriedAdultMaleList.remove(uuid)
+    def removeFromUnmarriedAdultMalesList(self, person):
+        self.unmarriedAdultMaleList.remove(person)
 
-    def removeFromUnmarriedAdultFemalesUUIDsList(self, uuid):
-        self.unmarriedAdultFemaleList.remove(uuid)
+    def removeFromUnmarriedAdultFemalesList(self, person):
+        self.unmarriedAdultFemaleList.remove(person)
 
-    def addToAdultMalesUUIDsList(self, uuid):
-        self.adultMaleList.append(uuid)
+    def addToAdultMalesList(self, person):
+        self.adultMaleList.append(person)
 
-    def addToAdultFemalesUUIDsList(self, uuid):
-        self.adultFemaleList.append(uuid)
+    def addToAdultFemalesList(self, person):
+        self.adultFemaleList.append(person)
 
     # def removeFromAdultMalesUUIDsList(self, uuid):
     #     self.adultMaleList.remove(uuid)
