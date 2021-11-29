@@ -31,7 +31,7 @@ def birthChild(world, parent1, parent2, trueParent1='', trueParent2=''):
     person = PersonObj()
     person.addNewPerson(firstName, trueParent2.familyName, trueParent2.familyName, world.getYear(), lifespan, sex,
                         sexGen1, sexGen2, fertility, hairColor, hairColorGen1, hairColorGen2, parent1, parent2,
-                        trueParent1, trueParent2)
+                        trueParent1, trueParent2, person.familyObjRef)
 
     return person
 

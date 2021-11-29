@@ -144,7 +144,7 @@ class Family:
         self.increaseMaleAdultNumber()
     def removeFromAdultMalesList(self, person):
         self.adultMalesList.remove(person)
-        self.decreaseFemaleAdultNumber()
+        self.decreaseMaleAdultNumber()
     def setAdultMalesList(self, list):
         self.adultMalesList = list
 
@@ -260,11 +260,11 @@ class Family:
     def getUnmarriedMalesList(self):
         return self.unmarriedMalesList
     def appendUnmarriedMalesList(self, person):
-        self.appendFemalesList(person)
+        self.appendMalesList(person)
         self.unmarriedMalesList.append(person)
         self.increaseUnmarriedMaleNumber()
     def removeFromUnmarriedMalesList(self, person):
-        self.removeFromFemalesList(person)
+        self.removeFromMalesList(person)
         self.unmarriedMalesList.remove(person)
         self.decreaseUnmarriedMaleNumber()
     def setUnmarriedMalesList(self, list):
@@ -275,17 +275,13 @@ class Family:
     def addUnmarriedMember(self, person):
         if person.sex == Sexes.FEMALE:
             self.appendUnmarriedFemalesList(person)
-            self.appendFemalesList(person)
         else:
             self.appendUnmarriedMalesList(person)
-            self.appendMalesList(person)
     def removeUnmarriedMember(self, person):
         if person.sex == Sexes.FEMALE:
             self.removeFromUnmarriedFemalesList(person)
-            self.removeFromFemalesList(person)
         else:
             self.removeFromUnmarriedMalesList(person)
-            self.removeFromMalesList(person)
 
     def getMarriedFemaleNumber(self):
         return self.marriedFemaleNumber
@@ -343,9 +339,7 @@ class Family:
     def addMarriedMember(self, person):
         if person.sex == Sexes.FEMALE:
             self.appendMarriedFemalesList(person)
-            self.appendFemalesList(person)
         else:
-            self.removeFromFemalesList(person)
             self.appendMarriedMalesList(person)
     def removeMarriedMember(self, person):
         if person.sex == Sexes.FEMALE:
