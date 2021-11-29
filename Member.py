@@ -12,6 +12,7 @@ class Person(FamilyObj):
         self.firstName = ''
         self.secondName = ''
         self.lastName = ''
+        self.familyObjRef = ''
         self.yearOfBirth = ''
         self.age = 0
         self.lifespan = 0
@@ -28,7 +29,7 @@ class Person(FamilyObj):
         self.trueMother = ''
         self.trueFather = ''
         self.lover = ''
-        self.spouse = ''
+        self.spouse = None
         self.maritalStatus = MaritalStatus.SINGLE
         self.deadSpouses = []
         self.lifeStatus = LifeStatus.ALIVE
@@ -44,15 +45,15 @@ class Person(FamilyObj):
         self.deadChildrens = []
         pass
 
-    def setInitValues(self, yearOfBirth, age, randomLifespan, sex, hairColor, hairColorGen1, hairColorGen2, familyName):
+    def setInitValues(self, yearOfBirth, age, randomLifespan, sex, hairColor, hairColorGen1, hairColorGen2, familyObj):
 
         if sex == Sexes.MALE:
             self.firstName = NameGenerator.randomMName()
         else:
             self.firstName = NameGenerator.randomFName()
 
-        super().__init__(familyName)
-        self.lastName = familyName
+        super().__init__(familyObj.familyName)
+        self.lastName = familyObj.familyName
         self.yearOfBirth = yearOfBirth-age
         self.age = age
         self.lifespan = randomLifespan
@@ -69,9 +70,9 @@ class Person(FamilyObj):
         self.hairColor = hairColor
         self.hairColorGen1 = hairColorGen1
         self.hairColorGen2 = hairColorGen2
+        self.familyObjRef = familyObj
 
-
-    def addNewPerson(self, firstName, lastName, familyName, yearOfBirth, lifespan, sex, sexGen1, sexGen2, fertility, hairColor, hairColorGen1, hairColorGen2, mother, father, trueMother, trueFather):
+    def addNewPerson(self, firstName, lastName, familyName, yearOfBirth, lifespan, sex, sexGen1, sexGen2, fertility, hairColor, hairColorGen1, hairColorGen2, mother, father, trueMother, trueFather, familyObj):
 
         self.firstName = firstName
         self.lastName = lastName
@@ -90,6 +91,7 @@ class Person(FamilyObj):
         self.father = father
         self.trueMother = trueMother
         self.trueFather = trueFather
+        self.familyObjRef = familyObj
 
 
     def addFemalesCount(self):

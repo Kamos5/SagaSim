@@ -20,8 +20,9 @@ def initFamilies():
 def initPeople(families):
 
     people = MIG.Init(families, world)
+
     for family in families:
-        MIG.initInitMarrieges(family, people)
+        MIG.initInitMarrieges(family)
 
     return people
 
@@ -177,22 +178,12 @@ def running (world, families, people, manualOverride):
     if timers:
         end1 = time.time()
         print("BirthTime: " + str(end1 - start1))
-        start1 = time.time()
-    FF.UpdateLists(families, people)
     if timers:
-        end1 = time.time()
-        print("UPD1Time: " + str(end1 - start1))
         start1 = time.time()
     FF.SpouseMatchmaking(families, people)
     if timers:
         end1 = time.time()
         print("SpouseMMTime: " + str(end1 - start1))
-        start1 = time.time()
-    FF.UpdateLists(families, people)
-    if timers:
-        end1 = time.time()
-        print("UDP2Time: " + str(end1 - start1))
-
     end = time.time()
     print(end - start)
 
@@ -208,7 +199,7 @@ def main():
 
     sun = True
 
-    pCount = 10
+    pCount = 300
     pTime = 1000 / pCount
 
     tickStartTime = time.time() * 1000.0

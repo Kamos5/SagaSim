@@ -1,4 +1,4 @@
-from Enums import LifeStatus, MaritalStatus,CauseOfDeath,Sexes
+from Enums import LifeStatus, MaritalStatus, CauseOfDeath, Sexes
 import Utils
 import time
 import PeopleFunctions as PF
@@ -10,8 +10,10 @@ def increaseAge (people):
     for person in people:
         if person.lifeStatus != LifeStatus.DEAD:
             person.increaseAge()
-        if deathChanceFromAge(person.age, person.modifiedLifespan, person) or person.age >= person.modifiedLifespan:
-            PF.deathProcedures(people, person)
+            if person.age == 15:
+                person.familyObjRef.moveChildToAdultMembers(person)
+        if deathChanceFromAge(person) or person.age >= person.modifiedLifespan:
+            PF.deathProcedures(person)
 
 def birthPeople (world, families, people):
 
@@ -19,48 +21,49 @@ def birthPeople (world, families, people):
 
         # person here is MOTHER
         # only Females can give birth beetween 15 and 45y old + must be alive and have spouse
-        if person.lifeStatus == LifeStatus.ALIVE and person.sex == Sexes.FEMALE and 15 <= person.age <= 45 and person.spouse != '':
-            # is spouse alive
-            spouseObj = person.spouse
+        if person.lifeStatus == LifeStatus.ALIVE and person.sex == Sexes.FEMALE and 15 <= person.age <= 45 and person.spouse is not None:
 
+            #spouseObj for simplicity
+            spouseObj = person.spouse
+            # is spouse alive
             if spouseObj.lifeStatus == LifeStatus.ALIVE:
                 chanceOfBirth = Utils.randomRange(1, 100)
                 if chanceOfBirth <= min(person.fertility, spouseObj.fertility):
                     # CHILD object
                     personObj = PF.birthChild(world, person, spouseObj)
                     # add child to proper family
-                    for family in families:
-                        if family.familyName == personObj.familyName:
-                            family.addNewMember(personObj)
-                            family.increaseChildrenNumber()
-                            people.append(personObj)
-                            person.numberOfChildren += 1
-                            spouseObj.numberOfChildren += 1
-                            if person.modifiedLifespan-person.age > 1:
-                                person.modifiedLifespan -= 1
-                            person.childrens.append(personObj)
-                            spouseObj.childrens.append(personObj)
+                    personObj.familyObjRef.addNewMember(personObj)
+                    people.append(personObj)
+                    person.numberOfChildren += 1
+                    spouseObj.numberOfChildren += 1
+                    if person.modifiedLifespan-person.age > 1:
+                        person.modifiedLifespan -= 1
+                    person.childrens.append(personObj)
+                    spouseObj.childrens.append(personObj)
 
-                            # change of dying from childbirth (mother and child)
-                            motherDeath, childdeath = deathChangeFromGivingBirth (person, personObj)
+                    # change of dying from childbirth (mother and child)
+                    motherDeath, childdeath = deathChangeFromGivingBirth(person, personObj)
 
-                            if motherDeath:
-                                PF.deathProcedures(people, person)
-                                #FF.RemoveFromAdultMemberList(families, person)
+                    if motherDeath:
+                        PF.deathProcedures(person)
+                        #FF.RemoveFromAdultMemberList(families, person)
 
-                            if childdeath:
-                                #parameters: people, child, mother, father
-                                PF.deathProcedures(people, personObj, person, spouseObj)
+                    if childdeath:
+                        #parameters: child
+                        PF.deathProcedures(person)
 
-                            break
+                    break
 
     return
 
 
-def deathChanceFromAge (age, lifespan, person):
+def deathChanceFromAge (person):
 
     chanceOfDeath = Utils.randomRange(1, 100)
     dead = False
+
+    age = person.age
+    lifespan = person.lifespan
 
     if age == 1:
         if chanceOfDeath <= 20:

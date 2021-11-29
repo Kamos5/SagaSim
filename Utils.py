@@ -82,9 +82,6 @@ def hairColorMap (hairColorGen1, hairColorGen2):
     threshold1 = 90
     threshold2 = 10
 
-    #print(hairColorGen1)
-    #print(hairColorGen2)
-
     if hairColorGen1[0].value[0] >= hairColorGen2[0].value[0]:
         if randomNumber <= threshold1:
             return hairColorGen1

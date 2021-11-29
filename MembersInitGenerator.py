@@ -15,7 +15,7 @@ def Init(families, world):
 
         for number in range(randomNumber):
             member = PersonObj()
-            sex = InitRandomSex(family, Sexes, number)
+            sex = InitRandomSex(family, number)
             randomAge = Utils.randomRange(15, 20)
             # if sex == "F":
             #     randomAge = 40
@@ -24,9 +24,8 @@ def Init(families, world):
             hairColorGen1 = [hairColor, 0]
             hairColorGen2 = [hairColor, 0]
 
-            member.setInitValues(world.getYear(), randomAge, randomLifespan, sex, hairColor, hairColorGen1, hairColorGen2, family.familyName)
+            member.setInitValues(world.getYear(), randomAge, randomLifespan, sex, hairColor, hairColorGen1, hairColorGen2, family)
             family.addNewMember(member)
-            family.addNewUnmarriedMember(member)
             people.append(member)
 
     return people
@@ -58,45 +57,38 @@ def setUpHairColorsToFamilies (family):
     return hairColor
 
 
-def initInitMarrieges(family, people):
+def initInitMarrieges(family):
 
-    while len(family.getAllUnmarriedAdultMales()) > 0 and len(family.getAllUnmarriedAdultFemales()) > 0:
+    while family.getUnmarriedFemaleNumber() > 0 and family.getUnmarriedMaleNumber() > 0:
 
-            pip1 = random.choice(family.getAllUnmarriedAdultMales())
-            pip2 = random.choice(family.getAllUnmarriedAdultFemales())
-            InitMarriegies(pip1, pip2, people)
-            family.removeFromUnmarriedAdultMalesList(pip1)
-            family.removeFromUnmarriedAdultFemalesList(pip2)
-
-    return
-
-def InitMarriegies (pip1, pip2, people):
-
-    foundFirst = False
-    foundSecond = False
-
-    for pips in people:
-        if pips.personUUID == pip1.personUUID:
-            pips.maritalStatus = MaritalStatus.MARRIED
-            pips.spouse = pip2
-            foundFirst = True
-        if pips.personUUID == pip2.personUUID:
-            pips.maritalStatus = MaritalStatus.MARRIED
-            pips.spouse = pip1
-            foundSecond = True
-        if foundFirst and foundSecond:
-            break
+            pip1 = random.choice(family.getUnmarriedMalesList())
+            pip2 = random.choice(family.getUnmarriedFemalesList())
+            InitMarriegies(pip1, pip2)
+            family.addMarriedMember(pip1)
+            family.addMarriedMember(pip2)
+            family.removeUnmarriedMember(pip1)
+            family.removeUnmarriedMember(pip2)
 
     return
 
-def InitRandomSex(family, sexes, initPeopleNumber):
+def InitMarriegies (husband, wife):
 
-    if family.getFamilyMembersNumber() < 1:
-        return Utils.randomFromEnumCollection(sexes)
+    husband.maritalStatus = MaritalStatus.MARRIED
+    husband.spouse = wife
+
+    wife.maritalStatus = MaritalStatus.MARRIED
+    wife.spouse = husband
+
+    return
+
+def InitRandomSex(family, initPeopleNumber):
+
+    if family.getAllMembersNumber() < 1:
+        return Utils.randomFromEnumCollection(Sexes)
     elif initPeopleNumber == 1:
-        if family.femaleNumber == 1:
-            return sexes.MALE
+        if family.getFemaleNumber() == 1:
+            return Sexes.MALE
         else:
-            return sexes.FEMALE
+            return Sexes.FEMALE
     else:
-        return Utils.randomFromEnumCollection(sexes)
+        return Utils.randomFromEnumCollection(Sexes)

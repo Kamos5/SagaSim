@@ -7,7 +7,6 @@ from Enums import LifeStatus, MaritalStatus, HairColor, Sexes
 
 def birthChild(world, parent1, parent2, trueParent1='', trueParent2=''):
     # parent2 is father
-
     if trueParent1 == '':
         trueParent1 = parent1
     if trueParent2 == '':
@@ -37,22 +36,25 @@ def birthChild(world, parent1, parent2, trueParent1='', trueParent2=''):
     return person
 
 
-def deathProcedures(people, person, motherObj=None, fatherObj=None):
+def deathProcedures(person):
+
     # changing statutes
     person.changeLifeStatus(LifeStatus.DEAD)
     person.maritalStatus = MaritalStatus.DEAD
 
-    if person.spouse != '':
-        spouseObj = person.spouse
-        person.spouse = ''
-        spouseObj.deadSpouses.append(person.spouse)
-        spouseObj.spouse = ''
 
+    if person.spouse is not None:
+        person.spouse.deadSpouses.append(person)
         # changing status of the spouse to WIDOW* and clearing spouse field
-        if spouseObj.sex == Sexes.MALE:
-            spouseObj.maritalStatus = MaritalStatus.WIDOWER
+        if person.spouse.sex == Sexes.MALE:
+            person.spouse.maritalStatus = MaritalStatus.WIDOWER
         else:
-            spouseObj.maritalStatus = MaritalStatus.WIDOW
+            person.spouse.maritalStatus = MaritalStatus.WIDOW
+
+        person.spouse.spouse = None
+        person.spouse = None
+
+    person.familyObjRef.appendDeadMembersList(person)
 
     # adding dead kids to the list od dead children
     # not needed. all kids that have Status.DEAD in child list is what we need
