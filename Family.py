@@ -326,6 +326,7 @@ class Family:
     def getMarriedMalesList(self):
         return self.marriedMalesList
     def appendMarriedMalesList(self, person):
+        self.appendMalesList(person)
         self.marriedMalesList.append(person)
         self.increaseMarriedMaleNumber()
     def removeFromMarriedMalesList(self, person):
@@ -378,11 +379,7 @@ class Family:
     def addNewMember(self, person):
 
         if person.age <= 15:
-            if person.sex == Sexes.MALE:
-                self.addChildren(person)
-                self.increaseMaleNumber()
-            else:
-                self.increaseFemaleNumber()
+            self.addChildren(person)
         else:
             if person.maritalStatus == MaritalStatus.MARRIED:
                 self.addMarriedMember(person)

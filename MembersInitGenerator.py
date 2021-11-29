@@ -63,6 +63,8 @@ def initInitMarrieges(family):
 
             pip1 = random.choice(family.getUnmarriedMalesList())
             pip2 = random.choice(family.getUnmarriedFemalesList())
+            print(pip1)
+            print(pip2)
             InitMarriegies(pip1, pip2)
             family.addMarriedMember(pip1)
             family.addMarriedMember(pip2)
