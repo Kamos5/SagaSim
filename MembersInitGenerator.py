@@ -24,7 +24,7 @@ def Init(families, world):
             hairColorGen1 = [hairColor, 0]
             hairColorGen2 = [hairColor, 0]
 
-            member.setInitValues(world.getYear(), randomAge, randomLifespan, sex, hairColor, hairColorGen1, hairColorGen2, family)
+            member.setInitValues(family.familyName, world.getYear(), randomAge, randomLifespan, sex, hairColor, hairColorGen1, hairColorGen2, family)
             family.addNewMember(member)
             people.append(member)
 
@@ -63,8 +63,6 @@ def initInitMarrieges(family):
 
             pip1 = random.choice(family.getUnmarriedMalesList())
             pip2 = random.choice(family.getUnmarriedFemalesList())
-            print(pip1)
-            print(pip2)
             InitMarriegies(pip1, pip2)
             family.addMarriedMember(pip1)
             family.addMarriedMember(pip2)

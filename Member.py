@@ -4,7 +4,7 @@ import NameGenerator
 from Enums import LifeStatus, MaritalStatus, HairColor, CauseOfDeath, Sexes
 
 
-class Person(FamilyObj):
+class Person:
 
     def __init__(self):
         self.personUUID = Utils.createUUID()
@@ -12,6 +12,7 @@ class Person(FamilyObj):
         self.firstName = ''
         self.secondName = ''
         self.lastName = ''
+        self.familyName = ''
         self.familyObjRef = ''
         self.yearOfBirth = ''
         self.age = 0
@@ -45,14 +46,14 @@ class Person(FamilyObj):
         self.deadChildrens = []
         pass
 
-    def setInitValues(self, yearOfBirth, age, randomLifespan, sex, hairColor, hairColorGen1, hairColorGen2, familyObj):
+    def setInitValues(self, familyName, yearOfBirth, age, randomLifespan, sex, hairColor, hairColorGen1, hairColorGen2, familyObj):
 
         if sex == Sexes.MALE:
             self.firstName = NameGenerator.randomMName()
         else:
             self.firstName = NameGenerator.randomFName()
 
-        super().__init__(familyObj.familyName)
+        self.familyName = familyName
         self.lastName = familyObj.familyName
         self.yearOfBirth = yearOfBirth-age
         self.age = age
@@ -76,7 +77,7 @@ class Person(FamilyObj):
 
         self.firstName = firstName
         self.lastName = lastName
-        super().__init__(familyName)
+        self.familyName = familyName
         self.yearOfBirth = yearOfBirth
         self.lifespan = lifespan
         self.modifiedLifespan = lifespan
@@ -110,3 +111,5 @@ class Person(FamilyObj):
     def changeLifeStatus(self, newLifeStatus):
         self.lifeStatus = newLifeStatus
 
+    def changeMaritalStatus(self, newMaritalStatus):
+        self.maritalStatus = newMaritalStatus

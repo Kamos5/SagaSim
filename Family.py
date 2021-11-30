@@ -3,10 +3,11 @@ from Enums import Sexes, MaritalStatus
 
 class Family:
 
+
     def __init__(self, fname):
         self.familyUUID = Utils.createUUID()
         self.familyName = fname
-        self.familyBranchedFrom = self.familyName
+        self.familyBranchedFrom = ''
         self.foundingYear = 0
 
         #every member of family
@@ -21,7 +22,7 @@ class Family:
         self.adultMale = 0
 
         self.adultFemalesList = []
-        self.adultMalesList = []
+        vadultMalesList = []
 
         #only childens members
         self.childrenFemaleNumber = 0
@@ -43,9 +44,25 @@ class Family:
         self.marriedMalesList = []
 
         #sum of female and male numbers
+        self.aliveMemberNumber = 0
         self.aliveMembersList = []
 
+        self.deadMemberNumber = 0
         self.deadMembersList = []
+
+    def getFamilyName(self):
+        return self.familyName
+    def setFamilyName(self, newFamilyName):
+        self.familyName = newFamilyName
+    def getFamilyBranchedFrom(self):
+        return self.familyBranchedFrom
+    def setFamilyBranchedFrom(self, newFamilyRoot):
+        self.familyBranchedFrom = newFamilyRoot
+    def getFoundingYear(self):
+        return self.foundingYear
+    def setFoundingYar(self, newFoundingYear):
+        self.foundingYear = newFoundingYear
+
 
     def getFemaleNumber(self):
         return self.femaleNumber
@@ -79,9 +96,11 @@ class Family:
     def appendFemalesList(self, person):
         self.femalesList.append(person)
         self.increaseFemaleNumber()
+        self.increaseAliveMemberNumber()
     def removeFromFemalesList(self, person):
         self.femalesList.remove(person)
         self.decreaseFemaleNumber()
+        self.decreaseAliveMemberNumber()
     def setFemalesList(self, list):
         self.femalesList = list
 
@@ -90,9 +109,11 @@ class Family:
     def appendMalesList(self, person):
         self.malesList.append(person)
         self.increaseMaleNumber()
+        self.increaseAliveMemberNumber()
     def removeFromMalesList(self, person):
         self.malesList.remove(person)
         self.decreaseMaleNumber()
+        self.decreaseAliveMemberNumber()
     def setMalesList(self, list):
         self.malesList = list
 
@@ -183,9 +204,11 @@ class Family:
     def appendChildrenFemalesList(self, person):
         self.childrenFemalesList.append(person)
         self.increaseChildrenFemaleNumber()
+        self.appendFemalesList(person)
     def removeFromChildrenFemalesList(self, person):
         self.childrenFemalesList.remove(person)
         self.decreaseChildrenFemaleNumber()
+        self.removeFromFemalesList(person)
     def setChildrenFemalesList(self, list):
         self.childrenFemalesList = list
 
@@ -194,9 +217,11 @@ class Family:
     def appendChildrenMalesList(self, person):
         self.childrenMalesList.append(person)
         self.increaseChildrenMaleNumber()
+        self.appendMalesList(person)
     def removeFromChildrenMalesList(self, person):
         self.childrenMalesList.remove(person)
         self.decreaseChildrenMaleNumber()
+        self.removeFromMalesList(person)
     def setChildrenMalesList(self, list):
         self.childrenMalesList = list
 
@@ -205,18 +230,15 @@ class Family:
     def addChildren(self, person):
         if person.sex == Sexes.FEMALE:
             self.appendChildrenFemalesList(person)
-            self.appendFemalesList(person)
+
         else:
             self.appendChildrenMalesList(person)
-            self.appendMalesList(person)
+
     def removeChildren(self, person):
         if person.sex == Sexes.FEMALE:
             self.removeFromChildrenFemalesList(person)
-            self.removeFromFemalesList(person)
         else:
             self.removeFromChildrenMalesList(person)
-            self.removeFromMalesList(person)
-
     def getUnmarriedFemaleNumber(self):
         return self.unmarriedFemaleNumber
     def increaseUnmarriedFemaleNumber(self):
@@ -277,6 +299,7 @@ class Family:
             self.appendUnmarriedFemalesList(person)
         else:
             self.appendUnmarriedMalesList(person)
+
     def removeUnmarriedMember(self, person):
         if person.sex == Sexes.FEMALE:
             self.removeFromUnmarriedFemalesList(person)
@@ -330,6 +353,7 @@ class Family:
         self.marriedMalesList.append(person)
         self.increaseMarriedMaleNumber()
     def removeFromMarriedMalesList(self, person):
+        self.removeFromMalesList(person)
         self.marriedMalesList.remove(person)
         self.decreaseMarriedMaleNumber()
     def setMarriedMalesList(self, list):
@@ -345,15 +369,31 @@ class Family:
     def removeMarriedMember(self, person):
         if person.sex == Sexes.FEMALE:
             self.removeFromMarriedFemalesList(person)
-            self.removeFromFemalesList(person)
         else:
             self.removeFromMarriedMalesList(person)
-            self.removeFromMalesList(person)
+
+    def getAliveMemberNumber(self):
+        return self.aliveMemberNumber
+    def increaseAliveMemberNumber(self):
+        self.aliveMemberNumber += 1
+    def decreaseAliveMemberNumber(self):
+        self.aliveMemberNumber -= 1
+    def setAliveMemberNumber(self, newAliveMemberNumber):
+        self.aliveMemberNumber = newAliveMemberNumber
 
     def getAliveMembersList(self):
         return self.aliveMembersList
     def setAliveMembersList(self, list):
         self.aliveMembersList = list
+
+    def getDeadMemberNumber(self):
+        return self.deadMemberNumber
+    def increaseDeadMemberNumber(self):
+        self.deadMemberNumber += 1
+    def decreaseDeadMemberNumber(self):
+        self.deadMemberNumber -= 1
+    def setDeadMemberNumber(self, newDeadMemberNumber):
+        self.deadMemberNumber = newDeadMemberNumber
 
     def getDeadMembersList(self):
         return self.deadMembersList
@@ -365,6 +405,7 @@ class Family:
             else:
                 self.removeUnmarriedMember(person)
             self.deadMembersList.append(person)
+            self.increaseDeadMemberNumber()
         else:
             self.removeChildren(person)
     def setDeadMembersList(self, list):
@@ -378,7 +419,7 @@ class Family:
 
     def addNewMember(self, person):
 
-        if person.age <= 15:
+        if person.age < 15:
             self.addChildren(person)
         else:
             if person.maritalStatus == MaritalStatus.MARRIED:

@@ -17,28 +17,18 @@ def FindAvailableSpouses (families, person):
 
     return availableSpouses
 
-
-def RemoveFromAdultMemberList (families, person):
-
-    for family in families:
-        if family.familyName == person.familyName:
-            if person.sex == Sexes.MALE:
-                family.removeFromAdultMalesUUIDsList(person)
-            if person.sex == Sexes.FEMALE:
-                family.removeFromAdultFemalesUUIDsList(person)
-
-
 def RemoveFromUnmarriedList (person, spouse):
 
     person.familyObjRef.removeUnmarriedMember(person)
-    person.familyObjRef.removeUnmarriedMember(spouse)
+    spouse.familyObjRef.removeUnmarriedMember(spouse)
 
     #move wife to husband's family
     if person.sex == Enums.Sexes.MALE:
-        person.familyObjRef.appendMarriedMember(person)
+        person.familyObjRef.addMarriedMember(person)
+        person.familyObjRef.addMarriedMember(spouse)
     else:
-        person.familyObjRef.appendMarriedMember(spouse)
-
+        spouse.familyObjRef.addMarriedMember(person)
+        spouse.familyObjRef.addMarriedMember(spouse)
 
 def ChangeFamilyName (person, spouse):
 
@@ -46,10 +36,10 @@ def ChangeFamilyName (person, spouse):
 
     if person.sex == Sexes.FEMALE:
         person.lastName = spouseObj.lastName
+        person.familyObjRef = spouse.familyObjRef
     else:
-        #if lesbians??? whatever
-        if spouseObj.sex == Sexes.FEMALE:
-            spouseObj.lastName = person.lastName
+        spouseObj.lastName = person.lastName
+        spouse.familyObjRef = person.familyObjRef
 
 def SpouseMatchmaking (families, people):
 

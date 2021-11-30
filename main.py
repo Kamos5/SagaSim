@@ -75,16 +75,9 @@ def running (world, families, people, manualOverride):
     grayCount = 0
     timers = True
 
-    isAlive = 0
-    isDead = 0
     # for person in people:
     #
     #     printString = ''
-    #     if person.lifeStatus == Enums.LifeStatus.ALIVE:
-    #         isAlive += 1
-    #     else:
-    #         isDead += 1
-    #
     #     if (person.lifeStatus == Enums.LifeStatus.ALIVE or not isAliveFlag):
     #         if (personUUIDFLAG):
     #             printString += "UUID: " + person.personUUID + " "
@@ -150,8 +143,14 @@ def running (world, families, people, manualOverride):
 
     #print("People Alive: " + str(isAlive))
     #print("People Dead: " + str(isDead))
-    print("Population: " + str(len(people)))
+    isAlive = 0
+    isDead = 0
+    for family in families:
+        isAlive += family.getAliveMemberNumber()
+        isDead += family.getDeadMemberNumber()
 
+    print("Population alive: " + str(isAlive))
+    print("Population dead: " + str(isDead))
     # if len(person.deadSpouses) > 0:
     #     print("   Dead spouses:")
     #     for dspouse in person.deadSpouses:
@@ -174,7 +173,7 @@ def running (world, families, people, manualOverride):
         end1 = time.time()
         print("IncAgeTime: " + str(end1 - start1))
         start1 = time.time()
-    Events.birthPeople(world, families, people)
+    Events.birthPeople(world, people)
     if timers:
         end1 = time.time()
         print("BirthTime: " + str(end1 - start1))
@@ -212,10 +211,9 @@ def main():
             running(world, families, people, manualOverride)
             tickStartTime = time.time() * 1000.0
 
-        if world.getYear() == 1000:
+        if world.getYear() == 700:
 
             return
-
 
 main()
 

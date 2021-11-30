@@ -29,19 +29,16 @@ def birthChild(world, parent1, parent2, trueParent1='', trueParent2=''):
     hairColor, hairColorGen1, hairColorGen2 = Utils.geneticHairColor(trueParent1, trueParent2)
 
     person = PersonObj()
+
+    #Child goes to father's family
     person.addNewPerson(firstName, trueParent2.familyName, trueParent2.familyName, world.getYear(), lifespan, sex,
                         sexGen1, sexGen2, fertility, hairColor, hairColorGen1, hairColorGen2, parent1, parent2,
-                        trueParent1, trueParent2, person.familyObjRef)
+                        trueParent1, trueParent2, trueParent2.familyObjRef)
 
     return person
 
 
 def deathProcedures(person):
-
-    # changing statutes
-    person.changeLifeStatus(LifeStatus.DEAD)
-    person.maritalStatus = MaritalStatus.DEAD
-
 
     if person.spouse is not None:
         person.spouse.deadSpouses.append(person)
@@ -51,10 +48,20 @@ def deathProcedures(person):
         else:
             person.spouse.maritalStatus = MaritalStatus.WIDOW
 
+        person.spouse.familyObjRef.removeMarriedMember(person.spouse)
+        person.spouse.familyObjRef.addUnmarriedMember(person.spouse)
         person.spouse.spouse = None
         person.spouse = None
+    # else:
+    #     #cleaning widowers and widows if they are also dead
+    #     if person.maritalStatus == MaritalStatus.WIDOWER or person.maritalStatus == MaritalStatus.WIDOW:
+    #         person.maritalStatus = MaritalStatus.DEAD
 
     person.familyObjRef.appendDeadMembersList(person)
+
+    # changing statutes
+    person.changeLifeStatus(LifeStatus.DEAD)
+    person.maritalStatus = MaritalStatus.DEAD
 
     # adding dead kids to the list od dead children
     # not needed. all kids that have Status.DEAD in child list is what we need

@@ -1,4 +1,4 @@
-from Family import Family as FamilyObj
+from Family import Family
 import FamilyNameGenerator
 
 def Init(world):
@@ -9,8 +9,8 @@ def Init(world):
     while var < 5:
 
         familyName = FamilyNameGenerator.getInitFamilyName(var)
-        family = FamilyObj(familyName)
-        family.foundingYear = world.getYear()
+        family = Family(familyName)
+        family.setFoundingYar(world.getYear())
         families.append(family)
         var += 1
 

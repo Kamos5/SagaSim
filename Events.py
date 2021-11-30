@@ -12,10 +12,10 @@ def increaseAge (people):
             person.increaseAge()
             if person.age == 15:
                 person.familyObjRef.moveChildToAdultMembers(person)
-        if deathChanceFromAge(person) or person.age >= person.modifiedLifespan:
-            PF.deathProcedures(person)
+            if deathChanceFromAge(person) or person.age >= person.modifiedLifespan:
+                PF.deathProcedures(person)
 
-def birthPeople (world, families, people):
+def birthPeople (world, people):
 
     for person in people:
 
@@ -50,9 +50,8 @@ def birthPeople (world, families, people):
 
                     if childdeath:
                         #parameters: child
-                        PF.deathProcedures(person)
+                        PF.deathProcedures(personObj)
 
-                    break
 
     return
 
@@ -96,8 +95,8 @@ def deathChangeFromGivingBirth (person, child, modifier=0):
 
     motherDeath = False
     childDeath = False
-    numberOfChildren = person.childrenNumber
-    chanceOfMotherDeath = 100
+    numberOfChildren = person.numberOfChildren
+    chanceOfMotherDeath = 0
 
     if numberOfChildren == 0:
         chanceOfMotherDeath = Utils.randomRange(1, 100)
