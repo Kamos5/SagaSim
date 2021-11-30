@@ -57,3 +57,9 @@ class SkinColor(Enum):
 class Sexes(Enum):
     MALE = 0, 'M'
     FEMALE = 0, 'F'
+
+
+class Settlements(Enum):
+
+    VILLAGE = 'village'
+    TOWN = 'town'

@@ -2,6 +2,7 @@ import FamilyInitGenerator as FIG
 import MembersInitGenerator as MIG
 from World import World as World
 import Events
+from Settlements import Settlements
 import Enums
 import PeopleFunctions as MF
 import FamilyFunctions as FF
@@ -151,12 +152,7 @@ def running (world, families, people, manualOverride):
 
     print("Population alive: " + str(isAlive))
     print("Population dead: " + str(isDead))
-    # if len(person.deadSpouses) > 0:
-    #     print("   Dead spouses:")
-    #     for dspouse in person.deadSpouses:
-    #         print("      " + PIF.findOneFirstName(people, dspouse))
-    # if person.lifeStatus == Enums.LifeStatus.ALIVE and person.spouse == '':
-    #     print(FF.FindAvailableSpouses(families, person))
+    print("Population sum: " + str(isAlive+isDead))
 
     if manualOverride:
         input()
@@ -209,6 +205,9 @@ def main():
 
         if tickCurrentTime - tickStartTime >= pTime:
             running(world, families, people, manualOverride)
+            #world.increaseYear()
+            #settlement = Settlements()
+            #print(settlement.name)
             tickStartTime = time.time() * 1000.0
 
         if world.getYear() == 700:

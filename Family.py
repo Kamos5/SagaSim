@@ -1,14 +1,17 @@
 import Utils
 from Enums import Sexes, MaritalStatus
 
-class Family:
 
+class Family:
 
     def __init__(self, fname):
         self.familyUUID = Utils.createUUID()
         self.familyName = fname
         self.familyBranchedFrom = ''
         self.foundingYear = 0
+        self.originRegion = ''
+        self.originSettlement = ''
+        self.originCulture = ''
 
         #every member of family
         self.femaleNumber = 0
@@ -50,6 +53,16 @@ class Family:
         self.deadMemberNumber = 0
         self.deadMembersList = []
 
+    def getOriginRegion(self):
+        return self.originRegion
+    def setOriginRegion(self, newOriginRegion):
+        self.originRegion = newOriginRegion
+    def getOriginSettlement(self):
+        return self.originSettlement
+    def setOriginSettlement(self, newOriginSettlement):
+        self.originSettlement = newOriginSettlement
+
+
     def getFamilyName(self):
         return self.familyName
     def setFamilyName(self, newFamilyName):
@@ -60,7 +73,7 @@ class Family:
         self.familyBranchedFrom = newFamilyRoot
     def getFoundingYear(self):
         return self.foundingYear
-    def setFoundingYar(self, newFoundingYear):
+    def setFoundingYear(self, newFoundingYear):
         self.foundingYear = newFoundingYear
 
 

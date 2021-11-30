@@ -1,4 +1,6 @@
+from enum import Enum
 
+import random
 initialFamilyNames = [
     'Alfarius',
     'Betarius',
@@ -27,7 +29,29 @@ initialFamilyNames = [
 
 ]
 
+class FamilyNamesBasedOnProfessions(Enum):
+
+    SMITH = 'Smith',
+    ARCHER = 'Archer',
+    FISHER = 'Fisher',
+    BAKER = 'Baker',
+    FARMER = 'Farmer',
+    MILLER = 'Miller',
+    POTTER = 'Potter',
+    SHEPPARD = 'Sheppard',
+    TAYLOR = 'Taylor',
+    COLEMAN = 'Coleman',
+
+
+
+
 def getInitFamilyName(variable):
 
-    return initialFamilyNames[variable]
+    if len(initialFamilyNames) > 0:
+        choice = random.choice(initialFamilyNames)
+        initialFamilyNames.remove(choice)
+    else:
+        choice = 'Generic Family Name'
+    return choice
+
 

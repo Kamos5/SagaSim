@@ -7,7 +7,7 @@ def FindAvailableSpouses (families, person):
 
     availableSpouses = []
     for family in families:
-        if family.familyName != person.familyName:
+        if family.familyName != person.familyName and (family.getOriginSettlement() == person.familyObjRef.getOriginSettlement() or True): #temp flag
             if person.sex == Sexes.MALE:
                 for eachFreeMember in family.getUnmarriedFemalesList():
                     availableSpouses.append(eachFreeMember)

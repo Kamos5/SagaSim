@@ -7,6 +7,7 @@ class World:
     def __init__(self, startYear=__initYear):
         self.__initYear = startYear
         self.__year = self.__initYear
+        self.regions = []
 
     def getYear(self):
         return self.__year

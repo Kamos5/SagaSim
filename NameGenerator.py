@@ -35,6 +35,33 @@ femaleNameList = [
     'Natalie'
 ]
 
+settlementsVillageNames = [
+
+    'Amesbury',
+    'Bedford',
+    'Chesterfield',
+    'Darlington',
+    'Edenbridge',
+    'Framlingham',
+    'Grassington',
+    'Hastings',
+    'Ilford',
+    'Jarrow',
+    'Keswick',
+    'Ledbury'
+
+]
+
+
+def randomsettlementsVillageName ():
+
+    if len(settlementsVillageNames) > 0:
+        choice = random.choice(settlementsVillageNames)
+        settlementsVillageNames.remove(choice)
+    else:
+        choice = 'Generic Village Name'
+    return choice
+
 
 def randomMName ():
 

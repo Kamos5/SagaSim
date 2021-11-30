@@ -1,5 +1,5 @@
 import random
-from Member import Person as PersonObj
+from Person import Person as PersonObj
 import FamilyNameGenerator as FNG
 from Enums import MaritalStatus, HairColor, Sexes
 import Utils
@@ -17,8 +17,6 @@ def Init(families, world):
             member = PersonObj()
             sex = InitRandomSex(family, number)
             randomAge = Utils.randomRange(15, 20)
-            # if sex == "F":
-            #     randomAge = 40
             randomLifespan = Utils.randomRange(40, 50)
             hairColor = setUpHairColorsToFamilies(family)
             hairColorGen1 = [hairColor, 0]

@@ -1,4 +1,4 @@
-from Member import Person as PersonObj
+from Person import Person as PersonObj
 import Utils
 import PeopleInterface as PI
 import NameGenerator
