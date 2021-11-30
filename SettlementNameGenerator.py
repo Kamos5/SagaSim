@@ -26,48 +26,70 @@ settlementsNames = [
 
 ]
 
+activeNames = []
+abandonedSettlements = []
 
-def randomEnglishSettlementsName ():
+def randomEnglishSettlementsName (rebuildOldSettlement = False):
 
     if len(settlementsNames) > 0:
-        choice = random.choice(settlementsNames)
+        listToChooseFrom = settlementsNames
+        if rebuildOldSettlement:
+            listToChooseFrom = abandonedSettlements
+        choice = random.choice(listToChooseFrom)
         settlementsNames.remove(choice)
+        activeNames.append(choice)
     else:
         choice = 'Generic Village Name'
     return choice
 
-def randomSlavicSettlementsName ():
+def randomSlavicSettlementsName (rebuildOldSettlement = False):
 
     if len(settlementsNames) > 0:
-        choice = random.choice(settlementsNames)
+        listToChooseFrom = settlementsNames
+        if rebuildOldSettlement:
+            listToChooseFrom = abandonedSettlements
+        choice = random.choice(listToChooseFrom)
         settlementsNames.remove(choice)
+        activeNames.append(choice)
     else:
         choice = 'Generic Village Name'
     return choice
 
-def randomMusslimSettlementsName():
+def randomMusslimSettlementsName(rebuildOldSettlement = False):
 
     if len(settlementsNames) > 0:
-        choice = random.choice(settlementsNames)
+        listToChooseFrom = settlementsNames
+        if rebuildOldSettlement:
+            listToChooseFrom = abandonedSettlements
+        choice = random.choice(listToChooseFrom)
         settlementsNames.remove(choice)
+        activeNames.append(choice)
     else:
         choice = 'Generic Village Name'
     return choice
 
-def randomRomanSettlementsName():
+def randomRomanSettlementsName(rebuildOldSettlement = False):
 
     if len(settlementsNames) > 0:
-        choice = random.choice(settlementsNames)
+        listToChooseFrom = settlementsNames
+        if rebuildOldSettlement:
+            listToChooseFrom = abandonedSettlements
+        choice = random.choice(listToChooseFrom)
         settlementsNames.remove(choice)
+        activeNames.append(choice)
     else:
         choice = 'Generic Village Name'
     return choice
 
-def randomAfricanSettlementsName():
+def randomAfricanSettlementsName(rebuildOldSettlement = False):
 
     if len(settlementsNames) > 0:
-        choice = random.choice(settlementsNames)
+        listToChooseFrom = settlementsNames
+        if rebuildOldSettlement:
+            listToChooseFrom = abandonedSettlements
+        choice = random.choice(listToChooseFrom)
         settlementsNames.remove(choice)
+        activeNames.append(choice)
     else:
         choice = 'Generic Village Name'
     return choice

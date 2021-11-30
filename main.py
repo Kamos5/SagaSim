@@ -32,21 +32,6 @@ def running (world, families, people, manualOverride):
     start = time.time()
     print(world.getYear())
 
-    # for val in families:
-    #     print(val.familyName)
-    #     print("Children Number: " + str(val.getChildrenNumber()))
-    #     print("Male Adults:" + str(len(val.adultMaleList)))
-    #     print("Female Adults:" + str(len(val.adultFemaleList)))
-    #     print("Members Number:" + str(val.getFamilyMembersNumber()))
-    #     print("Female Number:" + str(val.getFemaleNumber()))
-    #     print("Male Number:" + str(val.getMaleNumber()))
-    #     print("LEN UAM: " + str(len(val.unmarriedAdultMaleList)))
-    #     print("LEN UAF: " + str(len(val.unmarriedAdultFemaleList)))
-    # for UAM in val.unmarriedAdultMaleList:
-    #     print("Unmarried male family member: " + " " + UAM)
-    # for UAF in val.unmarriedAdultFemaleList:
-    #     print("Unmarried female family member: " + " " + UAF)
-
     isAliveFlag = False
     personUUIDFLAG = False
     personFirstNameFLAG = False
@@ -142,8 +127,6 @@ def running (world, families, people, manualOverride):
     # print("Gray count: " + str(grayCount))
     # print("Sum: " + str(blackCount + brownCount + yellowCount + redCount + whiteCount + grayCount))
 
-    #print("People Alive: " + str(isAlive))
-    #print("People Dead: " + str(isDead))
     isAlive = 0
     isDead = 0
     for family in families:
@@ -154,9 +137,13 @@ def running (world, families, people, manualOverride):
     print("Population dead: " + str(isDead))
     print("Population sum: " + str(isAlive+isDead))
     print("Settlement 0 pop: " + str(world.getRegionFromIndex(0).getSettlementFromIndex(0).getPopulation()))
+    print("Settlement 0 pop: " + str(len(world.getRegionFromIndex(0).getSettlementFromIndex(0).getResidents())))
     print("Settlement 1 pop: " + str(world.getRegionFromIndex(0).getSettlementFromIndex(1).getPopulation()))
+    print("Settlement 1 pop: " + str(len(world.getRegionFromIndex(0).getSettlementFromIndex(1).getResidents())))
     print("Settlement 2 pop: " + str(world.getRegionFromIndex(0).getSettlementFromIndex(2).getPopulation()))
+    print("Settlement 2 pop: " + str(len(world.getRegionFromIndex(0).getSettlementFromIndex(2).getResidents())))
     print("Settlement 3 pop: " + str(world.getRegionFromIndex(0).getSettlementFromIndex(3).getPopulation()))
+    print("Settlement 3 pop: " + str(len(world.getRegionFromIndex(0).getSettlementFromIndex(3).getResidents())))
 
     if manualOverride:
         input()
@@ -177,23 +164,26 @@ def running (world, families, people, manualOverride):
     if timers:
         end1 = time.time()
         print("BirthTime: " + str(end1 - start1))
-    if timers:
         start1 = time.time()
     FF.SpouseMatchmaking(families, people)
     if timers:
         end1 = time.time()
         print("SpouseMMTime: " + str(end1 - start1))
-    end = time.time()
-    print(end - start)
+        start1 = time.time()
+    Events.settlementsPopulationManagement(world, people)
+    if timers:
+        end1 = time.time()
+        print("breakSettlementsPopTime: " + str(end1 - start1))
 
 
 def main():
 
-    families = []
     world.generateRegions(1)
     world.generateSettlements()
     families = initFamilies()
     people = initPeople(families)
+
+
     manualOverride = False
 
     sun = True
@@ -209,9 +199,7 @@ def main():
 
         if tickCurrentTime - tickStartTime >= pTime:
             running(world, families, people, manualOverride)
-            #world.increaseYear()
-            #settlement = Settlements()
-            #print(settlement.name)
+
             tickStartTime = time.time() * 1000.0
 
         if world.getYear() == 700:

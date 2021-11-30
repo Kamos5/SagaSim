@@ -4,7 +4,8 @@ from Region import Region
 class World:
 
     initYear = 500
-    regions = ['a']
+    regions = []
+    settlementsInitNumber = 4 # max 20
 
     def __init__(self, startYear=initYear):
         self.initYear = startYear
@@ -32,9 +33,8 @@ class World:
 
     def generateSettlements(self):
 
-        settlementsInitNumber = 4
         for region in self.regions:
-            for i in range(settlementsInitNumber):
+            for i in range(self.settlementsInitNumber):
                 region.addSettlement()
                 # First settlement is always TOWN
                 if i == 0:
@@ -43,3 +43,6 @@ class World:
 
     def getRegionFromIndex(self, index):
         return self.regions[index]
+
+    def getRegions(self):
+        return self.regions

@@ -14,6 +14,8 @@ class Person:
         self.lastName = ''
         self.familyName = ''
         self.familyObjRef = ''
+        self.region = ''
+        self.settlement = ''
         self.yearOfBirth = ''
         self.age = 0
         self.lifespan = 0
@@ -72,6 +74,8 @@ class Person:
         self.hairColorGen1 = hairColorGen1
         self.hairColorGen2 = hairColorGen2
         self.familyObjRef = familyObj
+        self.region = familyObj.getOriginRegion()
+        self.settlement = familyObj.getOriginSettlement()
 
     def addNewPerson(self, firstName, lastName, familyName, yearOfBirth, lifespan, sex, sexGen1, sexGen2, fertility, hairColor, hairColorGen1, hairColorGen2, mother, father, trueMother, trueFather, familyObj):
 
@@ -93,23 +97,35 @@ class Person:
         self.trueMother = trueMother
         self.trueFather = trueFather
         self.familyObjRef = familyObj
-
-
-    def addFemalesCount(self):
-        super().increaseFemaleNumber()
-
-    def addMalesCount(self):
-        super().increaseMaleNumber()
-
-    def setSpouse(self, personUUID):
-        self.spouse = personUUID
-        self.maritalStatus = MaritalStatus.MARRIED
+        self.region = father.getRegion()
+        self.settlement = father.getSettlement()
 
     def increaseAge(self):
         self.age += 1
+
+    def getFather(self):
+        return self.father
+
+    def getMother(self):
+        return self.mother
+
+    def getChildrensList(self):
+        return self.childrens
 
     def changeLifeStatus(self, newLifeStatus):
         self.lifeStatus = newLifeStatus
 
     def changeMaritalStatus(self, newMaritalStatus):
         self.maritalStatus = newMaritalStatus
+
+    def getRegion(self):
+        return self.region
+
+    def setRegion(self, newRegion):
+        self.region = newRegion
+
+    def getSettlement(self):
+        return self.settlement
+
+    def setSettlement(self, newSettlement):
+        self.settlement = newSettlement

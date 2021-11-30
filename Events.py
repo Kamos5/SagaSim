@@ -1,4 +1,4 @@
-from Enums import LifeStatus, MaritalStatus, CauseOfDeath, Sexes
+from Enums import LifeStatus, MaritalStatus, CauseOfDeath, Sexes, Settlements
 import Utils
 import time
 import PeopleFunctions as PF
@@ -55,8 +55,64 @@ def birthPeople (world, people):
 
     return
 
+def settlementsPopulationManagement (world, people):
 
-def deathChanceFromAge (person):
+    for region in world.getRegions():
+        for settlement in region.getSettlements():
+            if settlement.getPopulation() == 0:
+                region.decreaseActiveSettlements()
+            if settlement.getSettlementType() == Settlements.TOWN:
+                #TODO WHAT IF CITY DIES OFF? WILL IT CONVERT INTO VILLAGE
+                if settlement.getPopulation() >= 750:
+                    #if not region.addSettlement():
+                        randomMigrantsList = []
+                        # random 20 people with their alive children move to new Village
+                        randomPerson = Utils.randomFromCollection(settlement.getResidents())
+
+                        #for MINOR
+                        if randomPerson.age < 15:
+                            getRandomMigrantListForSingleRandomPerson(randomPerson, "Father", randomMigrantsList)
+                            getRandomMigrantListForSingleRandomPerson(randomPerson, "Mother", randomMigrantsList)
+                        else:
+                            #for Adult
+                            getRandomMigrantListForSingleRandomPerson(randomPerson, "Adult", randomMigrantsList)
+
+                        print(randomMigrantsList)
+                        migrationWaveNumber = 20
+                        print("TIME TO MOVE")
+            if settlement.getSettlementType() == Settlements.VILLAGE:
+                if settlement.getPopulation() > 350:
+                    print("Time to move")
+
+
+def getRandomMigrantListForSingleRandomPerson(person, parent, randomMigrantsList):
+
+    getParent = ''
+    if parent == "Father":
+        getParent = person.getFather()
+    if parent == "Mother":
+        getParent = person.getMother()
+    if parent == "Adult":
+        getParent = person
+
+    if getParent != '':
+        randomMigrantsList.append(getParent)
+        parentChildrensList = getParent.childrens
+        for parentChildren in parentChildrensList:
+            if parentChildren.age < 15:
+                if parentChildren not in randomMigrantsList:
+                    randomMigrantsList.append(parentChildren)
+        if getParent.spouse is not None:
+            randomMigrantsList.append(getParent.spouse)
+            parentSpouseChildrensList = getParent.spouse.childrens
+            for parentSpouseChildren in parentSpouseChildrensList:
+                if parentSpouseChildren.age < 15:
+                    if parentSpouseChildren not in randomMigrantsList:
+                        randomMigrantsList.append(parentSpouseChildren)
+
+
+
+def deathChanceFromAge(person):
 
     chanceOfDeath = Utils.randomRange(1, 100)
     dead = False
@@ -91,7 +147,8 @@ def deathChanceFromAge (person):
 
     return dead
 
-def deathChangeFromGivingBirth (person, child, modifier=0):
+
+def deathChangeFromGivingBirth(person, child, modifier=0):
 
     motherDeath = False
     childDeath = False
@@ -119,13 +176,3 @@ def deathChangeFromGivingBirth (person, child, modifier=0):
 
     return motherDeath, childDeath
 
-#
-# def gettingSickness (person):
-#     chanceOfGettingSick = Utils.randomRange(1, 100)
-#     Sick = False
-#
-#     if chanceOfGettingSick <= 2:
-#         Sick = True
-#
-#     return True
-#
