@@ -8,18 +8,12 @@ def Init(world):
     initFamilityNumber = 1
     var = 0
     families = []
-    settlement = Settlements()
-    settlement2 = Settlements()
-    region = Region("Eden")
     while var < 5:
-
-        if var > 2:
-            settlement = settlement2
         familyName = FamilyNameGenerator.getInitFamilyName(var)
         family = Family(familyName)
         family.setFoundingYear(world.getYear())
-        family.setOriginRegion(region)
-        family.setOriginSettlement(settlement)
+        family.setOriginRegion(world.getRegionFromIndex(0)) #TODO FOR NOW ONLY 1 REGION
+        family.setOriginSettlement(world.getRegionFromIndex(0).getSettlementFromIndex(var % 2))
         families.append(family)
         var += 1
 

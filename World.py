@@ -1,19 +1,21 @@
-from Enums import LifeStatus
+from Enums import LifeStatus,Settlements
+from Region import Region
 
 class World:
 
-    __initYear = 500
+    initYear = 500
+    regions = ['a']
 
-    def __init__(self, startYear=__initYear):
-        self.__initYear = startYear
-        self.__year = self.__initYear
+    def __init__(self, startYear=initYear):
+        self.initYear = startYear
+        self.year = self.initYear
         self.regions = []
 
     def getYear(self):
-        return self.__year
+        return self.year
 
     def increaseYear(self):
-        self.__year += 1
+        self.year += 1
 
     def getAllAliveMembersNames(self, family, people):
 
@@ -22,3 +24,22 @@ class World:
             if person in family.getAliveAllMembersUUIDs() and person.lifeStatus == LifeStatus.ALIVE:
                 aliveMembersNames.append(person.firstName)
         return aliveMembersNames
+
+    def generateRegions(self, regionsNumber = 5):
+
+        for region in range(regionsNumber):
+            self.regions.append(Region("Region " + str(region)))
+
+    def generateSettlements(self):
+
+        settlementsInitNumber = 4
+        for region in self.regions:
+            for i in range(settlementsInitNumber):
+                region.addSettlement()
+                # First settlement is always TOWN
+                if i == 0:
+                    region.settlements[0].changeSettlementType(Settlements.TOWN)
+
+
+    def getRegionFromIndex(self, index):
+        return self.regions[index]

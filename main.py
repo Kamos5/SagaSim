@@ -186,8 +186,8 @@ def running (world, families, people, manualOverride):
 def main():
 
     families = []
-
-    world = World()
+    world.generateRegions(1)
+    world.generateSettlements()
     families = initFamilies()
     people = initPeople(families)
     manualOverride = False

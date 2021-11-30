@@ -1,3 +1,4 @@
+from Settlements import Settlements
 
 class Region:
 
@@ -6,3 +7,10 @@ class Region:
         self.settlements = []
         self.regionSize = 1
         self.regionCulture = ''
+
+
+    def addSettlement(self):
+        self.settlements.append(Settlements(self.regionName))
+
+    def getSettlementFromIndex(self, index):
+        return self.settlements[index]
