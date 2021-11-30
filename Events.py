@@ -88,10 +88,12 @@ def settlementsPopulationManagement (world, people):
 def getRandomMigrantListForSingleRandomPerson(person, parent, randomMigrantsList):
 
     getParent = ''
-    if parent == "Father":
-        getParent = person.getFather()
-    if parent == "Mother":
-        getParent = person.getMother()
+    if person.getFather().lifeStatus != LifeStatus.DEAD:
+        if parent == "Father":
+            getParent = person.getFather()
+    if person.getMother().lifeStatus != LifeStatus.DEAD:
+        if parent == "Mother":
+            getParent = person.getMother()
     if parent == "Adult":
         getParent = person
 

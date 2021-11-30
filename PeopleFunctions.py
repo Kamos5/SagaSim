@@ -63,6 +63,11 @@ def deathProcedures(person):
     person.changeLifeStatus(LifeStatus.DEAD)
     person.maritalStatus = MaritalStatus.DEAD
 
+    if person.age < 15:
+        person.getMother().childrens.remove(person)
+        person.getFather().childrens.remove(person)
+        person.getMother().deadChildrens.append(person)
+        person.getFather().deadChildrens.append(person)
     # adding dead kids to the list od dead children
     # not needed. all kids that have Status.DEAD in child list is what we need
 
