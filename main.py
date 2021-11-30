@@ -153,6 +153,10 @@ def running (world, families, people, manualOverride):
     print("Population alive: " + str(isAlive))
     print("Population dead: " + str(isDead))
     print("Population sum: " + str(isAlive+isDead))
+    print("Settlement 0 pop: " + str(world.getRegionFromIndex(0).getSettlementFromIndex(0).getPopulation()))
+    print("Settlement 1 pop: " + str(world.getRegionFromIndex(0).getSettlementFromIndex(1).getPopulation()))
+    print("Settlement 2 pop: " + str(world.getRegionFromIndex(0).getSettlementFromIndex(2).getPopulation()))
+    print("Settlement 3 pop: " + str(world.getRegionFromIndex(0).getSettlementFromIndex(3).getPopulation()))
 
     if manualOverride:
         input()

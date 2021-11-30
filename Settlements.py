@@ -25,10 +25,13 @@ class Settlements:
         self.population = 0
 
 
+    def getPopulation(self):
+        return self.population
     def increasePopulation(self):
         self.population += 1
     def decreasePopulation(self):
         self.population -= 1
+
 
     def changeSettlementName(self, newName):
         self.name = newName

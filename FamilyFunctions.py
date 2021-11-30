@@ -1,13 +1,12 @@
 from Enums import MaritalStatus, Sexes
 import Enums
 import Utils
-import PeopleInterface as PIF
 
 def FindAvailableSpouses (families, person):
 
     availableSpouses = []
     for family in families:
-        if family.familyName != person.familyName and (family.getOriginSettlement() == person.familyObjRef.getOriginSettlement() or True): #temp flag
+        if family.familyName != person.familyName and (family.getOriginRegion() == person.familyObjRef.getOriginRegion() or False): #temp flag
             if person.sex == Sexes.MALE:
                 for eachFreeMember in family.getUnmarriedFemalesList():
                     availableSpouses.append(eachFreeMember)
