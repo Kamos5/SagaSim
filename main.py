@@ -140,12 +140,15 @@ def running (world, families, people, manualOverride):
     print("Settlement 0 residents: " + str(len(world.getRegionFromIndex(0).getSettlementFromIndex(0).getResidents())))
     print("Settlement 1 pop: " + str(world.getRegionFromIndex(0).getSettlementFromIndex(1).getPopulation()))
     print("Settlement 1 residents: " + str(len(world.getRegionFromIndex(0).getSettlementFromIndex(1).getResidents())))
-    if len(world.getRegionFromIndex(0).getSettlements()) == 3:
+    if len(world.getRegionFromIndex(0).getSettlements()) >= 3:
         print("Settlement 2 pop: " + str(world.getRegionFromIndex(0).getSettlementFromIndex(2).getPopulation()))
         print("Settlement 2 residents: " + str(len(world.getRegionFromIndex(0).getSettlementFromIndex(2).getResidents())))
-    if len(world.getRegionFromIndex(0).getSettlements()) == 4:
+    if len(world.getRegionFromIndex(0).getSettlements()) >= 4:
         print("Settlement 3 pop: " + str(world.getRegionFromIndex(0).getSettlementFromIndex(3).getPopulation()))
         print("Settlement 3 residents: " + str(len(world.getRegionFromIndex(0).getSettlementFromIndex(3).getResidents())))
+    if len(world.getRegionFromIndex(0).getSettlements()) >= 5:
+        print("Settlement 4 pop: " + str(world.getRegionFromIndex(0).getSettlementFromIndex(4).getPopulation()))
+        print("Settlement 4 residents: " + str(len(world.getRegionFromIndex(0).getSettlementFromIndex(4).getResidents())))
 
     if manualOverride:
         input()

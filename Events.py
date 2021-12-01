@@ -71,7 +71,7 @@ def settlementsPopulationManagement (world, people):
                         lowestSettlementInRegion = region.getLowestPopulatedSettlement()
                         if len(lowestSettlementInRegion.getResidents()) >= 150:
                             region.addSettlement()
-                            newTargetSettlemnt = region.getSettlementFromIndex(len(region.getSettlements()-1))
+                            newTargetSettlemnt = region.getSettlementFromIndex(len(region.getSettlements())-1)
                         else:
                             newTargetSettlemnt = lowestSettlementInRegion
 
@@ -93,19 +93,21 @@ def settlementsPopulationManagement (world, people):
 
                         print(randomMigrantsList)
                         print("dupa")
-                        iniciateMigration(randomMigrantsList, settlement, newTargetSettlemnt)
+                        iniciateMigration(randomMigrantsList, newTargetSettlemnt)
                         print("TIME TO MOVE YOUR ASS")
             if settlement.getSettlementType() == Settlements.VILLAGE:
                 if settlement.getPopulation() > 350:
                     print("Time to move")
 
 
-def iniciateMigration(migrantList, settlementFrom, settlementTarget):
+def iniciateMigration(migrantList, settlementTarget):
 
     for migrant in migrantList:
-        settlementFrom.decreasePopulation()
+        migrant.getSettlement().decreasePopulation()
+        migrant.getSettlement().removeResident(migrant)
         migrant.setSettlement(settlementTarget)
         settlementTarget.increasePopulation()
+        settlementTarget.addResident(migrant)
 
 
 def getRandomMigrantListForSingleRandomPerson(person, parent, randomMigrantsList):
