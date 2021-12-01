@@ -149,6 +149,18 @@ def running (world, families, people, manualOverride):
     if len(world.getRegionFromIndex(0).getSettlements()) >= 5:
         print("Settlement 4 pop: " + str(world.getRegionFromIndex(0).getSettlementFromIndex(4).getPopulation()))
         print("Settlement 4 residents: " + str(len(world.getRegionFromIndex(0).getSettlementFromIndex(4).getResidents())))
+    if len(world.getRegionFromIndex(0).getSettlements()) >= 6:
+        print("Settlement 5 pop: " + str(world.getRegionFromIndex(0).getSettlementFromIndex(5).getPopulation()))
+        print("Settlement 5 residents: " + str(len(world.getRegionFromIndex(0).getSettlementFromIndex(5).getResidents())))
+    if len(world.getRegionFromIndex(0).getSettlements()) >= 7:
+        print("Settlement 6 pop: " + str(world.getRegionFromIndex(0).getSettlementFromIndex(5).getPopulation()))
+        print("Settlement 6 residents: " + str(len(world.getRegionFromIndex(0).getSettlementFromIndex(5).getResidents())))
+    if len(world.getRegionFromIndex(0).getSettlements()) >= 8:
+        print("Settlement 7 pop: " + str(world.getRegionFromIndex(0).getSettlementFromIndex(6).getPopulation()))
+        print("Settlement 7 residents: " + str(len(world.getRegionFromIndex(0).getSettlementFromIndex(6).getResidents())))
+    if len(world.getRegionFromIndex(0).getSettlements()) >= 9:
+        print("Settlement 8 pop: " + str(world.getRegionFromIndex(0).getSettlementFromIndex(7).getPopulation()))
+        print("Settlement 8 residents: " + str(len(world.getRegionFromIndex(0).getSettlementFromIndex(7).getResidents())))
 
     if manualOverride:
         input()
@@ -175,7 +187,7 @@ def running (world, families, people, manualOverride):
         end1 = time.time()
         print("SpouseMMTime: " + str(end1 - start1))
         start1 = time.time()
-    Events.settlementsPopulationManagement(world, people)
+    Events.settlementsPopulationManagement(world)
     if timers:
         end1 = time.time()
         print("breakSettlementsPopTime: " + str(end1 - start1))

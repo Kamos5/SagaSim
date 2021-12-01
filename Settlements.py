@@ -23,6 +23,7 @@ class Settlements:
 
         self.region = ''
         self.population = 0
+        self.baseFertility = 80
         self.fertilityModifier = 0
         self.residents = []
 
@@ -36,6 +37,12 @@ class Settlements:
     def decreasePopulation(self):
         self.population -= 1
         self.adjustFertilityModifier()
+
+    def getBaseFertility(self):
+        return self.baseFertility
+
+    def setBaseFertility(self, newFertility):
+        self.baseFertility = newFertility
 
     def getFertilityModifier(self):
         return self.fertilityModifier

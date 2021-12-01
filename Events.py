@@ -57,7 +57,7 @@ def birthPeople (world, people):
 
     return
 
-def settlementsPopulationManagement (world, people):
+def settlementsPopulationManagement (world):
 
     for region in world.getRegions():
         for settlement in region.getSettlements():
@@ -65,40 +65,49 @@ def settlementsPopulationManagement (world, people):
                 region.decreaseActiveSettlements()
             if settlement.getSettlementType() == Settlements.TOWN:
                 #TODO WHAT IF CITY DIES OFF? WILL IT CONVERT INTO VILLAGE
-                if settlement.getPopulation() >= 750:
+                if settlement.getPopulation() >= world.getCiTySize():
+                    chanceOfMigration = Utils.randomRange(1,100)
                     if region.canAddSettlement:
-
                         lowestSettlementInRegion = region.getLowestPopulatedSettlement()
-                        if len(lowestSettlementInRegion.getResidents()) >= 150:
+                        if len(lowestSettlementInRegion.getResidents()) >= world.villageSize():
                             region.addSettlement()
-                            newTargetSettlemnt = region.getSettlementFromIndex(len(region.getSettlements())-1)
+                            newTargetSettlement = region.getSettlementFromIndex(len(region.getSettlements()) - 1)
                         else:
-                            newTargetSettlemnt = lowestSettlementInRegion
+                            newTargetSettlement = lowestSettlementInRegion
 
-                        migrantFamilies = 0
-                        mrigrationWave = 20
-                        randomMigrantsList = []
-                        # random 20 people with their alive children move to new Village
-                        for migrantFamilies in range(mrigrationWave):
-                            randomPerson = Utils.randomFromCollection(settlement.getResidents())
-                            if randomPerson not in randomMigrantsList:
-                                #for MINOR
-                                if randomPerson.age < 15:
-                                    getRandomMigrantListForSingleRandomPerson(randomPerson, "Father", randomMigrantsList)
-                                    getRandomMigrantListForSingleRandomPerson(randomPerson, "Mother", randomMigrantsList)
-                                else:
-                                    #for Adult
-                                    getRandomMigrantListForSingleRandomPerson(randomPerson, "Adult", randomMigrantsList)
-                            migrantFamilies += 1
-
-                        print(randomMigrantsList)
-                        print("dupa")
-                        iniciateMigration(randomMigrantsList, newTargetSettlemnt)
+                        randomMigrantsList = prepareMigration(settlement)
+                        iniciateMigration(randomMigrantsList, newTargetSettlement)
                         print("TIME TO MOVE YOUR ASS")
             if settlement.getSettlementType() == Settlements.VILLAGE:
                 if settlement.getPopulation() > 350:
                     print("Time to move")
 
+def prepareMigration(settlement):
+
+    migrantFamilies = 0
+    if settlement.getSettlementType() == Settlements.TOWN:
+        mirgrationWave = 15
+    else:
+        mirgrationWave = 10
+
+    randomMigrantsList = []
+    # random 20 people with their alive children move to new Village
+    for migrantFamilies in range(mirgrationWave):
+        randomPerson = Utils.randomFromCollection(settlement.getResidents())
+        if randomPerson not in randomMigrantsList:
+            # for MINOR
+            if randomPerson.age < 15:
+                getRandomMigrantListForSingleRandomPerson(randomPerson, "Father", randomMigrantsList)
+                getRandomMigrantListForSingleRandomPerson(randomPerson, "Mother", randomMigrantsList)
+            else:
+                # for Adult
+                getRandomMigrantListForSingleRandomPerson(randomPerson, "Adult", randomMigrantsList)
+        migrantFamilies += 1
+
+
+    print(randomMigrantsList)
+
+    return randomMigrantsList
 
 def iniciateMigration(migrantList, settlementTarget):
 
