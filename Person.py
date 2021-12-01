@@ -14,7 +14,9 @@ class Person:
         self.lastName = ''
         self.familyName = ''
         self.familyObjRef = ''
+        self.homeRegion = ''
         self.region = ''
+        self.homeSettlement = ''
         self.settlement = ''
         self.yearOfBirth = ''
         self.age = 0
@@ -74,8 +76,10 @@ class Person:
         self.hairColorGen1 = hairColorGen1
         self.hairColorGen2 = hairColorGen2
         self.familyObjRef = familyObj
-        self.region = familyObj.getOriginRegion()
-        self.settlement = familyObj.getOriginSettlement()
+        self.homeRegion = familyObj.getOriginRegion()
+        self.region = self.homeRegion
+        self.homeSettlement = familyObj.getOriginSettlement()
+        self.settlement = self.homeSettlement
 
     def addNewPerson(self, firstName, lastName, familyName, yearOfBirth, lifespan, sex, sexGen1, sexGen2, fertility, hairColor, hairColorGen1, hairColorGen2, mother, father, trueMother, trueFather, familyObj):
 
@@ -97,8 +101,10 @@ class Person:
         self.trueMother = trueMother
         self.trueFather = trueFather
         self.familyObjRef = familyObj
-        self.region = father.getRegion()
-        self.settlement = father.getSettlement()
+        self.homeRegion = father.getRegion()
+        self.homeSettlement = father.getSettlement()
+        self.region = self.homeRegion
+        self.settlement = self.homeSettlement
 
     def increaseAge(self):
         self.age += 1

@@ -10,6 +10,8 @@ def increaseAge (people):
     for person in people:
         if person.lifeStatus != LifeStatus.DEAD:
             person.increaseAge()
+            #if person.age < 15:
+            #    deathFromNegligence(person)
             if person.age == 15:
                 person.familyObjRef.moveChildToAdultMembers(person)
             if deathChanceFromAge(person) or person.age >= person.modifiedLifespan:
@@ -64,25 +66,46 @@ def settlementsPopulationManagement (world, people):
             if settlement.getSettlementType() == Settlements.TOWN:
                 #TODO WHAT IF CITY DIES OFF? WILL IT CONVERT INTO VILLAGE
                 if settlement.getPopulation() >= 750:
-                    #if not region.addSettlement():
+                    if region.canAddSettlement:
+
+                        lowestSettlementInRegion = region.getLowestPopulatedSettlement()
+                        if len(lowestSettlementInRegion.getResidents()) >= 150:
+                            region.addSettlement()
+                            newTargetSettlemnt = region.getSettlementFromIndex(len(region.getSettlements()-1))
+                        else:
+                            newTargetSettlemnt = lowestSettlementInRegion
+
+                        migrantFamilies = 0
+                        mrigrationWave = 20
                         randomMigrantsList = []
                         # random 20 people with their alive children move to new Village
-                        randomPerson = Utils.randomFromCollection(settlement.getResidents())
-
-                        #for MINOR
-                        if randomPerson.age < 15:
-                            getRandomMigrantListForSingleRandomPerson(randomPerson, "Father", randomMigrantsList)
-                            getRandomMigrantListForSingleRandomPerson(randomPerson, "Mother", randomMigrantsList)
-                        else:
-                            #for Adult
-                            getRandomMigrantListForSingleRandomPerson(randomPerson, "Adult", randomMigrantsList)
+                        for migrantFamilies in range(mrigrationWave):
+                            randomPerson = Utils.randomFromCollection(settlement.getResidents())
+                            if randomPerson not in randomMigrantsList:
+                                #for MINOR
+                                if randomPerson.age < 15:
+                                    getRandomMigrantListForSingleRandomPerson(randomPerson, "Father", randomMigrantsList)
+                                    getRandomMigrantListForSingleRandomPerson(randomPerson, "Mother", randomMigrantsList)
+                                else:
+                                    #for Adult
+                                    getRandomMigrantListForSingleRandomPerson(randomPerson, "Adult", randomMigrantsList)
+                            migrantFamilies += 1
 
                         print(randomMigrantsList)
-                        migrationWaveNumber = 20
-                        print("TIME TO MOVE")
+                        print("dupa")
+                        iniciateMigration(randomMigrantsList, settlement, newTargetSettlemnt)
+                        print("TIME TO MOVE YOUR ASS")
             if settlement.getSettlementType() == Settlements.VILLAGE:
                 if settlement.getPopulation() > 350:
                     print("Time to move")
+
+
+def iniciateMigration(migrantList, settlementFrom, settlementTarget):
+
+    for migrant in migrantList:
+        settlementFrom.decreasePopulation()
+        migrant.setSettlement(settlementTarget)
+        settlementTarget.increasePopulation()
 
 
 def getRandomMigrantListForSingleRandomPerson(person, parent, randomMigrantsList):
@@ -98,14 +121,16 @@ def getRandomMigrantListForSingleRandomPerson(person, parent, randomMigrantsList
         getParent = person
 
     if getParent != '':
-        randomMigrantsList.append(getParent)
+        if getParent not in randomMigrantsList:
+            randomMigrantsList.append(getParent)
         parentChildrensList = getParent.childrens
         for parentChildren in parentChildrensList:
             if parentChildren.age < 15:
                 if parentChildren not in randomMigrantsList:
                     randomMigrantsList.append(parentChildren)
         if getParent.spouse is not None:
-            randomMigrantsList.append(getParent.spouse)
+            if getParent.spouse not in randomMigrantsList:
+                randomMigrantsList.append(getParent.spouse)
             parentSpouseChildrensList = getParent.spouse.childrens
             for parentSpouseChildren in parentSpouseChildrensList:
                 if parentSpouseChildren.age < 15:
@@ -114,13 +139,23 @@ def getRandomMigrantListForSingleRandomPerson(person, parent, randomMigrantsList
 
 
 
+
+def deathFromNegligence(person):
+
+    if person.father.lifeStatus == LifeStatus.DEAD and person.mother.lifeStatus == LifeStatus.DEAD:
+        chanceOfDeath = Utils.randomRange(1, 100)
+        if chanceOfDeath > 100 - (Utils.triangularNumber(person.age-1)):
+            person.causeOfDeath = CauseOfDeath.NEGLIGENCE
+
+        PF.deathProcedures(person)
+
 def deathChanceFromAge(person):
 
     chanceOfDeath = Utils.randomRange(1, 100)
     dead = False
 
     age = person.age
-    lifespan = person.lifespan
+    modifiedLifespan = person.modifiedLifespan
 
     if age == 1:
         if chanceOfDeath <= 20:
@@ -142,8 +177,8 @@ def deathChanceFromAge(person):
         if chanceOfDeath <= 3:
             person.causeOfDeath = CauseOfDeath.SICKNESS
             dead = True
-    elif lifespan-age <= 5:
-        if chanceOfDeath >= 100 - (lifespan-age) * 2:
+    elif modifiedLifespan-age <= 5:
+        if chanceOfDeath <= 100 - (modifiedLifespan-age) * 2:
             person.causeOfDeath = CauseOfDeath.AGE
             dead = True
 

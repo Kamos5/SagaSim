@@ -10,11 +10,14 @@ class Region:
         self.regionCulture = ''
 
 
-    def addSettlement(self):
+    def canAddSettlement(self):
         if self.canAddSettlement():
-            self.settlements.append(Settlements(self.regionName))
+            return True
         else:
             return False
+
+    def addSettlement(self):
+        self.settlements.append(Settlements(self.regionName))
 
     def getSettlementFromIndex(self, index):
         return self.settlements[index]
@@ -34,3 +37,15 @@ class Region:
     def canAddSettlement(self):
         return len(self.settlements) < self.regionSize
 
+    def getLowestPopulatedSettlement(self):
+
+        settlementsPopulationList = []
+        tempMinPopVal = 10000
+        tempIndexPopVal = 0
+        index = 0
+        for settlement in self.settlements:
+            settlementsPopulationList.append(settlement.getResidents())
+            if len(settlement.getResidents()) < tempMinPopVal:
+                tempIndexPopVal = index
+            index += 1
+        return self.settlements[tempIndexPopVal]

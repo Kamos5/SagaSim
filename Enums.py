@@ -19,6 +19,7 @@ class MaritalStatus(Enum):
 class CauseOfDeath(Enum):
     AGE = 'age'
     CHILDBIRTH = 'childbirth'
+    NEGLIGENCE = 'negligence'
     KILLED = 'killed'
     SICKNESS = 'sickness'
     UNKNOWN = 'unknown'

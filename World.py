@@ -5,7 +5,7 @@ class World:
 
     initYear = 500
     regions = []
-    settlementsInitNumber = 4 # max 20
+    settlementsInitNumber = 2 # max 20
 
     def __init__(self, startYear=initYear):
         self.initYear = startYear

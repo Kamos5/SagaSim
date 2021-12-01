@@ -137,13 +137,15 @@ def running (world, families, people, manualOverride):
     print("Population dead: " + str(isDead))
     print("Population sum: " + str(isAlive+isDead))
     print("Settlement 0 pop: " + str(world.getRegionFromIndex(0).getSettlementFromIndex(0).getPopulation()))
-    print("Settlement 0 pop: " + str(len(world.getRegionFromIndex(0).getSettlementFromIndex(0).getResidents())))
+    print("Settlement 0 residents: " + str(len(world.getRegionFromIndex(0).getSettlementFromIndex(0).getResidents())))
     print("Settlement 1 pop: " + str(world.getRegionFromIndex(0).getSettlementFromIndex(1).getPopulation()))
-    print("Settlement 1 pop: " + str(len(world.getRegionFromIndex(0).getSettlementFromIndex(1).getResidents())))
-    print("Settlement 2 pop: " + str(world.getRegionFromIndex(0).getSettlementFromIndex(2).getPopulation()))
-    print("Settlement 2 pop: " + str(len(world.getRegionFromIndex(0).getSettlementFromIndex(2).getResidents())))
-    print("Settlement 3 pop: " + str(world.getRegionFromIndex(0).getSettlementFromIndex(3).getPopulation()))
-    print("Settlement 3 pop: " + str(len(world.getRegionFromIndex(0).getSettlementFromIndex(3).getResidents())))
+    print("Settlement 1 residents: " + str(len(world.getRegionFromIndex(0).getSettlementFromIndex(1).getResidents())))
+    if len(world.getRegionFromIndex(0).getSettlements()) == 3:
+        print("Settlement 2 pop: " + str(world.getRegionFromIndex(0).getSettlementFromIndex(2).getPopulation()))
+        print("Settlement 2 residents: " + str(len(world.getRegionFromIndex(0).getSettlementFromIndex(2).getResidents())))
+    if len(world.getRegionFromIndex(0).getSettlements()) == 4:
+        print("Settlement 3 pop: " + str(world.getRegionFromIndex(0).getSettlementFromIndex(3).getPopulation()))
+        print("Settlement 3 residents: " + str(len(world.getRegionFromIndex(0).getSettlementFromIndex(3).getResidents())))
 
     if manualOverride:
         input()
@@ -174,7 +176,8 @@ def running (world, families, people, manualOverride):
     if timers:
         end1 = time.time()
         print("breakSettlementsPopTime: " + str(end1 - start1))
-
+        end = time.time()
+        print(end - start)
 
 def main():
 
