@@ -1,6 +1,7 @@
 import Enums
 import SettlementNameGenerator as SNG
 from Utils import randomFromCollection
+import Parameters
 
 
 class Settlements:
@@ -26,6 +27,8 @@ class Settlements:
         self.baseFertility = 80
         self.fertilityModifier = 0
         self.residents = []
+        self.features = []
+        self.maxPopulation = 0
 
     def getPopulation(self):
         return self.population
@@ -38,11 +41,20 @@ class Settlements:
         self.population -= 1
         self.adjustFertilityModifier()
 
+    def getMaxPopulation(self):
+        return self.maxPopulation
+
+    def setMaxPopulation(self, newMax):
+        self.maxPopulation = newMax
+
     def getBaseFertility(self):
         return self.baseFertility
 
     def setBaseFertility(self, newFertility):
         self.baseFertility = newFertility
+
+    def addFeature(self, feature):
+        self.features.append(feature)
 
     def getFertilityModifier(self):
         return self.fertilityModifier
@@ -50,9 +62,7 @@ class Settlements:
         self.fertilityModifier = modifier
 
     def adjustFertilityModifier(self):
-        if self.getSettlementType() == Enums.Settlements.TOWN and self.getPopulation() >= 1000:
-            self.setFertilityModifier(0.5)
-        elif self.getSettlementType() == Enums.Settlements.VILLAGE and self.getPopulation() >= 200:
+        if self.getPopulation() >= self.maxPopulation:
             self.setFertilityModifier(0.5)
         else:
             self.setFertilityModifier(1)
@@ -63,6 +73,14 @@ class Settlements:
         return self.settlementType
     def changeSettlementType(self, newType):
         self.settlementType = newType
+        if newType == Enums.Settlements.VILLAGE:
+            self.setBaseFertility(Parameters.baseVillageFertility)
+            self.maxPopulation = Parameters.baseVillageSize
+            self.recalculatePopWithFeatures()
+        else:
+            self.setBaseFertility(Parameters.baseCityFertility)
+            self.maxPopulation = Parameters.baseCitySize
+            self.recalculatePopWithFeatures()
 
     def getResidents (self):
         return self.residents
@@ -70,3 +88,7 @@ class Settlements:
         self.residents.append(person)
     def removeResident(self, person):
         self.residents.remove(person)
+
+    def recalculatePopWithFeatures(self):
+        for feature in self.features:
+            self.maxPopulation += feature[0].value[0]

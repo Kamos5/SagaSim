@@ -223,9 +223,8 @@ def main():
 
             tickStartTime = time.time() * 1000.0
 
-        if world.getYear() == 700:
+        if world.getYear() == 800:
 
             return
-
 main()
 

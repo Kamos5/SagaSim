@@ -1,5 +1,7 @@
 from Settlements import Settlements
-
+from RegionFeatures import Features
+import Parameters
+import Utils
 class Region:
 
     def __init__(self, regionName):
@@ -17,7 +19,17 @@ class Region:
             return False
 
     def addSettlement(self):
+        additionalFeatureThreshold = 10
         self.settlements.append(Settlements(self.regionName))
+        newSettlement = self.settlements[len(self.getSettlements())-1]
+        newSettlement.maxPopulation = Parameters.baseVillageSize
+        randomNumberFeatures = Utils.randomRange(1, 100)
+        newSettlement.addFeature([Utils.randomFromEnumCollection(Features)])
+        while randomNumberFeatures > 90:
+            randomNumberFeatures = Utils.randomRange(1, 100)
+            newSettlement.addFeature([Utils.randomFromEnumCollection(Features)])
+        newSettlement.recalculatePopWithFeatures()
+        return newSettlement
 
     def getSettlementFromIndex(self, index):
         return self.settlements[index]

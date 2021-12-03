@@ -1,6 +1,9 @@
 from Enums import LifeStatus, MaritalStatus, CauseOfDeath, Sexes, Settlements
 import Utils
 import time
+import Family as Family
+import Parameters
+import FamilyNameGenerator as FNG
 import PeopleFunctions as PF
 import PeopleInterface as PI
 import FamilyFunctions as FF
@@ -66,30 +69,20 @@ def settlementsPopulationManagement (world):
 
     for region in world.getRegions():
         for settlement in region.getSettlements():
-            if settlement.getSettlementType() == Settlements.TOWN:
-                #TODO WHAT IF CITY DIES OFF? WILL IT CONVERT INTO VILLAGE
-                if settlement.getPopulation() >= world.getCiTySize():
-                    #TODO CHANCE FOR MIGRATION??
-                    chanceOfMigration = Utils.randomRange(1, 100)
-                    if chanceOfMigration < 500:
-                        lowestSettlementInRegion = region.getLowestPopulatedSettlement(world)
-                        newTargetSettlement = lowestSettlementInRegion
-                        if lowestSettlementInRegion.getPopulation() > int(world.getVillageSize() * 0.75):
-                            if region.canAddSettlement():
-                                region.addSettlement()
-                        randomMigrantsList = prepareMigration(settlement)
-                        iniciateMigration(randomMigrantsList, newTargetSettlement)
-            if settlement.getSettlementType() == Settlements.VILLAGE:
-                if settlement.getPopulation() >= world.getVillageSize():
-                    chanceOfMigration = Utils.randomRange(1, 100)
-                    if chanceOfMigration < 500:
-                        lowestSettlementInRegion = region.getLowestPopulatedSettlement(world)
-                        newTargetSettlement = lowestSettlementInRegion
-                        if lowestSettlementInRegion.getPopulation() > int(world.getVillageSize() * 0.75):
-                            if region.canAddSettlement():
-                                region.addSettlement()
-                        randomMigrantsList = prepareMigration(settlement)
-                        iniciateMigration(randomMigrantsList, newTargetSettlement)
+            #TODO WHAT IF CITY DIES OFF? WILL IT CONVERT INTO VILLAGE
+            if settlement.getPopulation() >= int(settlement.getMaxPopulation() * 0.75):
+                #TODO CHANCE FOR MIGRATION??
+                chanceOfMigration = Utils.randomRange(1, 100)
+                if chanceOfMigration < 20:
+                    lowestSettlementInRegion = region.getLowestPopulatedSettlement(world)
+                    newTargetSettlement = lowestSettlementInRegion
+                    if lowestSettlementInRegion.getPopulation() > int(lowestSettlementInRegion.getMaxPopulation() * 0.50):
+                        if region.canAddSettlement():
+                            newSettlement = region.addSettlement()
+                            newSettlement.setMaxPopulation = Parameters.baseVillageSize
+                            newTargetSettlement = newSettlement
+                    randomMigrantsList = prepareMigration(settlement)
+                    iniciateMigration(randomMigrantsList, newTargetSettlement)
 
 def prepareMigration(settlement):
 
@@ -113,8 +106,6 @@ def prepareMigration(settlement):
                 getRandomMigrantListForSingleRandomPerson(randomPerson, "Adult", randomMigrantsList)
         migrantFamilies += 1
 
-
-    print(randomMigrantsList)
 
     return randomMigrantsList
 
@@ -140,22 +131,40 @@ def getRandomMigrantListForSingleRandomPerson(person, parent, randomMigrantsList
     if parent == "Adult":
         getParent = person
 
+    chanceOfChaningLastName = Utils.randomRange(1, 100)
+
+    # newLastName = ''
+    # if chanceOfChaningLastName < 10:
+    #     newFamilyName = FNG.getNewRandomLastName()
+    #     family = Family(newFamilyName)
+    #     family.setFoundingYear(world.getYear())
+    #     family.setOriginRegion(world.getRegionFromIndex(0))
+
     if getParent != '':
         if getParent not in randomMigrantsList:
+            # if newLastName != '':
+            #     getParent.lastName = newLastName
             randomMigrantsList.append(getParent)
+
         parentChildrensList = getParent.childrens
         for parentChildren in parentChildrensList:
             if parentChildren.age < 15:
                 if parentChildren not in randomMigrantsList:
                     randomMigrantsList.append(parentChildren)
+
         if getParent.spouse is not None:
             if getParent.spouse not in randomMigrantsList:
                 randomMigrantsList.append(getParent.spouse)
+                # if newLastName != '':
+                #     getParent.lastName = newLastName
+
             parentSpouseChildrensList = getParent.spouse.childrens
             for parentSpouseChildren in parentSpouseChildrensList:
                 if parentSpouseChildren.age < 15:
                     if parentSpouseChildren not in randomMigrantsList:
                         randomMigrantsList.append(parentSpouseChildren)
+                        # if newLastName != '':
+                        #     getParent.lastName = newLastName
 
 
 

@@ -1,15 +1,16 @@
-from Enums import LifeStatus,Settlements
+from Enums import LifeStatus, Settlements
 from Region import Region
+import Parameters
 
 class World:
 
     initYear = 500
     regions = []
     settlementsInitNumber = 2 # max 20
-    baseCitySize = 1000
-    baseVillageSize = 200
+
 
     def __init__(self, startYear=initYear):
+
         self.initYear = startYear
         self.year = self.initYear
         self.regions = []
@@ -21,10 +22,10 @@ class World:
         self.year += 1
 
     def getCiTySize(self):
-        return self.baseCitySize
+        return Parameters.baseCitySize
 
     def getVillageSize(self):
-        return self.baseVillageSize
+        return Parameters.baseVillageSize
 
 
     def getAllAliveMembersNames(self, family, people):
@@ -44,13 +45,12 @@ class World:
 
         for region in self.regions:
             for i in range(self.settlementsInitNumber):
-                region.addSettlement()
+                newSettlement = region.addSettlement()
                 # First settlement is always TOWN
                 if i == 0:
-                    region.settlements[0].changeSettlementType(Settlements.TOWN)
-                    region.settlements[0].setBaseFertility(75)
+                    newSettlement.changeSettlementType(Settlements.TOWN)
                 else:
-                    region.settlements[0].setBaseFertility(100)
+                    newSettlement.changeSettlementType(Settlements.VILLAGE)
 
     def getRegionFromIndex(self, index):
         return self.regions[index]

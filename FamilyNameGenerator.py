@@ -43,7 +43,13 @@ class FamilyNamesBasedOnProfessions(Enum):
     COLEMAN = 'Coleman',
 
 
+def getNewRandomLastName():
 
+    if len(initialFamilyNames) > 0:
+        choice = random.choice(initialFamilyNames)
+    else:
+        choice = 'Generic Family Name'
+    return choice
 
 def getInitFamilyName(variable):
 
