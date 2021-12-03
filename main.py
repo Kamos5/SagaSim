@@ -137,30 +137,33 @@ def running (world, families, people, manualOverride):
     print("Population dead: " + str(isDead))
     print("Population sum: " + str(isAlive+isDead))
     print("Settlement 0 pop: " + str(world.getRegionFromIndex(0).getSettlementFromIndex(0).getPopulation()))
-    print("Settlement 0 residents: " + str(len(world.getRegionFromIndex(0).getSettlementFromIndex(0).getResidents())))
+    #print("Settlement 0 residents: " + str(len(world.getRegionFromIndex(0).getSettlementFromIndex(0).getResidents())))
     print("Settlement 1 pop: " + str(world.getRegionFromIndex(0).getSettlementFromIndex(1).getPopulation()))
-    print("Settlement 1 residents: " + str(len(world.getRegionFromIndex(0).getSettlementFromIndex(1).getResidents())))
+    #print("Settlement 1 residents: " + str(len(world.getRegionFromIndex(0).getSettlementFromIndex(1).getResidents())))
     if len(world.getRegionFromIndex(0).getSettlements()) >= 3:
         print("Settlement 2 pop: " + str(world.getRegionFromIndex(0).getSettlementFromIndex(2).getPopulation()))
-        print("Settlement 2 residents: " + str(len(world.getRegionFromIndex(0).getSettlementFromIndex(2).getResidents())))
+        #print("Settlement 2 residents: " + str(len(world.getRegionFromIndex(0).getSettlementFromIndex(2).getResidents())))
     if len(world.getRegionFromIndex(0).getSettlements()) >= 4:
         print("Settlement 3 pop: " + str(world.getRegionFromIndex(0).getSettlementFromIndex(3).getPopulation()))
-        print("Settlement 3 residents: " + str(len(world.getRegionFromIndex(0).getSettlementFromIndex(3).getResidents())))
+        #print("Settlement 3 residents: " + str(len(world.getRegionFromIndex(0).getSettlementFromIndex(3).getResidents())))
     if len(world.getRegionFromIndex(0).getSettlements()) >= 5:
         print("Settlement 4 pop: " + str(world.getRegionFromIndex(0).getSettlementFromIndex(4).getPopulation()))
-        print("Settlement 4 residents: " + str(len(world.getRegionFromIndex(0).getSettlementFromIndex(4).getResidents())))
+        #print("Settlement 4 residents: " + str(len(world.getRegionFromIndex(0).getSettlementFromIndex(4).getResidents())))
     if len(world.getRegionFromIndex(0).getSettlements()) >= 6:
         print("Settlement 5 pop: " + str(world.getRegionFromIndex(0).getSettlementFromIndex(5).getPopulation()))
-        print("Settlement 5 residents: " + str(len(world.getRegionFromIndex(0).getSettlementFromIndex(5).getResidents())))
+        #print("Settlement 5 residents: " + str(len(world.getRegionFromIndex(0).getSettlementFromIndex(5).getResidents())))
     if len(world.getRegionFromIndex(0).getSettlements()) >= 7:
-        print("Settlement 6 pop: " + str(world.getRegionFromIndex(0).getSettlementFromIndex(5).getPopulation()))
-        print("Settlement 6 residents: " + str(len(world.getRegionFromIndex(0).getSettlementFromIndex(5).getResidents())))
+        print("Settlement 6 pop: " + str(world.getRegionFromIndex(0).getSettlementFromIndex(6).getPopulation()))
+        #print("Settlement 6 residents: " + str(len(world.getRegionFromIndex(0).getSettlementFromIndex(6).getResidents())))
     if len(world.getRegionFromIndex(0).getSettlements()) >= 8:
-        print("Settlement 7 pop: " + str(world.getRegionFromIndex(0).getSettlementFromIndex(6).getPopulation()))
-        print("Settlement 7 residents: " + str(len(world.getRegionFromIndex(0).getSettlementFromIndex(6).getResidents())))
+        print("Settlement 7 pop: " + str(world.getRegionFromIndex(0).getSettlementFromIndex(7).getPopulation()))
+        #print("Settlement 7 residents: " + str(len(world.getRegionFromIndex(0).getSettlementFromIndex(7).getResidents())))
     if len(world.getRegionFromIndex(0).getSettlements()) >= 9:
-        print("Settlement 8 pop: " + str(world.getRegionFromIndex(0).getSettlementFromIndex(7).getPopulation()))
-        print("Settlement 8 residents: " + str(len(world.getRegionFromIndex(0).getSettlementFromIndex(7).getResidents())))
+        print("Settlement 8 pop: " + str(world.getRegionFromIndex(0).getSettlementFromIndex(8).getPopulation()))
+        #print("Settlement 8 residents: " + str(len(world.getRegionFromIndex(0).getSettlementFromIndex(8).getResidents())))
+    if len(world.getRegionFromIndex(0).getSettlements()) >= 10:
+        print("Settlement 9 pop: " + str(world.getRegionFromIndex(0).getSettlementFromIndex(9).getPopulation()))
+        #print("Settlement 9 residents: " + str(len(world.getRegionFromIndex(0).getSettlementFromIndex(9).getResidents())))
 
     if manualOverride:
         input()

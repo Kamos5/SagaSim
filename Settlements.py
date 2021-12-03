@@ -47,15 +47,15 @@ class Settlements:
     def getFertilityModifier(self):
         return self.fertilityModifier
     def setFertilityModifier(self, modifier):
-        self.fertilityModifier += modifier
+        self.fertilityModifier = modifier
 
     def adjustFertilityModifier(self):
         if self.getSettlementType() == Enums.Settlements.TOWN and self.getPopulation() >= 1000:
-            self.setFertilityModifier(-50)
-        elif self.getSettlementType() == Enums.Settlements.VILLAGE and self.getPopulation() >= 500:
-            self.setFertilityModifier(-50)
+            self.setFertilityModifier(0.5)
+        elif self.getSettlementType() == Enums.Settlements.VILLAGE and self.getPopulation() >= 200:
+            self.setFertilityModifier(0.5)
         else:
-            self.setFertilityModifier(0)
+            self.setFertilityModifier(1)
 
     def changeSettlementName(self, newName):
         self.name = newName

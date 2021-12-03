@@ -6,8 +6,8 @@ class World:
     initYear = 500
     regions = []
     settlementsInitNumber = 2 # max 20
-    citySize = 1000
-    villageSize = 200
+    baseCitySize = 1000
+    baseVillageSize = 200
 
     def __init__(self, startYear=initYear):
         self.initYear = startYear
@@ -21,10 +21,10 @@ class World:
         self.year += 1
 
     def getCiTySize(self):
-        return self.citySize
+        return self.baseCitySize
 
     def getVillageSize(self):
-        return self.villageSize
+        return self.baseVillageSize
 
 
     def getAllAliveMembersNames(self, family, people):
@@ -48,8 +48,9 @@ class World:
                 # First settlement is always TOWN
                 if i == 0:
                     region.settlements[0].changeSettlementType(Settlements.TOWN)
-                    region.settlements[0].changeSettlementType(Settlements.TOWN)
-
+                    region.settlements[0].setBaseFertility(75)
+                else:
+                    region.settlements[0].setBaseFertility(100)
 
     def getRegionFromIndex(self, index):
         return self.regions[index]

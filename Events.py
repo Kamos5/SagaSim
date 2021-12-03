@@ -19,6 +19,7 @@ def increaseAge (people):
 
 def birthPeople (world, people):
 
+    births = 0
     for person in people:
 
         # person here is MOTHER
@@ -30,7 +31,7 @@ def birthPeople (world, people):
             # is spouse alive
             if spouseObj.lifeStatus == LifeStatus.ALIVE:
                 chanceOfBirth = Utils.randomRange(1, 100)
-                if chanceOfBirth <= min(person.fertility, spouseObj.fertility):
+                if chanceOfBirth <= min(person.fertility, spouseObj.fertility) * spouseObj.getSettlement().getBaseFertility()*spouseObj.getSettlement().getFertilityModifier() / 100:
                     # CHILD object
                     personObj = PF.birthChild(world, person, spouseObj)
                     # add child to proper family
@@ -54,6 +55,10 @@ def birthPeople (world, people):
                         #parameters: child
                         PF.deathProcedures(personObj)
 
+                    births += 1
+
+    print("Births per year:" + str(births))
+
 
     return
 
@@ -61,26 +66,30 @@ def settlementsPopulationManagement (world):
 
     for region in world.getRegions():
         for settlement in region.getSettlements():
-            if settlement.getPopulation() == 0:
-                region.decreaseActiveSettlements()
             if settlement.getSettlementType() == Settlements.TOWN:
                 #TODO WHAT IF CITY DIES OFF? WILL IT CONVERT INTO VILLAGE
                 if settlement.getPopulation() >= world.getCiTySize():
-                    chanceOfMigration = Utils.randomRange(1,100)
-                    if region.canAddSettlement:
-                        lowestSettlementInRegion = region.getLowestPopulatedSettlement()
-                        if len(lowestSettlementInRegion.getResidents()) >= world.villageSize():
-                            region.addSettlement()
-                            newTargetSettlement = region.getSettlementFromIndex(len(region.getSettlements()) - 1)
-                        else:
-                            newTargetSettlement = lowestSettlementInRegion
-
+                    #TODO CHANCE FOR MIGRATION??
+                    chanceOfMigration = Utils.randomRange(1, 100)
+                    if chanceOfMigration < 500:
+                        lowestSettlementInRegion = region.getLowestPopulatedSettlement(world)
+                        newTargetSettlement = lowestSettlementInRegion
+                        if lowestSettlementInRegion.getPopulation() > int(world.getVillageSize() * 0.75):
+                            if region.canAddSettlement():
+                                region.addSettlement()
                         randomMigrantsList = prepareMigration(settlement)
                         iniciateMigration(randomMigrantsList, newTargetSettlement)
-                        print("TIME TO MOVE YOUR ASS")
             if settlement.getSettlementType() == Settlements.VILLAGE:
-                if settlement.getPopulation() > 350:
-                    print("Time to move")
+                if settlement.getPopulation() >= world.getVillageSize():
+                    chanceOfMigration = Utils.randomRange(1, 100)
+                    if chanceOfMigration < 500:
+                        lowestSettlementInRegion = region.getLowestPopulatedSettlement(world)
+                        newTargetSettlement = lowestSettlementInRegion
+                        if lowestSettlementInRegion.getPopulation() > int(world.getVillageSize() * 0.75):
+                            if region.canAddSettlement():
+                                region.addSettlement()
+                        randomMigrantsList = prepareMigration(settlement)
+                        iniciateMigration(randomMigrantsList, newTargetSettlement)
 
 def prepareMigration(settlement):
 

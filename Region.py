@@ -5,13 +5,13 @@ class Region:
     def __init__(self, regionName):
         self.regionName = regionName
         self.settlements = []
-        self.regionSize = 20
+        self.regionSize = 10
         self.activeSettlements = 0
         self.regionCulture = ''
 
 
     def canAddSettlement(self):
-        if self.canAddSettlement():
+        if len(self.getSettlements()) < self.regionSize:
             return True
         else:
             return False
@@ -33,11 +33,8 @@ class Region:
         self.activeSettlements -= 1
     def setActiveSettlements(self, newActiveSettlements):
         self.activeSettlements = newActiveSettlements
+    def getLowestPopulatedSettlement(self, world):
 
-    def canAddSettlement(self):
-        return len(self.settlements) < self.regionSize
-
-    def getLowestPopulatedSettlement(self):
 
         settlementsPopulationList = []
         tempMinPopVal = 10000
@@ -46,6 +43,7 @@ class Region:
         for settlement in self.settlements:
             settlementsPopulationList.append(settlement.getResidents())
             if len(settlement.getResidents()) < tempMinPopVal:
+                tempMinPopVal = len(settlement.getResidents())
                 tempIndexPopVal = index
             index += 1
         return self.settlements[tempIndexPopVal]
