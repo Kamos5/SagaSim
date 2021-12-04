@@ -1,7 +1,7 @@
 from Enums import LifeStatus, MaritalStatus, CauseOfDeath, Sexes, Settlements
 import Utils
 import time
-import Family as Family
+from Family import Family as Family
 import Parameters
 import FamilyNameGenerator as FNG
 import PeopleFunctions as PF
@@ -64,7 +64,7 @@ def birthPeople (world, people):
 
     return
 
-def settlementsPopulationManagement (world):
+def settlementsPopulationManagement (world, families):
 
     for region in world.getRegions():
 
@@ -87,8 +87,10 @@ def settlementsPopulationManagement (world):
                                 newSettlement = region.addSettlement()
                                 newSettlement.setMaxPopulation = Parameters.baseVillageSize
                                 newTargetSettlement = newSettlement
-                    randomMigrantsList = prepareMigration(settlement)
-                    iniciateMigration(randomMigrantsList, newTargetSettlement)
+                    complexRandomMigrantsList = prepareMigration(settlement)
+                    iniciateMigration(complexRandomMigrantsList, newTargetSettlement)
+                    print("breaking families")
+                    splitFamilies(world, region, families, newTargetSettlement, complexRandomMigrantsList)
 
         randomVillage = Utils.randomFromCollection(villagesList)
         if len(villagesList) >= len(townList) * 3 and randomVillage.getPopulation() > int(randomVillage.getMaxPopulation() * 0.75):
@@ -107,6 +109,7 @@ def prepareMigration(settlement):
         mirgrationWave = 10
 
     randomMigrantsList = []
+    complexRandomMigrantList = []
     # random 20 people with their alive children move to new Village
     for migrantFamilies in range(mirgrationWave):
         randomPerson = Utils.randomFromCollection(settlement.getResidents())
@@ -118,19 +121,53 @@ def prepareMigration(settlement):
             else:
                 # for Adult
                 getRandomMigrantListForSingleRandomPerson(randomPerson, "Adult", randomMigrantsList)
-        migrantFamilies += 1
+            if len(randomMigrantsList) > 0:
+                complexRandomMigrantList.append(randomMigrantsList)
+                migrantFamilies += 1
+                randomMigrantsList = []
 
 
-    return randomMigrantsList
+    return complexRandomMigrantList
 
-def iniciateMigration(migrantList, settlementTarget):
+def splitFamilies(world, region, families, newTargetSettlement, complexRandomMigrantsList):
 
-    for migrant in migrantList:
-        migrant.getSettlement().decreasePopulation()
-        migrant.getSettlement().removeResident(migrant)
-        migrant.setSettlement(settlementTarget)
-        settlementTarget.increasePopulation()
-        settlementTarget.addResident(migrant)
+
+    for randomMigrantList in complexRandomMigrantsList:
+        chanceOfChangingLastName = Utils.randomRange(1, 100)
+        #won't change last name if only 1 female will be in migrant list
+        if chanceOfChangingLastName < 5 and (len(randomMigrantList) > 1 or randomMigrantList[0].sex == Sexes.MALE):
+            newFamilyName = FNG.getNewRandomLastName()
+            family = Family(newFamilyName)
+            family.setFoundingYear(world.getYear())
+            family.setOriginRegion(region)
+            family.setOriginSettlement(newTargetSettlement)
+            family.setOriginCulture(randomMigrantList[0].familyObjRef.getOriginCulture())
+            family.setFamilyBranchedFrom(randomMigrantList[0].familyObjRef)
+            randomMigrantList[0].familyObjRef.addOffspringBranch(family)
+            families.append(family)
+
+            for person in randomMigrantList:
+                person.familyObjRef.removeFromFamily(person)
+                person.familyName = newFamilyName
+                person.lastName = newFamilyName
+                person.familyObjRef = family
+                if family.getFemaleNumber() == 0 and family.getMaleNumber() == 0:
+                    family.setFoundedBy(person)
+                family.addNewMember(person)
+
+
+
+
+
+def iniciateMigration(complexMigrantList, settlementTarget):
+
+    for migrantList in complexMigrantList:
+        for migrant in migrantList:
+            migrant.getSettlement().decreasePopulation()
+            migrant.getSettlement().removeResident(migrant)
+            migrant.setSettlement(settlementTarget)
+            settlementTarget.increasePopulation()
+            settlementTarget.addResident(migrant)
 
 
 def getRandomMigrantListForSingleRandomPerson(person, parent, randomMigrantsList):
@@ -144,15 +181,6 @@ def getRandomMigrantListForSingleRandomPerson(person, parent, randomMigrantsList
             getParent = person.getMother()
     if parent == "Adult":
         getParent = person
-
-    chanceOfChaningLastName = Utils.randomRange(1, 100)
-
-    newLastName = ''
-    # if chanceOfChaningLastName < 25:
-    #     newFamilyName = FNG.getNewRandomLastName()
-    #     family = world.Family(newFamilyName)
-    #     family.setFoundingYear(world.getYear())
-    #     family.setOriginRegion(world.getRegionFromIndex(0))
 
     if getParent != '':
         if getParent not in randomMigrantsList:

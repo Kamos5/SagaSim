@@ -155,7 +155,7 @@ def running (world, families, people, manualOverride):
         end1 = time.time()
         print("SpouseMMTime: " + str(end1 - start1))
         start1 = time.time()
-    Events.settlementsPopulationManagement(world)
+    Events.settlementsPopulationManagement(world, families)
     if timers:
         end1 = time.time()
         print("breakSettlementsPopTime: " + str(end1 - start1))
@@ -225,7 +225,7 @@ def main():
 
             tickStartTime = time.time() * 1000.0
 
-        if world.getYear() == 800:
+        if world.getYear() == 700:
             for region in world.getRegions():
                 for settlement in region.getSettlements():
                     print(settlement.getSettlementName())

@@ -23,6 +23,8 @@ def Init(families, world):
             hairColorGen2 = [hairColor, 0]
 
             member.setInitValues(family.familyName, world.getYear(), randomAge, randomLifespan, sex, hairColor, hairColorGen1, hairColorGen2, family)
+            if family.getFemaleNumber() == 0 and family.getMaleNumber() == 0:
+                family.setFoundedBy(member)
             family.addNewMember(member)
             people.append(member)
 

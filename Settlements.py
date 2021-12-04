@@ -98,9 +98,9 @@ class Settlements:
             self.maxPopulation += feature[0].value[0]
 
     def getUniqueFamilies(self):
-        families = []
+        uniqueFamilies = []
         for resident in self.residents:
-            if resident.lastName not in families:
-                families.append(resident.lastName)
+            if resident.lastName not in uniqueFamilies:
+                uniqueFamilies.append(resident.lastName)
 
-        return families
+        return uniqueFamilies

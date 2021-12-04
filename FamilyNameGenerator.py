@@ -47,11 +47,12 @@ def getNewRandomLastName():
 
     if len(initialFamilyNames) > 0:
         choice = random.choice(initialFamilyNames)
+        initialFamilyNames.remove(choice)
     else:
         choice = 'Generic Family Name'
     return choice
 
-def getInitFamilyName(variable):
+def getInitFamilyName():
 
     if len(initialFamilyNames) > 0:
         choice = random.choice(initialFamilyNames)

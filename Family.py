@@ -8,7 +8,9 @@ class Family:
         self.familyUUID = Utils.createUUID()
         self.familyName = fname
         self.familyBranchedFrom = ''
+        self.familyOffstringBranches = []
         self.foundingYear = 0
+        self.foundedBy = ''
         self.originRegion = ''
         self.originSettlement = ''
         self.originCulture = ''
@@ -62,6 +64,11 @@ class Family:
     def setOriginSettlement(self, newOriginSettlement):
         self.originSettlement = newOriginSettlement
 
+    def getOriginCulture(self):
+        return self.originCulture
+
+    def setOriginCulture(self, newCulture):
+        self.originCulture = newCulture
 
     def getFamilyName(self):
         return self.familyName
@@ -76,6 +83,11 @@ class Family:
     def setFoundingYear(self, newFoundingYear):
         self.foundingYear = newFoundingYear
 
+    def addOffspringBranch(self, family):
+        self.familyOffstringBranches.append(family)
+
+    def setFoundedBy(self, person):
+        self.foundedBy = person
 
     def getFemaleNumber(self):
         return self.femaleNumber
@@ -433,6 +445,16 @@ class Family:
             self.increaseDeadMemberNumber()
         else:
             self.removeChildren(person)
+
+    def removeFromFamily(self, person):
+        if person.age >= 15:
+            if person.maritalStatus == MaritalStatus.MARRIED:
+                self.removeMarriedMember(person)
+            else:
+                self.removeUnmarriedMember(person)
+        else:
+            self.removeChildren(person)
+
     def setDeadMembersList(self, list):
         self.deadMembersList = list
 

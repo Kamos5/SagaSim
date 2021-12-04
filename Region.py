@@ -34,6 +34,7 @@ class Region:
     def getSettlementFromIndex(self, index):
         return self.settlements[index]
 
+
     def getSettlements(self):
         return self.settlements
 

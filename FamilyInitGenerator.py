@@ -12,7 +12,7 @@ def Init(world):
     families = []
     #var = familie number
     while var < 5:
-        familyName = FamilyNameGenerator.getInitFamilyName(var)
+        familyName = FamilyNameGenerator.getInitFamilyName()
         family = Family(familyName)
         family.setFoundingYear(world.getYear())
         family.setOriginRegion(world.getRegionFromIndex(0)) #TODO FOR NOW ONLY 1 REGION

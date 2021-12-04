@@ -18,21 +18,28 @@ def FindAvailableSpouses (families, person):
 
 def RemoveFromUnmarriedList (person, spouse):
 
+    #TODO CHECK IF IT IS WORKING
+    #if female change lastName => could be modified by culture
+    #exception when it is only member of family, don't change
     person.familyObjRef.removeUnmarriedMember(person)
     spouse.familyObjRef.removeUnmarriedMember(spouse)
 
-    #move wife to husband's family
+
     if person.sex == Enums.Sexes.MALE:
         person.familyObjRef.addMarriedMember(person)
         person.familyObjRef.addMarriedMember(spouse)
+
     else:
         spouse.familyObjRef.addMarriedMember(person)
         spouse.familyObjRef.addMarriedMember(spouse)
 
+
 def ChangeFamilyName (person, spouse):
 
     spouseObj = spouse
-
+    # TODO CHECK IF IT IS WORKING
+    #if female change lastName => could be modified by culture
+    #exception when it is only member of family, don't change
     if person.sex == Sexes.FEMALE:
         person.lastName = spouseObj.lastName
         person.familyObjRef = spouse.familyObjRef
@@ -40,13 +47,16 @@ def ChangeFamilyName (person, spouse):
         spouseObj.lastName = person.lastName
         spouse.familyObjRef = person.familyObjRef
 
+
+
 def SpouseMatchmaking (families, people):
 
     for person in people:
         if person.lifeStatus == Enums.LifeStatus.ALIVE and person.age >= 15 and person.spouse is None and (person.maritalStatus == Enums.MaritalStatus.SINGLE or person.maritalStatus == Enums.MaritalStatus.WIDOW or person.maritalStatus == Enums.MaritalStatus.WIDOWER or person.maritalStatus == Enums.MaritalStatus.DIVORCED):
 
             availableSpouesesList = FindAvailableSpouses(families, person)
-            if len(availableSpouesesList) > 0:
+            #1 because there can be 2 people alone in the families and changning last name of 1 would make other family empty - which is not cool :(
+            if len(availableSpouesesList) > 1:
                 person.spouse = Utils.randomFromCollection(availableSpouesesList)
 
                 spouseObj = person.spouse
@@ -56,6 +66,7 @@ def SpouseMatchmaking (families, people):
                 spouseObj.maritalStatus = Enums.MaritalStatus.MARRIED
                 RemoveFromUnmarriedList(person, spouseObj)
                 ChangeFamilyName(person, spouseObj)
+
 
 
 def FindNextHeir (families, people):
