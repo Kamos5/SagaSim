@@ -24,7 +24,7 @@ class Settlements:
 
         self.region = ''
         self.population = 0
-        self.baseFertility = 80
+        self.baseFertility = Parameters.baseVillageFertility
         self.fertilityModifier = 0
         self.residents = []
         self.features = []
@@ -63,7 +63,7 @@ class Settlements:
 
     def adjustFertilityModifier(self):
         if self.getPopulation() >= self.maxPopulation:
-            self.setFertilityModifier(0.5)
+            self.setFertilityModifier(0.25)
         else:
             self.setFertilityModifier(1)
 
