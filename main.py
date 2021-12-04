@@ -129,6 +129,39 @@ def running (world, families, people, manualOverride):
 
     isAlive = 0
     isDead = 0
+
+    if manualOverride:
+        input()
+
+    if timers:
+        start1 = time.time()
+    world.increaseYear()
+    if timers:
+        end1 = time.time()
+        print("WorldTime: " + str(end1 - start1))
+        start1 = time.time()
+    Events.increaseAge(people)
+    if timers:
+        end1 = time.time()
+        print("IncAgeTime: " + str(end1 - start1))
+        start1 = time.time()
+    Events.birthPeople(world, people)
+    if timers:
+        end1 = time.time()
+        print("BirthTime: " + str(end1 - start1))
+        start1 = time.time()
+    FF.SpouseMatchmaking(families, people)
+    if timers:
+        end1 = time.time()
+        print("SpouseMMTime: " + str(end1 - start1))
+        start1 = time.time()
+    Events.settlementsPopulationManagement(world)
+    if timers:
+        end1 = time.time()
+        print("breakSettlementsPopTime: " + str(end1 - start1))
+        end = time.time()
+        print(end - start)
+
     for family in families:
         isAlive += family.getAliveMemberNumber()
         isDead += family.getDeadMemberNumber()
@@ -165,37 +198,6 @@ def running (world, families, people, manualOverride):
         print("Settlement 9 pop: " + str(world.getRegionFromIndex(0).getSettlementFromIndex(9).getPopulation()))
         #print("Settlement 9 residents: " + str(len(world.getRegionFromIndex(0).getSettlementFromIndex(9).getResidents())))
 
-    if manualOverride:
-        input()
-
-    if timers:
-        start1 = time.time()
-    world.increaseYear()
-    if timers:
-        end1 = time.time()
-        print("WorldTime: " + str(end1 - start1))
-        start1 = time.time()
-    Events.increaseAge(people)
-    if timers:
-        end1 = time.time()
-        print("IncAgeTime: " + str(end1 - start1))
-        start1 = time.time()
-    Events.birthPeople(world, people)
-    if timers:
-        end1 = time.time()
-        print("BirthTime: " + str(end1 - start1))
-        start1 = time.time()
-    FF.SpouseMatchmaking(families, people)
-    if timers:
-        end1 = time.time()
-        print("SpouseMMTime: " + str(end1 - start1))
-        start1 = time.time()
-    Events.settlementsPopulationManagement(world)
-    if timers:
-        end1 = time.time()
-        print("breakSettlementsPopTime: " + str(end1 - start1))
-        end = time.time()
-        print(end - start)
 
 def main():
 
@@ -224,6 +226,13 @@ def main():
             tickStartTime = time.time() * 1000.0
 
         if world.getYear() == 800:
+            for region in world.getRegions():
+                for settlement in region.getSettlements():
+                    print(settlement.getSettlementName())
+                    if len(settlement.getUniqueFamilies()) > 0:
+                        for uniqueFamily in settlement.getUniqueFamilies():
+                            residentFamilyMember = filter(lambda person: person.lastName in uniqueFamily, settlement.getResidents())
+                            print(uniqueFamily + " : " + str(len(list(residentFamilyMember))))
 
             return
 main()

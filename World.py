@@ -27,15 +27,6 @@ class World:
     def getVillageSize(self):
         return Parameters.baseVillageSize
 
-
-    def getAllAliveMembersNames(self, family, people):
-
-        aliveMembersNames = []
-        for person in people:
-            if person in family.getAliveAllMembersUUIDs() and person.lifeStatus == LifeStatus.ALIVE:
-                aliveMembersNames.append(person.firstName)
-        return aliveMembersNames
-
     def generateRegions(self, regionsNumber = 5):
 
         for region in range(regionsNumber):

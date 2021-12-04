@@ -109,12 +109,14 @@ class Family:
     def appendFemalesList(self, person):
         self.femalesList.append(person)
         self.increaseFemaleNumber()
+        self.aliveMembersList.append(person)
         self.increaseAliveMemberNumber()
         person.getSettlement().increasePopulation()
         person.getSettlement().addResident(person)
     def removeFromFemalesList(self, person):
         self.femalesList.remove(person)
         self.decreaseFemaleNumber()
+        self.aliveMembersList.remove(person)
         self.decreaseAliveMemberNumber()
         person.getSettlement().decreasePopulation()
         person.getSettlement().removeResident(person)
@@ -126,12 +128,14 @@ class Family:
     def appendMalesList(self, person):
         self.malesList.append(person)
         self.increaseMaleNumber()
+        self.aliveMembersList.append(person)
         self.increaseAliveMemberNumber()
         person.getSettlement().increasePopulation()
         person.getSettlement().addResident(person)
     def removeFromMalesList(self, person):
         self.malesList.remove(person)
         self.decreaseMaleNumber()
+        self.aliveMembersList.remove(person)
         self.decreaseAliveMemberNumber()
         person.getSettlement().decreasePopulation()
         person.getSettlement().removeResident(person)

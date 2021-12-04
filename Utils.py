@@ -137,6 +137,7 @@ def geneticHairColor(trueParent1, trueParent2):
     return childHairColor, childHairColorGen1, childHairColorGen2
 
 def triangularNumber(n):
+    deathChance = 0
     for i in range(n):  # range(3) is a generator for [0, 1, 2]
-        n += i
-    return n
+        deathChance += i
+    return deathChance

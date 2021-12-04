@@ -17,7 +17,7 @@ def Init(families, world):
             member = PersonObj()
             sex = InitRandomSex(family, number)
             randomAge = Utils.randomRange(15, 20)
-            randomLifespan = Utils.randomRange(40, 50)
+            randomLifespan = Utils.randomRange(50, 60)
             hairColor = setUpHairColorsToFamilies(family)
             hairColorGen1 = [hairColor, 0]
             hairColorGen2 = [hairColor, 0]

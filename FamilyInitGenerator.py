@@ -7,8 +7,10 @@ def Init(world):
 
     initFamilityNumber = 1
     var = 0
+    #TODO SOMETHING IS WRONG WITH MORE
     startingSettlements = 2
     families = []
+    #var = familie number
     while var < 5:
         familyName = FamilyNameGenerator.getInitFamilyName(var)
         family = Family(familyName)

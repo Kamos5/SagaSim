@@ -14,8 +14,6 @@ def increaseAge (people):
     for person in people:
         if person.lifeStatus != LifeStatus.DEAD:
             person.increaseAge()
-            #if person.age < 15:
-            #    deathFromNegligence(person)
             if person.age == 15:
                 person.familyObjRef.moveChildToAdultMembers(person)
             if deathChanceFromAge(person) or person.age >= person.modifiedLifespan:
@@ -91,7 +89,6 @@ def settlementsPopulationManagement (world):
                                 newTargetSettlement = newSettlement
                     randomMigrantsList = prepareMigration(settlement)
                     iniciateMigration(randomMigrantsList, newTargetSettlement)
-                    print("Migrant moved to: " + str(newTargetSettlement))
 
         randomVillage = Utils.randomFromCollection(villagesList)
         if len(villagesList) >= len(townList) * 3 and randomVillage.getPopulation() > int(randomVillage.getMaxPopulation() * 0.75):
@@ -150,10 +147,10 @@ def getRandomMigrantListForSingleRandomPerson(person, parent, randomMigrantsList
 
     chanceOfChaningLastName = Utils.randomRange(1, 100)
 
-    # newLastName = ''
-    # if chanceOfChaningLastName < 10:
+    newLastName = ''
+    # if chanceOfChaningLastName < 25:
     #     newFamilyName = FNG.getNewRandomLastName()
-    #     family = Family(newFamilyName)
+    #     family = world.Family(newFamilyName)
     #     family.setFoundingYear(world.getYear())
     #     family.setOriginRegion(world.getRegionFromIndex(0))
 
@@ -188,12 +185,15 @@ def getRandomMigrantListForSingleRandomPerson(person, parent, randomMigrantsList
 
 def deathFromNegligence(person):
 
-    if person.father.lifeStatus == LifeStatus.DEAD and person.mother.lifeStatus == LifeStatus.DEAD:
-        chanceOfDeath = Utils.randomRange(1, 100)
-        if chanceOfDeath > 100 - (Utils.triangularNumber(person.age-1)):
-            person.causeOfDeath = CauseOfDeath.NEGLIGENCE
+    if person.father != '' and person.mother != '':
+        if person.father.lifeStatus == LifeStatus.DEAD and person.mother.lifeStatus == LifeStatus.DEAD:
+            chanceOfDeath = Utils.randomRange(1, 100)
+            triangChance = (Utils.triangularNumber(person.age-1))
+            if chanceOfDeath < 100 - triangChance:
+                person.causeOfDeath = CauseOfDeath.NEGLIGENCE
+                return True
+    return False
 
-        PF.deathProcedures(person)
 
 def deathChanceFromAge(person):
 
@@ -224,8 +224,12 @@ def deathChanceFromAge(person):
             person.causeOfDeath = CauseOfDeath.SICKNESS
             dead = True
     elif modifiedLifespan-age <= 5:
-        if chanceOfDeath <= 100 - (modifiedLifespan-age) * 2:
+        if chanceOfDeath <= 100 - (modifiedLifespan-age) * 4:
             person.causeOfDeath = CauseOfDeath.AGE
+            dead = True
+
+    if person.age < 15:
+        if deathFromNegligence(person):
             dead = True
 
     return dead

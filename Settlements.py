@@ -69,6 +69,10 @@ class Settlements:
 
     def changeSettlementName(self, newName):
         self.name = newName
+
+    def getSettlementName(self):
+        return self.name
+
     def getSettlementType(self):
         return self.settlementType
     def changeSettlementType(self, newType):
@@ -92,3 +96,11 @@ class Settlements:
     def recalculatePopWithFeatures(self):
         for feature in self.features:
             self.maxPopulation += feature[0].value[0]
+
+    def getUniqueFamilies(self):
+        families = []
+        for resident in self.residents:
+            if resident.lastName not in families:
+                families.append(resident.lastName)
+
+        return families
