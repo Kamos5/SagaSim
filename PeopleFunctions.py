@@ -37,15 +37,15 @@ def birthChild(world, parent1, parent2, trueParent1='', trueParent2=''):
     if sex == Sexes.MALE:
         offspringHeight = int(offspringHeight*Utils.randomRange(101, 102)/100)
 
-
     hairColor, hairColorGen1, hairColorGen2 = Utils.geneticHairColor(trueParent1, trueParent2)
+    eyeColor, eyeColorGen1, eyeColorGen2 = Utils.geneticEyeColor(trueParent1, trueParent2)
 
     person = PersonObj()
 
     #Child goes to father's family
     person.birthNewPerson(firstName, trueParent2.familyName, trueParent2.familyName, world.getYear(), lifespan, sex,
-                          sexGen1, sexGen2, sexuality, fertility, offspringHeight, hairColor, hairColorGen1, hairColorGen2, parent1, parent2,
-                          trueParent1, trueParent2, trueParent2.familyObjRef)
+                          sexGen1, sexGen2, sexuality, fertility, offspringHeight, hairColor, hairColorGen1, hairColorGen2, eyeColor, eyeColorGen1, eyeColorGen2,
+                          parent1, parent2, trueParent1, trueParent2, trueParent2.familyObjRef)
 
     return person
 

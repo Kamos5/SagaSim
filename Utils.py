@@ -110,6 +110,26 @@ def hairColorMap (hairColorGen1, hairColorGen2):
         else:
             return hairColorGen1
 
+def eyeColorMap (eyeColorGen1, eyeColorGen2):
+
+    randomNumber = randomRange(1, 100)
+
+    #sum must equal 100
+    threshold1 = 66
+    threshold2 = 33
+
+    if eyeColorGen1[0].value[0] >= eyeColorGen2[0].value[0]:
+        if randomNumber <= threshold1:
+            return eyeColorGen1
+        else:
+            return eyeColorGen2
+    else:
+        if randomNumber <= threshold1:
+            return eyeColorGen2
+        else:
+            return eyeColorGen1
+
+
 def geneticHairColor(trueParent1, trueParent2):
 
 
@@ -152,6 +172,50 @@ def geneticHairColor(trueParent1, trueParent2):
     childHairColor = hairColorMap(childHairColorGen1, childHairColorGen2)[0]
 
     return childHairColor, childHairColorGen1, childHairColorGen2
+
+def geneticEyeColor(trueParent1, trueParent2):
+
+
+    mutationChance = randomRange(1, 1000)
+    mutationGene = randomRange(1, 2)
+
+    personParent1EyeColorGen1 = trueParent1.eyeColorGen1
+    personParent1EyeColorGen2 = trueParent1.eyeColorGen2
+    personParent2EyeColorGen1 = trueParent2.eyeColorGen1
+    personParent2EyeColorGen2 = trueParent2.eyeColorGen2
+
+    randomGen1 = randomRange(1, 2)
+    randomGen2 = randomRange(1, 2)
+
+    childEyeColorGen1 = personParent1EyeColorGen1
+    childEyeColorGen2 = personParent1EyeColorGen2
+
+    if randomGen1 == 1 and randomGen2 == 1:
+        childEyeColorGen1 = personParent1EyeColorGen1
+        childEyeColorGen2 = personParent2EyeColorGen1
+
+    if randomGen1 == 1 and randomGen2 == 2:
+        childEyeColorGen1 = personParent1EyeColorGen1
+        childEyeColorGen2 = personParent2EyeColorGen2
+
+    if randomGen1 == 2 and randomGen2 == 1:
+        childEyeColorGen1 = personParent2EyeColorGen2
+        childEyeColorGen2 = personParent1EyeColorGen1
+
+    if randomGen1 == 2 and randomGen2 == 2:
+        childEyeColorGen1 = personParent2EyeColorGen2
+        childEyeColorGen2 = personParent2EyeColorGen2
+
+    if mutationGene == 1 and mutationChance <= 5:
+        childEyeColorGen1 = [randomFromEnumCollection(Enums.EyeColor), 0]
+
+    if mutationGene == 2 and mutationChance <= 5:
+        childEyeColorGen2 = [randomFromEnumCollection(Enums.EyeColor), 0]
+
+    childEyeColor = eyeColorMap(childEyeColorGen1, childEyeColorGen2)[0]
+
+    return childEyeColor, childEyeColorGen1, childEyeColorGen2
+
 
 def triangularNumber(n):
     deathChance = 0

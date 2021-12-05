@@ -38,10 +38,10 @@ class HairColor(Enum):
 class EyeColor(Enum):
     BLACK = 7, 'black'
     BROWN = 6, 'brown'
-    AMBER = 5, 'amber'
-    HAZEL = 4, 'hazel'
+    AMBER = 5, 'amber'#bursztynowe
+    HAZEL = 4, 'hazel'#piwne
     GREEN = 3, 'green'
-    BLUE = 2, 'yellow'
+    BLUE = 2, 'blue'
     GRAY = 1, 'gray'
 
 class SkinColor(Enum):

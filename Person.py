@@ -1,7 +1,7 @@
 from Family import Family as FamilyObj
 import Utils
 import NameGenerator
-from Enums import LifeStatus, MaritalStatus, HairColor, CauseOfDeath, Sexes
+from Enums import LifeStatus, MaritalStatus, HairColor, CauseOfDeath, Sexes, EyeColor
 
 
 class Person:
@@ -51,12 +51,15 @@ class Person:
         # hair color gen + type : [haircolor, type] 0 - straight 1 - wavy 2 - curly 3 - coiled
         self.hairColorGen1 = [HairColor.GRAY, 0]
         self.hairColorGen2 = self.hairColorGen1
+        self.eyeColor = EyeColor.GRAY
+        self.eyeColorGen1 = [EyeColor.GRAY, 0]
+        self.eyeColorGen2 = self.eyeColorGen1
         self.traits = []
         self.childrens = []
         self.deadChildrens = []
         pass
 
-    def setInitValues(self, familyName, yearOfBirth, age, randomLifespan, sex, hairColor, hairColorGen1, hairColorGen2, familyObj):
+    def setInitValues(self, familyName, yearOfBirth, age, randomLifespan, sex, hairColor, hairColorGen1, hairColorGen2, eyeColor, eyeColorGen1, eyeColorGen2, familyObj):
 
         if sex == Sexes.MALE:
             self.firstName = NameGenerator.randomMName()
@@ -82,13 +85,16 @@ class Person:
         self.hairColor = hairColor
         self.hairColorGen1 = hairColorGen1
         self.hairColorGen2 = hairColorGen2
+        self.eyeColor = eyeColor
+        self.eyeColorGen1 = eyeColorGen1
+        self.eyeColorGen2 = eyeColorGen2
         self.familyObjRef = familyObj
         self.homeRegion = familyObj.getOriginRegion()
         self.region = self.homeRegion
         self.homeSettlement = familyObj.getOriginSettlement()
         self.settlement = self.homeSettlement
 
-    def birthNewPerson(self, firstName, lastName, familyName, yearOfBirth, lifespan, sex, sexGen1, sexGen2, sexuality, fertility, height, hairColor, hairColorGen1, hairColorGen2, mother, father, trueMother, trueFather, familyObj):
+    def birthNewPerson(self, firstName, lastName, familyName, yearOfBirth, lifespan, sex, sexGen1, sexGen2, sexuality, fertility, height, hairColor, hairColorGen1, hairColorGen2, eyeColor, eyeColorGen1, eyeColorGen2, mother, father, trueMother, trueFather, familyObj):
 
         self.firstName = firstName
         self.lastName = lastName
@@ -105,6 +111,9 @@ class Person:
         self.hairColor = hairColor
         self.hairColorGen1 = hairColorGen1
         self.hairColorGen2 = hairColorGen2
+        self.eyeColor = eyeColor
+        self.eyeColorGen1 = eyeColorGen1
+        self.eyeColorGen2 = eyeColorGen2
         self.mother = mother
         self.father = father
         self.trueMother = trueMother

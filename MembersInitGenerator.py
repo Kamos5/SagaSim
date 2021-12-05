@@ -1,7 +1,7 @@
 import random
 from Person import Person as PersonObj
 import FamilyNameGenerator as FNG
-from Enums import MaritalStatus, HairColor, Sexes
+from Enums import MaritalStatus, HairColor, Sexes, EyeColor
 import Utils
 
 people = []
@@ -21,8 +21,12 @@ def Init(families, world):
             hairColor = setUpHairColorsToFamilies(family)
             hairColorGen1 = [hairColor, 0]
             hairColorGen2 = [hairColor, 0]
+            eyeColor = setUpEyeColorsToFamilies(family)
+            eyeColorGen1 = [eyeColor, 0]
+            eyeColorGen2 = [eyeColor, 0]
 
-            member.setInitValues(family.familyName, world.getYear(), randomAge, randomLifespan, sex, hairColor, hairColorGen1, hairColorGen2, family)
+
+            member.setInitValues(family.familyName, world.getYear(), randomAge, randomLifespan, sex, hairColor, hairColorGen1, hairColorGen2, eyeColor, eyeColorGen1, eyeColorGen2, family)
             if family.getFemaleNumber() == 0 and family.getMaleNumber() == 0:
                 family.setFoundedBy(member)
             family.addNewMember(member)
@@ -55,6 +59,14 @@ def setUpHairColorsToFamilies (family):
         hairColor = HairColor.BROWN
 
     return hairColor
+
+def setUpEyeColorsToFamilies (family):
+
+
+    eyeColor = Utils.randomFromEnumCollection(EyeColor)
+
+
+    return eyeColor
 
 
 def initInitMarrieges(family):
