@@ -7,7 +7,7 @@ class Region:
     def __init__(self, regionName):
         self.regionName = regionName
         self.settlements = []
-        self.regionSize = 12
+        self.regionSize = 8
         self.activeSettlements = 0
         self.regionCulture = ''
 

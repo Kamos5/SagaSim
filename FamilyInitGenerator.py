@@ -1,5 +1,6 @@
 from Family import Family
 from Culture import Culture
+import Parameters
 from Region import Region
 import FamilyNameGenerator
 from Settlements import Settlements
@@ -9,7 +10,7 @@ def Init(world):
     initFamilityNumber = 1
     var = 0
     #TODO SOMETHING IS WRONG WITH MORE
-    startingSettlements = 2
+    startingSettlements = Parameters.startingSettlementsPerRegion
     families = []
     culture = Culture("Culture1")
     #var = familie number

@@ -138,29 +138,36 @@ def running (world, families, people, manualOverride):
     world.increaseYear()
     if timers:
         end1 = time.time()
-        print("WorldTime: " + str(end1 - start1))
+        worldtime = end1 - start1
         start1 = time.time()
     Events.increaseAge(people)
     if timers:
         end1 = time.time()
-        print("IncAgeTime: " + str(end1 - start1))
+        incAgeTime = end1 - start1
         start1 = time.time()
     Events.birthPeople(world, people)
     if timers:
         end1 = time.time()
-        print("BirthTime: " + str(end1 - start1))
+        birthtime = end1 - start1
         start1 = time.time()
     FF.SpouseMatchmaking(families, people)
     if timers:
         end1 = time.time()
-        print("SpouseMMTime: " + str(end1 - start1))
+        spouseMMTime = end1 - start1
         start1 = time.time()
     Events.settlementsPopulationManagement(world, families)
     if timers:
         end1 = time.time()
-        print("breakSettlementsPopTime: " + str(end1 - start1))
+        breakSettlementsPopTime = end1 - start1
         end = time.time()
-        print(end - start)
+        fullTime = end-start
+        if fullTime > 0.0:
+            print("WorldTime: " + str(worldtime) + " %: " + str(worldtime/fullTime))
+            print("IncAgeTime: " + str(incAgeTime) + " %: " + str(incAgeTime/fullTime))
+            print("BirthTime: " + str(birthtime) + " %: " + str(birthtime/fullTime))
+            print("SpouseMMTime: " + str(spouseMMTime) + " %: " + str(spouseMMTime/fullTime))
+            print("breakSettlementsPopTime: " + str(breakSettlementsPopTime) + " %: " + str(breakSettlementsPopTime/fullTime))
+        print(fullTime)
 
     for family in families:
         isAlive += family.getAliveMemberNumber()
