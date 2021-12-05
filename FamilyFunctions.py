@@ -42,7 +42,7 @@ def ChangeFamilyName (person, spouse):
     # TODO CHECK IF IT IS WORKING
     #if female change lastName => could be modified by culture
     #exception when it is only member of family, don't change
-    # TODO CULTURE MIX WHAT IF 2 DIFF CULTURES MEET?
+    # TODO CULTURE MIX WHAT IF 2 DIFF CULTURES MEET? => random who is first as person
     if person.familyObjRef.getOriginCulture().getInheritanceBy() == Enums.Sexes.FEMALE:
         person.lastName = spouseObj.lastName
         person.familyObjRef = spouse.familyObjRef
