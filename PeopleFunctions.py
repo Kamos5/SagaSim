@@ -14,6 +14,13 @@ def birthChild(world, parent1, parent2, trueParent1='', trueParent2=''):
 
     sex, sexGen1, sexGen2 = Utils.geneticSex(trueParent1, trueParent2)
 
+    randomChanceForBeingGay = Utils.randomRange(1, 100)
+
+    if randomChanceForBeingGay < 5:
+        sexuality = 'homo'
+    else:
+        sexuality = 'hetero'
+
     if sex == Sexes.MALE:
         firstName = NameGenerator.randomMName()
     else:
@@ -31,9 +38,9 @@ def birthChild(world, parent1, parent2, trueParent1='', trueParent2=''):
     person = PersonObj()
 
     #Child goes to father's family
-    person.addNewPerson(firstName, trueParent2.familyName, trueParent2.familyName, world.getYear(), lifespan, sex,
-                        sexGen1, sexGen2, fertility, hairColor, hairColorGen1, hairColorGen2, parent1, parent2,
-                        trueParent1, trueParent2, trueParent2.familyObjRef)
+    person.birthNewPerson(firstName, trueParent2.familyName, trueParent2.familyName, world.getYear(), lifespan, sex,
+                          sexGen1, sexGen2, sexuality, fertility, hairColor, hairColorGen1, hairColorGen2, parent1, parent2,
+                          trueParent1, trueParent2, trueParent2.familyObjRef)
 
     return person
 

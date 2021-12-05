@@ -33,7 +33,14 @@ def birthPeople (world, people):
             # is spouse alive
             if spouseObj.lifeStatus == LifeStatus.ALIVE:
                 chanceOfBirth = Utils.randomRange(1, 100)
-                if chanceOfBirth <= min(person.fertility, spouseObj.fertility) * spouseObj.getSettlement().getBaseFertility() * spouseObj.getSettlement().getFertilityModifier() / 100:
+                personSexualityModifier = 1
+                spouseObjSexualityModifier = 1
+                if person.sexuality == 'homo':
+                    personSexualityModifier = 0.66
+                if spouseObj.sexuality == 'homo':
+                    spouseObjSexualityModifier = 0.33
+
+                if chanceOfBirth <= min(person.fertility, spouseObj.fertility) * spouseObj.getSettlement().getBaseFertility() * spouseObj.getSettlement().getFertilityModifier() * personSexualityModifier * spouseObjSexualityModifier/ 100:
                     # CHILD object
                     personObj = PF.birthChild(world, person, spouseObj)
                     # add child to proper family
@@ -88,7 +95,6 @@ def settlementsPopulationManagement (world, families):
                                 newTargetSettlement = newSettlement
                     complexRandomMigrantsList = prepareMigration(settlement)
                     iniciateMigration(complexRandomMigrantsList, newTargetSettlement)
-                    print("breaking families")
                     splitFamilies(world, region, families, newTargetSettlement, complexRandomMigrantsList)
 
         randomVillage = Utils.randomFromCollection(villagesList)

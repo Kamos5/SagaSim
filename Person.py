@@ -27,6 +27,7 @@ class Person:
         self.sexGen1 = [Sexes.FEMALE, 0]
         # treated as X or Y chromosome : [sex,health]
         self.sexGen2 = [Sexes.FEMALE, 0]
+        self.sexuality = 'hetero'
         self.fertility = 0
         self.numberOfChildren = 0
         self.mother = ''
@@ -81,7 +82,7 @@ class Person:
         self.homeSettlement = familyObj.getOriginSettlement()
         self.settlement = self.homeSettlement
 
-    def addNewPerson(self, firstName, lastName, familyName, yearOfBirth, lifespan, sex, sexGen1, sexGen2, fertility, hairColor, hairColorGen1, hairColorGen2, mother, father, trueMother, trueFather, familyObj):
+    def birthNewPerson(self, firstName, lastName, familyName, yearOfBirth, lifespan, sex, sexGen1, sexGen2, sexuality, fertility, hairColor, hairColorGen1, hairColorGen2, mother, father, trueMother, trueFather, familyObj):
 
         self.firstName = firstName
         self.lastName = lastName
@@ -92,6 +93,7 @@ class Person:
         self.sex = sex
         self.sexGen1 = sexGen1
         self.sexGen2 = sexGen2
+        self.sexuality = sexuality
         self.fertility = fertility
         self.hairColor = hairColor
         self.hairColorGen1 = hairColorGen1
