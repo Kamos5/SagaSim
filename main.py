@@ -9,6 +9,7 @@ import FamilyFunctions as FF
 import PeopleInterface as PIF
 import random
 import time
+import Parameters
 
 world = World()
 
@@ -173,6 +174,7 @@ def running (world, families, people, manualOverride):
         isAlive += family.getAliveMemberNumber()
         isDead += family.getDeadMemberNumber()
 
+    print("PeopleOBJNUMBER: " + str(len(people)))
     print("Population alive: " + str(isAlive))
     print("Population dead: " + str(isDead))
     print("Population sum: " + str(isAlive+isDead))
@@ -214,7 +216,7 @@ def running (world, families, people, manualOverride):
 
 def main():
 
-    world.generateRegions(1)
+    world.generateRegions(Parameters.startingNumberOfRegions)
     world.generateSettlements()
     families = initFamilies()
     people = initPeople(families)

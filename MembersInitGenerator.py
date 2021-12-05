@@ -42,7 +42,7 @@ def addNewPerson (person):
 
 def setUpHairColorsToFamilies (family):
 
-
+    #TODO REWRITE IT BECAUSE IT MAKES ISSUES WHERE THERE IS NOT ENOUGH FAMILIES (FAMILIES PER REGION*REGIONS NOW MUST BE +5 FOR WORKING CORRECTLY)
     hairColor = HairColor.GRAY
 
     if family.familyName == FNG.initialFamilyNames[0]:
