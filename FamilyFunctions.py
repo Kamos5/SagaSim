@@ -18,20 +18,22 @@ def FindAvailableSpouses (families, person):
 
 def RemoveFromUnmarriedList (person, spouse):
 
-    #TODO CHECK IF IT IS WORKING
-    #if female change lastName => could be modified by culture
-    #exception when it is only member of family, don't change
     person.familyObjRef.removeUnmarriedMember(person)
     spouse.familyObjRef.removeUnmarriedMember(spouse)
 
 
-    if person.sex == Enums.Sexes.MALE:
+def AddToMarriedList (person, spouse):
+
+    # TODO CHECK IF IT IS WORKING
+    #if female change lastName => could be modified by culture
+    #exception when it is only member of family, don't change
+    if person.familyObjRef.getOriginCulture().getInheritanceBy() == Enums.Sexes.FEMALE:
+        spouse.familyObjRef.addMarriedMember(person)
+        spouse.familyObjRef.addMarriedMember(spouse)
+    else:
         person.familyObjRef.addMarriedMember(person)
         person.familyObjRef.addMarriedMember(spouse)
 
-    else:
-        spouse.familyObjRef.addMarriedMember(person)
-        spouse.familyObjRef.addMarriedMember(spouse)
 
 
 def ChangeFamilyName (person, spouse):
@@ -40,7 +42,8 @@ def ChangeFamilyName (person, spouse):
     # TODO CHECK IF IT IS WORKING
     #if female change lastName => could be modified by culture
     #exception when it is only member of family, don't change
-    if person.sex == Sexes.FEMALE:
+    # TODO CULTURE MIX WHAT IF 2 DIFF CULTURES MEET?
+    if person.familyObjRef.getOriginCulture().getInheritanceBy() == Enums.Sexes.FEMALE:
         person.lastName = spouseObj.lastName
         person.familyObjRef = spouse.familyObjRef
     else:
@@ -65,6 +68,7 @@ def SpouseMatchmaking (families, people):
                 spouseObj.spouse = person
                 spouseObj.maritalStatus = Enums.MaritalStatus.MARRIED
                 RemoveFromUnmarriedList(person, spouseObj)
+                AddToMarriedList(person, spouseObj)
                 ChangeFamilyName(person, spouseObj)
 
 
