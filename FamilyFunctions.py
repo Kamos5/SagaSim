@@ -58,6 +58,7 @@ def SpouseMatchmaking (families, people):
     timeTable1 = []
     timeTable2 = []
     timeTable3 = []
+    tempVar=0
     for person in people:
         if person.lifeStatus == Enums.LifeStatus.ALIVE and person.age >= 15 and person.spouse is None and (person.maritalStatus == Enums.MaritalStatus.SINGLE or person.maritalStatus == Enums.MaritalStatus.WIDOW or person.maritalStatus == Enums.MaritalStatus.WIDOWER or person.maritalStatus == Enums.MaritalStatus.DIVORCED):
 
@@ -75,12 +76,22 @@ def SpouseMatchmaking (families, people):
                 RemoveFromUnmarriedList(person, spouseObj)
                 end1 = time.time()
                 timeTable1.append(end1 - start1)
+                start2 = time.time()
                 AddToMarriedList(person, spouseObj)
+                end2 = time.time()
+                timeTable2.append(end2 - start2)
+                start3 = time.time()
                 ChangeFamilyName(person, spouseObj)
+                end3 = time.time()
+                timeTable3.append(end3 - start3)
+        tempVar+=1
 
-    if len(timeTable) > 0:
-        print(Average(timeTable)*len(people))
-
+    if len(timeTable1) > 0:
+        print("Table1: " + str(Average(timeTable1)*tempVar))
+    if len(timeTable2) > 0:
+        print("Table2: " + str(Average(timeTable2)*tempVar))
+    if len(timeTable3) > 0:
+        print("Table3: " + str(Average(timeTable3)*tempVar))
 def Average(l):
     avg = reduce(lambda x, y: x + y, l) / len(l)
     return avg
