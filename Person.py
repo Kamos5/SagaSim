@@ -34,6 +34,10 @@ class Person:
         self.father = ''
         self.trueMother = ''
         self.trueFather = ''
+        self.likeTraits = []
+        self.dislikeTraits = []
+        self.likeAtributes = []
+        self.dislikeAtributes = []
         self.lover = ''
         self.spouse = None
         self.maritalStatus = MaritalStatus.SINGLE
@@ -41,6 +45,7 @@ class Person:
         self.lifeStatus = LifeStatus.ALIVE
         self.causeOfDeath = CauseOfDeath.NULL
         self.hairColor = HairColor.GRAY
+        self.height = 0
         #TODO implement hairstyle
         self.hairStyle = ''
         # hair color gen + type : [haircolor, type] 0 - straight 1 - wavy 2 - curly 3 - coiled
@@ -73,6 +78,7 @@ class Person:
             self.sexGen2 = [Sexes.FEMALE, 0]
 
         self.fertility = 80
+        self.height = Utils.randomRange(155, 165)
         self.hairColor = hairColor
         self.hairColorGen1 = hairColorGen1
         self.hairColorGen2 = hairColorGen2
@@ -82,7 +88,7 @@ class Person:
         self.homeSettlement = familyObj.getOriginSettlement()
         self.settlement = self.homeSettlement
 
-    def birthNewPerson(self, firstName, lastName, familyName, yearOfBirth, lifespan, sex, sexGen1, sexGen2, sexuality, fertility, hairColor, hairColorGen1, hairColorGen2, mother, father, trueMother, trueFather, familyObj):
+    def birthNewPerson(self, firstName, lastName, familyName, yearOfBirth, lifespan, sex, sexGen1, sexGen2, sexuality, fertility, height, hairColor, hairColorGen1, hairColorGen2, mother, father, trueMother, trueFather, familyObj):
 
         self.firstName = firstName
         self.lastName = lastName
@@ -95,6 +101,7 @@ class Person:
         self.sexGen2 = sexGen2
         self.sexuality = sexuality
         self.fertility = fertility
+        self.height = height
         self.hairColor = hairColor
         self.hairColorGen1 = hairColorGen1
         self.hairColorGen2 = hairColorGen2

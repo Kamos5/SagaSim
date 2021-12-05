@@ -43,8 +43,6 @@ class EyeColor(Enum):
     GREEN = 3, 'green'
     BLUE = 2, 'yellow'
     GRAY = 1, 'gray'
-    ALBINO = 0, 'albino'
-    UNDEFINED = -1, 'undefined'
 
 class SkinColor(Enum):
     BLACK = 4, 'black'

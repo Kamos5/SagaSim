@@ -40,6 +40,23 @@ def geneticRandomFromValues(val1, val2):
     return returnValue
 
 
+def geneticRandomFromValuesForHeight(val1, val2):
+
+    if val1 <= val2:
+        returnValue = randomRange(val1, val2)
+    else:
+        returnValue = randomRange(val2, val1)
+
+    randomChance = randomRange(1, 100)
+    if randomChance < 10:
+        returnValue = int(returnValue*99/100)
+    if randomChance >= 90:
+        returnValue = int(returnValue*105/100)
+
+    return returnValue
+
+
+
 def geneticSex (parent1, parent2):
 
     mutationChance = randomRange(1, 1000)
