@@ -441,10 +441,12 @@ class Family:
                 self.removeMarriedMember(person)
             else:
                 self.removeUnmarriedMember(person)
-            self.deadMembersList.append(person)
-            self.increaseDeadMemberNumber()
         else:
+
             self.removeChildren(person)
+
+        self.deadMembersList.append(person)
+        self.increaseDeadMemberNumber()
 
     def removeFromFamily(self, person):
         if person.age >= 15:

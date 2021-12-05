@@ -11,7 +11,7 @@ def Init(families, world):
     random.seed(random.SystemRandom().random())
 
     for family in families:
-        randomNumber = random.randint(2, 2)
+        randomNumber = random.randint(4, 4)
 
         for number in range(randomNumber):
             member = PersonObj()

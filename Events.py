@@ -58,7 +58,6 @@ def birthPeople (world, people):
 
                     if motherDeath:
                         PF.deathProcedures(person)
-                        #FF.RemoveFromAdultMemberList(families, person)
 
                     if childdeath:
                         #parameters: child

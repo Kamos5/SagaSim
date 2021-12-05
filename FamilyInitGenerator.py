@@ -9,12 +9,11 @@ def Init(world):
 
     initFamilityNumber = 1
     var = 0
-    #TODO SOMETHING IS WRONG WITH MORE
     startingSettlements = Parameters.startingSettlementsPerRegion
     families = []
     culture = Culture("Culture1")
     #var = familie number
-    while var < 5:
+    while var < 6:
         familyName = FamilyNameGenerator.getInitFamilyName()
         family = Family(familyName)
         family.setFoundingYear(world.getYear())

@@ -6,7 +6,7 @@ class World:
 
     initYear = 500
     regions = []
-    settlementsInitNumber = 2 # max 20
+    settlementsInitNumber = Parameters.startingSettlementsPerRegion
 
 
     def __init__(self, startYear=initYear):
