@@ -24,10 +24,10 @@ class Region:
         newSettlement = self.settlements[len(self.getSettlements())-1]
         newSettlement.maxPopulation = Parameters.baseVillageSize
         randomNumberFeatures = Utils.randomRange(1, 100)
-        newSettlement.addFeature([Utils.randomFromEnumCollection(Features)])
+        newSettlement.addFeature(Utils.randomFromEnumCollection(Features))
         while randomNumberFeatures > 90:
             randomNumberFeatures = Utils.randomRange(1, 100)
-            newSettlement.addFeature([Utils.randomFromEnumCollection(Features)])
+            newSettlement.addFeature(Utils.randomFromEnumCollection(Features))
         newSettlement.recalculatePopWithFeatures()
         return newSettlement
 

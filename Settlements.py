@@ -95,7 +95,7 @@ class Settlements:
 
     def recalculatePopWithFeatures(self):
         for feature in self.features:
-            self.maxPopulation += feature[0].value[0]
+            self.maxPopulation += feature.value[0]
 
     def getUniqueFamilies(self):
         uniqueFamilies = []
