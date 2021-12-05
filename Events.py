@@ -68,10 +68,11 @@ def settlementsPopulationManagement (world, families):
 
     for region in world.getRegions():
 
-        villagesList = SF.getVillages(region.getSettlements())
-        townList = SF.getCities(region.getSettlements())
-
         for settlement in region.getSettlements():
+
+            villagesList = SF.getVillages(region.getSettlements())
+            townList = SF.getCities(region.getSettlements())
+
             if settlement.getPopulation() >= int(settlement.getMaxPopulation() * Parameters.percentagePopulationThresholdForMigration):
                 chanceOfMigration = Utils.randomRange(1, 100)
                 if chanceOfMigration < Parameters.chanceForMigration:
@@ -91,7 +92,8 @@ def settlementsPopulationManagement (world, families):
                     splitFamilies(world, region, families, newTargetSettlement, complexRandomMigrantsList)
 
         randomVillage = Utils.randomFromCollection(villagesList)
-        if len(villagesList) > len(townList) * Parameters.villageToTownMultiplier and randomVillage.getPopulation() > int(randomVillage.getMaxPopulation() * Parameters.percentageVillagePopulationThresholdForUpgradeToTown):
+        if len(villagesList) >= (len(townList)+1) * (Parameters.villageToTownMultiplier + 1) - len(townList) and randomVillage.getPopulation() > int(randomVillage.getMaxPopulation() * Parameters.percentageVillagePopulationThresholdForUpgradeToTown):
+
             chanceOfUpgradingToCity = Utils.randomRange(1, 100)
             if chanceOfUpgradingToCity < Parameters.chancePerYearToUpgradeVillageToTown:
                 randomVillage.changeSettlementType(Settlements.TOWN)

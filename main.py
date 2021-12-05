@@ -197,6 +197,12 @@ def running (world, families, people, manualOverride):
     if len(world.getRegionFromIndex(0).getSettlements()) >= 10:
         print("Settlement 9 pop: " + str(world.getRegionFromIndex(0).getSettlementFromIndex(9).getPopulation()))
         #print("Settlement 9 residents: " + str(len(world.getRegionFromIndex(0).getSettlementFromIndex(9).getResidents())))
+    if len(world.getRegionFromIndex(0).getSettlements()) >= 11:
+        print("Settlement 10 pop: " + str(world.getRegionFromIndex(0).getSettlementFromIndex(10).getPopulation()))
+        #print("Settlement 9 residents: " + str(len(world.getRegionFromIndex(0).getSettlementFromIndex(9).getResidents())))
+    if len(world.getRegionFromIndex(0).getSettlements()) >= 12:
+        print("Settlement 11 pop: " + str(world.getRegionFromIndex(0).getSettlementFromIndex(11).getPopulation()))
+        #print("Settlement 9 residents: " + str(len(world.getRegionFromIndex(0).getSettlementFromIndex(9).getResidents())))
 
 
 def main():
