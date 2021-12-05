@@ -72,17 +72,15 @@ def settlementsPopulationManagement (world, families):
         townList = SF.getCities(region.getSettlements())
 
         for settlement in region.getSettlements():
-            #TODO WHAT IF CITY DIES OFF? WILL IT CONVERT INTO VILLAGE
-            if settlement.getPopulation() >= int(settlement.getMaxPopulation() * 0.75):
-                #TODO CHANCE FOR MIGRATION??
+            if settlement.getPopulation() >= int(settlement.getMaxPopulation() * Parameters.percentagePopulationThresholdForMigration):
                 chanceOfMigration = Utils.randomRange(1, 100)
-                if chanceOfMigration < 25:
+                if chanceOfMigration < Parameters.chanceForMigration:
                     if len(region.getSettlements()) == region.regionSize:
                         newTargetSettlement = Utils.randomFromCollection(townList)
                     else:
                         lowestSettlementInRegion = region.getLowestPopulatedSettlement(world)
                         newTargetSettlement = lowestSettlementInRegion
-                        if lowestSettlementInRegion.getPopulation() > int(lowestSettlementInRegion.getMaxPopulation() * 0.50):
+                        if lowestSettlementInRegion.getPopulation() > int(lowestSettlementInRegion.getMaxPopulation() * Parameters.percentageVillagePopulationThresholdForCreatingNewVillage):
                             if region.canAddSettlement():
                                 newSettlement = region.addSettlement()
                                 newSettlement.setMaxPopulation = Parameters.baseVillageSize
@@ -93,9 +91,9 @@ def settlementsPopulationManagement (world, families):
                     splitFamilies(world, region, families, newTargetSettlement, complexRandomMigrantsList)
 
         randomVillage = Utils.randomFromCollection(villagesList)
-        if len(villagesList) >= len(townList) * 3 and randomVillage.getPopulation() > int(randomVillage.getMaxPopulation() * 0.75):
+        if len(villagesList) > len(townList) * Parameters.villageToTownMultiplier and randomVillage.getPopulation() > int(randomVillage.getMaxPopulation() * Parameters.percentageVillagePopulationThresholdForUpgradeToTown):
             chanceOfUpgradingToCity = Utils.randomRange(1, 100)
-            if chanceOfUpgradingToCity < 20:
+            if chanceOfUpgradingToCity < Parameters.chancePerYearToUpgradeVillageToTown:
                 randomVillage.changeSettlementType(Settlements.TOWN)
 
 
@@ -104,9 +102,9 @@ def prepareMigration(settlement):
 
     migrantFamilies = 0
     if settlement.getSettlementType() == Settlements.TOWN:
-        mirgrationWave = 15
+        mirgrationWave = Parameters.migrationWaveForTown
     else:
-        mirgrationWave = 10
+        mirgrationWave = Parameters.migrationWaveForTown
 
     randomMigrantsList = []
     complexRandomMigrantList = []
@@ -135,7 +133,7 @@ def splitFamilies(world, region, families, newTargetSettlement, complexRandomMig
     for randomMigrantList in complexRandomMigrantsList:
         chanceOfChangingLastName = Utils.randomRange(1, 100)
         #won't change last name if only 1 person will be in migrant list whose culture sex is not to inherite
-        if chanceOfChangingLastName < 5 and (len(randomMigrantList) > 1 or randomMigrantList[0].familyObjRef.getOriginCulture().getInheritanceBy() == Sexes.MALE):
+        if chanceOfChangingLastName < Parameters.chanceForChangingLastNameDuringMigration and (len(randomMigrantList) > 1 or randomMigrantList[0].familyObjRef.getOriginCulture().getInheritanceBy() == randomMigrantList[0].sex):
             newFamilyName = FNG.getNewRandomLastName()
             family = Family(newFamilyName)
             family.setFoundingYear(world.getYear())
