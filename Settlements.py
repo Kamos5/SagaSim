@@ -6,7 +6,7 @@ import Parameters
 
 class Settlements:
 
-    def __init__(self, region, rebuildFlag = False):
+    def __init__(self, region, year=Parameters.startingYear, rebuildFlag = False):
         self.settlementType = Enums.Settlements.VILLAGE
 
         if region == "Region 0":
@@ -24,6 +24,7 @@ class Settlements:
 
         self.region = ''
         self.population = 0
+        self.fundedIn = year
         self.baseFertility = Parameters.baseVillageFertility
         self.fertilityModifier = 0
         self.residents = []

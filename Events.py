@@ -5,17 +5,19 @@ from Family import Family as Family
 import Parameters
 import FamilyNameGenerator as FNG
 import PeopleFunctions as PF
+import PersonLifeEventsHistory as PLEH
 import PeopleInterface as PI
 import FamilyFunctions as FF
 import SettlementsFunctions as SF
 
-def increaseAge (people):
+def increaseAge (people, world):
 
     for person in people:
         if person.lifeStatus != LifeStatus.DEAD:
             person.increaseAge()
             if person.age == 15:
                 person.familyObjRef.moveChildToAdultMembers(person)
+                PLEH.adulthoodReached(person)
             if deathChanceFromAge(person) or person.age >= person.modifiedLifespan:
                 PF.deathProcedures(person)
 
@@ -46,6 +48,7 @@ def birthPeople (world, people):
                     # add child to proper family
                     personObj.familyObjRef.addNewMember(personObj)
                     people.append(personObj)
+                    PLEH.beenBorn(person, world)
                     person.numberOfChildren += 1
                     spouseObj.numberOfChildren += 1
                     if person.modifiedLifespan-person.age > 1:
@@ -89,7 +92,7 @@ def settlementsPopulationManagement (world, families):
                         newTargetSettlement = lowestSettlementInRegion
                         if lowestSettlementInRegion.getPopulation() > int(lowestSettlementInRegion.getMaxPopulation() * Parameters.percentageVillagePopulationThresholdForCreatingNewVillage):
                             if region.canAddSettlement():
-                                newSettlement = region.addSettlement()
+                                newSettlement = region.addSettlement(world)
                                 newSettlement.setMaxPopulation = Parameters.baseVillageSize
                                 newTargetSettlement = newSettlement
                     complexRandomMigrantsList = prepareMigration(settlement)

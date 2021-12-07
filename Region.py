@@ -18,9 +18,9 @@ class Region:
         else:
             return False
 
-    def addSettlement(self):
+    def addSettlement(self, world):
         additionalFeatureThreshold = 10
-        self.settlements.append(Settlements(self.regionName))
+        self.settlements.append(Settlements(self.regionName, world.getYear()))
         newSettlement = self.settlements[len(self.getSettlements())-1]
         newSettlement.maxPopulation = Parameters.baseVillageSize
         randomNumberFeatures = Utils.randomRange(1, 100)

@@ -3,6 +3,7 @@ import Utils
 import PeopleInterface as PI
 import NameGenerator
 from Enums import LifeStatus, MaritalStatus, HairColor, Sexes
+import PersonLifeEventsHistory as PLEH
 
 
 def birthChild(world, parent1, parent2, trueParent1='', trueParent2=''):
@@ -74,6 +75,7 @@ def deathProcedures(person):
     # changing statutes
     person.changeLifeStatus(LifeStatus.DEAD)
     person.maritalStatus = MaritalStatus.DEAD
+    PLEH.died(person)
 
     if person.age < 15:
         person.getMother().childrens.remove(person)

@@ -53,15 +53,16 @@ def ChangeFamilyName (person, spouse):
 
 
 
-def SpouseMatchmaking (families, people):
+def SpouseMatchmaking (families, people, world):
 
     timeTable1 = []
     timeTable2 = []
     timeTable3 = []
     tempVar=0
 
+    #CANT USE PERSON IN UNMARIED LIST BECAUSE OF STRANGE ERRORS CONNECTED WITH PREVIOUS SPOUS DYING IN THE SAME YEAR AND LOOP family.getUnmarried list NOT RECOGNIZING IT!!!
     for person in people:
-        if person.lifeStatus == Enums.LifeStatus.ALIVE and person.age >= 15 and person.spouse is None and (person.maritalStatus == Enums.MaritalStatus.SINGLE or person.maritalStatus == Enums.MaritalStatus.WIDOW or person.maritalStatus == Enums.MaritalStatus.WIDOWER or person.maritalStatus == Enums.MaritalStatus.DIVORCED):
+         if person.lifeStatus == Enums.LifeStatus.ALIVE and person.age >= 15 and person.spouse is None and (person.maritalStatus == Enums.MaritalStatus.SINGLE or person.maritalStatus == Enums.MaritalStatus.WIDOW or person.maritalStatus == Enums.MaritalStatus.WIDOWER or person.maritalStatus == Enums.MaritalStatus.DIVORCED):
 
             availableSpouesesList = FindAvailableSpouses(families, person)
             #1 because there can be 2 people alone in the families and changning last name of 1 would make other family empty - which is not cool :(
@@ -74,6 +75,7 @@ def SpouseMatchmaking (families, people):
                 spouseObj.spouse = person
                 spouseObj.maritalStatus = Enums.MaritalStatus.MARRIED
                 RemoveFromUnmarriedList(person, spouseObj)
+
                 AddToMarriedList(person, spouseObj)
                 ChangeFamilyName(person, spouseObj)
 

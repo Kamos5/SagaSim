@@ -141,7 +141,7 @@ def running (world, families, people, manualOverride):
         end1 = time.time()
         worldtime = end1 - start1
         start1 = time.time()
-    Events.increaseAge(people)
+    Events.increaseAge(people, world)
     if timers:
         end1 = time.time()
         incAgeTime = end1 - start1
@@ -151,7 +151,7 @@ def running (world, families, people, manualOverride):
         end1 = time.time()
         birthtime = end1 - start1
         start1 = time.time()
-    FF.SpouseMatchmaking(families, people)
+    FF.SpouseMatchmaking(families, people, world)
     if timers:
         end1 = time.time()
         spouseMMTime = end1 - start1
@@ -240,14 +240,14 @@ def main():
 
             tickStartTime = time.time() * 1000.0
 
-        if world.getYear() == 650:
-            for region in world.getRegions():
-                for settlement in region.getSettlements():
-                    print(settlement.getSettlementName())
-                    if len(settlement.getUniqueFamilies()) > 0:
-                        for uniqueFamily in settlement.getUniqueFamilies():
-                            residentFamilyMember = filter(lambda person: person.lastName in uniqueFamily, settlement.getResidents())
-                            print(uniqueFamily + " : " + str(len(list(residentFamilyMember))))
+        if world.getYear() == 750:
+            # for region in world.getRegions():
+            #     for settlement in region.getSettlements():
+            #         print(settlement.getSettlementName())
+            #         if len(settlement.getUniqueFamilies()) > 0:
+            #             for uniqueFamily in settlement.getUniqueFamilies():
+            #                 residentFamilyMember = filter(lambda person: person.lastName in uniqueFamily, settlement.getResidents())
+            #                 print(uniqueFamily + " : " + str(len(list(residentFamilyMember))))
 
             return
 main()
