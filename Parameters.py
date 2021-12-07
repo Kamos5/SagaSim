@@ -1,6 +1,6 @@
 startingSettlementsPerRegion = 2
 startingNumberOfFamiliesPerRegion = 6
-startingNumberOfRegions = 1
+startingNumberOfRegions = 5
 baseCitySize = 1000
 baseVillageSize = 200
 baseCityFertility = 80
