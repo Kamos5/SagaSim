@@ -75,7 +75,7 @@ def geneticSex (parent1, parent2):
     if gen1 == 2 and gen2 == 1:
         sexGen1 = parent1.sexGen2
         sexGen2 = parent2.sexGen1
-    if gen1 == 1 and gen2 == 2:
+    if gen1 == 2 and gen2 == 2:
         sexGen1 = parent1.sexGen2
         sexGen2 = parent2.sexGen2
 

@@ -2,7 +2,8 @@ from Settlements import Settlements
 from RegionFeatures import Features
 import Parameters
 import Utils
-class Region:
+
+class Region():
 
     def __init__(self, regionName):
         self.regionName = regionName

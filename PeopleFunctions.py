@@ -51,7 +51,7 @@ def birthChild(world, parent1, parent2, trueParent1='', trueParent2=''):
     return person
 
 
-def deathProcedures(person):
+def deathProcedures(person, world):
 
     if person.spouse is not None:
         person.spouse.deadSpouses.append(person)
@@ -63,8 +63,10 @@ def deathProcedures(person):
 
         person.spouse.familyObjRef.removeMarriedMember(person.spouse)
         person.spouse.familyObjRef.addUnmarriedMember(person.spouse)
+        PLEH.lostSpouse(person.spouse, world)
         person.spouse.spouse = None
         person.spouse = None
+
     # else:
     #     #cleaning widowers and widows if they are also dead
     #     if person.maritalStatus == MaritalStatus.WIDOWER or person.maritalStatus == MaritalStatus.WIDOW:
@@ -75,9 +77,10 @@ def deathProcedures(person):
     # changing statutes
     person.changeLifeStatus(LifeStatus.DEAD)
     person.maritalStatus = MaritalStatus.DEAD
-    PLEH.died(person)
+    PLEH.died(person, world)
 
     if person.age < 15:
+        PLEH.lostChild(person.mother, person, world)
         person.getMother().childrens.remove(person)
         person.getFather().childrens.remove(person)
         person.getMother().deadChildrens.append(person)

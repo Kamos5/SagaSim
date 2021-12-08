@@ -240,7 +240,7 @@ def main():
 
             tickStartTime = time.time() * 1000.0
 
-        if world.getYear() == 750:
+        if world.getYear() == 700:
             # for region in world.getRegions():
             #     for settlement in region.getSettlements():
             #         print(settlement.getSettlementName())

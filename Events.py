@@ -17,9 +17,9 @@ def increaseAge (people, world):
             person.increaseAge()
             if person.age == 15:
                 person.familyObjRef.moveChildToAdultMembers(person)
-                PLEH.adulthoodReached(person)
+                PLEH.adulthoodReached(person, world)
             if deathChanceFromAge(person) or person.age >= person.modifiedLifespan:
-                PF.deathProcedures(person)
+                PF.deathProcedures(person, world)
 
 def birthPeople (world, people):
 
@@ -48,7 +48,7 @@ def birthPeople (world, people):
                     # add child to proper family
                     personObj.familyObjRef.addNewMember(personObj)
                     people.append(personObj)
-                    PLEH.beenBorn(person, world)
+                    PLEH.beenBorn(personObj, world)
                     person.numberOfChildren += 1
                     spouseObj.numberOfChildren += 1
                     if person.modifiedLifespan-person.age > 1:
@@ -60,11 +60,11 @@ def birthPeople (world, people):
                     motherDeath, childdeath = deathChangeFromGivingBirth(person, personObj)
 
                     if motherDeath:
-                        PF.deathProcedures(person)
+                        PF.deathProcedures(person, world)
 
                     if childdeath:
                         #parameters: child
-                        PF.deathProcedures(personObj)
+                        PF.deathProcedures(personObj, world)
 
                     births += 1
 
@@ -95,7 +95,7 @@ def settlementsPopulationManagement (world, families):
                                 newSettlement = region.addSettlement(world)
                                 newSettlement.setMaxPopulation = Parameters.baseVillageSize
                                 newTargetSettlement = newSettlement
-                    complexRandomMigrantsList = prepareMigration(settlement)
+                    complexRandomMigrantsList = prepareMigration(settlement, world)
                     iniciateMigration(complexRandomMigrantsList, newTargetSettlement)
                     splitFamilies(world, region, families, newTargetSettlement, complexRandomMigrantsList)
 
@@ -108,7 +108,7 @@ def settlementsPopulationManagement (world, families):
 
 
 
-def prepareMigration(settlement):
+def prepareMigration(settlement, world):
 
     migrantFamilies = 0
     if settlement.getSettlementType() == Settlements.TOWN:
@@ -131,6 +131,7 @@ def prepareMigration(settlement):
                 getRandomMigrantListForSingleRandomPerson(randomPerson, "Adult", randomMigrantsList)
             if len(randomMigrantsList) > 0:
                 complexRandomMigrantList.append(randomMigrantsList)
+                PLEH.movedHome(randomPerson, settlement, world)
                 migrantFamilies += 1
                 randomMigrantsList = []
 

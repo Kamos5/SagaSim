@@ -2,6 +2,7 @@ from Enums import MaritalStatus, Sexes
 import Enums
 import Utils
 import time
+import PersonLifeEventsHistory as PLEH
 from functools import reduce
 
 
@@ -74,14 +75,14 @@ def SpouseMatchmaking (families, people, world):
                 person.maritalStatus = Enums.MaritalStatus.MARRIED
                 spouseObj.spouse = person
                 spouseObj.maritalStatus = Enums.MaritalStatus.MARRIED
+                PLEH.married(person, world)
+                PLEH.married(spouseObj, world)
+
                 RemoveFromUnmarriedList(person, spouseObj)
 
                 AddToMarriedList(person, spouseObj)
                 ChangeFamilyName(person, spouseObj)
 
-def Average(l):
-    avg = reduce(lambda x, y: x + y, l) / len(l)
-    return avg
 
 
 def FindNextHeir (families, people):
