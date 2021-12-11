@@ -17,3 +17,8 @@ def getVillages(settlements):
         if settlement.settlementType == Settlements.VILLAGE:
             villagesList.append(settlement)
     return villagesList
+
+def produceFood (settlement):
+
+    if settlement.settlementType==  Settlements.VILLAGE:
+        return 0

@@ -45,6 +45,7 @@ class Person:
         self.lifeStatus = LifeStatus.ALIVE
         self.causeOfDeath = CauseOfDeath.NULL
         self.hairColor = HairColor.GRAY
+        self.heightGen = 0
         self.height = 0
         #TODO implement hairstyle
         self.hairStyle = ''
@@ -82,7 +83,8 @@ class Person:
             self.sexGen2 = [Sexes.FEMALE, 0]
 
         self.fertility = 80
-        self.height = Utils.randomRange(155, 165)
+        self.heightGen = Utils.randomRange(155, 165)
+        self.height = self.heightGen
         self.hairColor = hairColor
         self.hairColorGen1 = hairColorGen1
         self.hairColorGen2 = hairColorGen2
@@ -108,7 +110,7 @@ class Person:
         self.sexGen2 = sexGen2
         self.sexuality = sexuality
         self.fertility = fertility
-        self.height = height
+        self.heightGen = height
         self.hairColor = hairColor
         self.hairColorGen1 = hairColorGen1
         self.hairColorGen2 = hairColorGen2
@@ -154,3 +156,6 @@ class Person:
 
     def setSettlement(self, newSettlement):
         self.settlement = newSettlement
+
+    def increaseHeight(self):
+        self.height = int(((-0.8 / self.age) + 1)* self.heightGen)

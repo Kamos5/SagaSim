@@ -3,8 +3,6 @@ import Enums
 import Utils
 import time
 import PersonLifeEventsHistory as PLEH
-from functools import reduce
-
 
 def FindAvailableSpouses (families, person):
 

@@ -1,6 +1,5 @@
 import Enums
 import SettlementNameGenerator as SNG
-from Utils import randomFromCollection
 import Parameters
 
 
@@ -29,6 +28,8 @@ class Settlements:
         self.fertilityModifier = 0
         self.residents = []
         self.features = []
+        self.providesTo = None
+        self.providedFrom = []
         self.maxPopulation = 0
 
     def getPopulation(self):
@@ -105,3 +106,9 @@ class Settlements:
                 uniqueFamilies.append(resident.lastName)
 
         return uniqueFamilies
+
+    def getProvision(self):
+        return self.providesTo
+
+    def setProvision(self, newSettlement):
+        self.providesTo = newSettlement

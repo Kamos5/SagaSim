@@ -15,7 +15,10 @@ def increaseAge (people, world):
     for person in people:
         if person.lifeStatus != LifeStatus.DEAD:
             person.increaseAge()
+            if person.age < 15:
+                person.increaseHeight()
             if person.age == 15:
+                person.height = person.heightGen
                 person.familyObjRef.moveChildToAdultMembers(person)
                 PLEH.adulthoodReached(person, world)
             if deathChanceFromAge(person) or person.age >= person.modifiedLifespan:
@@ -124,14 +127,14 @@ def prepareMigration(settlement, world):
         if randomPerson not in randomMigrantsList:
             # for MINOR
             if randomPerson.age < 15:
-                getRandomMigrantListForSingleRandomPerson(randomPerson, "Father", randomMigrantsList)
-                getRandomMigrantListForSingleRandomPerson(randomPerson, "Mother", randomMigrantsList)
+                getRandomMigrantListForSingleRandomPerson(randomPerson, "Father", randomMigrantsList, settlement, world)
+                getRandomMigrantListForSingleRandomPerson(randomPerson, "Mother", randomMigrantsList, settlement, world)
             else:
                 # for Adult
-                getRandomMigrantListForSingleRandomPerson(randomPerson, "Adult", randomMigrantsList)
+                getRandomMigrantListForSingleRandomPerson(randomPerson, "Adult", randomMigrantsList, settlement, world)
             if len(randomMigrantsList) > 0:
                 complexRandomMigrantList.append(randomMigrantsList)
-                PLEH.movedHome(randomPerson, settlement, world)
+
                 migrantFamilies += 1
                 randomMigrantsList = []
 
@@ -179,7 +182,7 @@ def iniciateMigration(complexMigrantList, settlementTarget):
             settlementTarget.addResident(migrant)
 
 
-def getRandomMigrantListForSingleRandomPerson(person, parent, randomMigrantsList):
+def getRandomMigrantListForSingleRandomPerson(person, parent, randomMigrantsList, settlement, world):
 
     getParent = ''
     if person.getFather().lifeStatus != LifeStatus.DEAD:
@@ -202,10 +205,12 @@ def getRandomMigrantListForSingleRandomPerson(person, parent, randomMigrantsList
             if parentChildren.age < 15:
                 if parentChildren not in randomMigrantsList:
                     randomMigrantsList.append(parentChildren)
+                    PLEH.movedHome(parentChildren, settlement, world)
 
         if getParent.spouse is not None:
             if getParent.spouse not in randomMigrantsList:
                 randomMigrantsList.append(getParent.spouse)
+                PLEH.movedHome(getParent.spouse, settlement, world)
                 # if newLastName != '':
                 #     getParent.lastName = newLastName
 
@@ -214,6 +219,7 @@ def getRandomMigrantListForSingleRandomPerson(person, parent, randomMigrantsList
                 if parentSpouseChildren.age < 15:
                     if parentSpouseChildren not in randomMigrantsList:
                         randomMigrantsList.append(parentSpouseChildren)
+                        PLEH.movedHome(parentSpouseChildren, settlement, world)
                         # if newLastName != '':
                         #     getParent.lastName = newLastName
 
