@@ -41,9 +41,9 @@ def birthPeople (world, people):
                 personSexualityModifier = 1
                 spouseObjSexualityModifier = 1
                 if person.sexuality == 'homo':
-                    personSexualityModifier = 0.66
+                    personSexualityModifier = 0.80
                 if spouseObj.sexuality == 'homo':
-                    spouseObjSexualityModifier = 0.33
+                    spouseObjSexualityModifier = 0.40
 
                 if chanceOfBirth <= min(person.fertility, spouseObj.fertility) * spouseObj.getSettlement().getBaseFertility() * spouseObj.getSettlement().getFertilityModifier() * personSexualityModifier * spouseObjSexualityModifier/ 100:
                     # CHILD object
@@ -85,23 +85,31 @@ def settlementsPopulationManagement (world, families):
             villagesList = SF.getVillages(region.getSettlements())
             townList = SF.getCities(region.getSettlements())
 
+            #Treshhold to create migration wave
             if settlement.getPopulation() >= int(settlement.getMaxPopulation() * Parameters.percentagePopulationThresholdForMigration):
                 chanceOfMigration = Utils.randomRange(1, 100)
+                #Chance of migration happening
                 if chanceOfMigration < Parameters.chanceForMigration:
+                    #Check for max size of region
                     if len(region.getSettlements()) == region.regionSize:
                         newTargetSettlement = Utils.randomFromCollection(townList)
                     else:
+                        #Take lowest population as dest
                         lowestSettlementInRegion = region.getLowestPopulatedSettlement(world)
                         newTargetSettlement = lowestSettlementInRegion
+                        #If lowest pop > lowest max pop * modifier create new City
                         if lowestSettlementInRegion.getPopulation() > int(lowestSettlementInRegion.getMaxPopulation() * Parameters.percentageVillagePopulationThresholdForCreatingNewVillage):
                             if region.canAddSettlement():
                                 newSettlement = region.addSettlement(world)
                                 newSettlement.setMaxPopulation = Parameters.baseVillageSize
                                 newTargetSettlement = newSettlement
+
+                    #Migration Wave
                     complexRandomMigrantsList = prepareMigration(settlement, world)
                     iniciateMigration(complexRandomMigrantsList, newTargetSettlement)
                     splitFamilies(world, region, families, newTargetSettlement, complexRandomMigrantsList)
 
+        #Upgrading from Village to City
         randomVillage = Utils.randomFromCollection(villagesList)
         if len(villagesList) >= (len(townList)+1) * (Parameters.villageToTownMultiplier + 1) - len(townList) and randomVillage.getPopulation() > int(randomVillage.getMaxPopulation() * Parameters.percentageVillagePopulationThresholdForUpgradeToTown):
 

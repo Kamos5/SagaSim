@@ -32,6 +32,9 @@ class Settlements:
         self.providedFrom = []
         self.maxPopulation = 0
 
+    def getSettlementName(self):
+        return self.name
+
     def getPopulation(self):
         return self.population
 
@@ -65,7 +68,7 @@ class Settlements:
 
     def adjustFertilityModifier(self):
         if self.getPopulation() >= self.maxPopulation:
-            self.setFertilityModifier(0.25)
+            self.setFertilityModifier(0.5)
         else:
             self.setFertilityModifier(1)
 

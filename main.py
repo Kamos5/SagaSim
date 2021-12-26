@@ -1,15 +1,16 @@
+import os
+import time
+from msvcrt import getch
+
+import Events
+import FamilyFunctions as FF
 import FamilyInitGenerator as FIG
 import MembersInitGenerator as MIG
-from World import World as World
-import Events
-from Settlements import Settlements
-import Enums
-import PeopleFunctions as MF
-import FamilyFunctions as FF
-import PeopleInterface as PIF
-import random
-import time
 import Parameters
+import keyboard
+import pygame
+import sys
+from World import World as World
 
 world = World()
 
@@ -178,40 +179,40 @@ def running (world, families, people, manualOverride):
     print("Population alive: " + str(isAlive))
     print("Population dead: " + str(isDead))
     print("Population sum: " + str(isAlive+isDead))
-    print("Settlement 0 pop: " + str(world.getRegionFromIndex(0).getSettlementFromIndex(0).getPopulation()))
-    #print("Settlement 0 residents: " + str(len(world.getRegionFromIndex(0).getSettlementFromIndex(0).getResidents())))
-    print("Settlement 1 pop: " + str(world.getRegionFromIndex(0).getSettlementFromIndex(1).getPopulation()))
-    #print("Settlement 1 residents: " + str(len(world.getRegionFromIndex(0).getSettlementFromIndex(1).getResidents())))
-    if len(world.getRegionFromIndex(0).getSettlements()) >= 3:
-        print("Settlement 2 pop: " + str(world.getRegionFromIndex(0).getSettlementFromIndex(2).getPopulation()))
-        #print("Settlement 2 residents: " + str(len(world.getRegionFromIndex(0).getSettlementFromIndex(2).getResidents())))
-    if len(world.getRegionFromIndex(0).getSettlements()) >= 4:
-        print("Settlement 3 pop: " + str(world.getRegionFromIndex(0).getSettlementFromIndex(3).getPopulation()))
-        #print("Settlement 3 residents: " + str(len(world.getRegionFromIndex(0).getSettlementFromIndex(3).getResidents())))
-    if len(world.getRegionFromIndex(0).getSettlements()) >= 5:
-        print("Settlement 4 pop: " + str(world.getRegionFromIndex(0).getSettlementFromIndex(4).getPopulation()))
-        #print("Settlement 4 residents: " + str(len(world.getRegionFromIndex(0).getSettlementFromIndex(4).getResidents())))
-    if len(world.getRegionFromIndex(0).getSettlements()) >= 6:
-        print("Settlement 5 pop: " + str(world.getRegionFromIndex(0).getSettlementFromIndex(5).getPopulation()))
-        #print("Settlement 5 residents: " + str(len(world.getRegionFromIndex(0).getSettlementFromIndex(5).getResidents())))
-    if len(world.getRegionFromIndex(0).getSettlements()) >= 7:
-        print("Settlement 6 pop: " + str(world.getRegionFromIndex(0).getSettlementFromIndex(6).getPopulation()))
-        #print("Settlement 6 residents: " + str(len(world.getRegionFromIndex(0).getSettlementFromIndex(6).getResidents())))
-    if len(world.getRegionFromIndex(0).getSettlements()) >= 8:
-        print("Settlement 7 pop: " + str(world.getRegionFromIndex(0).getSettlementFromIndex(7).getPopulation()))
-        #print("Settlement 7 residents: " + str(len(world.getRegionFromIndex(0).getSettlementFromIndex(7).getResidents())))
-    if len(world.getRegionFromIndex(0).getSettlements()) >= 9:
-        print("Settlement 8 pop: " + str(world.getRegionFromIndex(0).getSettlementFromIndex(8).getPopulation()))
-        #print("Settlement 8 residents: " + str(len(world.getRegionFromIndex(0).getSettlementFromIndex(8).getResidents())))
-    if len(world.getRegionFromIndex(0).getSettlements()) >= 10:
-        print("Settlement 9 pop: " + str(world.getRegionFromIndex(0).getSettlementFromIndex(9).getPopulation()))
-        #print("Settlement 9 residents: " + str(len(world.getRegionFromIndex(0).getSettlementFromIndex(9).getResidents())))
-    if len(world.getRegionFromIndex(0).getSettlements()) >= 11:
-        print("Settlement 10 pop: " + str(world.getRegionFromIndex(0).getSettlementFromIndex(10).getPopulation()))
-        #print("Settlement 9 residents: " + str(len(world.getRegionFromIndex(0).getSettlementFromIndex(9).getResidents())))
-    if len(world.getRegionFromIndex(0).getSettlements()) >= 12:
-        print("Settlement 11 pop: " + str(world.getRegionFromIndex(0).getSettlementFromIndex(11).getPopulation()))
-        #print("Settlement 9 residents: " + str(len(world.getRegionFromIndex(0).getSettlementFromIndex(9).getResidents())))
+    # print("Settlement 0 pop: " + str(world.getRegionFromIndex(0).getSettlementFromIndex(0).getPopulation()))
+    # #print("Settlement 0 residents: " + str(len(world.getRegionFromIndex(0).getSettlementFromIndex(0).getResidents())))
+    # print("Settlement 1 pop: " + str(world.getRegionFromIndex(0).getSettlementFromIndex(1).getPopulation()))
+    # #print("Settlement 1 residents: " + str(len(world.getRegionFromIndex(0).getSettlementFromIndex(1).getResidents())))
+    # if len(world.getRegionFromIndex(0).getSettlements()) >= 3:
+    #     print("Settlement 2 pop: " + str(world.getRegionFromIndex(0).getSettlementFromIndex(2).getPopulation()))
+    #     #print("Settlement 2 residents: " + str(len(world.getRegionFromIndex(0).getSettlementFromIndex(2).getResidents())))
+    # if len(world.getRegionFromIndex(0).getSettlements()) >= 4:
+    #     print("Settlement 3 pop: " + str(world.getRegionFromIndex(0).getSettlementFromIndex(3).getPopulation()))
+    #     #print("Settlement 3 residents: " + str(len(world.getRegionFromIndex(0).getSettlementFromIndex(3).getResidents())))
+    # if len(world.getRegionFromIndex(0).getSettlements()) >= 5:
+    #     print("Settlement 4 pop: " + str(world.getRegionFromIndex(0).getSettlementFromIndex(4).getPopulation()))
+    #     #print("Settlement 4 residents: " + str(len(world.getRegionFromIndex(0).getSettlementFromIndex(4).getResidents())))
+    # if len(world.getRegionFromIndex(0).getSettlements()) >= 6:
+    #     print("Settlement 5 pop: " + str(world.getRegionFromIndex(0).getSettlementFromIndex(5).getPopulation()))
+    #     #print("Settlement 5 residents: " + str(len(world.getRegionFromIndex(0).getSettlementFromIndex(5).getResidents())))
+    # if len(world.getRegionFromIndex(0).getSettlements()) >= 7:
+    #     print("Settlement 6 pop: " + str(world.getRegionFromIndex(0).getSettlementFromIndex(6).getPopulation()))
+    #     #print("Settlement 6 residents: " + str(len(world.getRegionFromIndex(0).getSettlementFromIndex(6).getResidents())))
+    # if len(world.getRegionFromIndex(0).getSettlements()) >= 8:
+    #     print("Settlement 7 pop: " + str(world.getRegionFromIndex(0).getSettlementFromIndex(7).getPopulation()))
+    #     #print("Settlement 7 residents: " + str(len(world.getRegionFromIndex(0).getSettlementFromIndex(7).getResidents())))
+    # if len(world.getRegionFromIndex(0).getSettlements()) >= 9:
+    #     print("Settlement 8 pop: " + str(world.getRegionFromIndex(0).getSettlementFromIndex(8).getPopulation()))
+    #     #print("Settlement 8 residents: " + str(len(world.getRegionFromIndex(0).getSettlementFromIndex(8).getResidents())))
+    # if len(world.getRegionFromIndex(0).getSettlements()) >= 10:
+    #     print("Settlement 9 pop: " + str(world.getRegionFromIndex(0).getSettlementFromIndex(9).getPopulation()))
+    #     #print("Settlement 9 residents: " + str(len(world.getRegionFromIndex(0).getSettlementFromIndex(9).getResidents())))
+    # if len(world.getRegionFromIndex(0).getSettlements()) >= 11:
+    #     print("Settlement 10 pop: " + str(world.getRegionFromIndex(0).getSettlementFromIndex(10).getPopulation()))
+    #     #print("Settlement 9 residents: " + str(len(world.getRegionFromIndex(0).getSettlementFromIndex(9).getResidents())))
+    # if len(world.getRegionFromIndex(0).getSettlements()) >= 12:
+    #     print("Settlement 11 pop: " + str(world.getRegionFromIndex(0).getSettlementFromIndex(11).getPopulation()))
+    #     #print("Settlement 9 residents: " + str(len(world.getRegionFromIndex(0).getSettlementFromIndex(9).getResidents())))
 
 
 def main():
@@ -221,12 +222,23 @@ def main():
     families = initFamilies()
     people = initPeople(families)
 
+    windWithd = 1024
+    windHeight = 768
+
+    #pygame init stuff
+    pygame.init()
+    font1 = pygame.font.SysFont("calibri", 20)
+    screen = pygame.display.set_mode((windWithd, windHeight))
+    fps = 60
+    clock = pygame.time.Clock()
 
     manualOverride = False
 
     sun = True
 
-    pCount = 300
+    pressed = False
+
+    pCount = 1000
     pTime = 1000 / pCount
 
     tickStartTime = time.time() * 1000.0
@@ -240,7 +252,38 @@ def main():
 
             tickStartTime = time.time() * 1000.0
 
-        if world.getYear() == 700:
+
+
+        screen.fill((0, 0, 0), (0, 0, windWithd, windHeight))
+        text = font1.render("Year: " + str(world.getYear()), True, (255, 255, 255))
+        screen.blit(text, ((windWithd*0.90), 0))
+        iteration = 1
+        for region in world.getRegions():
+            text = font1.render(str(region.getRegionName()), True, (255, 255, 255))
+            screen.blit(text, ((windWithd * 0.05), 20*iteration))
+            iteration += 1
+            for settlement in region.getSettlements():
+                text = font1.render(str(settlement.getSettlementName()) + " (" + str(settlement.getSettlementType().value) + ")" + " - alive population (" + str(settlement.getPopulation()) + ")", True, (255, 255, 255))
+                screen.blit(text, ((windWithd * 0.10), 20 * iteration))
+                iteration += 1
+        pygame.display.update()  # Call this only once per loop
+        clock.tick(fps)
+
+        while pressed:  #For Pausing and resuming
+            for event in pygame.event.get():
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_SPACE:
+                        pressed = False
+                        continue
+            time.sleep(0.2)
+        for event in pygame.event.get():
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_SPACE:
+                    pressed = True
+                    continue
+
+
+        if world.getYear() == 1000:
             # for region in world.getRegions():
             #     for settlement in region.getSettlements():
             #         print(settlement.getSettlementName())
@@ -249,6 +292,7 @@ def main():
             #                 residentFamilyMember = filter(lambda person: person.lastName in uniqueFamily, settlement.getResidents())
             #                 print(uniqueFamily + " : " + str(len(list(residentFamilyMember))))
 
+            keyboard.wait("space")
             return
-main()
 
+main()

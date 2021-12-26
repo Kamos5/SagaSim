@@ -35,6 +35,9 @@ class Region():
     def getSettlementFromIndex(self, index):
         return self.settlements[index]
 
+    def getRegionName(self):
+        return self.regionName
+
 
     def getSettlements(self):
         return self.settlements
@@ -47,6 +50,7 @@ class Region():
         self.activeSettlements -= 1
     def setActiveSettlements(self, newActiveSettlements):
         self.activeSettlements = newActiveSettlements
+
     def getLowestPopulatedSettlement(self, world):
 
 

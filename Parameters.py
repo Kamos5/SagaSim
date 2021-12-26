@@ -1,20 +1,20 @@
 startingSettlementsPerRegion = 2
 startingNumberOfFamiliesPerRegion = 6
-startingNumberOfRegions = 1
+startingNumberOfRegions = 2
 startingYear = 500
 baseCitySize = 1000
 baseVillageSize = 200
-baseCityFertility = 80
+baseCityFertility = 90
 baseVillageFertility = 100
 percentagePopulationThresholdForMigration = 0.75
 percentageVillagePopulationThresholdForCreatingNewVillage = 0.5
 percentageVillagePopulationThresholdForUpgradeToTown = 0.75
-chancePerYearToUpgradeVillageToTown = 100
+chancePerYearToUpgradeVillageToTown = 80
 chanceForMigration = 25
 #aka how many village per town there must be
 villageToTownMultiplier = 3
-migrationWaveForTown = 15
-migrationWaveForVillage = 10
+migrationWaveForTown = 10
+migrationWaveForVillage = 20
 
 chanceForChangingLastNameDuringMigration = 5
 
