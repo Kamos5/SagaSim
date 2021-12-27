@@ -259,19 +259,20 @@ def main():
         regionsObjArray = []
         settlementsObjArray = []
 
-        regionsObjArray, settlementsObjArray, iteration = canvas.drawStuff(world, regionsObjArray, settlementsObjArray, iteration)
+        regionsObjArray, settlementsObjArray, iteration = canvas.drawStuff(world, families, regionsObjArray, settlementsObjArray, iteration)
 
         for event in pygame.event.get():
 
             if canvas.handleClickOnRegion(event, regionsObjArray):
-                canvas.refreshScreen(world, regionsObjArray, settlementsObjArray)
+                canvas.refreshScreen(world, families, regionsObjArray, settlementsObjArray)
+
             #Pause from mousclick on Time
             pausedPressed = canvas.pauseHandle(event, dateTimeObj, pausedPressed)
 
             while pausedPressed:  #For Pausing and resuming
                 for event in pygame.event.get():
                     if canvas.handleClickOnRegion(event, regionsObjArray):
-                        canvas.refreshScreen(world, regionsObjArray, settlementsObjArray)
+                        canvas.refreshScreen(world, families, regionsObjArray, settlementsObjArray)
                     pausedPressed = canvas.pauseHandle(event, dateTimeObj, pausedPressed)
 
         pygame.display.update()  # Call this only once per loop

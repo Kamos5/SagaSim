@@ -19,20 +19,36 @@ class Canvas():
 
         return dateTimerObj
 
+    def addFamilies(self, iteration):
+        text = self.font1.render("Families:", True, (255, 255, 255))
+        FamiliesObj = self.screen.blit(text, ((self.windowWidth * 0.05), 20 * iteration))
+
+    def addFamily(self, family, iteration):
+
+        text = self.font1.render(str(family.getFamilyName() + " (" + str(family.getAliveMemberNumber()) + ")"), True, (255, 255, 255))
+        self.screen.blit(text, ((self.windowWidth * 0.10), 20 * iteration))
+
+    def addRegions(self, iteration):
+        text = self.font1.render("Regions:", True, (255, 255, 255))
+        regionsObj = self.screen.blit(text, ((self.windowWidth * 0.05), 20 * iteration))
+
     def addRegion(self, region, regionsObjArray, iteration):
 
         text = self.font1.render(str(region.getRegionName()), True, (255, 255, 255))
-        regionsObjArray.append([self.screen.blit(text, ((self.windowWidth * 0.05), 20 * iteration)), region])
+        regionsObjArray.append([self.screen.blit(text, ((self.windowWidth * 0.10), 20 * iteration)), region])
 
         return regionsObjArray
 
     def addSettlement(self, region, settlement, settlementsObjArray, iteration):
         text = self.font1.render(str(settlement.getSettlementName()) + " (" + str(settlement.getSettlementType().value) + ")" + " - alive population (" + str(settlement.getPopulation()) + ")", True, (255, 255, 255))
-        settlementsObjArray.append([self.screen.blit(text, ((self.windowWidth * 0.10), 20 * iteration)), region, settlement])
+        settlementsObjArray.append([self.screen.blit(text, ((self.windowWidth * 0.15), 20 * iteration)), region, settlement])
 
         return settlementsObjArray
 
-    def drawStuff(self, world, regionsObjArray, settlementsObjArray, iteration):
+    def drawStuff(self, world, families, regionsObjArray, settlementsObjArray, iteration):
+
+        self.addRegions(iteration)
+        iteration += 1
 
         for region in world.getRegions():
             regionsObjArray = self.addRegion(region, regionsObjArray, iteration)
@@ -42,14 +58,22 @@ class Canvas():
                     settlementsObjArray = self.addSettlement(region, settlement, settlementsObjArray, iteration)
                     iteration += 1
 
+        self.addFamilies(iteration)
+        iteration += 1
+
+        for family in families:
+            self.addFamily(family, iteration)
+            iteration += 1
+
+
         return regionsObjArray, settlementsObjArray, iteration
 
-    def refreshScreen(self, world, regionsObjArray, settlementsObjArray):
+    def refreshScreen(self, world, families, regionsObjArray, settlementsObjArray):
 
         iteration = 1
         self.screen.fill((0, 0, 0), (0, 0, self.windowWidth, self.windowHeight))
         self.addDateTimer(world)
-        self.drawStuff(world, regionsObjArray, settlementsObjArray, iteration)
+        self.drawStuff(world, families, regionsObjArray, settlementsObjArray, iteration)
         pygame.display.update()
 
 
