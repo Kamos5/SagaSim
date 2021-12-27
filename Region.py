@@ -11,7 +11,13 @@ class Region():
         self.regionSize = 8
         self.activeSettlements = 0
         self.regionCulture = ''
+        self.uiExpand = True
 
+    def getUIExpand(self):
+        return self.uiExpand
+
+    def setUIExpand(self, newValue):
+        self.uiExpand = newValue
 
     def canAddSettlement(self):
         if len(self.getSettlements()) < self.regionSize:

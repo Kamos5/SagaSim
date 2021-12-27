@@ -2,6 +2,7 @@ import os
 import time
 from msvcrt import getch
 
+import Canvas
 import Events
 import FamilyFunctions as FF
 import FamilyInitGenerator as FIG
@@ -163,22 +164,22 @@ def running (world, families, people, manualOverride):
         breakSettlementsPopTime = end1 - start1
         end = time.time()
         fullTime = end-start
-        if fullTime > 0.0:
-            print("WorldTime: " + str(worldtime) + " %: " + str(worldtime/fullTime))
-            print("IncAgeTime: " + str(incAgeTime) + " %: " + str(incAgeTime/fullTime))
-            print("BirthTime: " + str(birthtime) + " %: " + str(birthtime/fullTime))
-            print("SpouseMMTime: " + str(spouseMMTime) + " %: " + str(spouseMMTime/fullTime))
-            print("breakSettlementsPopTime: " + str(breakSettlementsPopTime) + " %: " + str(breakSettlementsPopTime/fullTime))
-        print(fullTime)
+        # if fullTime > 0.0:
+        #     print("WorldTime: " + str(worldtime) + " %: " + str(worldtime/fullTime))
+        #     print("IncAgeTime: " + str(incAgeTime) + " %: " + str(incAgeTime/fullTime))
+        #     print("BirthTime: " + str(birthtime) + " %: " + str(birthtime/fullTime))
+        #     print("SpouseMMTime: " + str(spouseMMTime) + " %: " + str(spouseMMTime/fullTime))
+        #     print("breakSettlementsPopTime: " + str(breakSettlementsPopTime) + " %: " + str(breakSettlementsPopTime/fullTime))
+        # print(fullTime)
 
     for family in families:
         isAlive += family.getAliveMemberNumber()
         isDead += family.getDeadMemberNumber()
 
-    print("PeopleOBJNUMBER: " + str(len(people)))
-    print("Population alive: " + str(isAlive))
-    print("Population dead: " + str(isDead))
-    print("Population sum: " + str(isAlive+isDead))
+    # print("PeopleOBJNUMBER: " + str(len(people)))
+    # print("Population alive: " + str(isAlive))
+    # print("Population dead: " + str(isDead))
+    # print("Population sum: " + str(isAlive+isDead))
     # print("Settlement 0 pop: " + str(world.getRegionFromIndex(0).getSettlementFromIndex(0).getPopulation()))
     # #print("Settlement 0 residents: " + str(len(world.getRegionFromIndex(0).getSettlementFromIndex(0).getResidents())))
     # print("Settlement 1 pop: " + str(world.getRegionFromIndex(0).getSettlementFromIndex(1).getPopulation()))
@@ -222,13 +223,11 @@ def main():
     families = initFamilies()
     people = initPeople(families)
 
-    windWithd = 1024
-    windHeight = 768
+    windowWidth = 1024
+    windowHeight = 768
 
     #pygame init stuff
     pygame.init()
-    font1 = pygame.font.SysFont("calibri", 20)
-    screen = pygame.display.set_mode((windWithd, windHeight))
     fps = 60
     clock = pygame.time.Clock()
 
@@ -236,52 +235,47 @@ def main():
 
     sun = True
 
-    pressed = False
+    pausedPressed = False
+    regionPressed = ''
 
-    pCount = 1000
+    pCount = 10
     pTime = 1000 / pCount
 
     tickStartTime = time.time() * 1000.0
 
     while sun:
 
+        #GameLogic
         tickCurrentTime = time.time() * 1000.0
-
         if tickCurrentTime - tickStartTime >= pTime:
             running(world, families, people, manualOverride)
-
             tickStartTime = time.time() * 1000.0
 
-
-
-        screen.fill((0, 0, 0), (0, 0, windWithd, windHeight))
-        text = font1.render("Year: " + str(world.getYear()), True, (255, 255, 255))
-        screen.blit(text, ((windWithd*0.90), 0))
+        #VisualLogic
         iteration = 1
-        for region in world.getRegions():
-            text = font1.render(str(region.getRegionName()), True, (255, 255, 255))
-            screen.blit(text, ((windWithd * 0.05), 20*iteration))
-            iteration += 1
-            for settlement in region.getSettlements():
-                text = font1.render(str(settlement.getSettlementName()) + " (" + str(settlement.getSettlementType().value) + ")" + " - alive population (" + str(settlement.getPopulation()) + ")", True, (255, 255, 255))
-                screen.blit(text, ((windWithd * 0.10), 20 * iteration))
-                iteration += 1
+        canvas = Canvas.Canvas()
+
+        dateTimeObj = canvas.addDateTimer(world)
+        regionsObjArray = []
+        settlementsObjArray = []
+
+        regionsObjArray, settlementsObjArray, iteration = canvas.drawStuff(world, regionsObjArray, settlementsObjArray, iteration)
+
+        for event in pygame.event.get():
+
+            if canvas.handleClickOnRegion(event, regionsObjArray):
+                canvas.refreshScreen(world, regionsObjArray, settlementsObjArray)
+            #Pause from mousclick on Time
+            pausedPressed = canvas.pauseHandle(event, dateTimeObj, pausedPressed)
+
+            while pausedPressed:  #For Pausing and resuming
+                for event in pygame.event.get():
+                    if canvas.handleClickOnRegion(event, regionsObjArray):
+                        canvas.refreshScreen(world, regionsObjArray, settlementsObjArray)
+                    pausedPressed = canvas.pauseHandle(event, dateTimeObj, pausedPressed)
+
         pygame.display.update()  # Call this only once per loop
         clock.tick(fps)
-
-        while pressed:  #For Pausing and resuming
-            for event in pygame.event.get():
-                if event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_SPACE:
-                        pressed = False
-                        continue
-            time.sleep(0.2)
-        for event in pygame.event.get():
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_SPACE:
-                    pressed = True
-                    continue
-
 
         if world.getYear() == 1000:
             # for region in world.getRegions():

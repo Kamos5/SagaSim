@@ -1,9 +1,7 @@
 from Family import Family
 from Culture import Culture
 import Parameters
-from Region import Region
 import FamilyNameGenerator
-from Settlements import Settlements
 
 def Init(world):
 
