@@ -7,6 +7,7 @@ class Canvas():
         self.windowWidth = 1024
         self.windowHeight = 768
         self.screen = pygame.display.set_mode((self.windowWidth, self.windowHeight))
+        self.scroll_y = 0
 
     def clearCanvas(self):
 
@@ -15,13 +16,13 @@ class Canvas():
     def addDateTimer(self, world):
 
         text = self.font1.render("Year: " + str(world.getYear()), True, (255, 255, 255))
-        dateTimerObj = self.screen.blit(text, ((self.windowWidth * 0.90), 0))
+        dateTimerObj = self.screen.blit(text, ((self.windowWidth * 0.90), self.scroll_y))
 
         return dateTimerObj
 
     def addFamilies(self, iteration):
         text = self.font1.render("Families:", True, (255, 255, 255))
-        FamiliesObj = self.screen.blit(text, ((self.windowWidth * 0.05), 20 * iteration))
+        FamiliesObj = self.screen.blit(text, ((self.windowWidth * 0.05), 20 * iteration + self.scroll_y))
 
     def addFamily(self, family, iteration):
 
@@ -30,18 +31,18 @@ class Canvas():
 
     def addRegions(self, iteration):
         text = self.font1.render("Regions:", True, (255, 255, 255))
-        regionsObj = self.screen.blit(text, ((self.windowWidth * 0.05), 20 * iteration))
+        regionsObj = self.screen.blit(text, ((self.windowWidth * 0.05), 20 * iteration + self.scroll_y))
 
     def addRegion(self, region, regionsObjArray, iteration):
 
         text = self.font1.render(str(region.getRegionName()), True, (255, 255, 255))
-        regionsObjArray.append([self.screen.blit(text, ((self.windowWidth * 0.10), 20 * iteration)), region])
+        regionsObjArray.append([self.screen.blit(text, ((self.windowWidth * 0.10), 20 * iteration + self.scroll_y)), region])
 
         return regionsObjArray
 
     def addSettlement(self, region, settlement, settlementsObjArray, iteration):
         text = self.font1.render(str(settlement.getSettlementName()) + " (" + str(settlement.getSettlementType().value) + ")" + " - alive population (" + str(settlement.getPopulation()) + ")", True, (255, 255, 255))
-        settlementsObjArray.append([self.screen.blit(text, ((self.windowWidth * 0.15), 20 * iteration)), region, settlement])
+        settlementsObjArray.append([self.screen.blit(text, ((self.windowWidth * 0.15), 20 * iteration + self.scroll_y)), region, settlement])
 
         return settlementsObjArray
 
@@ -68,8 +69,9 @@ class Canvas():
 
         return regionsObjArray, settlementsObjArray, iteration
 
-    def refreshScreen(self, world, families, regionsObjArray, settlementsObjArray):
+    def refreshScreen(self, world, families, regionsObjArray, settlementsObjArray, scroll_y):
 
+        self.scroll_y = scroll_y
         iteration = 1
         self.screen.fill((0, 0, 0), (0, 0, self.windowWidth, self.windowHeight))
         self.addDateTimer(world)

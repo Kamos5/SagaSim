@@ -238,10 +238,12 @@ def main():
     pausedPressed = False
     regionPressed = ''
 
-    pCount = 10
+    pCount = 1000
     pTime = 1000 / pCount
 
     tickStartTime = time.time() * 1000.0
+
+    scroll_y = 0
 
     while sun:
 
@@ -262,6 +264,14 @@ def main():
         regionsObjArray, settlementsObjArray, iteration = canvas.drawStuff(world, families, regionsObjArray, settlementsObjArray, iteration)
 
         for event in pygame.event.get():
+
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if event.button == 4:
+                    scroll_y = min(scroll_y + 15, 0)
+                    canvas.refreshScreen(world, families, regionsObjArray, settlementsObjArray, scroll_y)
+                if event.button == 5:
+                    scroll_y = max(scroll_y - 15, -300)
+                    canvas.refreshScreen(world, families, regionsObjArray, settlementsObjArray, scroll_y)
 
             if canvas.handleClickOnRegion(event, regionsObjArray):
                 canvas.refreshScreen(world, families, regionsObjArray, settlementsObjArray)
