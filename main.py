@@ -226,6 +226,7 @@ def main():
     windowWidth = 1024
     windowHeight = 768
 
+
     #pygame init stuff
     pygame.init()
     fps = 60
