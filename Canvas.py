@@ -4,7 +4,7 @@ class Canvas():
 
     def __init__(self):
         self.font1 = pygame.font.SysFont("calibri", 20)
-        self.windowWidth = 1024
+        self.windowWidth = 1366
         self.windowHeight = 768
         self.screen = pygame.display.set_mode((self.windowWidth, self.windowHeight))
         self.scroll_y = 0
@@ -24,10 +24,27 @@ class Canvas():
         text = self.font1.render("Families:", True, (255, 255, 255))
         FamiliesObj = self.screen.blit(text, ((self.windowWidth * 0.05), 20 * iteration + self.scroll_y))
 
-    def addFamily(self, family, iteration):
+        return FamiliesObj
 
-        text = self.font1.render(str(family.getFamilyName() + " (" + str(family.getAliveMemberNumber()) + ")"), True, (255, 255, 255))
-        self.screen.blit(text, ((self.windowWidth * 0.10), 20 * iteration))
+
+    def addPerson(self, person, iteration):
+
+        firstName = str(person.firstName)
+        lastName = str(person.lastName)
+        age = str (person.age)
+        spouse = ''
+        if person.spouse != None:
+            spouse = person.spouse.firstName
+
+        text = self.font1.render(firstName + " " + lastName + " Age: " + age + " Spouse: " + spouse, True, (255, 255, 255))
+        self.screen.blit(text, ((self.windowWidth * 0.15), 20 * iteration + self.scroll_y))
+
+    def addFamily(self, family, familiesObjArray, iteration):
+
+        text = self.font1.render(str(family.getFamilyName() + " (" + str(family.getAliveMemberNumber()) + ")" + " Origin: " + str(family.getOriginRegion().getRegionName())), True, (255, 255, 255))
+        familiesObjArray.append([self.screen.blit(text, ((self.windowWidth * 0.10), 20 * iteration + self.scroll_y)), family])
+
+        return familiesObjArray
 
     def addRegions(self, iteration):
         text = self.font1.render("Regions:", True, (255, 255, 255))
@@ -46,7 +63,7 @@ class Canvas():
 
         return settlementsObjArray
 
-    def drawStuff(self, world, families, regionsObjArray, settlementsObjArray, iteration):
+    def drawStuff(self, world, families, regionsObjArray, settlementsObjArray, familiesObjArray, iteration):
 
         self.addRegions(iteration)
         iteration += 1
@@ -63,23 +80,28 @@ class Canvas():
         iteration += 1
 
         for family in families:
-            self.addFamily(family, iteration)
+            familiesObjArray = self.addFamily(family, familiesObjArray, iteration)
             iteration += 1
+            if family.getUIExpand():
+                for person in family.getAliveMembersList():
+                    self.addPerson(person, iteration)
+                    iteration += 1
 
 
         return regionsObjArray, settlementsObjArray, iteration
 
-    def refreshScreen(self, world, families, regionsObjArray, settlementsObjArray, scroll_y):
+    def refreshScreen(self, world, families, regionsObjArray, settlementsObjArray, peopleObjArray, scroll_y):
+
 
         self.scroll_y = scroll_y
         iteration = 1
-        self.screen.fill((0, 0, 0), (0, 0, self.windowWidth, self.windowHeight))
+        self.clearCanvas()
         self.addDateTimer(world)
-        self.drawStuff(world, families, regionsObjArray, settlementsObjArray, iteration)
+        self.drawStuff(world, families, regionsObjArray, settlementsObjArray, peopleObjArray, iteration)
         pygame.display.update()
 
 
-    def handleClickOnRegion(self, event, itemsObj):
+    def handleClickOnCollection(self, event, itemsObj, scroll_y):
 
         if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
             pos = pygame.mouse.get_pos()
@@ -89,6 +111,7 @@ class Canvas():
                     return True
 
             return False
+
 
 
     def pauseHandle(self, event, dateTimeObj, pausedPressed):

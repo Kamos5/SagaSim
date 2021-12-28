@@ -55,6 +55,14 @@ class Family:
         self.deadMemberNumber = 0
         self.deadMembersList = []
 
+        self.uiExpand = False
+
+    def getUIExpand(self):
+        return self.uiExpand
+
+    def setUIExpand(self, newValue):
+        self.uiExpand = newValue
+
     def getOriginRegion(self):
         return self.originRegion
     def setOriginRegion(self, newOriginRegion):

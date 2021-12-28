@@ -164,22 +164,22 @@ def running (world, families, people, manualOverride):
         breakSettlementsPopTime = end1 - start1
         end = time.time()
         fullTime = end-start
-        # if fullTime > 0.0:
-        #     print("WorldTime: " + str(worldtime) + " %: " + str(worldtime/fullTime))
-        #     print("IncAgeTime: " + str(incAgeTime) + " %: " + str(incAgeTime/fullTime))
-        #     print("BirthTime: " + str(birthtime) + " %: " + str(birthtime/fullTime))
-        #     print("SpouseMMTime: " + str(spouseMMTime) + " %: " + str(spouseMMTime/fullTime))
-        #     print("breakSettlementsPopTime: " + str(breakSettlementsPopTime) + " %: " + str(breakSettlementsPopTime/fullTime))
-        # print(fullTime)
+        if fullTime > 0.0:
+            print("WorldTime: " + str(worldtime) + " %: " + str(worldtime/fullTime))
+            print("IncAgeTime: " + str(incAgeTime) + " %: " + str(incAgeTime/fullTime))
+            print("BirthTime: " + str(birthtime) + " %: " + str(birthtime/fullTime))
+            print("SpouseMMTime: " + str(spouseMMTime) + " %: " + str(spouseMMTime/fullTime))
+            print("breakSettlementsPopTime: " + str(breakSettlementsPopTime) + " %: " + str(breakSettlementsPopTime/fullTime))
+        print(fullTime)
 
     for family in families:
         isAlive += family.getAliveMemberNumber()
         isDead += family.getDeadMemberNumber()
 
-    # print("PeopleOBJNUMBER: " + str(len(people)))
-    # print("Population alive: " + str(isAlive))
-    # print("Population dead: " + str(isDead))
-    # print("Population sum: " + str(isAlive+isDead))
+    print("PeopleOBJNUMBER: " + str(len(people)))
+    print("Population alive: " + str(isAlive))
+    print("Population dead: " + str(isDead))
+    print("Population sum: " + str(isAlive+isDead))
     # print("Settlement 0 pop: " + str(world.getRegionFromIndex(0).getSettlementFromIndex(0).getPopulation()))
     # #print("Settlement 0 residents: " + str(len(world.getRegionFromIndex(0).getSettlementFromIndex(0).getResidents())))
     # print("Settlement 1 pop: " + str(world.getRegionFromIndex(0).getSettlementFromIndex(1).getPopulation()))
@@ -243,7 +243,7 @@ def main():
 
     tickStartTime = time.time() * 1000.0
 
-    scroll_y = 0
+    canvas = Canvas.Canvas()
 
     while sun:
 
@@ -254,36 +254,27 @@ def main():
             tickStartTime = time.time() * 1000.0
 
         #VisualLogic
-        iteration = 1
-        canvas = Canvas.Canvas()
 
+        #ObjShowNumber
+        iteration = 1
+
+        canvas.clearCanvas()
         dateTimeObj = canvas.addDateTimer(world)
         regionsObjArray = []
         settlementsObjArray = []
+        familiesObjArray = []
 
-        regionsObjArray, settlementsObjArray, iteration = canvas.drawStuff(world, families, regionsObjArray, settlementsObjArray, iteration)
+        regionsObjArray, settlementsObjArray, iteration = canvas.drawStuff(world, families, regionsObjArray, settlementsObjArray, familiesObjArray, iteration)
+
+        pygame.display.update()
 
         for event in pygame.event.get():
 
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                if event.button == 4:
-                    scroll_y = min(scroll_y + 15, 0)
-                    canvas.refreshScreen(world, families, regionsObjArray, settlementsObjArray, scroll_y)
-                if event.button == 5:
-                    scroll_y = max(scroll_y - 15, -300)
-                    canvas.refreshScreen(world, families, regionsObjArray, settlementsObjArray, scroll_y)
-
-            if canvas.handleClickOnRegion(event, regionsObjArray):
-                canvas.refreshScreen(world, families, regionsObjArray, settlementsObjArray)
-
-            #Pause from mousclick on Time
-            pausedPressed = canvas.pauseHandle(event, dateTimeObj, pausedPressed)
-
+            pausedPressed = pygameEvents(event, canvas, families, regionsObjArray, settlementsObjArray, familiesObjArray, dateTimeObj, pausedPressed, iteration)
             while pausedPressed:  #For Pausing and resuming
                 for event in pygame.event.get():
-                    if canvas.handleClickOnRegion(event, regionsObjArray):
-                        canvas.refreshScreen(world, families, regionsObjArray, settlementsObjArray)
-                    pausedPressed = canvas.pauseHandle(event, dateTimeObj, pausedPressed)
+                    pausedPressed = pygameEvents(event, canvas, families, regionsObjArray, settlementsObjArray, familiesObjArray, dateTimeObj, pausedPressed, iteration)
+
 
         pygame.display.update()  # Call this only once per loop
         clock.tick(fps)
@@ -299,5 +290,26 @@ def main():
 
             keyboard.wait("space")
             return
+
+def pygameEvents(event, canvas, families, regionsObjArray, settlementsObjArray, familiesObjArray, dateTimeObj, pausedPressed, iteration):
+
+    if event.type == pygame.MOUSEBUTTONDOWN:
+        if event.button == 4:
+            scroll_y = min(canvas.scroll_y + 15, 0)
+            canvas.refreshScreen(world, families, regionsObjArray, settlementsObjArray, familiesObjArray, scroll_y)
+        if event.button == 5:
+            scroll_y = max(canvas.scroll_y - 15, -300)
+            canvas.refreshScreen(world, families, regionsObjArray, settlementsObjArray, familiesObjArray, scroll_y)
+
+    if canvas.handleClickOnCollection(event, regionsObjArray, canvas.scroll_y):
+        canvas.refreshScreen(world, families, regionsObjArray, settlementsObjArray, familiesObjArray, canvas.scroll_y)
+
+    if canvas.handleClickOnCollection(event, familiesObjArray, canvas.scroll_y):
+        canvas.refreshScreen(world, families, regionsObjArray, settlementsObjArray, familiesObjArray, canvas.scroll_y)
+
+    # Pause from mousclick on Time
+    pausedPressed = canvas.pauseHandle(event, dateTimeObj, pausedPressed)
+
+    return pausedPressed
 
 main()
