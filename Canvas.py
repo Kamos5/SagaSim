@@ -1,5 +1,8 @@
 import pygame
 
+from UI.Label import Label
+
+
 class Canvas():
 
     def __init__(self):
@@ -7,25 +10,31 @@ class Canvas():
         self.windowWidth = 1366
         self.windowHeight = 768
         self.screen = pygame.display.set_mode((self.windowWidth, self.windowHeight))
-        self.scroll_y = 0
+        self.listScreen = pygame.Surface([int(self.windowWidth/2), self.windowHeight])
+        self.listScroll_y = 0
+        self.dateTimerObj = None
+        self.regionsObjArray = []
+        self.familiesObjArray = []
+        self.personObjArray = []
+        self.settlementsObjArray = []
 
     def clearCanvas(self):
 
         self.screen.fill((0, 0, 0), (0, 0, self.windowWidth, self.windowHeight))
+        self.listScreen.fill((20, 20, 20), (0, 0, int(self.windowWidth/2), self.windowHeight))
+        self.dateTimerObj = None
+        self.regionsObjArray = []
+        self.familiesObjArray = []
 
     def addDateTimer(self, world):
 
-        text = self.font1.render("Year: " + str(world.getYear()), True, (255, 255, 255))
-        dateTimerObj = self.screen.blit(text, ((self.windowWidth * 0.90), self.scroll_y))
-
-        return dateTimerObj
+        label = Label("Year: " + str(world.getYear()), 100, 20, self.font1)
+        self.dateTimerObj = self.screen.blit(label.localSurface, (self.windowWidth * 0.92, 0))
 
     def addFamilies(self, iteration):
-        text = self.font1.render("Families:", True, (255, 255, 255))
-        FamiliesObj = self.screen.blit(text, ((self.windowWidth * 0.05), 20 * iteration + self.scroll_y))
 
-        return FamiliesObj
-
+        label = Label("Families: ", 300, 20, self.font1)
+        self.FamiliesObj = self.listScreen.blit(label.localSurface, (self.windowWidth * 0.05, 20 * iteration + self.listScroll_y))
 
     def addPerson(self, person, iteration):
 
@@ -36,72 +45,80 @@ class Canvas():
         if person.spouse != None:
             spouse = person.spouse.firstName
 
-        text = self.font1.render(firstName + " " + lastName + " Age: " + age + " Spouse: " + spouse, True, (255, 255, 255))
-        self.screen.blit(text, ((self.windowWidth * 0.15), 20 * iteration + self.scroll_y))
+        text = firstName + " " + lastName + " Age: " + age + " Spouse: " + spouse
 
-    def addFamily(self, family, familiesObjArray, iteration):
+        label = Label(text, 300, 20, self.font1)
+        self.personObjArray.append([self.listScreen.blit(label.localSurface, (self.windowWidth * 0.15, 20 * iteration + self.listScroll_y)), person])
 
-        text = self.font1.render(str(family.getFamilyName() + " (" + str(family.getAliveMemberNumber()) + ")" + " Origin: " + str(family.getOriginRegion().getRegionName())), True, (255, 255, 255))
-        familiesObjArray.append([self.screen.blit(text, ((self.windowWidth * 0.10), 20 * iteration + self.scroll_y)), family])
+    def addFamily(self, family, iteration):
 
-        return familiesObjArray
+        text = str(family.getFamilyName() + " (" + str(family.getAliveMemberNumber()) + ")" + " Origin: " + str(family.getOriginRegion().getRegionName()))
+
+        label = Label(text, 300, 20, self.font1)
+        self.familiesObjArray.append([self.listScreen.blit(label.localSurface, (self.windowWidth * 0.10, 20 * iteration + self.listScroll_y)), family])
 
     def addRegions(self, iteration):
-        text = self.font1.render("Regions:", True, (255, 255, 255))
-        regionsObj = self.screen.blit(text, ((self.windowWidth * 0.05), 20 * iteration + self.scroll_y))
 
-    def addRegion(self, region, regionsObjArray, iteration):
+        label = Label("Regions: ", 200, 20, self.font1)
+        self.listScreen.blit(label.localSurface, (self.windowWidth * 0.05, 20 * iteration + self.listScroll_y))
 
-        text = self.font1.render(str(region.getRegionName()), True, (255, 255, 255))
-        regionsObjArray.append([self.screen.blit(text, ((self.windowWidth * 0.10), 20 * iteration + self.scroll_y)), region])
 
-        return regionsObjArray
+    def addRegion(self, region, iteration):
 
-    def addSettlement(self, region, settlement, settlementsObjArray, iteration):
-        text = self.font1.render(str(settlement.getSettlementName()) + " (" + str(settlement.getSettlementType().value) + ")" + " - alive population (" + str(settlement.getPopulation()) + ")", True, (255, 255, 255))
-        settlementsObjArray.append([self.screen.blit(text, ((self.windowWidth * 0.15), 20 * iteration + self.scroll_y)), region, settlement])
+        label = Label(str(region.getRegionName()), 200, 20, self.font1)
+        self.regionsObjArray.append([self.listScreen.blit(label.localSurface, (self.windowWidth * 0.10, 20 * iteration + self.listScroll_y)), region])
 
-        return settlementsObjArray
+    def addSettlement(self, region, settlement, iteration):
 
-    def drawStuff(self, world, families, regionsObjArray, settlementsObjArray, familiesObjArray, iteration):
+        text = str(settlement.getSettlementName()) + " (" + str(settlement.getSettlementType().value) + ")" + " - alive population (" + str(settlement.getPopulation()) + ")"
+        label = Label(text, 400, 20, self.font1)
+        self.settlementsObjArray.append([self.listScreen.blit(label.localSurface, ((self.windowWidth * 0.15), 20 * iteration + self.listScroll_y)), region, settlement])
+
+    def drawStuff(self, world, families, iteration):
 
         self.addRegions(iteration)
         iteration += 1
 
         for region in world.getRegions():
-            regionsObjArray = self.addRegion(region, regionsObjArray, iteration)
+            self.addRegion(region, iteration)
             iteration += 1
             if region.getUIExpand():
                 for settlement in region.getSettlements():
-                    settlementsObjArray = self.addSettlement(region, settlement, settlementsObjArray, iteration)
+                    self.addSettlement(region, settlement, iteration)
                     iteration += 1
 
         self.addFamilies(iteration)
         iteration += 1
 
         for family in families:
-            familiesObjArray = self.addFamily(family, familiesObjArray, iteration)
+            self.addFamily(family, iteration)
             iteration += 1
             if family.getUIExpand():
                 for person in family.getAliveMembersList():
                     self.addPerson(person, iteration)
                     iteration += 1
 
+        self.screen.blit(self.listScreen, (0, 0))
+        return iteration
 
-        return regionsObjArray, settlementsObjArray, iteration
-
-    def refreshScreen(self, world, families, regionsObjArray, settlementsObjArray, peopleObjArray, scroll_y):
+    def refreshScreen(self, world, families, scroll_y):
 
 
-        self.scroll_y = scroll_y
+        self.listScroll_y = scroll_y
         iteration = 1
         self.clearCanvas()
         self.addDateTimer(world)
-        self.drawStuff(world, families, regionsObjArray, settlementsObjArray, peopleObjArray, iteration)
+        iteration = self.drawStuff(world, families, iteration)
         pygame.display.update()
 
 
-    def handleClickOnCollection(self, event, itemsObj, scroll_y):
+    def handleClickOnCollection(self, event, itemsObj):
+
+        if itemsObj == 'regionsObjArray':
+            itemsObj = self.regionsObjArray
+
+        if itemsObj == 'familiesObjArray':
+            itemsObj = self.familiesObjArray
 
         if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
             pos = pygame.mouse.get_pos()
@@ -114,11 +131,11 @@ class Canvas():
 
 
 
-    def pauseHandle(self, event, dateTimeObj, pausedPressed):
+    def pauseHandle(self, event, pausedPressed):
 
         if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
             pos = pygame.mouse.get_pos()
-            if dateTimeObj.collidepoint(pos):
+            if self.dateTimerObj.collidepoint(pos):
                 pausedPressed = not pausedPressed
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_SPACE:

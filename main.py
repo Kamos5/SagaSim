@@ -259,21 +259,18 @@ def main():
         iteration = 1
 
         canvas.clearCanvas()
-        dateTimeObj = canvas.addDateTimer(world)
-        regionsObjArray = []
-        settlementsObjArray = []
-        familiesObjArray = []
+        canvas.addDateTimer(world)
 
-        regionsObjArray, settlementsObjArray, iteration = canvas.drawStuff(world, families, regionsObjArray, settlementsObjArray, familiesObjArray, iteration)
+        iteration = canvas.drawStuff(world, families, iteration)
 
         pygame.display.update()
 
         for event in pygame.event.get():
 
-            pausedPressed = pygameEvents(event, canvas, families, regionsObjArray, settlementsObjArray, familiesObjArray, dateTimeObj, pausedPressed, iteration)
+            pausedPressed = pygameEvents(event, canvas, families, pausedPressed, iteration)
             while pausedPressed:  #For Pausing and resuming
                 for event in pygame.event.get():
-                    pausedPressed = pygameEvents(event, canvas, families, regionsObjArray, settlementsObjArray, familiesObjArray, dateTimeObj, pausedPressed, iteration)
+                    pausedPressed = pygameEvents(event, canvas, families, pausedPressed, iteration)
 
 
         pygame.display.update()  # Call this only once per loop
@@ -291,24 +288,24 @@ def main():
             keyboard.wait("space")
             return
 
-def pygameEvents(event, canvas, families, regionsObjArray, settlementsObjArray, familiesObjArray, dateTimeObj, pausedPressed, iteration):
+def pygameEvents(event, canvas, families, pausedPressed, iteration):
 
     if event.type == pygame.MOUSEBUTTONDOWN:
         if event.button == 4:
-            scroll_y = min(canvas.scroll_y + 15, 0)
-            canvas.refreshScreen(world, families, regionsObjArray, settlementsObjArray, familiesObjArray, scroll_y)
+            scroll_y = min(canvas.listScroll_y + 15, 0)
+            canvas.refreshScreen(world, families, scroll_y)
         if event.button == 5:
-            scroll_y = max(canvas.scroll_y - 15, -300)
-            canvas.refreshScreen(world, families, regionsObjArray, settlementsObjArray, familiesObjArray, scroll_y)
+            scroll_y = max(canvas.listScroll_y - 15, -300)
+            canvas.refreshScreen(world, families, scroll_y)
 
-    if canvas.handleClickOnCollection(event, regionsObjArray, canvas.scroll_y):
-        canvas.refreshScreen(world, families, regionsObjArray, settlementsObjArray, familiesObjArray, canvas.scroll_y)
+    if canvas.handleClickOnCollection(event, 'regionsObjArray'):
+        canvas.refreshScreen(world, families, canvas.listScroll_y)
 
-    if canvas.handleClickOnCollection(event, familiesObjArray, canvas.scroll_y):
-        canvas.refreshScreen(world, families, regionsObjArray, settlementsObjArray, familiesObjArray, canvas.scroll_y)
+    if canvas.handleClickOnCollection(event, 'familiesObjArray'):
+        canvas.refreshScreen(world, families, canvas.listScroll_y)
 
     # Pause from mousclick on Time
-    pausedPressed = canvas.pauseHandle(event, dateTimeObj, pausedPressed)
+    pausedPressed = canvas.pauseHandle(event, pausedPressed)
 
     return pausedPressed
 
