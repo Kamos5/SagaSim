@@ -127,6 +127,24 @@ class Person:
         self.region = self.homeRegion
         self.settlement = self.homeSettlement
 
+    def getFirstName(self):
+        return self.firstName
+
+    def getLastName(self):
+        return self.lastName
+
+    def getFamilyName(self):
+        return self.familyName
+
+    def getYearOfBirth(self):
+        return self.yearOfBirth
+
+    def getSex(self):
+        return self.sex
+
+    def getAge(self):
+        return self.age
+
     def increaseAge(self):
         self.age += 1
 
@@ -135,6 +153,21 @@ class Person:
 
     def getMother(self):
         return self.mother
+
+    def getSpouse(self):
+        return self.spouse
+
+    def getHairColor(self):
+        return self.hairColor
+
+    def getHeight(self):
+        return self.height
+
+    def getEyeColor(self):
+        return self.eyeColor
+
+    def getLifeEvent(self):
+        return self.lifeEvents
 
     def getChildrensList(self):
         return self.childrens

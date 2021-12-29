@@ -256,21 +256,20 @@ def main():
         #VisualLogic
 
         #ObjShowNumber
-        iteration = 1
 
         canvas.clearCanvas()
         canvas.addDateTimer(world)
 
-        iteration = canvas.drawStuff(world, families, iteration)
+        iteration = canvas.drawStuff(world, families)
 
         pygame.display.update()
 
         for event in pygame.event.get():
 
-            pausedPressed = pygameEvents(event, canvas, families, pausedPressed, iteration)
+            pausedPressed = pygameEvents(event, canvas, families, pausedPressed)
             while pausedPressed:  #For Pausing and resuming
                 for event in pygame.event.get():
-                    pausedPressed = pygameEvents(event, canvas, families, pausedPressed, iteration)
+                    pausedPressed = pygameEvents(event, canvas, families, pausedPressed)
 
 
         pygame.display.update()  # Call this only once per loop
@@ -288,21 +287,41 @@ def main():
             keyboard.wait("space")
             return
 
-def pygameEvents(event, canvas, families, pausedPressed, iteration):
+def pygameEvents(event, canvas, families, pausedPressed):
 
     if event.type == pygame.MOUSEBUTTONDOWN:
         if event.button == 4:
-            scroll_y = min(canvas.listScroll_y + 15, 0)
-            canvas.refreshScreen(world, families, scroll_y)
+            pos = pygame.mouse.get_pos()
+            scroll_y = min(canvas.listScroll_y + 30, 0)
+            canvas.refreshScreen(world, families, scroll_y, 0)
+            # if canvas.listScreenObj.collidepoint(pos):
+            #     scroll_y = min(canvas.listScroll_y + 30, 0)
+            #     canvas.refreshScreen(world, families, 0, scroll_y)
+            # elif canvas.detailsScreenObj.collidepoint(pos):
+            #     scroll_y = max(canvas.detailsScroll_y - 30, -int(canvas.windowHeight / 2))
+            #     canvas.refreshScreen(world, families, 0, scroll_y)
         if event.button == 5:
-            scroll_y = max(canvas.listScroll_y - 15, -int(canvas.windowHeight/2))
-            canvas.refreshScreen(world, families, scroll_y)
+            pos = pygame.mouse.get_pos()
+            scroll_y = max(canvas.listScroll_y - 30, -int(canvas.windowHeight/2))
+            canvas.refreshScreen(world, families, scroll_y, 0)
+            # if canvas.listScreenObj.collidepoint(pos):
+            #     scroll_y = min(canvas.listScroll_y + 30, 0)
+            #     canvas.refreshScreen(world, families, 0, scroll_y)
+            # elif canvas.detailsScreenObj.collidepoint(pos):
+            #     scroll_y = max(canvas.detailsScroll_y - 30, -int(canvas.windowHeight/2))
+            #     canvas.refreshScreen(world, families, scroll_y, 0)
 
     if canvas.handleClickOnCollection(event, 'regionsObjArray'):
-        canvas.refreshScreen(world, families, canvas.listScroll_y)
+        canvas.refreshScreen(world, families, canvas.listScroll_y, canvas.detailsScroll_y)
 
     if canvas.handleClickOnCollection(event, 'familiesObjArray'):
-        canvas.refreshScreen(world, families, canvas.listScroll_y)
+        canvas.refreshScreen(world, families, canvas.listScroll_y, canvas.detailsScroll_y)
+
+    if canvas.handleClickOnCollection(event, 'settlementsObjArray'):
+        canvas.refreshScreen(world, families, canvas.listScroll_y, canvas.detailsScroll_y)
+
+    if canvas.handleClickOnCollection(event, 'personObjArray'):
+        canvas.refreshScreen(world, families, canvas.listScroll_y, canvas.detailsScroll_y)
 
     # Pause from mousclick on Time
     pausedPressed = canvas.pauseHandle(event, pausedPressed)

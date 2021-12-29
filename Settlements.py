@@ -23,7 +23,7 @@ class Settlements:
 
         self.region = ''
         self.population = 0
-        self.fundedIn = year
+        self.foundedIn = year
         self.baseFertility = Parameters.baseVillageFertility
         self.fertilityModifier = 0
         self.residents = []
@@ -31,9 +31,6 @@ class Settlements:
         self.providesTo = None
         self.providedFrom = []
         self.maxPopulation = 0
-
-    def getSettlementName(self):
-        return self.name
 
     def getPopulation(self):
         return self.population
@@ -57,6 +54,9 @@ class Settlements:
 
     def setBaseFertility(self, newFertility):
         self.baseFertility = newFertility
+
+    def getFeatures(self):
+        return self.features
 
     def addFeature(self, feature):
         self.features.append(feature)
@@ -91,6 +91,8 @@ class Settlements:
             self.maxPopulation = Parameters.baseCitySize
             self.recalculatePopWithFeatures()
 
+    def getFounedIn(self):
+        return self.foundedIn
     def getResidents (self):
         return self.residents
     def addResident (self, person):

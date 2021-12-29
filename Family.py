@@ -94,6 +94,9 @@ class Family:
     def addOffspringBranch(self, family):
         self.familyOffstringBranches.append(family)
 
+    def getFoundedBy(self):
+        return self.foundedBy
+
     def setFoundedBy(self, person):
         self.foundedBy = person
 
