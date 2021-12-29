@@ -11,6 +11,7 @@ class Canvas():
         self.windowHeight = 768
         self.screen = pygame.display.set_mode((self.windowWidth, self.windowHeight))
         self.listScreen = pygame.Surface([int(self.windowWidth/2), self.windowHeight])
+        self.detailsScreen = pygame.Surface([int(self.windowWidth/2), self.windowHeight])
         self.listScroll_y = 0
         self.dateTimerObj = None
         self.regionsObjArray = []
@@ -22,6 +23,7 @@ class Canvas():
 
         self.screen.fill((0, 0, 0), (0, 0, self.windowWidth, self.windowHeight))
         self.listScreen.fill((20, 20, 20), (0, 0, int(self.windowWidth/2), self.windowHeight))
+        self.detailsScreen.fill((200, 200, 200), (0, 0, int(self.windowWidth/2), self.windowHeight))
         self.dateTimerObj = None
         self.regionsObjArray = []
         self.familiesObjArray = []
@@ -99,6 +101,7 @@ class Canvas():
                     iteration += 1
 
         self.screen.blit(self.listScreen, (0, 0))
+        self.screen.blit(self.detailsScreen, (int(self.windowWidth/2), 20))
         return iteration
 
     def refreshScreen(self, world, families, scroll_y):

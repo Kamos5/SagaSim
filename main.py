@@ -32,7 +32,7 @@ def initPeople(families):
 
 def running (world, families, people, manualOverride):
 
-    start = time.time()
+    start = time.perf_counter()
     print(world.getYear())
 
     isAliveFlag = False
@@ -137,32 +137,32 @@ def running (world, families, people, manualOverride):
         input()
 
     if timers:
-        start1 = time.time()
+        start1 = time.perf_counter()
     world.increaseYear()
     if timers:
-        end1 = time.time()
+        end1 = time.perf_counter()
         worldtime = end1 - start1
-        start1 = time.time()
+        start1 = time.perf_counter()
     Events.increaseAge(people, world)
     if timers:
-        end1 = time.time()
+        end1 = time.perf_counter()
         incAgeTime = end1 - start1
-        start1 = time.time()
+        start1 = time.perf_counter()
     Events.birthPeople(world, people)
     if timers:
-        end1 = time.time()
+        end1 = time.perf_counter()
         birthtime = end1 - start1
-        start1 = time.time()
+        start1 = time.perf_counter()
     FF.SpouseMatchmaking(families, people, world)
     if timers:
-        end1 = time.time()
+        end1 = time.perf_counter()
         spouseMMTime = end1 - start1
-        start1 = time.time()
+        start1 = time.perf_counter()
     Events.settlementsPopulationManagement(world, families)
     if timers:
-        end1 = time.time()
+        end1 = time.perf_counter()
         breakSettlementsPopTime = end1 - start1
-        end = time.time()
+        end = time.perf_counter()
         fullTime = end-start
         if fullTime > 0.0:
             print("WorldTime: " + str(worldtime) + " %: " + str(worldtime/fullTime))
@@ -295,7 +295,7 @@ def pygameEvents(event, canvas, families, pausedPressed, iteration):
             scroll_y = min(canvas.listScroll_y + 15, 0)
             canvas.refreshScreen(world, families, scroll_y)
         if event.button == 5:
-            scroll_y = max(canvas.listScroll_y - 15, -300)
+            scroll_y = max(canvas.listScroll_y - 15, -int(canvas.windowHeight/2))
             canvas.refreshScreen(world, families, scroll_y)
 
     if canvas.handleClickOnCollection(event, 'regionsObjArray'):
