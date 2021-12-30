@@ -23,6 +23,14 @@ class InspectorScreen:
         self.inspectorScreenSurface = pygame.Surface([self.width, self.height - self.heightOffSet])
 
 
+    def getScroll_y(self):
+
+        return self.scroll_y
+
+    def setScroll_y(self, newValue):
+
+        self.scroll_y = newValue
+
     def resetWriteLine(self):
 
         self.writeLine = 1

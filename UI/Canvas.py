@@ -92,7 +92,7 @@ class Canvas:
     def refreshScreen(self, world, families, listScroll_y, detailsScroll_y):
 
         self.listScreen.setScroll_y(listScroll_y)
-        self.detailsScroll_y = detailsScroll_y
+        self.inspectorScreen.setScroll_y(detailsScroll_y)
         self.clearCanvas()
         self.navBarScreen.addDateTimer(world)
         self.drawStuff(world, families)
