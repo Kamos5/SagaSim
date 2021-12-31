@@ -297,23 +297,14 @@ def pygameEvents(event, canvas, families, pausedPressed):
         if event.button == 5:
             pos = pygame.mouse.get_pos()
             if canvas.listScreenObj.collidepoint(pos):
-                scroll_y = max(canvas.listScreen.getScroll_y() - 30, -int(canvas.windowHeight/2))
+                scroll_y = max(canvas.listScreen.getScroll_y() - 30, -int(canvas.listScreen.height/2))
                 canvas.refreshScreen(world, families, scroll_y, canvas.inspectorScreen.getScroll_y())
             elif canvas.detailsScreenObj.collidepoint(pos):
-                scroll_y = max(canvas.inspectorScreen.getScroll_y() - 30, -int(canvas.windowHeight/2))
+                scroll_y = max(canvas.inspectorScreen.getScroll_y() - 30, -int(canvas.inspectorScreen.height/2))
                 canvas.refreshScreen(world, families, canvas.listScreen.getScroll_y(), scroll_y)
 
 
-    if canvas.handleClickOnCollection(event, 'regionsObjArray'):
-        canvas.refreshScreen(world, families, canvas.listScreen.getScroll_y(), canvas.inspectorScreen.getScroll_y())
-
-    if canvas.handleClickOnCollection(event, 'familiesObjArray'):
-        canvas.refreshScreen(world, families, canvas.listScreen.getScroll_y(), canvas.inspectorScreen.getScroll_y())
-
-    if canvas.handleClickOnCollection(event, 'settlementsObjArray'):
-        canvas.refreshScreen(world, families, canvas.listScreen.getScroll_y(), canvas.inspectorScreen.getScroll_y())
-
-    if canvas.handleClickOnCollection(event, 'personObjArray'):
+    if canvas.handleClickOnCollection(event):
         canvas.refreshScreen(world, families, canvas.listScreen.getScroll_y(), canvas.inspectorScreen.getScroll_y())
 
     # Pause from mousclick on Time

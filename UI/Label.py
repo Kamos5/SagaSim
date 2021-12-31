@@ -4,7 +4,7 @@ import pygame
 class Label:
 
 
-    def __init__(self, text, w, h, font, color=''):
+    def __init__(self, text, w, h, font, clickable=False, focused=0):
 
         self.localSurface = pygame.Surface([w, h])
         self.x = 0
@@ -12,13 +12,24 @@ class Label:
         self.w = w
         self.h = h
         self.font = font
-        self.basicRectColor = 50, 150, 50
-        self.activeColor = 100, 0, 100
-        self.textColor = 255, 255, 255
-        if color != 'active':
-            self.rectColor = self.basicRectColor
+        self.inactiveRectColor = 20, 20, 60
+        self.activeRectColor = 100, 0, 0
+        self.rectColor = self.inactiveRectColor
+        self.textColor = 220, 220, 220
+        self.inactiveBorderColor = 200, 200, 200
+        self.activeBorderColor = 50, 50, 50
+        self.borderColor = self.inactiveBorderColor
+        self.clickableBorderColor = 0, 200, 0
+        self.borderSize = 1
+        if focused != 1:
+            self.rectColor = self.inactiveRectColor
+            if clickable:
+                self.borderColor = self.clickableBorderColor
+            else:
+                self.borderColor = self.inactiveBorderColor
         else:
-            self.rectColor = self.activeColor
+            self.rectColor = self.activeRectColor
+            self.borderColor = self.activeBorderColor
 
         self.set(text)
 
@@ -28,7 +39,8 @@ class Label:
         self.addText(text)
 
     def addRect(self):
-        self.rect = pygame.draw.rect(self.localSurface, self.rectColor, (self.x, self.y, self.w, self.h), 1)
+        self.border = pygame.draw.rect(self.localSurface, self.borderColor, (self.x, self.y, self.w, self.h))
+        self.rect = pygame.draw.rect(self.localSurface, self.rectColor, (self.x+self.borderSize, self.y+self.borderSize, self.w-2*self.borderSize, self.h-2*self.borderSize))
 
     def addText(self, text):
         textSurface = self.font.render(text, True, self.textColor)

@@ -10,7 +10,7 @@ from UI.Label import Label
 
 class NavBarScreen:
 
-    def __init__(self, width, height, widthOffSet, heightOffSet):
+    def __init__(self, width, height, widthOffSet, heightOffSet, screenPosX, screenPosY):
 
         self.screenColor = 0, 0, 0
         self.writeLine = 1
@@ -18,8 +18,12 @@ class NavBarScreen:
         self.height = height
         self.widthOffSet = widthOffSet
         self.heightOffSet = heightOffSet
-        self.font1 = Fonts().getFont1()
+        self.font = Fonts()
+        self.textFont = self.font.getFont1()
+        self.lineHeight = self.font.getLineHeight()
         self.scroll_y = 0
+        self.screenPosX = screenPosX
+        self.screenPosY = screenPosY
 
         self.navBarScreenSurface = pygame.Surface([self.width, self.height - self.heightOffSet])
         self.listScreenSurfaceTimeRect = []
@@ -38,6 +42,6 @@ class NavBarScreen:
 
     def addDateTimer(self, world):
 
-        label = Label("Year: " + str(world.getYear()), 100, 20, self.font1)
+        label = Label("Year: " + str(world.getYear()), 100, self.lineHeight, self.textFont)
         self.listScreenSurfaceTimeRect.append(self.navBarScreenSurface.blit(label.localSurface, (self.width * 0.92, 0)))
 

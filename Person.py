@@ -172,6 +172,9 @@ class Person:
     def getChildrensList(self):
         return self.childrens
 
+    def getFamilyObjectRef(self):
+        return self.familyObjRef
+
     def changeLifeStatus(self, newLifeStatus):
         self.lifeStatus = newLifeStatus
 
