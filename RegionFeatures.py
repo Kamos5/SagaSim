@@ -4,7 +4,7 @@ class Features(Enum):
     #bonus to max pop, description
     RICHSOIL = 100, 'rich soil',
     RIVER = 50, 'river'
-    FISHSCHOOLS = 50, 'schoold of fish'
+    FISHSCHOOLS = 50, 'school of fish'
     ORCHARD = 50, 'oarchard'
     SILO = 25, 'silo'
     MILL = 25, 'mill'
