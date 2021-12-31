@@ -4,7 +4,7 @@ import pygame
 class Label:
 
 
-    def __init__(self, text, w, h, font, clickable=False, focused=0):
+    def __init__(self, text, w, h, font, clickable=False, focused=False, borderSize=1):
 
         self.localSurface = pygame.Surface([w, h])
         self.x = 0
@@ -20,8 +20,9 @@ class Label:
         self.activeBorderColor = 50, 50, 50
         self.borderColor = self.inactiveBorderColor
         self.clickableBorderColor = 0, 200, 0
-        self.borderSize = 1
-        if focused != 1:
+        self.borderSize = borderSize
+        self.focused = focused
+        if not self.focused:
             self.rectColor = self.inactiveRectColor
             if clickable:
                 self.borderColor = self.clickableBorderColor

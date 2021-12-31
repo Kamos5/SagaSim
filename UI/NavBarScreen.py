@@ -26,7 +26,7 @@ class NavBarScreen:
         self.screenPosY = screenPosY
 
         self.navBarScreenSurface = pygame.Surface([self.width, self.height - self.heightOffSet])
-        self.listScreenSurfaceTimeRect = []
+        self.navBarScreenSurfaceObjsRect = []
 
 
     def resetWriteLine(self):
@@ -42,6 +42,6 @@ class NavBarScreen:
 
     def addDateTimer(self, world):
 
-        label = Label("Year: " + str(world.getYear()), 100, self.lineHeight, self.textFont)
-        self.listScreenSurfaceTimeRect.append(self.navBarScreenSurface.blit(label.localSurface, (self.width * 0.92, 0)))
+        self.dateTimeLabel = Label("Year: " + str(world.getYear()), 100, self.lineHeight, self.textFont, True, False, 1)
+        self.navBarScreenSurfaceObjsRect.append([self.navBarScreenSurface.blit(self.dateTimeLabel.localSurface, (self.width * 0.92, 0)), 'Clock'])
 

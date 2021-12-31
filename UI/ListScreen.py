@@ -55,7 +55,7 @@ class ListScreen:
     def addRegion(self, region, focusObj):
 
         if focusObj == region:
-            label = Label(str(region.getRegionName()), 200, self.lineHeight, self.textFont, True, 1)
+            label = Label(str(region.getRegionName()), 200, self.lineHeight, self.textFont, True, True)
         else:
             label = Label(str(region.getRegionName()), 200, self.lineHeight, self.textFont, True)
 
@@ -67,7 +67,7 @@ class ListScreen:
 
         text = str(settlement.getSettlementName()) + " (" + str(settlement.getSettlementType().value) + ")" + " - alive population (" + str(settlement.getPopulation()) + ")"
         if focusObj == settlement:
-            label = Label(text, 400, self.lineHeight, self.textFont, True, 1)
+            label = Label(text, 400, self.lineHeight, self.textFont, True, True)
         else:
             label = Label(text, 400, self.lineHeight, self.textFont, True)
 
@@ -89,7 +89,7 @@ class ListScreen:
         text = str(family.getFamilyName() + " (" + str(family.getAliveMemberNumber()) + ")" + " Origin: " + str(family.getOriginRegion().getRegionName()))
 
         if focusObj == family:
-            label = Label(text, 300, self.lineHeight, self.textFont, True, 1)
+            label = Label(text, 300, self.lineHeight, self.textFont, True, True)
         else:
             label = Label(text, 300, self.lineHeight, self.textFont, True)
 
@@ -110,7 +110,7 @@ class ListScreen:
         text = firstName + " " + lastName + " Age: " + age + " Spouse: " + spouse
 
         if focusObj == person:
-            label = Label(text, 300, self.lineHeight, self.textFont, True, 1)
+            label = Label(text, 300, self.lineHeight, self.textFont, True, True)
 
         else:
             label = Label(text, 300, self.lineHeight, self.textFont, True)

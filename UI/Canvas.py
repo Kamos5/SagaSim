@@ -125,7 +125,7 @@ class Canvas:
 
         if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
             pos = pygame.mouse.get_pos()
-            if self.navBarScreen.listScreenSurfaceTimeRect[0].collidepoint(pos):
+            if self.navBarScreen.navBarScreenSurfaceObjsRect[0][0].collidepoint(pos):
                 pausedPressed = not pausedPressed
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_SPACE:
