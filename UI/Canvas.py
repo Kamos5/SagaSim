@@ -1,11 +1,8 @@
+from queue import LifoQueue
+
 import pygame
 
-from Family import Family
-from Person import Person
-from Region import Region
-from Settlements import Settlements
 from UI.InspectorScreen import InspectorScreen
-from UI.Label import Label
 from UI.ListScreen import ListScreen
 from UI.NavBarScreen import NavBarScreen
 
@@ -44,8 +41,6 @@ class Canvas:
         self.inspectorScreen = InspectorScreen(self.inspectorScreenWidth, self.inspectorScreenHeight, self.inspectorScreenWidthOffSet, self.inspectorScreenHeightOffSet)
         self.inspectorScreenSurface = self.inspectorScreen.getInspectorScreenSurface()
 
-        self.listScroll_y = 0
-        self.detailsScroll_y = 0
         self.dateTimerObj = None
         self.focusObj = None
 
@@ -67,7 +62,7 @@ class Canvas:
         self.listScreen.addRegions()
         self.inspectorScreen.resetWriteLine()
         self.inspectorScreen.addInspectorLabel()
-        if self.focusObj != None:
+        if self.focusObj is not None:
             self.inspectorScreen.addGeneralInspectorFields(self.focusObj)
 
         for region in world.getRegions():

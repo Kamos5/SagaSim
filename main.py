@@ -288,36 +288,33 @@ def pygameEvents(event, canvas, families, pausedPressed):
     if event.type == pygame.MOUSEBUTTONDOWN:
         if event.button == 4:
             pos = pygame.mouse.get_pos()
-            scroll_y = min(canvas.listScreen.getScroll_y() + 30, 0)
-            canvas.refreshScreen(world, families, scroll_y, 0)
-            # if canvas.listScreenObj.collidepoint(pos):
-            #     scroll_y = min(canvas.listScroll_y + 30, -int(canvas.windowHeight / 2))
-            #     canvas.refreshScreen(world, families, scroll_y, 0)
-            # elif canvas.detailsScreenObj.collidepoint(pos):
-            #     scroll_y = max(canvas.detailsScroll_y - 30, -int(canvas.windowHeight / 2))
-            #     canvas.refreshScreen(world, families, scroll_y, 0)
+            if canvas.listScreenObj.collidepoint(pos):
+                scroll_y = min(canvas.listScreen.getScroll_y() + 30, 0)
+                canvas.refreshScreen(world, families, scroll_y, canvas.inspectorScreen.getScroll_y())
+            elif canvas.detailsScreenObj.collidepoint(pos):
+                scroll_y = min(canvas.inspectorScreen.getScroll_y() + 30, 0)
+                canvas.refreshScreen(world, families, canvas.listScreen.getScroll_y(), scroll_y)
         if event.button == 5:
             pos = pygame.mouse.get_pos()
-            scroll_y = max(canvas.listScreen.getScroll_y() - 30, -int(canvas.windowHeight/2))
-            canvas.refreshScreen(world, families, scroll_y, 0)
-#             if canvas.listScreenObj.collidepoint(pos):
-#                 scroll_y = min(canvas.listScroll_y + 30, -int(canvas.windowHeight / 2))
-#                 canvas.refreshScreen(world, families, 0, scroll_y)
-#             elif canvas.detailsScreenObj.collidepoint(pos):
-#                 scroll_y = max(canvas.detailsScroll_y - 30, -int(canvas.windowHeight/2))
-#                 canvas.refreshScreen(world, families, 0, scroll_y)
+            if canvas.listScreenObj.collidepoint(pos):
+                scroll_y = max(canvas.listScreen.getScroll_y() - 30, -int(canvas.windowHeight/2))
+                canvas.refreshScreen(world, families, scroll_y, canvas.inspectorScreen.getScroll_y())
+            elif canvas.detailsScreenObj.collidepoint(pos):
+                scroll_y = max(canvas.inspectorScreen.getScroll_y() - 30, -int(canvas.windowHeight/2))
+                canvas.refreshScreen(world, families, canvas.listScreen.getScroll_y(), scroll_y)
+
 
     if canvas.handleClickOnCollection(event, 'regionsObjArray'):
-        canvas.refreshScreen(world, families, canvas.listScreen.getScroll_y(), canvas.detailsScroll_y)
+        canvas.refreshScreen(world, families, canvas.listScreen.getScroll_y(), canvas.inspectorScreen.getScroll_y())
 
     if canvas.handleClickOnCollection(event, 'familiesObjArray'):
-        canvas.refreshScreen(world, families, canvas.listScreen.getScroll_y(), canvas.detailsScroll_y)
+        canvas.refreshScreen(world, families, canvas.listScreen.getScroll_y(), canvas.inspectorScreen.getScroll_y())
 
     if canvas.handleClickOnCollection(event, 'settlementsObjArray'):
-        canvas.refreshScreen(world, families, canvas.listScreen.getScroll_y(), canvas.detailsScroll_y)
+        canvas.refreshScreen(world, families, canvas.listScreen.getScroll_y(), canvas.inspectorScreen.getScroll_y())
 
     if canvas.handleClickOnCollection(event, 'personObjArray'):
-        canvas.refreshScreen(world, families, canvas.listScreen.getScroll_y(), canvas.detailsScroll_y)
+        canvas.refreshScreen(world, families, canvas.listScreen.getScroll_y(), canvas.inspectorScreen.getScroll_y())
 
     # Pause from mousclick on Time
     pausedPressed = canvas.pauseHandle(event, pausedPressed)

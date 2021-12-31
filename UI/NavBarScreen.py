@@ -12,6 +12,7 @@ class NavBarScreen:
 
     def __init__(self, width, height, widthOffSet, heightOffSet):
 
+        self.screenColor = 0, 0, 0
         self.writeLine = 1
         self.width = width
         self.height = height
@@ -30,7 +31,7 @@ class NavBarScreen:
 
     def cleanScreen(self):
 
-        self.navBarScreenSurface.fill((0, 0, 0), (0, 0, self.width, self.height))
+        self.navBarScreenSurface.fill(self.screenColor, (0, 0, self.width, self.height))
 
     def getNavBarScreenSurface(self):
         return self.navBarScreenSurface

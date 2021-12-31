@@ -8,6 +8,7 @@ class ListScreen:
 
     def __init__(self, width, height, widthOffSet, heightOffSet):
 
+        self.screenColor = 20, 20, 20
         self.font1 = Fonts().getFont1()
         self.writeLine = 1
         self.width = width
@@ -37,7 +38,7 @@ class ListScreen:
 
     def cleanScreen(self):
 
-        self.listScreenSurface.fill((20, 20, 20), (0, 0, self.width, self.height))
+        self.listScreenSurface.fill(self.screenColor, (0, 0, self.width, self.height))
         self.listScreenSurfaceRegionsRect = []
         self.listScreenSurfaceSettlementsRect = []
         self.listScreenSurfaceFamiliesRect = []
@@ -55,11 +56,11 @@ class ListScreen:
 
     def addRegion(self, region, focusObj):
 
-        if focusObj != region:
-            label = Label(str(region.getRegionName()), 200, 20, self.font1)
-
         if focusObj == region:
             label = Label(str(region.getRegionName()), 200, 20, self.font1, 'active')
+
+        else:
+            label = Label(str(region.getRegionName()), 200, 20, self.font1)
 
         self.listScreenSurfaceRegionsRect.append([self.listScreenSurface.blit(label.localSurface, (self.width * 0.10, 20 * self.writeLine + self.scroll_y)), region])
         self.writeLine += 1
@@ -68,12 +69,10 @@ class ListScreen:
     def addSettlement(self, settlement, focusObj):
 
         text = str(settlement.getSettlementName()) + " (" + str(settlement.getSettlementType().value) + ")" + " - alive population (" + str(settlement.getPopulation()) + ")"
-
-        if focusObj != settlement:
-            label = Label(text, 400, 20, self.font1)
-
         if focusObj == settlement:
             label = Label(text, 400, 20, self.font1, 'active')
+        else:
+            label = Label(text, 400, 20, self.font1)
 
         self.listScreenSurfaceSettlementsRect.append([self.listScreenSurface.blit(label.localSurface, ((self.width * 0.15), 20 * self.writeLine + self.scroll_y)), settlement])
 
@@ -92,11 +91,10 @@ class ListScreen:
 
         text = str(family.getFamilyName() + " (" + str(family.getAliveMemberNumber()) + ")" + " Origin: " + str(family.getOriginRegion().getRegionName()))
 
-        if focusObj != family:
-            label = Label(text, 300, 20, self.font1)
-
         if focusObj == family:
             label = Label(text, 300, 20, self.font1, 'active')
+        else:
+            label = Label(text, 300, 20, self.font1)
 
         self.listScreenSurfaceFamiliesRect.append([self.listScreenSurface.blit(label.localSurface, (self.width * 0.10, 20 * self.writeLine + self.scroll_y)), family])
 
@@ -114,11 +112,11 @@ class ListScreen:
 
         text = firstName + " " + lastName + " Age: " + age + " Spouse: " + spouse
 
-        if focusObj != person:
-            label = Label(text, 300, 20, self.font1)
-
         if focusObj == person:
             label = Label(text, 300, 20, self.font1, 'active')
+
+        else:
+            label = Label(text, 300, 20, self.font1)
 
         self.listScreenSurfacePersonRect.append([self.listScreenSurface.blit(label.localSurface, (self.width * 0.15, 20 * self.writeLine + self.scroll_y)), person])
 

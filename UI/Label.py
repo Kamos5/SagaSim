@@ -14,6 +14,7 @@ class Label:
         self.font = font
         self.basicRectColor = 50, 150, 50
         self.activeColor = 100, 0, 100
+        self.textColor = 255, 255, 255
         if color != 'active':
             self.rectColor = self.basicRectColor
         else:
@@ -30,5 +31,5 @@ class Label:
         self.rect = pygame.draw.rect(self.localSurface, self.rectColor, (self.x, self.y, self.w, self.h), 1)
 
     def addText(self, text):
-        textSurface = self.font.render(text, True, (255, 255, 255))
+        textSurface = self.font.render(text, True, self.textColor)
         self.localSurface.blit(textSurface, (self.x, self.y))

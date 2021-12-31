@@ -12,6 +12,7 @@ class InspectorScreen:
 
     def __init__(self, width, height, widthOffSet, heightOffSet):
 
+        self.screenColor = 50, 50, 50
         self.writeLine = 1
         self.width = width
         self.height = height
@@ -37,7 +38,7 @@ class InspectorScreen:
 
     def cleanScreen(self):
 
-        self.inspectorScreenSurface.fill((50, 50, 50), (0, 0, self.width, self.height))
+        self.inspectorScreenSurface.fill(self.screenColor, (0, 0, self.width, self.height))
 
     def getInspectorScreenSurface(self):
         return self.inspectorScreenSurface
