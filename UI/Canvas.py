@@ -130,5 +130,7 @@ class Canvas:
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_SPACE:
                 pausedPressed = not pausedPressed
+            if event.key == pygame.K_q:
+                exit()
 
         return pausedPressed

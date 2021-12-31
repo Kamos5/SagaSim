@@ -1,13 +1,11 @@
 import time
-
-from UI import Canvas
 import Events
 import FamilyFunctions as FF
 import FamilyInitGenerator as FIG
 import MembersInitGenerator as MIG
 import Parameters
-import keyboard
 import pygame
+from UI import Canvas
 from World import World as World
 
 world = World()
@@ -280,7 +278,6 @@ def main():
             #                 residentFamilyMember = filter(lambda person: person.lastName in uniqueFamily, settlement.getResidents())
             #                 print(uniqueFamily + " : " + str(len(list(residentFamilyMember))))
 
-            keyboard.wait("space")
             return
 
 def pygameEvents(event, canvas, families, pausedPressed):
