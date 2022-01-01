@@ -172,6 +172,9 @@ class Person:
     def getChildrensList(self):
         return self.childrens
 
+    def getDeadChildrens(self):
+        return self.deadChildrens
+
     def getFamilyObjectRef(self):
         return self.familyObjRef
 

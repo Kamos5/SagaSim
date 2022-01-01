@@ -301,6 +301,11 @@ def pygameEvents(event, canvas, families, pausedPressed):
                 canvas.refreshScreen(world, families, canvas.listScreen.getScroll_y(), scroll_y)
 
 
+    if event.type == pygame.KEYDOWN:
+        if event.key == pygame.K_BACKSPACE:
+            if len(canvas.focusObj) > 0:
+                canvas.focusObj.pop(len(canvas.focusObj)-1)
+                canvas.refreshScreen(world, families, canvas.listScreen.getScroll_y(), canvas.inspectorScreen.getScroll_y())
     if canvas.handleClickOnCollection(event):
         canvas.refreshScreen(world, families, canvas.listScreen.getScroll_y(), canvas.inspectorScreen.getScroll_y())
 

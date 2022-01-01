@@ -169,6 +169,28 @@ class InspectorScreen:
         label = Label("Eye Color: " + str(object.getEyeColor().value[1]), 500, self.lineHeight, self.textFont)
         self.inspectorScreenSurface.blit(label.localSurface, (self.width * 0.05, self.lineHeight * self.writeLine + self.scroll_y))
         self.writeLine += 1
+        if len(object.getChildrensList()) > 0:
+            label = Label("Alive childrens:", 500, self.lineHeight, self.textFont)
+            self.inspectorScreenSurface.blit(label.localSurface, (self.width * 0.05, self.lineHeight * self.writeLine + self.scroll_y))
+            self.writeLine += 1
+            for children in object.getChildrensList():
+                if children.getSex().value[1] == 'M':
+                    label = Label("Son: " + children.getFirstName(), 500, self.lineHeight, self.textFont, True)
+                else:
+                    label = Label("Daughter: " + children.getFirstName(), 500, self.lineHeight, self.textFont, True)
+                self.inspectorScreenSurfaceObjsRect.append([self.inspectorScreenSurface.blit(label.localSurface, (self.width * 0.10, self.lineHeight * self.writeLine + self.scroll_y)), children])
+                self.writeLine += 1
+        if len(object.getDeadChildrens()) > 0:
+            label = Label("Deceased childrens:", 500, self.lineHeight, self.textFont)
+            self.inspectorScreenSurface.blit(label.localSurface, (self.width * 0.05, self.lineHeight * self.writeLine + self.scroll_y))
+            self.writeLine += 1
+            for children in object.getDeadChildrens():
+                if children.getSex().value[1] == 'M':
+                    label = Label("Son: " + children.getFirstName(), 500, self.lineHeight, self.textFont, True)
+                else:
+                    label = Label("Daughter: " + children.getFirstName(), 500, self.lineHeight, self.textFont, True)
+                self.inspectorScreenSurfaceObjsRect.append([self.inspectorScreenSurface.blit(label.localSurface, (self.width * 0.10, self.lineHeight * self.writeLine + self.scroll_y)), children])
+                self.writeLine += 1
         label = Label("Life events:", 500, self.lineHeight, self.textFont)
         self.inspectorScreenSurface.blit(label.localSurface, (self.width * 0.05, self.lineHeight * self.writeLine + self.scroll_y))
         self.writeLine += 1

@@ -81,10 +81,13 @@ def deathProcedures(person, world):
 
     if person.age < 15:
         PLEH.lostChild(person.mother, person, world)
-        person.getMother().childrens.remove(person)
-        person.getFather().childrens.remove(person)
-        person.getMother().deadChildrens.append(person)
-        person.getFather().deadChildrens.append(person)
+    if person.getFather() != '':
+        person.getFather().getChildrensList().remove(person)
+        person.getFather().getDeadChildrens().append(person)
+    if person.getMother() != '':
+        person.getMother().getChildrensList().remove(person)
+        person.getMother().getDeadChildrens().append(person)
+
     # adding dead kids to the list od dead children
     # not needed. all kids that have Status.DEAD in child list is what we need
 
