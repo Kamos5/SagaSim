@@ -94,13 +94,11 @@ class InspectorScreen:
         label = Label("Founded in: " + str(object.getFounedIn()), 500, self.lineHeight, self.textFont)
         self.inspectorScreenSurface.blit(label.localSurface, (self.width * 0.05, self.lineHeight * self.writeLine + self.scroll_y))
         self.writeLine += 1
-        # label = Label("Residents:", 500, self.lineHeight, self.textFont)
-        # self.detailsScreen.blit(label.localSurface, (self.windowWidth * 0.05, self.lineHeight * inspectorLine))
-        # inspectorLine += 1
-        # for resident in object.getResidents():
-        #     label = Label(str(resident.getFirstName() + " " + str(resident.getLastName())), 500, self.lineHeight, self.textFont)
-        #     self.detailsScreen.blit(label.localSurface, (self.windowWidth * 0.10, self.lineHeight * inspectorLine))
-        #     inspectorLine += 1
+        if object.getProvision() is not None:
+            label = Label("Provides to: " + str(object.getProvision()), 500, self.lineHeight, self.textFont, True)
+            self.inspectorScreenSurfaceObjsRect.append([self.inspectorScreenSurface.blit(label.localSurface, (self.width * 0.05, self.lineHeight * self.writeLine + self.scroll_y)), object.getProvision()])
+            self.writeLine += 1
+
         label = Label("Features:", 500, self.lineHeight, self.textFont)
         self.inspectorScreenSurface.blit(label.localSurface, (self.width * 0.05, self.lineHeight * self.writeLine + self.scroll_y))
         self.writeLine += 1
@@ -118,8 +116,8 @@ class InspectorScreen:
         label = Label("Founding year: " + str(object.getFoundingYear()), 500, self.lineHeight, self.textFont)
         self.inspectorScreenSurface.blit(label.localSurface, (self.width * 0.05, self.lineHeight * self.writeLine + self.scroll_y))
         self.writeLine += 1
-        label = Label("Founded by: " + str(object.getFoundedBy().getFirstName()) + " " + str(object.getFoundedBy().getLastName()), 500, self.lineHeight, self.textFont)
-        self.inspectorScreenSurface.blit(label.localSurface, (self.width * 0.05, self.lineHeight * self.writeLine + self.scroll_y))
+        label = Label("Founded by: " + str(object.getFoundedBy().getFirstName()) + " " + str(object.getFoundedBy().getLastName()), 500, self.lineHeight, self.textFont, True)
+        self.inspectorScreenSurfaceObjsRect.append([self.inspectorScreenSurface.blit(label.localSurface, (self.width * 0.05, self.lineHeight * self.writeLine + self.scroll_y)), object.getFoundedBy()])
         self.writeLine += 1
         label = Label("Original region: " + str(object.getOriginRegion().getRegionName()), 500, self.lineHeight, self.textFont, True)
         self.inspectorScreenSurfaceObjsRect.append([self.inspectorScreenSurface.blit(label.localSurface, (self.width * 0.05, self.lineHeight * self.writeLine + self.scroll_y)), object.getOriginRegion()])
@@ -137,7 +135,7 @@ class InspectorScreen:
         self.inspectorScreenSurface.blit(label.localSurface, (self.width * 0.05, self.lineHeight * self.writeLine + self.scroll_y))
         self.writeLine += 1
         label = Label("Family name: " + str(object.getFamilyName()), 500, self.lineHeight, self.textFont, True)
-        self.inspectorScreenSurfaceObjsRect.append([self.inspectorScreenSurface.blit(label.localSurface, (self.width * 0.05, self.lineHeight * self.writeLine + self.scroll_y)), object.getFamilyObjectRef()])
+        self.inspectorScreenSurfaceObjsRect.append([self.inspectorScreenSurface.blit(label.localSurface, (self.width * 0.05, self.lineHeight * self.writeLine + self.scroll_y)), object.getOriginFamilyObjectRef()])
         self.writeLine += 1
         label = Label("Year of birth: " + str(object.getYearOfBirth()), 500, self.lineHeight, self.textFont)
         self.inspectorScreenSurface.blit(label.localSurface, (self.width * 0.05, self.lineHeight * self.writeLine + self.scroll_y))

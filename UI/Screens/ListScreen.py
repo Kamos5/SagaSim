@@ -101,7 +101,7 @@ class ListScreen:
 
     def addFamily(self, family, focusObj):
 
-        text = str(family.getFamilyName() + " Origin: " + str(family.getOriginRegion().getRegionName()))
+        text = str(family.getFamilyName() + " (" + str(family.getAliveMemberNumber()) + ")" + " - " + " Origin: " + str(family.getOriginRegion().getRegionName()))
 
         if focusObj == family:
             label = Label(text, 300, self.lineHeight, self.textFont, True, True)
@@ -112,6 +112,25 @@ class ListScreen:
 
         self.writeLine += 1
 
+    def addSettler(self, person, focusObj):
+
+        firstName = str(person.getFirstName())
+        lastName = str(person.getLastName())
+        age = str (person.age)
+        maritalStatus = str(person.maritalStatus.value)
+        text = firstName + " " + lastName + " Age: " + age + " " + maritalStatus
+
+        if focusObj == person:
+            label = Label(text, 400, self.lineHeight, self.textFont, True, True)
+
+        else:
+            label = Label(text, 400, self.lineHeight, self.textFont, True)
+
+        if self.textSearchField is not None:
+            if self.textSearchField.getText().upper() in person.getLastName().upper() or self.textSearchField.getText().lower() in person.getLastName().lower() or self.textSearchField.getText().upper() in person.getFirstName().upper() or self.textSearchField.getText().lower() in person.getFirstName().lower():
+                self.listScreenSurfaceObjsRect.append([self.listScreenSurface.blit(label.localSurface, (self.width * 0.20, self.lineHeight * self.writeLine + self.scroll_y)), person])
+
+                self.writeLine += 1
 
     def addPerson(self, person, focusObj):
 

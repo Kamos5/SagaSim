@@ -31,6 +31,13 @@ class Settlements:
         self.providesTo = None
         self.providedFrom = []
         self.maxPopulation = 0
+        self.uiExpand = False
+
+    def getUIExpand(self):
+        return self.uiExpand
+
+    def setUIExpand(self, newValue):
+        self.uiExpand = newValue
 
     def getPopulation(self):
         return self.population

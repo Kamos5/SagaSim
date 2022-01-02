@@ -13,6 +13,7 @@ class Person:
         self.secondName = ''
         self.lastName = ''
         self.familyName = ''
+        self.originFamilyObjRef = ''
         self.familyObjRef = ''
         self.homeRegion = ''
         self.region = ''
@@ -82,7 +83,7 @@ class Person:
             self.sexGen1 = [Sexes.FEMALE, 0]
             self.sexGen2 = [Sexes.FEMALE, 0]
 
-        self.fertility = 80
+        self.fertility = 50
         self.heightGen = Utils.randomRange(155, 165)
         self.height = self.heightGen
         self.hairColor = hairColor
@@ -92,6 +93,7 @@ class Person:
         self.eyeColorGen1 = eyeColorGen1
         self.eyeColorGen2 = eyeColorGen2
         self.familyObjRef = familyObj
+        self.originFamilyObjRef = familyObj
         self.homeRegion = familyObj.getOriginRegion()
         self.region = self.homeRegion
         self.homeSettlement = familyObj.getOriginSettlement()
@@ -121,6 +123,7 @@ class Person:
         self.father = father
         self.trueMother = trueMother
         self.trueFather = trueFather
+        self.originFamilyObjRef = familyObj
         self.familyObjRef = familyObj
         self.homeRegion = father.getRegion()
         self.homeSettlement = father.getSettlement()
@@ -180,6 +183,9 @@ class Person:
 
     def getFamilyObjectRef(self):
         return self.familyObjRef
+
+    def getOriginFamilyObjectRef(self):
+        return self.originFamilyObjRef
 
     def changeLifeStatus(self, newLifeStatus):
         self.lifeStatus = newLifeStatus

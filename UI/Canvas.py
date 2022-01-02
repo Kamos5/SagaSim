@@ -77,6 +77,9 @@ class Canvas:
             if region.getUIExpand():
                 for settlement in region.getSettlements():
                     self.listScreen.addSettlement(settlement, self.lastFocusObj)
+                    if settlement.getUIExpand():
+                        for person in settlement.getResidents():
+                            self.listScreen.addSettler(person, self.lastFocusObj)
 
         self.listScreen.addFamilies()
 

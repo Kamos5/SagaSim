@@ -270,7 +270,7 @@ def main():
         pygame.display.update()  # Call this only once per loop
         clock.tick(fps)
 
-        if world.getYear() == 1000:
+        if world.getYear() == 1200:
             # for region in world.getRegions():
             #     for settlement in region.getSettlements():
             #         print(settlement.getSettlementName())
@@ -283,25 +283,35 @@ def main():
 
 def pygameEvents(event, canvas, families, pausedPressed):
 
+    #scrolling logic
     if event.type == pygame.MOUSEBUTTONDOWN:
+        #scroll up
         if event.button == 4:
             pos = pygame.mouse.get_pos()
             if canvas.listScreenObj.collidepoint(pos):
-                scroll_y = min(canvas.listScreen.getScroll_y() + 30, 0)
+                scroll_y = min(canvas.listScreen.getScroll_y() + 50, 0)
                 canvas.refreshScreen(world, families, scroll_y, canvas.inspectorScreen.getScroll_y())
             elif canvas.detailsScreenObj.collidepoint(pos):
-                scroll_y = min(canvas.inspectorScreen.getScroll_y() + 30, 0)
+                scroll_y = min(canvas.inspectorScreen.getScroll_y() + 50, 0)
                 canvas.refreshScreen(world, families, canvas.listScreen.getScroll_y(), scroll_y)
+        # scroll down
         if event.button == 5:
             pos = pygame.mouse.get_pos()
             if canvas.listScreenObj.collidepoint(pos):
-                scroll_y = max(canvas.listScreen.getScroll_y() - 30, -int(canvas.listScreen.height/2))
+                if canvas.listScreen.lineHeight*canvas.listScreen.writeLine > canvas.listScreen.height/2:
+                    scroll_y = max(canvas.listScreen.getScroll_y() - 50, -int(canvas.listScreen.lineHeight*canvas.listScreen.writeLine) + canvas.listScreen.height/2)
+                else:
+                    scroll_y = 0
                 canvas.refreshScreen(world, families, scroll_y, canvas.inspectorScreen.getScroll_y())
             elif canvas.detailsScreenObj.collidepoint(pos):
-                scroll_y = max(canvas.inspectorScreen.getScroll_y() - 30, -int(canvas.inspectorScreen.height/2))
+                if canvas.inspectorScreen.lineHeight*canvas.inspectorScreen.writeLine > canvas.inspectorScreen.height/2:
+                    scroll_y = max(canvas.inspectorScreen.getScroll_y() - 50, -int(canvas.inspectorScreen.lineHeight*canvas.inspectorScreen.writeLine) + canvas.inspectorScreen.height/2)
+                else:
+                    scroll_y = 0
                 canvas.refreshScreen(world, families, canvas.listScreen.getScroll_y(), scroll_y)
 
 
+    #going to previous focusObj
     if event.type == pygame.KEYDOWN:
         if event.key == pygame.K_LEFT:
             if len(canvas.focusObj) > 0:
