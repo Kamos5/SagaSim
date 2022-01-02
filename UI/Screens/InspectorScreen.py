@@ -145,6 +145,9 @@ class InspectorScreen:
         label = Label("Age: " + str(object.getAge()), 500, self.lineHeight, self.textFont)
         self.inspectorScreenSurface.blit(label.localSurface, (self.width * 0.05, self.lineHeight * self.writeLine + self.scroll_y))
         self.writeLine += 1
+        label = Label("Life Status: " + str(object.getLifeStatus().value), 500, self.lineHeight, self.textFont)
+        self.inspectorScreenSurface.blit(label.localSurface, (self.width * 0.05, self.lineHeight * self.writeLine + self.scroll_y))
+        self.writeLine += 1
         label = Label("Sex: " + str(object.getSex().value[1]), 500, self.lineHeight, self.textFont)
         self.inspectorScreenSurface.blit(label.localSurface, (self.width * 0.05, self.lineHeight * self.writeLine + self.scroll_y))
         self.writeLine += 1

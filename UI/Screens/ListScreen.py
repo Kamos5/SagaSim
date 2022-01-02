@@ -101,7 +101,7 @@ class ListScreen:
 
     def addFamily(self, family, focusObj):
 
-        text = str(family.getFamilyName() + " (" + str(family.getAliveMemberNumber()) + ")" + " Origin: " + str(family.getOriginRegion().getRegionName()))
+        text = str(family.getFamilyName() + " Origin: " + str(family.getOriginRegion().getRegionName()))
 
         if focusObj == family:
             label = Label(text, 300, self.lineHeight, self.textFont, True, True)
@@ -118,17 +118,14 @@ class ListScreen:
         firstName = str(person.getFirstName())
         lastName = str(person.getLastName())
         age = str (person.age)
-        spouse = ''
-        if person.getSpouse() != None:
-            spouse = person.spouse.getFirstName()
-
-        text = firstName + " " + lastName + " Age: " + age + " Spouse: " + spouse
+        maritalStatus = str(person.maritalStatus.value)
+        text = firstName + " " + lastName + " Age: " + age + " " + maritalStatus
 
         if focusObj == person:
-            label = Label(text, 300, self.lineHeight, self.textFont, True, True)
+            label = Label(text, 400, self.lineHeight, self.textFont, True, True)
 
         else:
-            label = Label(text, 300, self.lineHeight, self.textFont, True)
+            label = Label(text, 400, self.lineHeight, self.textFont, True)
 
         if self.textSearchField is not None:
             if self.textSearchField.getText().upper() in person.getLastName().upper() or self.textSearchField.getText().lower() in person.getLastName().lower() or self.textSearchField.getText().upper() in person.getFirstName().upper() or self.textSearchField.getText().lower() in person.getFirstName().lower():

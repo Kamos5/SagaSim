@@ -145,6 +145,9 @@ class Person:
     def getAge(self):
         return self.age
 
+    def getLifeStatus(self):
+        return self.lifeStatus
+
     def increaseAge(self):
         self.age += 1
 
