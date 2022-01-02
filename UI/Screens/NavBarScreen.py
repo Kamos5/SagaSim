@@ -32,9 +32,16 @@ class NavBarScreen:
     def cleanScreen(self):
 
         self.navBarScreenSurface.fill(self.screenColor, (0, 0, self.width, self.height))
+        self.navBarScreenSurfaceObjsRect = []
 
     def getNavBarScreenSurface(self):
         return self.navBarScreenSurface
+
+    def addHelp (self):
+
+        self.helpLabel = Label("Help", 50, self.lineHeight, self.textFont, True, True, 1)
+        self.navBarScreenSurfaceObjsRect.append([self.navBarScreenSurface.blit(self.helpLabel.localSurface, (self.width * 0.01, 0)), 'Help'])
+
 
     def addDateTimer(self, world):
 

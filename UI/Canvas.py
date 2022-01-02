@@ -1,5 +1,6 @@
 import pygame
 
+from UI.Screens.HelpScreen import HelpScreen
 from UI.Screens.InspectorScreen import InspectorScreen
 from UI.Screens.ListScreen import ListScreen
 from UI.Screens.NavBarScreen import NavBarScreen
@@ -19,6 +20,13 @@ class Canvas:
         self.navBarPosX = 0
         self.navBarPosY = 0
 
+        self.helpWidth = int(self.windowWidth*3/4)
+        self.helpHeight = int(self.windowHeight*3/4)
+        self.helpWidthOffSet = 0
+        self.helpHeightOffSet = 0
+        self.helpPosX = int(self.windowWidth/8)
+        self.helpPosY = int(self.windowHeight/8)
+
         self.listScreenWidth = int(self.windowWidth/2)
         self.listScreenHeight = self.windowHeight
         self.listScreenWidthOffSet = 0
@@ -35,6 +43,9 @@ class Canvas:
 
         self.screen = pygame.display.set_mode((self.windowWidth, self.windowHeight))
 
+        self.helpScreen = HelpScreen(self.helpWidth, self.helpHeight, self.helpWidthOffSet, self.helpHeightOffSet, self.helpPosX, self.helpPosY)
+        self.helpScreenSurface = self.helpScreen.getHelpScreenSurface()
+
         self.navBarScreen = NavBarScreen(self.navbarWidth, self.navBarHeight, self.navBarWidthOffSet, self.navBarHeightOffSet, self.navBarPosX, self.navBarPosY)
         self.navBarScreenSurface = self.navBarScreen.getNavBarScreenSurface()
 
@@ -48,9 +59,12 @@ class Canvas:
         self.focusObj = []
         self.lastFocusObj = None
 
+        self.showHelp = False
+
     def clearCanvas(self):
 
         self.screen.fill((0, 0, 0), (0, 0, self.windowWidth, self.windowHeight))
+        HelpScreen.cleanScreen(self.helpScreen)
         NavBarScreen.cleanScreen(self.navBarScreen)
         ListScreen.cleanScreen(self.listScreen)
         InspectorScreen.cleanScreen(self.inspectorScreen)
@@ -94,11 +108,15 @@ class Canvas:
         self.listScreenObj = self.screen.blit(self.listScreenSurface, (self.listScreenPosX, self.listScreenPosY))
         self.detailsScreenObj = self.screen.blit(self.inspectorScreenSurface, (self.inspectorScreenPosX, self.inspectorScreenPosY))
 
+        if self.showHelp:
+            self.helpScreenObj = self.screen.blit(self.helpScreenSurface, (self.helpPosX, self.helpPosY))
+
     def refreshScreen(self, world, families, listScroll_y, detailsScroll_y):
 
         self.listScreen.setScroll_y(listScroll_y)
         self.inspectorScreen.setScroll_y(detailsScroll_y)
         self.clearCanvas()
+        self.navBarScreen.addHelp()
         self.navBarScreen.addDateTimer(world)
         self.drawStuff(world, families)
         pygame.display.update()
@@ -108,8 +126,11 @@ class Canvas:
 
         #arrays of objects to click
         itemsObjRectArray = [self.listScreen.listScreenSurfaceObjsRect, self.inspectorScreen.inspectorScreenSurfaceObjsRect]
+        navBarObjRectArray = [self.navBarScreen.navBarScreenSurfaceObjsRect]
+
         #arrays of screens with objects to click
         itemsObjRectScreensArray = [self.listScreen, self.inspectorScreen]
+        navBarObjRectScreensArray = [self.navBarScreen]
 
         for itemObjRect, itemObjRectScreen in zip(itemsObjRectArray, itemsObjRectScreensArray):
             itemsObj = itemObjRect
@@ -127,9 +148,6 @@ class Canvas:
                             itemObj[1].activate()
                         return True
 
-
-
-
         return False
 
     def pauseHandle(self, event, pausedPressed):
@@ -137,10 +155,19 @@ class Canvas:
         if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
             pos = pygame.mouse.get_pos()
             if self.navBarScreen.navBarScreenSurfaceObjsRect[0][0].collidepoint(pos):
+                if not pausedPressed:
+                    pausedPressed = True
+                self.showHelp = True
+
+            if self.navBarScreen.navBarScreenSurfaceObjsRect[1][0].collidepoint(pos):
                 pausedPressed = not pausedPressed
+            if pausedPressed == False:
+                self.showHelp = False
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_SPACE:
                 pausedPressed = not pausedPressed
+            if pausedPressed == False:
+                self.showHelp = False
             if event.key == pygame.K_q:
                 exit()
 

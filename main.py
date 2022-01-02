@@ -254,6 +254,7 @@ def main():
         #ObjShowNumber
 
         canvas.clearCanvas()
+        canvas.navBarScreen.addHelp()
         canvas.navBarScreen.addDateTimer(world)
 
         canvas.drawStuff(world, families)
@@ -340,6 +341,7 @@ def pygameEvents(event, canvas, families, pausedPressed):
 
     # Pause from mousclick on Time
     pausedPressed = canvas.pauseHandle(event, pausedPressed)
+    canvas.refreshScreen(world, families, canvas.listScreen.getScroll_y(), canvas.inspectorScreen.getScroll_y())
 
     return pausedPressed
 
