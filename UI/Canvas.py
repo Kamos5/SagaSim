@@ -81,6 +81,7 @@ class Canvas:
 
         self.listScreen.resetWriteLine()
         self.listScreen.addRegions(self.lastFocusObj)
+        self.helpScreen.resetWriteLine()
         self.inspectorScreen.resetWriteLine()
         self.inspectorScreen.addInspectorLabel()
 
@@ -109,6 +110,7 @@ class Canvas:
         self.detailsScreenObj = self.screen.blit(self.inspectorScreenSurface, (self.inspectorScreenPosX, self.inspectorScreenPosY))
 
         if self.showHelp:
+            self.helpScreen.addHelp()
             self.helpScreenObj = self.screen.blit(self.helpScreenSurface, (self.helpPosX, self.helpPosY))
 
     def refreshScreen(self, world, families, listScroll_y, detailsScroll_y):
@@ -134,7 +136,7 @@ class Canvas:
 
         for itemObjRect, itemObjRectScreen in zip(itemsObjRectArray, itemsObjRectScreensArray):
             itemsObj = itemObjRect
-            if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+            if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1 and self.showHelp is False:
                 mouseX, mouseY = pygame.mouse.get_pos()
                 for itemObj in itemsObj:
                     if isinstance(itemObj[1], TextField):
@@ -166,6 +168,8 @@ class Canvas:
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_SPACE:
                 pausedPressed = not pausedPressed
+            if event.key == pygame.K_ESCAPE:
+                self.showHelp = False
             if pausedPressed == False:
                 self.showHelp = False
             if event.key == pygame.K_q:

@@ -15,8 +15,9 @@ class HelpScreen:
         self.widthOffSet = widthOffSet
         self.heightOffSet = heightOffSet
         self.font = Fonts()
-        self.textFont = self.font.getFont1()
-        self.lineHeight = self.font.getLineHeight()
+        self.textFont = self.font.getHelpFont()
+        self.miniTextFont = self.font.getFont2()
+        self.lineHeight = self.font.getHelpLineHeight()
         self.scroll_y = 0
         self.screenPosX = screenPosX
         self.screenPosY = screenPosY
@@ -26,8 +27,105 @@ class HelpScreen:
 
     def addHelp(self):
 
-        self.helpLabel = Label("Help", 50, self.lineHeight, self.textFont, True, True, 1)
-        self.helpScreenSurfaceObjsRect.append([self.helpScreenSurface.blit(self.helpLabel.localSurface, (self.width * 0.01, 0)), 'Help'])
+        self.helpLabel = Label("Help Menu:", 120, self.lineHeight, self.textFont, False, True, 2)
+        self.helpLabel.setActiveRectColor(20, 20, 20)
+        self.helpLabel.setActiveBorderColor(100, 10, 10)
+
+        self.helpScreenSurface.blit(self.helpLabel.localSurface, (self.width * 0.10, self.writeLine*self.lineHeight))
+
+        self.writeLine += 3
+
+        self.helpLabel = Label("\"q\" - Quits application", 500, self.lineHeight, self.miniTextFont, False, True, 1)
+        self.helpLabel.setActiveRectColor(self.screenColor[0], self.screenColor[1], self.screenColor[2])
+        self.helpLabel.setActiveBorderColor(self.screenColor[0], self.screenColor[1], self.screenColor[2])
+
+        self.helpScreenSurface.blit(self.helpLabel.localSurface, (self.width * 0.05, self.writeLine*self.lineHeight))
+        self.writeLine += 1
+
+        self.helpLabel = Label("\"space bar\" - pauses/resumes simulation", 500, self.lineHeight, self.miniTextFont, False, True, 1)
+        self.helpLabel.setActiveRectColor(self.screenColor[0], self.screenColor[1], self.screenColor[2])
+        self.helpLabel.setActiveBorderColor(self.screenColor[0], self.screenColor[1], self.screenColor[2])
+
+        self.helpScreenSurface.blit(self.helpLabel.localSurface, (self.width * 0.05, self.writeLine*self.lineHeight))
+        self.writeLine += 1
+
+        self.helpLabel = Label("Year: ", 50, self.lineHeight, self.miniTextFont, False, True, 1)
+        self.helpLabel.setActiveRectColor(self.screenColor[0], self.screenColor[1], self.screenColor[2])
+        self.helpLabel.setActiveBorderColor(0, 200, 0)
+        self.helpLabel.setActiveRectColor(20, 20, 60)
+
+        self.helpScreenSurface.blit(self.helpLabel.localSurface, (self.width * 0.05, self.writeLine * self.lineHeight))
+
+        self.helpLabel = Label(" - clicking pauses/resumes simulation", 500, self.lineHeight, self.miniTextFont, False, True, 1)
+        self.helpLabel.setActiveRectColor(self.screenColor[0], self.screenColor[1], self.screenColor[2])
+        self.helpLabel.setActiveBorderColor(self.screenColor[0], self.screenColor[1], self.screenColor[2])
+
+        self.helpScreenSurface.blit(self.helpLabel.localSurface, (self.width * 0.10, self.writeLine*self.lineHeight))
+        self.writeLine += 1
+
+        self.helpLabel = Label("\"esc\" - closes this window", 500, self.lineHeight, self.miniTextFont, False, True, 1)
+        self.helpLabel.setActiveRectColor(self.screenColor[0], self.screenColor[1], self.screenColor[2])
+        self.helpLabel.setActiveBorderColor(self.screenColor[0], self.screenColor[1], self.screenColor[2])
+
+        self.helpScreenSurface.blit(self.helpLabel.localSurface, (self.width * 0.05, self.writeLine*self.lineHeight))
+        self.writeLine += 1
+
+        self.helpLabel = Label("\"left arrow key\" - goes back to previous focused object", 500, self.lineHeight, self.miniTextFont, False, True, 1)
+        self.helpLabel.setActiveRectColor(self.screenColor[0], self.screenColor[1], self.screenColor[2])
+        self.helpLabel.setActiveBorderColor(self.screenColor[0], self.screenColor[1], self.screenColor[2])
+
+        self.helpScreenSurface.blit(self.helpLabel.localSurface, (self.width * 0.05, self.writeLine*self.lineHeight))
+        self.writeLine += 1
+
+        self.helpLabel = Label("\"backspace\" - removes one letter from search window", 500, self.lineHeight, self.miniTextFont, False, True, 1)
+        self.helpLabel.setActiveRectColor(self.screenColor[0], self.screenColor[1], self.screenColor[2])
+        self.helpLabel.setActiveBorderColor(self.screenColor[0], self.screenColor[1], self.screenColor[2])
+
+        self.helpScreenSurface.blit(self.helpLabel.localSurface, (self.width * 0.05, self.writeLine * self.lineHeight))
+        self.writeLine += 1
+
+        self.helpLabel = Label("  ", 50, self.lineHeight, self.miniTextFont, False, True, 1)
+        self.helpLabel.setActiveRectColor(self.screenColor[0], self.screenColor[1], self.screenColor[2])
+        self.helpLabel.setActiveBorderColor(0, 200, 0)
+
+        self.helpScreenSurface.blit(self.helpLabel.localSurface, (self.width * 0.05, self.writeLine * self.lineHeight))
+
+        self.helpLabel = Label(" - clickable border color", 500, self.lineHeight, self.miniTextFont, False, True, 1)
+        self.helpLabel.setActiveRectColor(self.screenColor[0], self.screenColor[1], self.screenColor[2])
+        self.helpLabel.setActiveBorderColor(self.screenColor[0], self.screenColor[1], self.screenColor[2])
+
+        self.helpScreenSurface.blit(self.helpLabel.localSurface, (self.width * 0.10, self.writeLine * self.lineHeight))
+        self.writeLine += 1
+
+        self.helpLabel = Label("  ", 50, self.lineHeight, self.miniTextFont, False, True, 1)
+        self.helpLabel.setActiveRectColor(self.screenColor[0], self.screenColor[1], self.screenColor[2])
+        self.helpLabel.setActiveBorderColor(200, 200, 200)
+
+        self.helpScreenSurface.blit(self.helpLabel.localSurface, (self.width * 0.05, self.writeLine * self.lineHeight))
+
+        self.helpLabel = Label(" - not clickable border color", 500, self.lineHeight, self.miniTextFont, False, True, 1)
+        self.helpLabel.setActiveRectColor(self.screenColor[0], self.screenColor[1], self.screenColor[2])
+        self.helpLabel.setActiveBorderColor(self.screenColor[0], self.screenColor[1], self.screenColor[2])
+
+        self.helpScreenSurface.blit(self.helpLabel.localSurface, (self.width * 0.10, self.writeLine * self.lineHeight))
+        self.writeLine += 1
+
+        self.helpLabel = Label("  ", 50, self.lineHeight, self.miniTextFont, False, True, 1)
+        self.helpLabel.setActiveRectColor(self.screenColor[0], self.screenColor[1], self.screenColor[2])
+        self.helpLabel.setActiveRectColor(100, 0, 0)
+        self.helpLabel.setActiveBorderColor(50, 50, 50)
+
+        self.helpScreenSurface.blit(self.helpLabel.localSurface, (self.width * 0.05, self.writeLine * self.lineHeight))
+
+        self.helpLabel = Label(" - focus object", 500, self.lineHeight, self.miniTextFont, False, True, 1)
+        self.helpLabel.setActiveRectColor(self.screenColor[0], self.screenColor[1], self.screenColor[2])
+        self.helpLabel.setActiveBorderColor(self.screenColor[0], self.screenColor[1], self.screenColor[2])
+
+        self.helpScreenSurface.blit(self.helpLabel.localSurface, (self.width * 0.10, self.writeLine * self.lineHeight))
+        self.writeLine += 1
+
+    def resetWriteLine(self):
+
         self.writeLine = 1
 
     def cleanScreen(self):

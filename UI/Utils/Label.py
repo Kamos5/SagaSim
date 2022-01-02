@@ -32,6 +32,7 @@ class Label:
             self.rectColor = self.activeRectColor
             self.borderColor = self.activeBorderColor
 
+        self.text = ''
         self.set(text)
 
     def set(self, text):
@@ -46,3 +47,23 @@ class Label:
     def addText(self, text):
         textSurface = self.font.render(text, True, self.textColor)
         self.localSurface.blit(textSurface, (self.x, self.y))
+        self.text = text
+
+    def getText(self):
+        return self.text
+
+    def setActiveRectColor(self, r, g, b):
+        self.rectColor = (r, g, b)
+        self.set(self.text)
+
+    def setInactiveRectColor(self, r, g, b):
+        self.rectColor = (r, g, b)
+        self.set(self.text)
+
+    def setActiveBorderColor(self, r, g, b):
+        self.borderColor = (r, g, b)
+        self.set(self.text)
+
+    def setInactiveBorderColor(self, r, g, b):
+        self.borderColor = (r, g, b)
+        self.set(self.text)
