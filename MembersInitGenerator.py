@@ -42,21 +42,7 @@ def addNewPerson (person):
 
 def setUpHairColorsToFamilies (family):
 
-    #TODO REWRITE IT BECAUSE IT MAKES ISSUES WHERE THERE IS NOT ENOUGH FAMILIES (FAMILIES PER REGION*REGIONS NOW MUST BE +5 FOR WORKING CORRECTLY)
-    hairColor = HairColor.GRAY
-
-    if family.familyName == FNG.initialFamilyNames[0]:
-        hairColor = HairColor.BLACK
-    elif family.familyName == FNG.initialFamilyNames[1]:
-        hairColor = HairColor.BROWN
-    elif family.familyName == FNG.initialFamilyNames[2]:
-        hairColor = HairColor.RED
-    elif family.familyName == FNG.initialFamilyNames[3]:
-        hairColor = HairColor.YELLOW
-    elif family.familyName == FNG.initialFamilyNames[4]:
-        hairColor = HairColor.WHITE
-    else:
-        hairColor = HairColor.BROWN
+    hairColor = Utils.randomFromEnumCollection(HairColor)
 
     return hairColor
 

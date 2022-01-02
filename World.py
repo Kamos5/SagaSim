@@ -1,5 +1,6 @@
 from Enums import LifeStatus, Settlements
 from Region import Region
+import RegionNameGenerator as RNG
 import Parameters
 
 class World:
@@ -30,7 +31,7 @@ class World:
     def generateRegions(self, regionsNumber = 5):
 
         for region in range(regionsNumber):
-            self.regions.append(Region("Region " + str(region)))
+            self.regions.append(Region(RNG.randomEnglishRegionName()))
 
     def generateSettlements(self):
 

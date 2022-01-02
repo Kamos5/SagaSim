@@ -1,11 +1,7 @@
 import pygame
 
-from Family import Family
-from Person import Person
-from Region import Region
-from Settlements import Settlements
-from UI.Fonts import Fonts
-from UI.Label import Label
+from UI.Utils.Fonts import Fonts
+from UI.Utils.Label import Label
 
 
 class NavBarScreen:

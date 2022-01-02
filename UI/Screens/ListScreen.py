@@ -1,7 +1,8 @@
 import pygame
 
-from UI.Fonts import Fonts
-from UI.Label import Label
+from UI.Utils.Fonts import Fonts
+from UI.Utils.Label import Label
+from UI.Utils.TextField import TextField
 
 
 class ListScreen:
@@ -21,6 +22,7 @@ class ListScreen:
         self.screenPosX = screenPosX
         self.screenPosY = screenPosY
 
+        self.textSearchField = None
         self.listScreenSurface = pygame.Surface([self.width, self.height - self.heightOffSet])
         self.listScreenSurfaceObjsRect = []
 
@@ -45,11 +47,23 @@ class ListScreen:
     def getInspectorScreenSurface(self):
         return self.listScreenSurface
 
-    def addRegions(self):
+    def addRegions(self, focusObj):
 
         label = Label("Regions: ", 200, self.lineHeight, self.textFont)
         self.listScreenSurface.blit(label.localSurface, (self.width * 0.05, self.lineHeight * self.writeLine + self.scroll_y))
 
+        label = Label("Search: ", 80, self.lineHeight, self.textFont)
+        self.listScreenSurface.blit(label.localSurface, (self.width * 0.55, self.lineHeight * self.writeLine + self.scroll_y))
+
+        #Search field
+        if self.textSearchField is None:
+            textField = TextField(180, self.lineHeight, self.textFont)
+        else:
+            textField = self.textSearchField
+
+        self.listScreenSurfaceObjsRect.append([self.listScreenSurface.blit(textField.localSurface, (self.width * 0.70, self.lineHeight * self.writeLine + self.scroll_y)), textField])
+
+        self.textSearchField = textField
         self.writeLine += 1
 
     def addRegion(self, region, focusObj):
@@ -66,8 +80,9 @@ class ListScreen:
     def addSettlement(self, settlement, focusObj):
 
         text = str(settlement.getSettlementName()) + " (" + str(settlement.getSettlementType().value) + ")" + " - alive population (" + str(settlement.getPopulation()) + ")"
+
         if focusObj == settlement:
-            label = Label(text, 400, self.lineHeight, self.textFont, True, True)
+                label = Label(text, 400, self.lineHeight, self.textFont, True, True)
         else:
             label = Label(text, 400, self.lineHeight, self.textFont, True)
 
@@ -115,6 +130,8 @@ class ListScreen:
         else:
             label = Label(text, 300, self.lineHeight, self.textFont, True)
 
-        self.listScreenSurfaceObjsRect.append([self.listScreenSurface.blit(label.localSurface, (self.width * 0.15, self.lineHeight * self.writeLine + self.scroll_y)), person])
+        if self.textSearchField is not None:
+            if self.textSearchField.getText().upper() in person.getLastName().upper() or self.textSearchField.getText().lower() in person.getLastName().lower() or self.textSearchField.getText().upper() in person.getFirstName().upper() or self.textSearchField.getText().lower() in person.getFirstName().lower():
+                self.listScreenSurfaceObjsRect.append([self.listScreenSurface.blit(label.localSurface, (self.width * 0.15, self.lineHeight * self.writeLine + self.scroll_y)), person])
 
-        self.writeLine += 1
+                self.writeLine += 1

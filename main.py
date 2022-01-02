@@ -6,6 +6,7 @@ import MembersInitGenerator as MIG
 import Parameters
 import pygame
 from UI import Canvas
+from UI.Utils.TextField import TextField
 from World import World as World
 
 world = World()
@@ -302,12 +303,30 @@ def pygameEvents(event, canvas, families, pausedPressed):
 
 
     if event.type == pygame.KEYDOWN:
-        if event.key == pygame.K_BACKSPACE:
+        if event.key == pygame.K_LEFT:
             if len(canvas.focusObj) > 0:
                 canvas.focusObj.pop(len(canvas.focusObj)-1)
                 canvas.refreshScreen(world, families, canvas.listScreen.getScroll_y(), canvas.inspectorScreen.getScroll_y())
+        if isinstance(canvas.lastFocusObj, TextField):
+
+            # Check for backspace
+            if event.key == pygame.K_BACKSPACE:
+
+                # get text input from 0 to -1 i.e. end.
+                canvas.lastFocusObj.setText(canvas.lastFocusObj.getText()[:-1])
+
+            # Unicode standard is used for string
+            # formation
+            else:
+                canvas.lastFocusObj.addText(event.unicode)
+            canvas.refreshScreen(world, families, canvas.listScreen.getScroll_y(), canvas.inspectorScreen.getScroll_y())
+
     if canvas.handleClickOnCollection(event):
         canvas.refreshScreen(world, families, canvas.listScreen.getScroll_y(), canvas.inspectorScreen.getScroll_y())
+
+    if event.type == pygame.QUIT:
+        pygame.quit()
+        exit()
 
     # Pause from mousclick on Time
     pausedPressed = canvas.pauseHandle(event, pausedPressed)

@@ -1,6 +1,40 @@
 from enum import Enum
 
 import random
+englishFamilyNames = [
+    'Parkin',
+    'Rodgers',
+    'Blackburn',
+    'Chadwick',
+    'Webber',
+    'Cassidy',
+    'Thorne',
+    'Sanderson',
+    'McKay',
+    'Gallagher',
+    'Shah',
+    'Cunningham',
+    'Gibbs',
+    'Boyd',
+    'Thorpe',
+    'McCann',
+    'Hogg',
+    'Humphries',
+    'McGrath',
+    'McLeod',
+    'Cummings',
+    'Firth',
+    'Reeve',
+    'McCormick',
+    'McAllister',
+    'Drake',
+    'Boulton',
+    'Langford',
+    'Ayres',
+    'Craven',
+]
+
+
 initialFamilyNames = [
     'Alfarius',
     'Betarius',
@@ -24,19 +58,7 @@ initialFamilyNames = [
     'Phius',
     'Chius',
     'Psius',
-    'Omegius',
-    '24',
-    '25',
-    '26',
-    '27',
-    '28',
-    '29',
-    '30',
-    '31',
-    '32',
-    '33',
-    '34',
-    '35'
+    'Omegius'
 
 ]
 
@@ -59,6 +81,14 @@ def getNewRandomLastName():
     if len(initialFamilyNames) > 0:
         choice = random.choice(initialFamilyNames)
         initialFamilyNames.remove(choice)
+    else:
+        choice = 'Generic Family Name'
+    return choice
+
+def getInitEnglishName():
+    if len(englishFamilyNames) > 0:
+        choice = random.choice(englishFamilyNames)
+        englishFamilyNames.remove(choice)
     else:
         choice = 'Generic Family Name'
     return choice

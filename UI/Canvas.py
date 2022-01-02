@@ -1,10 +1,9 @@
-from queue import LifoQueue
-
 import pygame
 
-from UI.InspectorScreen import InspectorScreen
-from UI.ListScreen import ListScreen
-from UI.NavBarScreen import NavBarScreen
+from UI.Screens.InspectorScreen import InspectorScreen
+from UI.Screens.ListScreen import ListScreen
+from UI.Screens.NavBarScreen import NavBarScreen
+from UI.Utils.TextField import TextField
 
 
 class Canvas:
@@ -63,13 +62,15 @@ class Canvas:
 
     def drawStuff(self, world, families):
 
-        self.listScreen.resetWriteLine()
-        self.listScreen.addRegions()
-        self.inspectorScreen.resetWriteLine()
-        self.inspectorScreen.addInspectorLabel()
         if len(self.focusObj) > 0:
             self.lastFocusObj = self.focusObj[len(self.focusObj)-1]
-            self.inspectorScreen.addGeneralInspectorFields(self.lastFocusObj)
+
+        self.listScreen.resetWriteLine()
+        self.listScreen.addRegions(self.lastFocusObj)
+        self.inspectorScreen.resetWriteLine()
+        self.inspectorScreen.addInspectorLabel()
+
+        self.inspectorScreen.addGeneralInspectorFields(self.lastFocusObj)
 
         for region in world.getRegions():
             self.listScreen.addRegion(region, self.lastFocusObj)
@@ -112,12 +113,19 @@ class Canvas:
             if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                 mouseX, mouseY = pygame.mouse.get_pos()
                 for itemObj in itemsObj:
+                    if isinstance(itemObj[1], TextField):
+                        itemObj[1].deactivate()
                     #To offset position on main screen
                     if itemObj[0].collidepoint([mouseX-itemObjRectScreen.screenPosX, mouseY-itemObjRectScreen.screenPosY]):
                         if hasattr(itemObj[1], 'getUIExpand'):
                             itemObj[1].setUIExpand(not itemObj[1].getUIExpand())
                         self.focusObj.append(itemObj[1])
+                        if isinstance(itemObj[1], TextField):
+                            itemObj[1].activate()
                         return True
+
+
+
 
         return False
 
