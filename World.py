@@ -15,6 +15,13 @@ class World:
         self.initYear = startYear
         self.year = self.initYear
         self.regions = []
+        self.gameSpeed = 50
+
+    def getGameSpeed(self):
+        return self.gameSpeed
+
+    def setGameSpeed(self, newSpeed):
+        self.gameSpeed = newSpeed
 
     def getYear(self):
         return self.year

@@ -201,14 +201,15 @@ def main():
     pausedPressed = False
     regionPressed = ''
 
-    pCount = 1
-    pTime = 1000 / pCount
-
     tickStartTime = time.time() * 1000.0
 
     canvas = Canvas.Canvas()
 
     while sun:
+
+        pCount = world.getGameSpeed()
+
+        pTime = 1000 / pCount
 
         # VisualLogic
         canvas.clearCanvas()
@@ -271,8 +272,36 @@ def pygameEvents(event, canvas, families, pausedPressed):
                 canvas.refreshScreen(world, families, canvas.listScreen.getScroll_y(), scroll_y)
 
 
-    #going to previous focusObj
     if event.type == pygame.KEYDOWN:
+
+        pCount = world.getGameSpeed()
+        if event.key == pygame.K_KP_PLUS:
+            if pCount == 1:
+                pCount = 5
+            elif pCount == 5:
+                pCount = 10
+            elif pCount == 10:
+                pCount = 50
+            elif pCount == 50:
+                pCount = 100
+            elif pCount == 100:
+                pCount = 500
+            world.setGameSpeed(pCount)
+
+        if event.key == pygame.K_KP_MINUS:
+            if pCount == 500:
+                pCount = 100
+            elif pCount == 100:
+                pCount = 50
+            elif pCount == 50:
+                pCount = 10
+            elif pCount == 10:
+                pCount = 5
+            elif pCount == 5:
+                pCount = 1
+            world.setGameSpeed(pCount)
+
+        # going to previous focusObj
         if event.key == pygame.K_LEFT:
             if len(canvas.focusObj) > 0:
                 canvas.focusObj.pop(len(canvas.focusObj)-1)

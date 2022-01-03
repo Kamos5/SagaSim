@@ -84,6 +84,20 @@ class HelpScreen:
         self.helpScreenSurface.blit(self.helpLabel.localSurface, (self.width * 0.05, self.writeLine * self.lineHeight))
         self.writeLine += 1
 
+        self.helpLabel = Label("\"-\" - slows down simulation", 500, self.lineHeight, self.miniTextFont, False, True, 1)
+        self.helpLabel.setActiveRectColor(self.screenColor[0], self.screenColor[1], self.screenColor[2])
+        self.helpLabel.setActiveBorderColor(self.screenColor[0], self.screenColor[1], self.screenColor[2])
+
+        self.helpScreenSurface.blit(self.helpLabel.localSurface, (self.width * 0.05, self.writeLine * self.lineHeight))
+        self.writeLine += 1
+
+        self.helpLabel = Label("\"+\" - speeds up simulation", 500, self.lineHeight, self.miniTextFont, False, True, 1)
+        self.helpLabel.setActiveRectColor(self.screenColor[0], self.screenColor[1], self.screenColor[2])
+        self.helpLabel.setActiveBorderColor(self.screenColor[0], self.screenColor[1], self.screenColor[2])
+
+        self.helpScreenSurface.blit(self.helpLabel.localSurface, (self.width * 0.05, self.writeLine * self.lineHeight))
+        self.writeLine += 1
+
         self.helpLabel = Label("  ", 50, self.lineHeight, self.miniTextFont, False, True, 1)
         self.helpLabel.setActiveRectColor(self.screenColor[0], self.screenColor[1], self.screenColor[2])
         self.helpLabel.setActiveBorderColor(0, 200, 0)
@@ -123,6 +137,7 @@ class HelpScreen:
 
         self.helpScreenSurface.blit(self.helpLabel.localSurface, (self.width * 0.10, self.writeLine * self.lineHeight))
         self.writeLine += 1
+
 
     def resetWriteLine(self):
 

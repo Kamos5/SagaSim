@@ -94,7 +94,9 @@ def settlementsPopulationManagement (world, families):
                     #Check for max size of region
                     if len(region.getSettlements()) == region.regionSize:
                         newTargetSettlement = Utils.randomFromCollection(townList)
+
                     else:
+                        # TODO FIX PEOPLE CAN MOVE TO THE SAME VILLAGE
                         #Take lowest population as dest
                         lowestSettlementInRegion = region.getLowestPopulatedSettlement(world)
                         newTargetSettlement = lowestSettlementInRegion
