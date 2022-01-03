@@ -7,6 +7,7 @@ import FamilyNameGenerator as FNG
 import PeopleFunctions as PF
 import PersonLifeEventsHistory as PLEH
 from Enums import MaritalStatus as MS
+from Enums import Settlements as SE
 import SettlementsFunctions as SF
 
 def increaseAge (people, world):
@@ -100,15 +101,15 @@ def settlementsPopulationManagement (world, families):
                         #Take lowest population as dest
                         lowestSettlementInRegion = region.getLowestPopulatedSettlement(world)
                         newTargetSettlement = lowestSettlementInRegion
-                        #If lowest pop > lowest max pop * modifier create new City
-                        if lowestSettlementInRegion.getPopulation() > int(lowestSettlementInRegion.getMaxPopulation() * Parameters.percentageVillagePopulationThresholdForCreatingNewVillage):
+                        #If lowest pop > lowest max pop * modifier create new setttlement
+                        if lowestSettlementInRegion.getPopulation() > int(lowestSettlementInRegion.getMaxPopulation() * Parameters.percentageVillagePopulationThresholdForCreatingNewVillage and settlement.getSettlementType == SE.TOWN):
                             if region.canAddSettlement():
                                 newSettlement = region.addSettlement(world)
                                 newSettlement.setMaxPopulation = Parameters.baseVillageSize
                                 newTargetSettlement = newSettlement
 
                     #Migration Wave
-                    complexRandomMigrantsList = prepareMigration(settlement, world)
+                    complexRandomMigrantsList = prepareMigration(settlement, newTargetSettlement, world)
                     iniciateMigration(complexRandomMigrantsList, newTargetSettlement)
                     splitFamilies(world, region, families, newTargetSettlement, complexRandomMigrantsList)
 
@@ -122,17 +123,17 @@ def settlementsPopulationManagement (world, families):
 
 
 
-def prepareMigration(settlement, world):
+def prepareMigration(settlement, newTargetSettlement, world):
 
     migrantFamilies = 0
     if settlement.getSettlementType() == Settlements.TOWN:
         mirgrationWave = Parameters.migrationWaveForTown
     else:
-        mirgrationWave = Parameters.migrationWaveForTown
+        mirgrationWave = Parameters.migrationWaveForVillage
 
     randomMigrantsList = []
     complexRandomMigrantList = []
-    # random 20 people with their alive children move to new Village
+    # random x people with their alive children move to new Village
     for migrantFamilies in range(mirgrationWave):
         randomPerson = Utils.randomFromCollection(settlement.getResidents())
         if randomPerson not in randomMigrantsList:
@@ -145,7 +146,7 @@ def prepareMigration(settlement, world):
                 getRandomMigrantListForSingleRandomPerson(randomPerson, "Adult", randomMigrantsList, settlement, world)
             if len(randomMigrantsList) > 0:
                 complexRandomMigrantList.append(randomMigrantsList)
-
+                PLEH.movedHome(randomPerson, settlement, newTargetSettlement, world)
                 migrantFamilies += 1
                 randomMigrantsList = []
 
@@ -158,7 +159,10 @@ def splitFamilies(world, region, families, newTargetSettlement, complexRandomMig
     for randomMigrantList in complexRandomMigrantsList:
         chanceOfChangingLastName = Utils.randomRange(1, 100)
         #won't change last name if only 1 person will be in migrant list whose culture sex is not to inherite
-        if chanceOfChangingLastName < Parameters.chanceForChangingLastNameDuringMigration and (len(randomMigrantList) > 1 or randomMigrantList[0].familyObjRef.getOriginCulture().getInheritanceBy() != randomMigrantList[0].sex) or randomMigrantList[0].familyObjRef.aliveMemberNumber > 1:
+        if (chanceOfChangingLastName < Parameters.chanceForChangingLastNameDuringMigration and
+                len(randomMigrantList) > 1 and
+                randomMigrantList[0].familyObjRef.aliveMemberNumber > 1 and
+                randomMigrantList[0].familyObjRef.getOriginCulture().getInheritanceBy() != randomMigrantList[0].sex):
             newFamilyName = FNG.getNewRandomLastName()
             family = Family(newFamilyName)
             family.setFoundingYear(world.getYear())
@@ -216,12 +220,12 @@ def getRandomMigrantListForSingleRandomPerson(person, parent, randomMigrantsList
             if parentChildren.age < 15:
                 if parentChildren not in randomMigrantsList:
                     randomMigrantsList.append(parentChildren)
-                    PLEH.movedHome(parentChildren, settlement, world)
+                    #PLEH.movedHome(parentChildren, settlement, world)
 
         if getParent.spouse is not None:
             if getParent.spouse not in randomMigrantsList:
                 randomMigrantsList.append(getParent.spouse)
-                PLEH.movedHome(getParent.spouse, settlement, world)
+                #PLEH.movedHome(getParent.spouse, settlement, world)
                 # if newLastName != '':
                 #     getParent.lastName = newLastName
 
@@ -230,7 +234,7 @@ def getRandomMigrantListForSingleRandomPerson(person, parent, randomMigrantsList
                 if parentSpouseChildren.age < 15:
                     if parentSpouseChildren not in randomMigrantsList:
                         randomMigrantsList.append(parentSpouseChildren)
-                        PLEH.movedHome(parentSpouseChildren, settlement, world)
+                        #PLEH.movedHome(parentSpouseChildren, settlement, world)
                         # if newLastName != '':
                         #     getParent.lastName = newLastName
 

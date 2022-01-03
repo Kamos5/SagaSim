@@ -42,13 +42,13 @@ def beenBorn(person, world):
 def died(person, world):
     person.lifeEvents.append(str(person.firstName) + " died at the age of " + str(person.age) + " from " + str(person.causeOfDeath.value) + ' in the year ' + str(world.getYear()))
 
-def movedHome(person, movedFrom, world):
+def movedHome(person, movedFrom, movedTo, world):
 
     if person.sex == Sexes.FEMALE:
         preverb = 'hers'
     else:
         preverb = 'his'
-    person.lifeEvents.append(str(person.firstName) + " moved with " + str(preverb) + " family from " + str(movedFrom.getSettlementName()) + " to " + str(person.getSettlement().getSettlementName()) + ' in the year ' + str(world.getYear()))
+    person.lifeEvents.append(str(person.firstName) + " moved with " + str(preverb) + " family from " + str(movedFrom.getSettlementName()) + " to " + str(movedTo.getSettlementName()) + ' in the year ' + str(world.getYear()))
 
 
 def married(person, world):
