@@ -76,6 +76,8 @@ class Settlements:
     def adjustFertilityModifier(self):
         if self.getPopulation() >= self.maxPopulation:
             self.setFertilityModifier(0.5)
+        elif self.getPopulation() <= int(self.maxPopulation * 0.5):
+            self.setFertilityModifier(1.2)
         else:
             self.setFertilityModifier(1)
 

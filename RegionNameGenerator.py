@@ -9,6 +9,15 @@ englishRegionNames = [
 
 ]
 
+slavicRegionNames = [
+
+    'Carantania',
+    'Wends',
+    'Antes',
+    'Sclaveni'
+
+]
+
 activeNames = []
 
 def randomEnglishRegionName ():

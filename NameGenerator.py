@@ -15,7 +15,14 @@ maleNameList = [
     'Kaleb',
     'Lewis',
     'Max',
-    'Nathaniel'
+    'Nathaniel',
+    'Olin',
+    'Palmer',
+    'Ramsey',
+    'Shaw',
+    'Thane',
+    'Wallace',
+    'York'
 ]
 
 femaleNameList = [
@@ -32,7 +39,8 @@ femaleNameList = [
     'Katherine',
     'Lydia',
     'Maria',
-    'Natalie'
+    'Natalie',
+
 ]
 
 def randomMName ():
