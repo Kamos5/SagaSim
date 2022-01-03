@@ -156,7 +156,7 @@ def splitFamilies(world, region, families, newTargetSettlement, complexRandomMig
     for randomMigrantList in complexRandomMigrantsList:
         chanceOfChangingLastName = Utils.randomRange(1, 100)
         #won't change last name if only 1 person will be in migrant list whose culture sex is not to inherite
-        if chanceOfChangingLastName < Parameters.chanceForChangingLastNameDuringMigration and (len(randomMigrantList) > 1 or randomMigrantList[0].familyObjRef.getOriginCulture().getInheritanceBy() != randomMigrantList[0].sex):
+        if chanceOfChangingLastName < Parameters.chanceForChangingLastNameDuringMigration and (len(randomMigrantList) > 1 or randomMigrantList[0].familyObjRef.getOriginCulture().getInheritanceBy() != randomMigrantList[0].sex) or randomMigrantList[0].familyObjRef.aliveMemberNumber > 1:
             newFamilyName = FNG.getNewRandomLastName()
             family = Family(newFamilyName)
             family.setFoundingYear(world.getYear())
