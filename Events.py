@@ -6,8 +6,7 @@ import Parameters
 import FamilyNameGenerator as FNG
 import PeopleFunctions as PF
 import PersonLifeEventsHistory as PLEH
-import PeopleInterface as PI
-import FamilyFunctions as FF
+from Enums import MaritalStatus as MS
 import SettlementsFunctions as SF
 
 def increaseAge (people, world):
@@ -20,6 +19,7 @@ def increaseAge (people, world):
             if person.age == 15:
                 person.height = person.heightGen
                 person.familyObjRef.moveChildToAdultMembers(person)
+                person.changeMaritalStatus(MS.SINGLE)
                 PLEH.adulthoodReached(person, world)
             if deathChanceFromAge(person) or person.age >= person.modifiedLifespan:
                 PF.deathProcedures(person, world)
@@ -58,6 +58,7 @@ def birthPeople (world, people):
                         person.modifiedLifespan -= 1
                     person.childrens.append(personObj)
                     spouseObj.childrens.append(personObj)
+                    personObj.changeMaritalStatus(MS.CHILD)
 
                     # change of dying from childbirth (mother and child)
                     motherDeath, childdeath = deathChangeFromGivingBirth(person, personObj)

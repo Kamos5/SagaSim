@@ -8,6 +8,7 @@ class LifeStatus(Enum):
 
 
 class MaritalStatus(Enum):
+    CHILD = 'child'
     SINGLE = 'single'
     MARRIED = 'married'
     WIDOW = 'widow'

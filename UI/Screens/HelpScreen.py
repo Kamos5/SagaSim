@@ -90,7 +90,7 @@ class HelpScreen:
 
         self.helpScreenSurface.blit(self.helpLabel.localSurface, (self.width * 0.05, self.writeLine * self.lineHeight))
 
-        self.helpLabel = Label(" - clickable border color", 500, self.lineHeight, self.miniTextFont, False, True, 1)
+        self.helpLabel = Label(" - clickable clickable", 500, self.lineHeight, self.miniTextFont, False, True, 1)
         self.helpLabel.setActiveRectColor(self.screenColor[0], self.screenColor[1], self.screenColor[2])
         self.helpLabel.setActiveBorderColor(self.screenColor[0], self.screenColor[1], self.screenColor[2])
 
@@ -103,7 +103,7 @@ class HelpScreen:
 
         self.helpScreenSurface.blit(self.helpLabel.localSurface, (self.width * 0.05, self.writeLine * self.lineHeight))
 
-        self.helpLabel = Label(" - not clickable border color", 500, self.lineHeight, self.miniTextFont, False, True, 1)
+        self.helpLabel = Label(" - not clickable object", 500, self.lineHeight, self.miniTextFont, False, True, 1)
         self.helpLabel.setActiveRectColor(self.screenColor[0], self.screenColor[1], self.screenColor[2])
         self.helpLabel.setActiveBorderColor(self.screenColor[0], self.screenColor[1], self.screenColor[2])
 
@@ -117,7 +117,7 @@ class HelpScreen:
 
         self.helpScreenSurface.blit(self.helpLabel.localSurface, (self.width * 0.05, self.writeLine * self.lineHeight))
 
-        self.helpLabel = Label(" - focus object", 500, self.lineHeight, self.miniTextFont, False, True, 1)
+        self.helpLabel = Label(" - focused object", 500, self.lineHeight, self.miniTextFont, False, True, 1)
         self.helpLabel.setActiveRectColor(self.screenColor[0], self.screenColor[1], self.screenColor[2])
         self.helpLabel.setActiveBorderColor(self.screenColor[0], self.screenColor[1], self.screenColor[2])
 
