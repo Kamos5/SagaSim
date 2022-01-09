@@ -26,6 +26,8 @@ class Settlements:
         self.foundedIn = year
         self.baseFertility = Parameters.baseVillageFertility
         self.fertilityModifier = 0
+        self.foodTiles = 0
+        self.prodTiles = 0
         self.residents = []
         self.features = []
         self.providesTo = None
@@ -95,10 +97,14 @@ class Settlements:
             self.setBaseFertility(Parameters.baseVillageFertility)
             self.maxPopulation = Parameters.baseVillageSize
             self.recalculatePopWithFeatures()
+            self.foodTiles = 7
+            self.prodTiles = 1
         else:
             self.setBaseFertility(Parameters.baseCityFertility)
             self.maxPopulation = Parameters.baseCitySize
             self.recalculatePopWithFeatures()
+            self.foodTiles = 8
+            self.prodTiles = 16
 
     def getFounedIn(self):
         return self.foundedIn
