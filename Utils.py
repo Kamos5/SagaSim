@@ -59,6 +59,129 @@ def geneticRandomFromValuesForHeight(val1, val2):
 
     return returnValue
 
+def inheretTraits(person, parent1, parent2, trueParent1, trueParent2):
+
+    randomChanceForTrait1 = randomRange(1, 100)
+    randomChanceForTrait2 = randomRange(1, 100)
+    randomChanceForTrait3 = randomRange(1, 100)
+
+    if randomChanceForTrait1 <= 20: #random
+        trait1 = randomTrait(person)
+        person.addTrait(trait1)
+    if randomChanceForTrait1 <= 65 and randomChanceForTrait1 > 20: #from parents
+        trait1 = traitsFromParerts(person, parent1, parent2)
+        person.addTrait(trait1)
+    if randomChanceForTrait1 > 65: #from trueParents
+        trait1 = traitsFromParerts(person, trueParent1, trueParent2)
+        person.addTrait(trait1)
+
+    if randomChanceForTrait2 <= 20: #random
+        trait2 = randomTrait(person)
+        person.addTrait(trait2)
+    if randomChanceForTrait2 <= 65 and randomChanceForTrait2 > 20: #from parents
+        trait2 = traitsFromParerts(person, parent1, parent2)
+        person.addTrait(trait2)
+    if randomChanceForTrait2 > 65: #from trueParents
+        trait2 = traitsFromParerts(person, trueParent1, trueParent2)
+        person.addTrait(trait2)
+
+    if randomChanceForTrait3 <= 20: #random
+        trait3 = randomTrait(person)
+        person.addTrait(trait3)
+    if randomChanceForTrait3 <= 65 and randomChanceForTrait3 > 20: #from parents
+        trait3 = traitsFromParerts(person, parent1, parent2)
+        person.addTrait(trait3)
+    if randomChanceForTrait3 > 65: #from trueParents
+        trait3 = traitsFromParerts(person, trueParent1, trueParent2)
+        person.addTrait(trait3)
+
+    likedTrait1 = randomLikedTrait(person)
+    person.addLikedTraits(likedTrait1)
+    likedTrait2 = randomLikedTrait(person)
+    person.addLikedTraits(likedTrait2)
+    likedTrait3 = randomLikedTrait(person)
+    person.addLikedTraits(likedTrait3)
+
+    dislikedTrait1 = randomDislikedTrait(person)
+    person.addDislikedTraits(dislikedTrait1)
+    dislikedTrait2 = randomDislikedTrait(person)
+    person.addDislikedTraits(dislikedTrait2)
+    dislikedTrait3 = randomDislikedTrait(person)
+    person.addDislikedTraits(dislikedTrait3)
+
+def traitsFromParerts (person, parent1, parent2):
+
+    notClear = True
+
+    if len(person.getTraits()) == 0:
+        randomTrait = randomFromEnumCollection(parent1.getTraits() + parent2.getTraits())
+        return randomTrait
+    else:
+        randomTrait = randomFromEnumCollection(parent1.getTraits() + parent2.getTraits())
+        while notClear:
+            for trait in person.getTraits():
+                if trait.value[0] + randomTrait.value[0] == 0 or trait == randomTrait:
+                    notClear = True
+                    randomTrait = randomFromEnumCollection(parent1.getTraits() + parent2.getTraits())
+                else:
+                    notClear = False
+
+        return randomTrait
+
+def randomTrait (person):
+
+    notClear = True
+
+    if len(person.getTraits()) == 0:
+        randomTrait = randomFromEnumCollection(Enums.Traits)
+        return randomTrait
+    else:
+        randomTrait = randomFromEnumCollection(Enums.Traits)
+        while notClear:
+            for trait in person.getTraits():
+                if trait.value[0] + randomTrait.value[0] == 0 or trait == randomTrait:
+                    notClear = True
+                    randomTrait = randomFromEnumCollection(Enums.Traits)
+                else:
+                    notClear = False
+        return randomTrait
+
+def randomDislikedTrait (person):
+
+    notClear = True
+
+    if len(person.getDislikedTraits()) == 0:
+        randomTrait = randomFromEnumCollection(Enums.Traits)
+        return randomTrait
+    else:
+        randomTrait = randomFromEnumCollection(Enums.Traits)
+        while notClear:
+            for trait in person.getDislikedTraits():
+                for trait2 in person.getLikedTraits():
+                    if trait == randomTrait and trait2 == randomTrait and trait == trait2:
+                        notClear = True
+                        randomTrait = randomFromEnumCollection(Enums.Traits)
+                    else:
+                        notClear = False
+            return randomTrait
+
+def randomLikedTrait (person):
+
+    notClear = True
+
+    if len(person.getLikedTraits()) == 0:
+        randomTrait = randomFromEnumCollection(Enums.Traits)
+        return randomTrait
+    else:
+        randomTrait = randomFromEnumCollection(Enums.Traits)
+        while notClear:
+            for trait in person.getLikedTraits():
+                if trait == randomTrait:
+                    notClear = True
+                    randomTrait = randomFromEnumCollection(Enums.Traits)
+                else:
+                    notClear = False
+        return randomTrait
 
 
 def geneticSex (parent1, parent2):
@@ -226,3 +349,4 @@ def triangularNumber(n):
     for i in range(n):  # range(3) is a generator for [0, 1, 2]
         deathChance += i
     return deathChance
+

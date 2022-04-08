@@ -48,6 +48,8 @@ def birthChild(world, parent1, parent2, trueParent1='', trueParent2=''):
                           sexGen1, sexGen2, sexuality, fertility, offspringHeight, hairColor, hairColorGen1, hairColorGen2, eyeColor, eyeColorGen1, eyeColorGen2,
                           parent1, parent2, trueParent1, trueParent2, trueParent2.familyObjRef)
 
+    Utils.inheretTraits(person, parent1, parent2, trueParent1, trueParent2)
+
     return person
 
 

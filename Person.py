@@ -206,4 +206,25 @@ class Person:
         self.settlement = newSettlement
 
     def increaseHeight(self):
-        self.height = int(((-0.8 / self.age) + 1)* self.heightGen)
+        self.height = int(((-0.8 / self.age) + 1) * self.heightGen)
+
+    def getTraits(self):
+        return self.traits
+
+    def addTrait(self, trait):
+        if len(self.traits) < 3:
+            self.traits.append(trait)
+
+    def getLikedTraits(self):
+        return self.likeTraits
+
+    def addLikedTraits(self, trait):
+        if len(self.likeTraits) < 3:
+            self.likeTraits.append(trait)
+
+    def getDislikedTraits(self):
+        return self.dislikeTraits
+
+    def addDislikedTraits(self, trait):
+        if len(self.dislikeTraits) < 3:
+            self.dislikeTraits.append(trait)

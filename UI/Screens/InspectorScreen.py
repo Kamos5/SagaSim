@@ -170,6 +170,27 @@ class InspectorScreen:
         label = Label("Eye Color: " + str(object.getEyeColor().value[1]), 500, self.lineHeight, self.textFont)
         self.inspectorScreenSurface.blit(label.localSurface, (self.width * 0.05, self.lineHeight * self.writeLine + self.scroll_y))
         self.writeLine += 1
+        if len(object.getTraits()) > 0:
+            traits = ""
+            for trait in object.getTraits():
+                traits += trait.value[1] + " "
+            label = Label("Traits: " + str(traits).strip(), 500, self.lineHeight, self.textFont)
+            self.inspectorScreenSurface.blit(label.localSurface, (self.width * 0.05, self.lineHeight * self.writeLine + self.scroll_y))
+            self.writeLine += 1
+        if len(object.getLikedTraits()) > 0:
+            traits = ""
+            for trait in object.getLikedTraits():
+                traits += trait.value[1] + " "
+            label = Label("Likes: " + str(traits).strip(), 500, self.lineHeight, self.textFont)
+            self.inspectorScreenSurface.blit(label.localSurface, (self.width * 0.05, self.lineHeight * self.writeLine + self.scroll_y))
+            self.writeLine += 1
+        if len(object.getDislikedTraits()) > 0:
+            traits = ""
+            for trait in object.getDislikedTraits():
+                traits += trait.value[1] + " "
+            label = Label("Dislikes: " + str(traits).strip(), 500, self.lineHeight, self.textFont)
+            self.inspectorScreenSurface.blit(label.localSurface, (self.width * 0.05, self.lineHeight * self.writeLine + self.scroll_y))
+            self.writeLine += 1
         if len(object.getChildrensList()) > 0:
             label = Label("Alive childrens:", 500, self.lineHeight, self.textFont)
             self.inspectorScreenSurface.blit(label.localSurface, (self.width * 0.05, self.lineHeight * self.writeLine + self.scroll_y))

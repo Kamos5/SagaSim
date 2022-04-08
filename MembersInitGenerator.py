@@ -24,9 +24,20 @@ def Init(families, world):
             eyeColor = setUpEyeColorsToFamilies(family)
             eyeColorGen1 = [eyeColor, 0]
             eyeColorGen2 = [eyeColor, 0]
-
-
             member.setInitValues(family.familyName, world.getYear(), randomAge, randomLifespan, sex, hairColor, hairColorGen1, hairColorGen2, eyeColor, eyeColorGen1, eyeColorGen2, family)
+
+            member.addTrait(Utils.randomTrait(member))
+            member.addTrait(Utils.randomTrait(member))
+            member.addTrait(Utils.randomTrait(member))
+
+            member.addLikedTraits(Utils.randomLikedTrait(member))
+            member.addLikedTraits(Utils.randomLikedTrait(member))
+            member.addLikedTraits(Utils.randomLikedTrait(member))
+
+            member.addDislikedTraits(Utils.randomDislikedTrait(member))
+            member.addDislikedTraits(Utils.randomDislikedTrait(member))
+            member.addDislikedTraits(Utils.randomDislikedTrait(member))
+
             if family.getFemaleNumber() == 0 and family.getMaleNumber() == 0:
                 family.setFoundedBy(member)
             family.addNewMember(member)
