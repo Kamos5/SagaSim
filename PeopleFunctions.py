@@ -90,7 +90,19 @@ def deathProcedures(person, world):
         person.getMother().getChildrensList().remove(person)
         person.getMother().getDeadChildrens().append(person)
 
+    if person.getOccupation() is not None:
+        person.getOccupation().removeWorker(person)
+        person.setOccupation(None)
+
     # adding dead kids to the list od dead children
     # not needed. all kids that have Status.DEAD in child list is what we need
 
     return
+
+def retirement(person,world):
+
+    if person.getOccupation() is not None:
+        person.getOccupation().removeWorker(person)
+        person.setOccupation(None)
+        person.setOccupationName("Retired")
+        PLEH.retired(person, world)

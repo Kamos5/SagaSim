@@ -155,6 +155,8 @@ def running (world, families, people, manualOverride):
         spouseMMTime = end1 - start1
         start1 = time.perf_counter()
     Events.settlementsPopulationManagement(world, families)
+    Events.settlementWorkersManagement(world)
+    Events.settlementGoodsProduction(world)
     if timers:
         end1 = time.perf_counter()
         breakSettlementsPopTime = end1 - start1
@@ -321,7 +323,7 @@ def pygameEvents(event, canvas, families, pausedPressed):
             canvas.refreshScreen(world, families, canvas.listScreen.getScroll_y(), canvas.inspectorScreen.getScroll_y())
 
     if canvas.handleClickOnCollection(event):
-        canvas.refreshScreen(world, families, canvas.listScreen.getScroll_y(), canvas.inspectorScreen.getScroll_y())
+        canvas.refreshScreen(world, families, canvas.listScreen.getScroll_y(), 0)
 
     if event.type == pygame.QUIT:
         pygame.quit()

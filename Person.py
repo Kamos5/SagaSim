@@ -60,6 +60,8 @@ class Person:
         self.childrens = []
         self.deadChildrens = []
         self.lifeEvents = []
+        self.occupation = None
+        self.occupationName = ''
         pass
 
     def setInitValues(self, familyName, yearOfBirth, age, randomLifespan, sex, hairColor, hairColorGen1, hairColorGen2, eyeColor, eyeColorGen1, eyeColorGen2, familyObj):
@@ -228,3 +230,15 @@ class Person:
     def addDislikedTraits(self, trait):
         if len(self.dislikeTraits) < 3:
             self.dislikeTraits.append(trait)
+
+    def getOccupation(self):
+        return self.occupation
+
+    def setOccupation(self, occupation):
+        self.occupation = occupation
+
+    def getOccupationName(self):
+        return self.occupationName
+
+    def setOccupationName(self, occupationName):
+        self.occupationName = occupationName

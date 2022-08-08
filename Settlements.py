@@ -1,7 +1,13 @@
 import Enums
 import SettlementNameGenerator as SNG
 import Parameters
+import Utils
+import SettlementFeatures as SF
+import FoundationTypes as FoundationTypes
+from Enums import LifeStatus
 
+def takeFeatureNumber(elem):
+    return elem.getFeatureNumber()
 
 class Settlements:
 
@@ -26,14 +32,33 @@ class Settlements:
         self.foundedIn = year
         self.baseFertility = Parameters.baseVillageFertility
         self.fertilityModifier = 0
-        self.foodTiles = 0
-        self.prodTiles = 0
+        self.foodTiles = 7
+        self.prodTiles = 1
+        self.foodProduced = 0
+        self.prodProduced = 0
+        self.foodConsumed = 0
+        self.prodConsumed = 0
+        self.foodProducedLastYear = 0
+        self.prodProducedLastYear = 0
+        self.foodConsumedLastYear = 0
+        self.prodConsumedLastYear = 0
+        self.foodNetLastYear = 0
+        self.freeFood = 0
+        self.freeProd = 0
         self.residents = []
-        self.features = []
+        self.foodFeatures = []
+        self.prodFeatures = []
+        self.unemployedRes = []
+        self.employedRes = []
         self.providesTo = None
         self.providedFrom = []
         self.maxPopulation = 0
         self.uiExpand = False
+
+        self.createStartingVillageFeatures()
+
+    def updateFeaturesForTown(self):
+        self.createUpdateVillageFeaturesForTown()
 
     def getUIExpand(self):
         return self.uiExpand
@@ -64,11 +89,23 @@ class Settlements:
     def setBaseFertility(self, newFertility):
         self.baseFertility = newFertility
 
-    def getFeatures(self):
-        return self.features
+    def getFoodFeatures(self):
+        return sorted(self.foodFeatures, key=lambda feature: feature.getFeatureNumber())
 
-    def addFeature(self, feature):
-        self.features.append(feature)
+    def removeFoodFeature(self, feature):
+        self.foodFeatures.remove(feature)
+
+    def addFoodFeature(self, feature):
+        self.foodFeatures.append(feature)
+
+    def getProdFeatures(self):
+        return self.prodFeatures
+
+    def addProdFeature(self, feature):
+        self.prodFeatures.append(feature)
+
+    def removeProdFeature(self, feature):
+        self.prodFeatures.remove(feature)
 
     def getFertilityModifier(self):
         return self.fertilityModifier
@@ -89,22 +126,121 @@ class Settlements:
     def getSettlementName(self):
         return self.name
 
+    def getSettlementFoodProduced(self):
+        return self.foodProduced
+
+    def increaseSettlementFoodProduced(self, value):
+        self.foodProduced += value
+        self.foodProduced = round(self.foodProduced, 2)
+
+    def getSettlementFoodProducedLastYear(self):
+        return round(self.foodProducedLastYear, 2)
+
+    def setSettlementFoodProducedLastYear(self, value):
+        self.foodProducedLastYear = value
+
+    def getSettlementProdProduced(self):
+        return round(self.prodProduced, 2)
+
+    def increaseSettlementProdProduced(self, value):
+        self.prodProduced += value
+        self.prodProduced = round(self.prodProduced, 2)
+
+    def getSettlementProodProducedLastYear(self):
+        return round(self.prodProducedLastYear, 2)
+
+    def setSettlementProdProducedLastYear(self, value):
+        self.prodProducedLastYear = value
+
+    def getSettlementFoodConsumed(self):
+        return self.foodConsumed
+
+    def increaseSettlementFoodConsumed(self, value):
+        self.foodConsumed += value
+        self.foodConsumed = round(self.foodConsumed, 2)
+
+    def getSettlementFoodConsumedLastYear(self):
+        return round(self.foodConsumedLastYear, 2)
+
+    def setSettlementFoodConsumedLastYear(self, value):
+        self.foodConsumedLastYear = value
+
+    def getSettlementProdConsumed(self):
+        return round(self.prodConsumed, 2)
+
+    def increaseSettlementProdConsumed(self, value):
+        self.prodConsumed += value
+        self.prodConsumed = round(self.prodConsumed, 2)
+
+    def getSettlementProodConsumedLastYear(self):
+        return round(self.prodConsumedLastYear, 2)
+
+    def setSettlementProdConsumedLastYear(self, value):
+        self.prodConsumedLastYear = value
+
+    def getNetFoodLastYear(self):
+        return self.foodNetLastYear
+
+    def setNetFoodLastYear(self, value):
+        self.foodNetLastYear = round(value, 2)
+
+    def getFreeFood(self):
+        return self.freeFood
+
+    def setFreeFood(self, value):
+        self.freeFood = value
+        self.freeFood = round(self.freeFood, 2)
+
+    def changeFreeFood(self, value):
+        self.freeFood += value
+        self.freeFood = round(self.freeFood, 2)
+
+    def getFreeProd(self):
+        return self.freeProd
+
+    def setFreeProd(self, value):
+        self.freeProd = value
+        self.freeProd = round(self.freeProd, 2)
+
+    def changeFreeProd(self, value):
+        self.freeProd += value
+        self.freeProd = round(self.freeProd, 2)
+
+    def getFoodTilesNumber(self):
+        return self.foodTiles
+
+    def getProdFeatureNumber(self):
+        return self.prodTiles
+
     def getSettlementType(self):
         return self.settlementType
+
     def changeSettlementType(self, newType):
         self.settlementType = newType
         if newType == Enums.Settlements.VILLAGE:
             self.setBaseFertility(Parameters.baseVillageFertility)
             self.maxPopulation = Parameters.baseVillageSize
-            self.recalculatePopWithFeatures()
+            #self.recalculatePopWithFeatures()
             self.foodTiles = 7
             self.prodTiles = 1
         else:
             self.setBaseFertility(Parameters.baseCityFertility)
             self.maxPopulation = Parameters.baseCitySize
-            self.recalculatePopWithFeatures()
+            #self.recalculatePopWithFeatures()
             self.foodTiles = 8
             self.prodTiles = 16
+            self.updateFeaturesForTown()
+
+        # for number in range(self.getFoodTilesNumber()-len(self.getFoodFeatures())):
+        #     feature = Utils.randomFromCollection(SF.getListOfTier0FoodFeatures())
+        #     feature.value.setFoundationType(Utils.randomFromEnumCollection(FoundationTypes.FoundationEnums))
+        #     self.addFoodFeature(feature)
+        #
+        # for number in range(self.getProductionTilesNumber()-len(self.getProdFeatures())):
+        #
+        #     feature = Utils.randomFromCollection(SF.getListOfTier0ProdFeatures())
+        #     feature.value.setFoundationType(Utils.randomFromEnumCollection(FoundationTypes.FoundationEnums))
+        #     self.addProdFeature(feature)
 
     def getFounedIn(self):
         return self.foundedIn
@@ -115,9 +251,20 @@ class Settlements:
     def removeResident(self, person):
         self.residents.remove(person)
 
-    def recalculatePopWithFeatures(self):
-        for feature in self.features:
-            self.maxPopulation += feature.value[0]
+    def getUnemployedResidentsList(self):
+
+        self.unemployedRes = []
+        for res in self.residents:
+            if res.getAge() >= 15 and res.getOccupation() is None and res not in self.unemployedRes and res.getAge() < 50:
+                self.unemployedRes.append(res)
+        return self.unemployedRes
+
+    def getEmployedResidentsList(self):
+
+        for res in self.residents:
+            if res.getOccupation() is not None and res not in self.employedRes:
+                self.employedRes.append(res)
+        return self.employedRes
 
     def getUniqueFamilies(self):
         uniqueFamilies = []
@@ -132,3 +279,50 @@ class Settlements:
 
     def setProvision(self, newSettlement):
         self.providesTo = newSettlement
+
+    def createStartingVillageFeatures(self):
+
+        for i in range(7):
+            randomBasicFeature = Utils.randomRange(0, 4)
+            feature = SF.createZones()[randomBasicFeature]
+            feature.setFoundationType(Utils.randomFromEnumCollection(FoundationTypes.FoundationEnums))
+            feature.setFeatureNumber(i)
+            self.addFoodFeature(feature)
+        randomBasicFeature = Utils.randomRange(5, 6)
+        feature = SF.createZones()[randomBasicFeature]
+        feature.setFoundationType(Utils.randomFromEnumCollection(FoundationTypes.FoundationEnums))
+        feature.setFeatureNumber(7)
+        self.addProdFeature(feature)
+
+    def createUpdateVillageFeaturesForTown(self):
+
+        feature = SF.createZones()[4]
+        feature.setFoundationType(Utils.randomFromEnumCollection(FoundationTypes.FoundationEnums))
+        feature.setFeatureNumber(8)
+        self.addFoodFeature(feature)
+
+        for i in range(15):
+            randomBasicFeature = Utils.randomRange(5, 6)
+            feature = SF.createZones()[randomBasicFeature]
+            feature.setFoundationType(Utils.randomFromEnumCollection(FoundationTypes.FoundationEnums))
+            feature.setFeatureNumber(9+i)
+            self.addProdFeature(feature)
+
+    def upgradeTile(self, oldFeature, newFeature):
+
+        if oldFeature.getFeatureType() == SF.FeatureTypes.FOODTYPE:
+            self.removeFoodFeature(oldFeature)
+            newFeature.setFoundationType(oldFeature.getFoundationType())
+            newFeature.setFeatureNumber(oldFeature.getFeatureNumber())
+            self.addFoodFeature(newFeature)
+        if oldFeature.getFeatureType() == SF.FeatureTypes.PRODTYPE:
+            self.removeProdFeature(oldFeature)
+            newFeature.setFoundationType(oldFeature.getFoundationType())
+            newFeature.setFeatureNumber(oldFeature.getFeatureNumber())
+            self.addProdFeature(newFeature)
+
+        for worker in oldFeature.getWorkerList():
+            oldFeature.removeWorker(worker)
+            newFeature.addWorker(worker)
+            worker.setOccupation(newFeature)
+            worker.setOccupationName(newFeature.getOccupationName())

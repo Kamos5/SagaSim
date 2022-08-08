@@ -112,13 +112,30 @@ class ListScreen:
 
         self.writeLine += 1
 
+    def addDeadFamilyPeople(self, family, focusObj):
+
+        text = str(family.getFamilyName() + " (" + str(family.getDeadMemberNumber()) + ")")
+
+        if focusObj == family:
+            label = Label(text, 300, self.lineHeight, self.textFont, True, True)
+        else:
+            label = Label(text, 300, self.lineHeight, self.textFont, True)
+
+        self.listScreenSurfaceObjsRect.append([self.listScreenSurface.blit(label.localSurface, (self.width * 0.05, self.lineHeight * self.writeLine + self.scroll_y)), family])
+
+        self.writeLine += 1
+
+
     def addSettler(self, person, focusObj):
 
         firstName = str(person.getFirstName())
         lastName = str(person.getLastName())
+        occupationName = str(person.getOccupationName())
+        if occupationName != '':
+            occupationName = "<"+occupationName+">"
         age = str (person.age)
         maritalStatus = str(person.maritalStatus.value)
-        text = firstName + " " + lastName + " Age: " + age + " " + maritalStatus
+        text = firstName + " " + occupationName + " " + lastName + " Age: " + age + " " + maritalStatus
 
         if focusObj == person:
             label = Label(text, 400, self.lineHeight, self.textFont, True, True)

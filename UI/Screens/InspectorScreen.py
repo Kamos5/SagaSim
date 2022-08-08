@@ -94,6 +94,37 @@ class InspectorScreen:
         label = Label("Founded in: " + str(object.getFounedIn()), 500, self.lineHeight, self.textFont)
         self.inspectorScreenSurface.blit(label.localSurface, (self.width * 0.05, self.lineHeight * self.writeLine + self.scroll_y))
         self.writeLine += 1
+        label = Label("Provides to: " + str(object.getProvision()), 500, self.lineHeight, self.textFont)
+        self.inspectorScreenSurface.blit(label.localSurface, (self.width * 0.05, self.lineHeight * self.writeLine + self.scroll_y))
+        self.writeLine += 1
+        label = Label("Number of employed residents: " + str(len(object.getEmployedResidentsList())), 500, self.lineHeight, self.textFont)
+        self.inspectorScreenSurface.blit(label.localSurface, (self.width * 0.05, self.lineHeight * self.writeLine + self.scroll_y))
+        self.writeLine += 1
+        label = Label("Number of unemployed residents: " + str(len(object.getUnemployedResidentsList())), 500, self.lineHeight, self.textFont)
+        self.inspectorScreenSurface.blit(label.localSurface, (self.width * 0.05, self.lineHeight * self.writeLine + self.scroll_y))
+        self.writeLine += 1
+        label = Label("Food produced last year: " + str(object.getSettlementFoodProducedLastYear()), 500, self.lineHeight, self.textFont)
+        self.inspectorScreenSurface.blit(label.localSurface, (self.width * 0.05, self.lineHeight * self.writeLine + self.scroll_y))
+        self.writeLine += 1
+        label = Label("Food consumed last year: " + str(object.getSettlementFoodConsumedLastYear()), 500, self.lineHeight, self.textFont)
+        self.inspectorScreenSurface.blit(label.localSurface, (self.width * 0.05, self.lineHeight * self.writeLine + self.scroll_y))
+        self.writeLine += 1
+        label = Label("Food net last year: " + str(object.getNetFoodLastYear()), 500, self.lineHeight, self.textFont)
+        self.inspectorScreenSurface.blit(label.localSurface, (self.width * 0.05, self.lineHeight * self.writeLine + self.scroll_y))
+        self.writeLine += 1
+        label = Label("Free food: " + str(object.getFreeFood()), 500, self.lineHeight, self.textFont)
+        self.inspectorScreenSurface.blit(label.localSurface, (self.width * 0.05, self.lineHeight * self.writeLine + self.scroll_y))
+        self.writeLine += 1
+        label = Label("Production produced last year: " + str(object.getSettlementProodProducedLastYear()), 500, self.lineHeight, self.textFont)
+        self.inspectorScreenSurface.blit(label.localSurface, (self.width * 0.05, self.lineHeight * self.writeLine + self.scroll_y))
+        self.writeLine += 1
+        label = Label("All-time food prod: " + str(object.getSettlementFoodProduced()), 500, self.lineHeight, self.textFont)
+        self.inspectorScreenSurface.blit(label.localSurface, (self.width * 0.05, self.lineHeight * self.writeLine + self.scroll_y))
+        self.writeLine += 1
+        label = Label("Free production: " + str(object.getFreeProd()), 500, self.lineHeight, self.textFont)
+        self.inspectorScreenSurface.blit(label.localSurface, (self.width * 0.05, self.lineHeight * self.writeLine + self.scroll_y))
+        self.writeLine += 1
+
         if object.getProvision() is not None:
             label = Label("Provides to: " + str(object.getProvision()), 500, self.lineHeight, self.textFont, True)
             self.inspectorScreenSurfaceObjsRect.append([self.inspectorScreenSurface.blit(label.localSurface, (self.width * 0.05, self.lineHeight * self.writeLine + self.scroll_y)), object.getProvision()])
@@ -102,11 +133,22 @@ class InspectorScreen:
         label = Label("Features:", 500, self.lineHeight, self.textFont)
         self.inspectorScreenSurface.blit(label.localSurface, (self.width * 0.05, self.lineHeight * self.writeLine + self.scroll_y))
         self.writeLine += 1
-        for feature in object.getFeatures():
-            label = Label("Feature: " + str(feature.value[1]), 500, self.lineHeight, self.textFont)
+        for feature in object.getFoodFeatures():
+            label = Label("Food feature: " + str(feature.getName()) + " Quality: " + str(feature.getFoundationType().value.name), 500, self.lineHeight, self.textFont)
             self.inspectorScreenSurface.blit(label.localSurface, (self.width * 0.10, self.lineHeight * self.writeLine + self.scroll_y))
             self.writeLine += 1
-
+            for worker in feature.getWorkerList():
+                label = Label(str(worker.getFirstName() + " " + str(worker.getLastName())), 500, self.lineHeight, self.textFont, True)
+                self.inspectorScreenSurfaceObjsRect.append([self.inspectorScreenSurface.blit(label.localSurface, (self.width * 0.15, self.lineHeight * self.writeLine + self.scroll_y)), worker])
+                self.writeLine += 1
+        for feature in object.getProdFeatures():
+            label = Label("Prod feature: " + str(feature.getName()) + " Quality: " + str(feature.getFoundationType().value.name), 500, self.lineHeight, self.textFont)
+            self.inspectorScreenSurface.blit(label.localSurface, (self.width * 0.10, self.lineHeight * self.writeLine + self.scroll_y))
+            self.writeLine += 1
+            for worker in feature.getWorkerList():
+                label = Label(str(worker.getFirstName() + " " + str(worker.getLastName())), 500, self.lineHeight, self.textFont, True)
+                self.inspectorScreenSurfaceObjsRect.append([self.inspectorScreenSurface.blit(label.localSurface, (self.width * 0.15, self.lineHeight * self.writeLine + self.scroll_y)), worker])
+                self.writeLine += 1
 
     def addInspectorForFamily(self, object):
 
@@ -161,6 +203,9 @@ class InspectorScreen:
             label = Label("Spouse: " + str(object.getSpouse().getFirstName()) + " " + str(object.getSpouse().getLastName()), 500, self.lineHeight, self.textFont, True)
             self.inspectorScreenSurfaceObjsRect.append([self.inspectorScreenSurface.blit(label.localSurface, (self.width * 0.05, self.lineHeight * self.writeLine + self.scroll_y)), object.getSpouse()])
             self.writeLine += 1
+        label = Label("Occupation: " + str(object.getOccupationName()), 500, self.lineHeight, self.textFont)
+        self.inspectorScreenSurface.blit(label.localSurface, (self.width * 0.05, self.lineHeight * self.writeLine + self.scroll_y))
+        self.writeLine += 1
         label = Label("Height: " + str(object.getHeight()), 500, self.lineHeight, self.textFont)
         self.inspectorScreenSurface.blit(label.localSurface, (self.width * 0.05, self.lineHeight * self.writeLine + self.scroll_y))
         self.writeLine += 1

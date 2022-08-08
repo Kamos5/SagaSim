@@ -1,5 +1,6 @@
 from Settlements import Settlements
 from RegionFeatures import Features
+import SettlementFeatures as SF
 import Parameters
 import Utils
 
@@ -30,12 +31,7 @@ class Region():
         self.settlements.append(Settlements(self.regionName, world.getYear()))
         newSettlement = self.settlements[len(self.getSettlements())-1]
         newSettlement.maxPopulation = Parameters.baseVillageSize
-        randomNumberFeatures = Utils.randomRange(1, 100)
-        newSettlement.addFeature(Utils.randomFromEnumCollection(Features))
-        while randomNumberFeatures > 90:
-            randomNumberFeatures = Utils.randomRange(1, 100)
-            newSettlement.addFeature(Utils.randomFromEnumCollection(Features))
-        newSettlement.recalculatePopWithFeatures()
+
         return newSettlement
 
     def getSettlementFromIndex(self, index):

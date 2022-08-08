@@ -9,6 +9,7 @@ import PersonLifeEventsHistory as PLEH
 from Enums import MaritalStatus as MS
 from Enums import Settlements as SE
 import SettlementsFunctions as SF
+import SettlementFeatures as SFeat
 
 def increaseAge (people, world):
 
@@ -24,6 +25,9 @@ def increaseAge (people, world):
                 PLEH.adulthoodReached(person, world)
             if deathChanceFromAge(person) or person.age >= person.modifiedLifespan:
                 PF.deathProcedures(person, world)
+
+            if person.age > 50:
+                PF.retirement(person, world)
 
 def birthPeople (world, people):
 
@@ -121,6 +125,104 @@ def settlementsPopulationManagement (world, families):
             if chanceOfUpgradingToCity < Parameters.chancePerYearToUpgradeVillageToTown:
                 randomVillage.changeSettlementType(Settlements.TOWN)
 
+def settlementGoodsProduction(world):
+
+    for region in world.getRegions():
+
+        for settlement in region.getSettlements():
+
+            ##FOOD AND PRODUCTION PRODUCTION
+            foodProd0 = settlement.getSettlementFoodProduced()
+            for foodTile in settlement.getFoodFeatures():
+
+                foodProd = foodTile.prodYield * foodTile.foundationType.value.yieldModifier / 100 * foodTile.workers
+                settlement.increaseSettlementFoodProduced(foodProd)
+            foodProd1 = settlement.getSettlementFoodProduced()
+            settlement.setSettlementFoodProducedLastYear(foodProd1-foodProd0)
+
+            foodConsumed = 0
+            for resident in settlement.getResidents():
+                if resident.getAge() < 10:
+                    foodConsumed += 0.5
+                    settlement.increaseSettlementFoodConsumed(0.5)
+                elif resident.getAge() >= 10 and resident.getAge() <15:
+                    foodConsumed += 0.75
+                    settlement.increaseSettlementFoodConsumed(0.75)
+                else:
+                    foodConsumed += 1
+                    settlement.increaseSettlementFoodConsumed(1)
+            settlement.setSettlementFoodConsumedLastYear(foodConsumed)
+            if settlement.getFreeFood() + (foodProd1 - foodProd0) - foodConsumed < 0:
+                settlement.setFreeFood(0)
+            else:
+                settlement.changeFreeFood(foodProd1 - foodProd0 - foodConsumed)
+
+            settlement.setNetFoodLastYear(foodProd1-foodProd0-foodConsumed)
+
+            prodProd0 = settlement.getSettlementProdProduced()
+            for prodTile in settlement.getProdFeatures():
+
+                prodProd = prodTile.prodYield * prodTile.foundationType.value.yieldModifier / 100 * prodTile.workers
+                settlement.increaseSettlementProdProduced(prodProd)
+
+            prodProd1 = settlement.getSettlementProdProduced()
+            settlement.changeFreeProd(prodProd1 - prodProd0)
+            settlement.setSettlementProdProducedLastYear(prodProd1 - prodProd0)
+
+
+            #UPGRADING FEATURES
+
+            if float(settlement.getFreeProd()) > 0:
+                if settlement.getSettlementFoodProducedLastYear() - settlement.getSettlementFoodConsumedLastYear() < int(round(len(settlement.getResidents())/2)):
+                    for tile in settlement.getFoodFeatures():
+                        for upgradable in (SFeat.getPotencialUpgradesForZone(tile.getName())):
+                            if float(settlement.getFreeProd()) >= float(upgradable.value.getUpgradeCost()):
+                                settlement.changeFreeProd(-upgradable.value.getUpgradeCost())
+                                newFeature = SFeat.createZones()[SFeat.getFeatureIndexFromName(upgradable.value.getName())]
+                                settlement.upgradeTile(tile, newFeature)
+                                return
+
+                    for tile in settlement.getProdFeatures():
+                        for upgradable in (SFeat.getPotencialUpgradesForZone(tile.getName())):
+                            if float(settlement.getFreeProd()) >= float(upgradable.value.getUpgradeCost()):
+                                settlement.changeFreeProd(-upgradable.value.getUpgradeCost())
+                                newFeature = SFeat.createZones()[SFeat.getFeatureIndexFromName(upgradable.value.getName())]
+                                settlement.upgradeTile(tile, newFeature)
+                                return
+
+
+def settlementWorkersManagement(world):
+
+    for region in world.getRegions():
+
+        for settlement in region.getSettlements():
+
+            unemployedWorkerList = settlement.getUnemployedResidentsList()
+
+            if settlement.getSettlementFoodProducedLastYear() - settlement.getSettlementFoodConsumedLastYear() < int(round(len(settlement.getResidents())/2)):
+                for foodTile in settlement.getFoodFeatures():
+
+                    for occupations in range(foodTile.getFreeWorkersSlots()):
+
+                        if len(unemployedWorkerList) > 0:
+                            newWorker = Utils.randomFromCollection(unemployedWorkerList)
+                            unemployedWorkerList.remove(newWorker)
+                            foodTile.addWorker(newWorker)
+                            newWorker.setOccupation(foodTile)
+                            newWorker.setOccupationName(foodTile.getOccupationName())
+                            PLEH.foundEmpoyment(newWorker, world)
+            else:
+                for prodTile in settlement.getProdFeatures():
+
+                    for occupations in range(prodTile.getFreeWorkersSlots()):
+
+                        if len(unemployedWorkerList) > 0:
+                            newWorker = Utils.randomFromCollection(unemployedWorkerList)
+                            unemployedWorkerList.remove(newWorker)
+                            prodTile.addWorker(newWorker)
+                            newWorker.setOccupation(prodTile)
+                            newWorker.setOccupationName(prodTile.getOccupationName())
+                            PLEH.foundEmpoyment(newWorker, world)
 
 
 def prepareMigration(settlement, newTargetSettlement, world):
@@ -181,8 +283,6 @@ def splitFamilies(world, region, families, newTargetSettlement, complexRandomMig
                 if family.getFemaleNumber() == 0 and family.getMaleNumber() == 0:
                     family.setFoundedBy(person)
                 family.addNewMember(person)
-
-
 
 
 

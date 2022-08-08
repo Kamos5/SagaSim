@@ -61,4 +61,12 @@ def lostSpouse(person, world):
         sex = 'husband'
     else:
         sex = 'wife'
-    person.lifeEvents.append(str(person.firstName) + ' had lost a ' + str(sex) + ' named ' + str(person.spouse.firstName) + ' due to ' + str(person.spouse.causeOfDeath.value + ' in the year ' + str(world.getYear())))
+    person.lifeEvents.append(str(person.firstName) + ' had lost a ' + str(sex) + ' named ' + str(person.spouse.firstName) + ' due to ' + str(person.spouse.causeOfDeath.value) + ' in the year ' + str(world.getYear()))
+
+def foundEmpoyment(person, world):
+
+    person.lifeEvents.append(str(person.getFirstName()) + ' starts workings as ' + str(person.getOccupationName()) + ' in the town of ' + str(person.getSettlement().getSettlementName()) + ' in the year ' + str(world.getYear()))
+
+def retired(person, world):
+
+    person.lifeEvents.append(str(person.getFirstName()) + ' retired from working as ' + str(person.getOccupationName()) + ' in the year ' + str(world.getYear()))

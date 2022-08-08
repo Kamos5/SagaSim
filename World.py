@@ -45,7 +45,7 @@ class World:
         for region in self.regions:
             for i in range(self.settlementsInitNumber):
                 newSettlement = region.addSettlement(self)
-                # First settlement is always TOWNinstall pyqt5
+                # First settlement is always TOWN
                 if i == 0:
                     newSettlement.changeSettlementType(Settlements.TOWN)
                 else:
