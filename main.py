@@ -5,8 +5,13 @@ import FamilyInitGenerator as FIG
 import MembersInitGenerator as MIG
 import Parameters
 import pygame
+
+from Family import Family
+from Region import Region
+from Settlements import Settlements
 from UI import Canvas
 from UI.Utils.TextField import TextField
+from Person import Person
 from World import World as World
 
 world = World()
@@ -26,7 +31,7 @@ def initPeople(families):
 
     return people
 
-def running (world, families, people, manualOverride):
+def running (world, manualOverride):
 
     start = time.perf_counter()
     print(world.getYear())
@@ -139,22 +144,22 @@ def running (world, families, people, manualOverride):
         end1 = time.perf_counter()
         worldtime = end1 - start1
         start1 = time.perf_counter()
-    Events.increaseAge(people, world)
+    Events.increaseAge(world)
     if timers:
         end1 = time.perf_counter()
         incAgeTime = end1 - start1
         start1 = time.perf_counter()
-    Events.birthPeople(world, people)
+    Events.birthPeople(world)
     if timers:
         end1 = time.perf_counter()
         birthtime = end1 - start1
         start1 = time.perf_counter()
-    FF.SpouseMatchmaking(families, people, world)
+    FF.SpouseMatchmaking(world)
     if timers:
         end1 = time.perf_counter()
         spouseMMTime = end1 - start1
         start1 = time.perf_counter()
-    Events.settlementsPopulationManagement(world, families)
+    Events.settlementsPopulationManagement(world)
     Events.settlementWorkersManagement(world)
     Events.settlementGoodsProduction(world)
     if timers:
@@ -170,11 +175,11 @@ def running (world, families, people, manualOverride):
             print("breakSettlementsPopTime: " + str(breakSettlementsPopTime) + " %: " + str(breakSettlementsPopTime/fullTime))
         print(fullTime)
 
-    for family in families:
+    for family in world.getFamilies():
         isAlive += family.getAliveMemberNumber()
         isDead += family.getDeadMemberNumber()
 
-    print("PeopleOBJNUMBER: " + str(len(people)))
+    print("PeopleOBJNUMBER: " + str(len(world.getPeople())))
     print("Population alive: " + str(isAlive))
     print("Population dead: " + str(isDead))
     print("Population sum: " + str(isAlive+isDead))
@@ -185,8 +190,8 @@ def main():
 
     world.generateRegions(Parameters.startingNumberOfRegions)
     world.generateSettlements()
-    families = initFamilies()
-    people = initPeople(families)
+    world.setFamilies(initFamilies())
+    world.setPeople(initPeople(world.getFamilies()))
 
     windowWidth = 1024
     windowHeight = 768
@@ -218,12 +223,12 @@ def main():
         canvas.navBarScreen.addHelp()
         canvas.navBarScreen.addDateTimer(world)
 
-        canvas.drawStuff(world, families)
+        canvas.drawStuff(world)
 
         #GameLogic
         tickCurrentTime = time.time() * 1000.0
         if tickCurrentTime - tickStartTime >= pTime:
-            running(world, families, people, manualOverride)
+            running(world, manualOverride)
             tickStartTime = time.time() * 1000.0
 
 
@@ -231,10 +236,10 @@ def main():
 
         for event in pygame.event.get():
 
-            pausedPressed = pygameEvents(event, canvas, families, pausedPressed)
+            pausedPressed = pygameEvents(event, canvas, pausedPressed)
             while pausedPressed:  #For Pausing and resuming
                 for event in pygame.event.get():
-                    pausedPressed = pygameEvents(event, canvas, families, pausedPressed)
+                    pausedPressed = pygameEvents(event, canvas, pausedPressed)
 
 
         pygame.display.update()  # Call this only once per loop
@@ -244,7 +249,7 @@ def main():
 
             return
 
-def pygameEvents(event, canvas, families, pausedPressed):
+def pygameEvents(event, canvas, pausedPressed):
 
     #scrolling logic
     if event.type == pygame.MOUSEBUTTONDOWN:
@@ -253,10 +258,10 @@ def pygameEvents(event, canvas, families, pausedPressed):
             pos = pygame.mouse.get_pos()
             if canvas.listScreenObj.collidepoint(pos):
                 scroll_y = min(canvas.listScreen.getScroll_y() + 50, 0)
-                canvas.refreshScreen(world, families, scroll_y, canvas.inspectorScreen.getScroll_y())
+                canvas.refreshScreen(world, scroll_y, canvas.inspectorScreen.getScroll_y())
             elif canvas.detailsScreenObj.collidepoint(pos):
                 scroll_y = min(canvas.inspectorScreen.getScroll_y() + 50, 0)
-                canvas.refreshScreen(world, families, canvas.listScreen.getScroll_y(), scroll_y)
+                canvas.refreshScreen(world, canvas.listScreen.getScroll_y(), scroll_y)
         # scroll down
         if event.button == 5:
             pos = pygame.mouse.get_pos()
@@ -265,13 +270,13 @@ def pygameEvents(event, canvas, families, pausedPressed):
                     scroll_y = max(canvas.listScreen.getScroll_y() - 50, -int(canvas.listScreen.lineHeight*canvas.listScreen.writeLine) + canvas.listScreen.height/2)
                 else:
                     scroll_y = 0
-                canvas.refreshScreen(world, families, scroll_y, canvas.inspectorScreen.getScroll_y())
+                canvas.refreshScreen(world, scroll_y, canvas.inspectorScreen.getScroll_y())
             elif canvas.detailsScreenObj.collidepoint(pos):
                 if canvas.inspectorScreen.lineHeight*canvas.inspectorScreen.writeLine > canvas.inspectorScreen.height/2:
                     scroll_y = max(canvas.inspectorScreen.getScroll_y() - 50, -int(canvas.inspectorScreen.lineHeight*canvas.inspectorScreen.writeLine) + canvas.inspectorScreen.height/2)
                 else:
                     scroll_y = 0
-                canvas.refreshScreen(world, families, canvas.listScreen.getScroll_y(), scroll_y)
+                canvas.refreshScreen(world, canvas.listScreen.getScroll_y(), scroll_y)
 
 
     if event.type == pygame.KEYDOWN:
@@ -304,10 +309,114 @@ def pygameEvents(event, canvas, families, pausedPressed):
             world.setGameSpeed(pCount)
 
         # going to previous focusObj
-        if event.key == pygame.K_LEFT:
+        if event.key == pygame.K_END:
             if len(canvas.focusObj) > 0:
                 canvas.focusObj.pop(len(canvas.focusObj)-1)
-                canvas.refreshScreen(world, families, canvas.listScreen.getScroll_y(), canvas.inspectorScreen.getScroll_y())
+                canvas.refreshScreen(world, canvas.listScreen.getScroll_y(), canvas.inspectorScreen.getScroll_y())
+
+        if event.key == pygame.K_LEFT:
+
+            if len(canvas.focusObj) > 0:
+                lastFocusedObj = canvas.focusObj[len(canvas.focusObj) - 1]
+                if hasattr(lastFocusedObj, 'getUIExpand'):
+                    lastFocusedObj.setUIExpand(False)
+
+        if event.key == pygame.K_RIGHT:
+
+            if len(canvas.focusObj) > 0:
+                lastFocusedObj = canvas.focusObj[len(canvas.focusObj) - 1]
+                if hasattr(lastFocusedObj, 'getUIExpand'):
+                    lastFocusedObj.setUIExpand(True)
+
+        if event.key == pygame.K_UP:
+            if len(canvas.focusObj) > 0:
+                lastFocusedObj = canvas.focusObj[len(canvas.focusObj) - 1]
+
+                if isinstance(canvas.focusObj[len(canvas.focusObj)-1], Person):
+                    if lastFocusedObj.getFamilyObjectRef().getAliveMembersList().index(lastFocusedObj) > 0:
+                        canvas.focusObj.append(lastFocusedObj.getFamilyObjectRef().getAliveMembersList()[lastFocusedObj.getFamilyObjectRef().getAliveMembersList().index(lastFocusedObj)-1])
+                        return pausedPressed
+
+                    if lastFocusedObj.getFamilyObjectRef().getAliveMembersList().index(lastFocusedObj) == 0:
+                        canvas.focusObj.append(lastFocusedObj.getFamilyObjectRef())
+                        return pausedPressed
+
+                if isinstance(canvas.focusObj[len(canvas.focusObj) - 1], Family):
+                    if world.getFamilies().index(lastFocusedObj) > 0:
+                        lastFocusedObj.setUIExpand(False)
+                        canvas.focusObj.append(world.getFamilies()[world.getFamilies().index(lastFocusedObj)-1])
+                        return pausedPressed
+
+                if isinstance(canvas.focusObj[len(canvas.focusObj) - 1], Settlements):
+                    for region in world.getRegions():
+                        for settlement in region.getSettlements():
+                            if settlement == lastFocusedObj and region.getSettlements().index(lastFocusedObj) > 0:
+                                lastFocusedObj.setUIExpand(False)
+                                canvas.focusObj.append(region.getSettlements()[region.getSettlements().index(lastFocusedObj)-1])
+                                return pausedPressed
+
+                            if settlement == lastFocusedObj and region.getSettlements().index(lastFocusedObj) == 0:
+                                lastFocusedObj.setUIExpand(False)
+                                canvas.focusObj.append(region)
+                                return pausedPressed
+
+                if isinstance(canvas.focusObj[len(canvas.focusObj) - 1], Region):
+                    if world.getRegions().index(lastFocusedObj) > 0:
+                        lastFocusedObj.setUIExpand(False)
+                        canvas.focusObj.append(world.getRegions()[world.getRegions().index(lastFocusedObj)-1])
+                        return pausedPressed
+
+        if event.key == pygame.K_DOWN:
+            if len(canvas.focusObj) > 0:
+                lastFocusedObj = canvas.focusObj[len(canvas.focusObj) - 1]
+
+                if isinstance(canvas.focusObj[len(canvas.focusObj)-1], Person):
+                    if lastFocusedObj.getFamilyObjectRef().getAliveMembersList().index(lastFocusedObj) < len(lastFocusedObj.getFamilyObjectRef().getAliveMembersList())-1:
+                        canvas.focusObj.append(lastFocusedObj.getFamilyObjectRef().getAliveMembersList()[lastFocusedObj.getFamilyObjectRef().getAliveMembersList().index(lastFocusedObj)+1])
+                        return pausedPressed
+
+                if isinstance(canvas.focusObj[len(canvas.focusObj) - 1], Family):
+                    if world.getFamilies().index(lastFocusedObj) < len(world.getFamilies()) - 1:
+                        if not lastFocusedObj.getUIExpand():
+                            canvas.focusObj.append(world.getFamilies()[world.getFamilies().index(lastFocusedObj)+1])
+                            return pausedPressed
+                        else:
+                            if len(lastFocusedObj.getAliveMembersList()) > 0:
+                                canvas.focusObj.append(lastFocusedObj.getAliveMembersList()[0])
+                                return pausedPressed
+                            else:
+                                canvas.focusObj.append(world.getFamilies()[world.getFamilies().index(lastFocusedObj) + 1])
+                                return pausedPressed
+
+                if isinstance(canvas.focusObj[len(canvas.focusObj) - 1], Settlements):
+                    for region in world.getRegions():
+                        for settlement in region.getSettlements():
+                            if settlement == lastFocusedObj and region.getSettlements().index(lastFocusedObj) < len(region.getSettlements())-1:
+                                if not lastFocusedObj.getUIExpand():
+                                    canvas.focusObj.append(region.getSettlements()[region.getSettlements().index(lastFocusedObj)+1])
+                                    return pausedPressed
+                                else:
+                                    if len(settlement.getResidents()) > 0:
+                                        canvas.focusObj.append(settlement.getResidents()[0])
+                                        return pausedPressed
+                                    else:
+                                        canvas.focusObj.append(region.getSettlements[region.getSettlements().index(lastFocusedObj) + 1])
+                                        return pausedPressed
+
+                if isinstance(canvas.focusObj[len(canvas.focusObj) - 1], Region):
+                    for region in world.getRegions():
+                        if region == lastFocusedObj and world.getRegions().index(lastFocusedObj) < len(world.getRegions())-1:
+                            if not lastFocusedObj.getUIExpand():
+                                canvas.focusObj.append(world.getRegions()[world.getRegions().index(lastFocusedObj)+1])
+                                return pausedPressed
+                            else:
+                                if len(lastFocusedObj.getSettlements()) > 0:
+                                    canvas.focusObj.append(lastFocusedObj.getSettlements()[0])
+                                    return pausedPressed
+                                else:
+                                    canvas.focusObj.append(world.getRegions()[world.getRegions().index(lastFocusedObj)+1])
+                                    return pausedPressed
+
         if isinstance(canvas.lastFocusObj, TextField):
 
             # Check for backspace
@@ -320,10 +429,10 @@ def pygameEvents(event, canvas, families, pausedPressed):
             # formation
             else:
                 canvas.lastFocusObj.addText(event.unicode)
-            canvas.refreshScreen(world, families, canvas.listScreen.getScroll_y(), canvas.inspectorScreen.getScroll_y())
+            canvas.refreshScreen(world, canvas.listScreen.getScroll_y(), canvas.inspectorScreen.getScroll_y())
 
     if canvas.handleClickOnCollection(event):
-        canvas.refreshScreen(world, families, canvas.listScreen.getScroll_y(), 0)
+        canvas.refreshScreen(world, canvas.listScreen.getScroll_y(), 0)
 
     if event.type == pygame.QUIT:
         pygame.quit()
@@ -331,7 +440,7 @@ def pygameEvents(event, canvas, families, pausedPressed):
 
     # Pause from mousclick on Time
     pausedPressed = canvas.pauseHandle(event, pausedPressed)
-    canvas.refreshScreen(world, families, canvas.listScreen.getScroll_y(), canvas.inspectorScreen.getScroll_y())
+    canvas.refreshScreen(world, canvas.listScreen.getScroll_y(), canvas.inspectorScreen.getScroll_y())
 
     return pausedPressed
 

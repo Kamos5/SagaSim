@@ -3,7 +3,7 @@ import pygame
 
 class TextField:
 
-    def __init__(self, w, h, font, focused=False, borderSize=1):
+    def __init__(self, w, h, font, focused=False, borderSize=2):
 
         self.localSurface = pygame.Surface([w, h])
         self.x = 0
@@ -41,7 +41,7 @@ class TextField:
     def setInitText(self):
 
         textSurface = self.font.render(self.text, True, self.textColor)
-        self.localSurface.blit(textSurface, (self.x, self.y))
+        self.localSurface.blit(textSurface, (self.x+self.borderSize*2, self.y))
 
     def getText(self):
         return self.text
@@ -50,13 +50,13 @@ class TextField:
         self.text = text
         self.addRect()
         textSurface = self.font.render(self.text, True, self.textColor)
-        self.localSurface.blit(textSurface, (self.x, self.y))
+        self.localSurface.blit(textSurface, (self.x+self.borderSize*2, self.y))
 
     def addText(self, text):
         self.text = self.text + text
         self.addRect()
         textSurface = self.font.render(self.text, True, self.textColor)
-        self.localSurface.blit(textSurface, (self.x, self.y))
+        self.localSurface.blit(textSurface, (self.x+self.borderSize*2, self.y))
 
     def activate(self):
         self.focused = True
@@ -64,7 +64,7 @@ class TextField:
         self.borderColor = self.activeBorderColor
         self.addRect()
         textSurface = self.font.render(self.text, True, self.textColor)
-        self.localSurface.blit(textSurface, (self.x, self.y))
+        self.localSurface.blit(textSurface, (self.x+self.borderSize*2, self.y))
 
     def deactivate(self):
         self.focused = False
@@ -72,4 +72,4 @@ class TextField:
         self.borderColor = self.inactiveBorderColor
         self.addRect()
         textSurface = self.font.render(self.text, True, self.textColor)
-        self.localSurface.blit(textSurface, (self.x, self.y))
+        self.localSurface.blit(textSurface, (self.x+self.borderSize*2, self.y))

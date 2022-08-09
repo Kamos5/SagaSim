@@ -16,6 +16,32 @@ class World:
         self.year = self.initYear
         self.regions = []
         self.gameSpeed = 50
+        self.families = []
+        self.people = []
+
+    def getPeople(self):
+        return self.people
+
+    def setPeople(self, people):
+        self.people = people
+
+    def addPerson(self, person):
+        self.people.append(person)
+
+    def removePeople(self, person):
+        self.people.remove(person)
+
+    def getFamilies(self):
+        return self.families
+
+    def setFamilies(self, families):
+        self.families = families
+
+    def addFamily(self, newFamily):
+        self.families.append(newFamily)
+
+    def removeFamily(self, family):
+        self.families.remove(family)
 
     def getGameSpeed(self):
         return self.gameSpeed

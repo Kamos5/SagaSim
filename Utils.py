@@ -27,6 +27,14 @@ def randomFromEnumCollection(collection):
 
     return random.choice(list(collection))
 
+def randomFromEnumCollectionWithWeights(collection):
+
+    returnVal = random.randint(1, 100)
+
+    for element in collection:
+        if returnVal <= element.value.chanceWeightModifier:
+            return element
+
 
 def geneticRandomFromValues(val1, val2):
 
@@ -148,22 +156,35 @@ def randomTrait (person):
 
 def randomDislikedTrait (person):
 
-    notClear = True
+    clear0 = True
+    clear = True
 
     if len(person.getDislikedTraits()) == 0:
+
         randomTrait = randomFromEnumCollection(Enums.Traits)
-        return randomTrait
+        while clear0:
+            randomTrait = randomFromEnumCollection(Enums.Traits)
+            for trait2 in person.getLikedTraits():
+                clear0 = clear0 and randomTrait != trait2
+            if clear0:
+                return randomTrait
+            else:
+                clear0 = not clear0
+
+        print("Dupa")
     else:
         randomTrait = randomFromEnumCollection(Enums.Traits)
-        while notClear:
+        while clear:
+            randomTrait = randomFromEnumCollection(Enums.Traits)
             for trait in person.getDislikedTraits():
                 for trait2 in person.getLikedTraits():
-                    if trait == randomTrait and trait2 == randomTrait and trait == trait2:
-                        notClear = True
-                        randomTrait = randomFromEnumCollection(Enums.Traits)
-                    else:
-                        notClear = False
-            return randomTrait
+                        clear = clear and randomTrait != trait2 and randomTrait != trait
+            if clear:
+                return randomTrait
+            else:
+                clear = not clear
+
+        print("Dupa")
 
 def randomLikedTrait (person):
 
@@ -175,12 +196,12 @@ def randomLikedTrait (person):
     else:
         randomTrait = randomFromEnumCollection(Enums.Traits)
         while notClear:
+            randomTrait = randomFromEnumCollection(Enums.Traits)
             for trait in person.getLikedTraits():
-                if trait == randomTrait:
-                    notClear = True
-                    randomTrait = randomFromEnumCollection(Enums.Traits)
-                else:
+                if trait != randomTrait:
                     notClear = False
+                else:
+                    notClear = True
         return randomTrait
 
 

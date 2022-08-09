@@ -65,6 +65,9 @@ class Feature:
     def getProdYield(self):
         return self.prodYield
 
+    def getWorkersNumber(self):
+        return self.workers
+
     def getFreeWorkersSlots(self):
         return self.maxWorkers - self.workers
 

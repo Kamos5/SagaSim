@@ -62,6 +62,7 @@ class Person:
         self.lifeEvents = []
         self.occupation = None
         self.occupationName = ''
+        self.freeWealth = 0
         pass
 
     def setInitValues(self, familyName, yearOfBirth, age, randomLifespan, sex, hairColor, hairColorGen1, hairColorGen2, eyeColor, eyeColorGen1, eyeColorGen2, familyObj):
@@ -242,3 +243,13 @@ class Person:
 
     def setOccupationName(self, occupationName):
         self.occupationName = occupationName
+
+    def getFreeWealth(self):
+        return self.freeWealth
+
+    def setFreeWealth(self, newValue):
+        self.freeWealth = round(newValue, 2)
+
+    def changeFreeWealth(self, modifier):
+        self.freeWealth += modifier
+        self.freeWealth = round(self.freeWealth, 2)

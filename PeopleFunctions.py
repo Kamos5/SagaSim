@@ -94,6 +94,16 @@ def deathProcedures(person, world):
         person.getOccupation().removeWorker(person)
         person.setOccupation(None)
 
+    #wealth inheretance (to children only)
+    for child in person.getChildrensList():
+        child.changeFreeWealth(person.getFreeWealth()/len(person.getChildrensList()))
+
+    #If no alive children city takes it all
+    if len(person.getChildrensList()) == 0:
+        person.getSettlement().changeFreeWealth(person.getFreeWealth())
+
+    person.setFreeWealth(0)
+
     # adding dead kids to the list od dead children
     # not needed. all kids that have Status.DEAD in child list is what we need
 

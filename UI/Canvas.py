@@ -74,7 +74,7 @@ class Canvas:
         self.detailsScreenObj = None
 
 
-    def drawStuff(self, world, families):
+    def drawStuff(self, world):
 
         if len(self.focusObj) > 0:
             self.lastFocusObj = self.focusObj[len(self.focusObj)-1]
@@ -98,7 +98,7 @@ class Canvas:
 
         self.listScreen.addFamilies()
 
-        for family in families:
+        for family in world.getFamilies():
             self.listScreen.addFamily(family, self.lastFocusObj)
             if family.getUIExpand():
                 for person in family.getAliveMembersList():
@@ -113,14 +113,14 @@ class Canvas:
             self.helpScreen.addHelp()
             self.helpScreenObj = self.screen.blit(self.helpScreenSurface, (self.helpPosX, self.helpPosY))
 
-    def refreshScreen(self, world, families, listScroll_y, detailsScroll_y):
+    def refreshScreen(self, world, listScroll_y, detailsScroll_y):
 
         self.listScreen.setScroll_y(listScroll_y)
         self.inspectorScreen.setScroll_y(detailsScroll_y)
         self.clearCanvas()
         self.navBarScreen.addHelp()
         self.navBarScreen.addDateTimer(world)
-        self.drawStuff(world, families)
+        self.drawStuff(world)
         pygame.display.update()
 
 

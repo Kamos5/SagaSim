@@ -54,6 +54,8 @@ class Settlements:
         self.providedFrom = []
         self.maxPopulation = 0
         self.uiExpand = False
+        self.freeWealth = 0
+        self.localIncomeTax = Utils.randomRange(0, 20)
 
         self.createStartingVillageFeatures()
 
@@ -285,26 +287,26 @@ class Settlements:
         for i in range(7):
             randomBasicFeature = Utils.randomRange(0, 4)
             feature = SF.createZones()[randomBasicFeature]
-            feature.setFoundationType(Utils.randomFromEnumCollection(FoundationTypes.FoundationEnums))
+            feature.setFoundationType(Utils.randomFromEnumCollectionWithWeights(FoundationTypes.FoundationEnums))
             feature.setFeatureNumber(i)
             self.addFoodFeature(feature)
         randomBasicFeature = Utils.randomRange(5, 6)
         feature = SF.createZones()[randomBasicFeature]
-        feature.setFoundationType(Utils.randomFromEnumCollection(FoundationTypes.FoundationEnums))
+        feature.setFoundationType(Utils.randomFromEnumCollectionWithWeights(FoundationTypes.FoundationEnums))
         feature.setFeatureNumber(7)
         self.addProdFeature(feature)
 
     def createUpdateVillageFeaturesForTown(self):
 
         feature = SF.createZones()[4]
-        feature.setFoundationType(Utils.randomFromEnumCollection(FoundationTypes.FoundationEnums))
+        feature.setFoundationType(Utils.randomFromEnumCollectionWithWeights(FoundationTypes.FoundationEnums))
         feature.setFeatureNumber(8)
         self.addFoodFeature(feature)
 
         for i in range(15):
             randomBasicFeature = Utils.randomRange(5, 6)
             feature = SF.createZones()[randomBasicFeature]
-            feature.setFoundationType(Utils.randomFromEnumCollection(FoundationTypes.FoundationEnums))
+            feature.setFoundationType(Utils.randomFromEnumCollectionWithWeights(FoundationTypes.FoundationEnums))
             feature.setFeatureNumber(9+i)
             self.addProdFeature(feature)
 
@@ -326,3 +328,16 @@ class Settlements:
             newFeature.addWorker(worker)
             worker.setOccupation(newFeature)
             worker.setOccupationName(newFeature.getOccupationName())
+
+    def getFreeWealth(self):
+        return self.freeWealth
+
+    def setFreeWealth(self, newValue):
+        self.freeWealth = round(newValue, 2)
+
+    def changeFreeWealth(self, modifier):
+        self.freeWealth += modifier
+        self.freeWealth = round(self.freeWealth, 2)
+
+    def getLocalIncomeTax(self):
+        return self.localIncomeTax

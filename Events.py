@@ -11,9 +11,9 @@ from Enums import Settlements as SE
 import SettlementsFunctions as SF
 import SettlementFeatures as SFeat
 
-def increaseAge (people, world):
+def increaseAge (world):
 
-    for person in people:
+    for person in world.getPeople():
         if person.lifeStatus != LifeStatus.DEAD:
             person.increaseAge()
             if person.age < 15:
@@ -29,10 +29,10 @@ def increaseAge (people, world):
             if person.age > 50:
                 PF.retirement(person, world)
 
-def birthPeople (world, people):
+def birthPeople (world):
 
     births = 0
-    for person in people:
+    for person in world.getPeople():
 
         # person here is MOTHER
         # only Females can give birth beetween 15 and 45y old + must be alive and have spouse
@@ -55,7 +55,7 @@ def birthPeople (world, people):
                     personObj = PF.birthChild(world, person, spouseObj)
                     # add child to proper family
                     personObj.familyObjRef.addNewMember(personObj)
-                    people.append(personObj)
+                    world.addPerson(personObj)
                     PLEH.beenBorn(personObj, world)
                     person.numberOfChildren += 1
                     spouseObj.numberOfChildren += 1
@@ -82,7 +82,7 @@ def birthPeople (world, people):
 
     return
 
-def settlementsPopulationManagement (world, families):
+def settlementsPopulationManagement (world):
 
     for region in world.getRegions():
 
@@ -115,7 +115,7 @@ def settlementsPopulationManagement (world, families):
                     #Migration Wave
                     complexRandomMigrantsList = prepareMigration(settlement, newTargetSettlement, world)
                     iniciateMigration(complexRandomMigrantsList, newTargetSettlement)
-                    splitFamilies(world, region, families, newTargetSettlement, complexRandomMigrantsList)
+                    splitFamilies(world, region, newTargetSettlement, complexRandomMigrantsList)
 
         #Upgrading from Village to City
         randomVillage = Utils.randomFromCollection(villagesList)
@@ -135,8 +135,14 @@ def settlementGoodsProduction(world):
             foodProd0 = settlement.getSettlementFoodProduced()
             for foodTile in settlement.getFoodFeatures():
 
-                foodProd = foodTile.prodYield * foodTile.foundationType.value.yieldModifier / 100 * foodTile.workers
+                foodProd = foodTile.prodYield * foodTile.foundationType.value.yieldModifier / 100 * foodTile.getWorkersNumber()
                 settlement.increaseSettlementFoodProduced(foodProd)
+
+                for worker in foodTile.getWorkerList():
+                    goodProduced = foodTile.prodYield * foodTile.foundationType.value.yieldModifier / 100
+                    worker.changeFreeWealth(goodProduced * (100 - settlement.getLocalIncomeTax()) / 100)
+                    settlement.changeFreeWealth(goodProduced * (settlement.getLocalIncomeTax()) / 100)
+
             foodProd1 = settlement.getSettlementFoodProduced()
             settlement.setSettlementFoodProducedLastYear(foodProd1-foodProd0)
 
@@ -160,10 +166,17 @@ def settlementGoodsProduction(world):
             settlement.setNetFoodLastYear(foodProd1-foodProd0-foodConsumed)
 
             prodProd0 = settlement.getSettlementProdProduced()
+
+
             for prodTile in settlement.getProdFeatures():
 
-                prodProd = prodTile.prodYield * prodTile.foundationType.value.yieldModifier / 100 * prodTile.workers
+                prodProd = prodTile.prodYield * prodTile.foundationType.value.yieldModifier / 100 * prodTile.getWorkersNumber()
                 settlement.increaseSettlementProdProduced(prodProd)
+
+                for worker in prodTile.getWorkerList():
+                    goodProduced = prodTile.prodYield * prodTile.foundationType.value.yieldModifier / 100
+                    worker.changeFreeWealth(goodProduced * (100-settlement.getLocalIncomeTax())/100)
+                    settlement.changeFreeWealth(goodProduced * (settlement.getLocalIncomeTax())/100)
 
             prodProd1 = settlement.getSettlementProdProduced()
             settlement.changeFreeProd(prodProd1 - prodProd0)
@@ -203,7 +216,6 @@ def settlementWorkersManagement(world):
                 for foodTile in settlement.getFoodFeatures():
 
                     for occupations in range(foodTile.getFreeWorkersSlots()):
-
                         if len(unemployedWorkerList) > 0:
                             newWorker = Utils.randomFromCollection(unemployedWorkerList)
                             unemployedWorkerList.remove(newWorker)
@@ -255,7 +267,7 @@ def prepareMigration(settlement, newTargetSettlement, world):
 
     return complexRandomMigrantList
 
-def splitFamilies(world, region, families, newTargetSettlement, complexRandomMigrantsList):
+def splitFamilies(world, region, newTargetSettlement, complexRandomMigrantsList):
 
 
     for randomMigrantList in complexRandomMigrantsList:
@@ -273,7 +285,7 @@ def splitFamilies(world, region, families, newTargetSettlement, complexRandomMig
             family.setOriginCulture(randomMigrantList[0].familyObjRef.getOriginCulture())
             family.setFamilyBranchedFrom(randomMigrantList[0].familyObjRef)
             randomMigrantList[0].familyObjRef.addOffspringBranch(family)
-            families.append(family)
+            world.addFamily(family)
 
             for person in randomMigrantList:
                 person.familyObjRef.removeFromFamily(person)
