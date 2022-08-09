@@ -24,24 +24,23 @@ class CauseOfDeath(Enum):
     UNKNOWN = 'unknown'
     NULL = ''
 
-
 class HairColor(Enum):
-    BLACK = 5, 'black'
-    BROWN = 4, 'brown'
-    YELLOW = 3, 'yellow'
-    RED = 2, 'red'
-    WHITE = 1, 'white'
-    GRAY = 0, 'gray'
+    BLACK = 5, 'black', (0, 0, 0)
+    BROWN = 4, 'brown', (84,38,4)
+    YELLOW = 3, 'yellow', (255,215,0)
+    RED = 2, 'red', (178,34,34)
+    WHITE = 1, 'white', (255,250,240)
+    GRAY = 0, 'gray', (166,166,166)
 
 
 class EyeColor(Enum):
-    BLACK = 7, 'black'
-    BROWN = 6, 'brown'
-    AMBER = 5, 'amber'#bursztynowe
-    HAZEL = 4, 'hazel'#piwne
-    GREEN = 3, 'green'
-    BLUE = 2, 'blue'
-    GRAY = 1, 'gray'
+    BLACK = 7, 'black', (0, 0, 0)
+    BROWN = 6, 'brown', (84, 38, 4)
+    AMBER = 5, 'amber', (163, 100, 5)                    #bursztynowe
+    HAZEL = 4, 'hazel', (218, 143, 30)      #piwne
+    GREEN = 3, 'green', (51, 102, 0)
+    BLUE = 2, 'blue', (0, 0 , 153)
+    GRAY = 1, 'gray', (166,166,166)
 
 class SkinColor(Enum):
     BLACK = 4, 'black'

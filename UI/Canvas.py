@@ -130,7 +130,7 @@ class Canvas:
         itemsObjRectArray = [self.listScreen.listScreenSurfaceObjsRect, self.inspectorScreen.inspectorScreenSurfaceObjsRect]
         navBarObjRectArray = [self.navBarScreen.navBarScreenSurfaceObjsRect]
 
-        #arrays of screens with objects to click
+        #arrays of screens with objects to
         itemsObjRectScreensArray = [self.listScreen, self.inspectorScreen]
         navBarObjRectScreensArray = [self.navBarScreen]
 

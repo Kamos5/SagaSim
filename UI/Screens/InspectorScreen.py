@@ -54,6 +54,18 @@ class InspectorScreen:
         self.inspectorScreenSurface.blit(label.localSurface, (0, self.lineHeight * self.writeLine + self.scroll_y))
         self.writeLine += 1
 
+    def drawCircle (self, x, y, radius, color):
+
+        r, g, b = color
+        borderColor = (255-r, 255-g, 255-b)
+        cirleColor = color
+        borderPadding = 1
+        borderWidth = 2
+        radius = radius
+
+        pygame.draw.circle(self.inspectorScreenSurface, borderColor, (x, y), radius- borderPadding)
+        pygame.draw.circle(self.inspectorScreenSurface, cirleColor, (x, y), radius - borderWidth)
+
     def addGeneralInspectorFields(self, object):
 
         if isinstance(object, Region):
@@ -191,6 +203,9 @@ class InspectorScreen:
         label = Label("Sex: " + str(object.getSex().value[1]), 500, self.lineHeight, self.textFont)
         self.inspectorScreenSurface.blit(label.localSurface, (self.width * 0.05, self.lineHeight * self.writeLine + self.scroll_y))
         self.writeLine += 1
+        label = Label("Living in: " + str(object.getSettlement().getSettlementName()), 500, self.lineHeight, self.textFont, True)
+        self.inspectorScreenSurfaceObjsRect.append([self.inspectorScreenSurface.blit(label.localSurface, (self.width * 0.05, self.lineHeight * self.writeLine + self.scroll_y)), object.getSettlement()])
+        self.writeLine += 1
         if object.getFather() != '':
             label = Label("Father: " + str(object.getFather().getFirstName()) + " " + str(object.getFather().getLastName()), 500, self.lineHeight, self.textFont, True)
             self.inspectorScreenSurfaceObjsRect.append([self.inspectorScreenSurface.blit(label.localSurface, (self.width * 0.05, self.lineHeight * self.writeLine + self.scroll_y)), object.getFather()])
@@ -211,9 +226,13 @@ class InspectorScreen:
         self.writeLine += 1
         label = Label("Hair Color: " + str(object.getHairColor().value[1]), 500, self.lineHeight, self.textFont)
         self.inspectorScreenSurface.blit(label.localSurface, (self.width * 0.05, self.lineHeight * self.writeLine + self.scroll_y))
+        self.drawCircle(self.width * 0.30 + self.lineHeight/2, self.lineHeight * self.writeLine + self.scroll_y + self.lineHeight/2, self.lineHeight/2, (object.getHairColor().value[2]))
+        #self.inspectorScreenSurface.fill(object.getHairColor().value[2], (self.width * 0.30 + 5, self.lineHeight * self.writeLine + self.scroll_y + 2, self.lineHeight - 4, self.lineHeight - 4))
         self.writeLine += 1
         label = Label("Eye Color: " + str(object.getEyeColor().value[1]), 500, self.lineHeight, self.textFont)
         self.inspectorScreenSurface.blit(label.localSurface, (self.width * 0.05, self.lineHeight * self.writeLine + self.scroll_y))
+        self.drawCircle(self.width * 0.30 + self.lineHeight / 2, self.lineHeight * self.writeLine + self.scroll_y + self.lineHeight / 2, self.lineHeight / 2, (object.getEyeColor().value[2]))
+        #self.inspectorScreenSurface.fill(object.getEyeColor().value[2], (self.width * 0.30 + 5, self.lineHeight * self.writeLine + self.scroll_y + 2, self.lineHeight - 4, self.lineHeight - 4))
         self.writeLine += 1
         if len(object.getTraits()) > 0:
             traits = ""

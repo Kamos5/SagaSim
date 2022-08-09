@@ -17,7 +17,7 @@ class Label:
         self.rectColor = self.inactiveRectColor
         self.textColor = 220, 220, 220
         self.inactiveBorderColor = 200, 200, 200
-        self.activeBorderColor = 50, 50, 50
+        self.activeBorderColor = 75, 150, 150
         self.borderColor = self.inactiveBorderColor
         self.clickableBorderColor = 0, 200, 0
         self.borderSize = borderSize

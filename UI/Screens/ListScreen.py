@@ -26,7 +26,6 @@ class ListScreen:
         self.listScreenSurface = pygame.Surface([self.width, self.height - self.heightOffSet])
         self.listScreenSurfaceObjsRect = []
 
-
     def getScroll_y(self):
 
         return self.scroll_y
