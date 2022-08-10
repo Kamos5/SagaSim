@@ -67,6 +67,7 @@ class FamilyTreeScreen:
 
     def printDownFamilyTree(self, tree, level=0, prefix=""):
 
+        maxLevel = 3
         labelString = ""
 
         if level == 0:
@@ -83,16 +84,18 @@ class FamilyTreeScreen:
             else:
                 labelString = (prefix + "" + tree.getRoot().getFirstName() + " " + tree.getRoot().getLastName() + " (" + str(tree.getRoot().getYearOfBirth()) + "-" + str(tree.getRoot().getYearOfDeath()) + ")")
 
-        label = Label(labelString, self.width - self.leftPadding - self.rightPadding, self.lineHeight, self.textFont, False)
-        self.familyTreeScreenSurface.blit(label.localSurface, (self.leftPadding, self.lineHeight * self.writeLine+ self.scroll_y))
-        self.writeLine += 1
+        if level <= maxLevel:
+            label = Label(labelString, self.width - self.leftPadding - self.rightPadding, self.lineHeight, self.textFont, False)
+            self.familyTreeScreenSurface.blit(label.localSurface, (self.leftPadding, self.lineHeight * self.writeLine+ self.scroll_y))
+            self.writeLine += 1
 
-        if len(tree.getChildren()) > 0:
-            for branch in tree.getChildren():
-                self.printDownFamilyTree(branch, level + 1, prefix + "-")
+            if len(tree.getChildren()) > 0:
+                for branch in tree.getChildren():
+                    self.printDownFamilyTree(branch, level + 1, prefix + "-")
 
     def printUpFamilyTree(self, tree, level=0, prefix=""):
 
+        maxLevel = 3
         labelString = ""
         sexPrefix = ""
 
@@ -112,12 +115,13 @@ class FamilyTreeScreen:
 
         labelString = (rootString + siblingString)
 
-        label = Label(labelString, self.width - self.leftPadding - self.rightPadding, self.lineHeight, self.textFont)
-        self.familyTreeScreenSurface.blit(label.localSurface, (self.leftPadding, self.lineHeight * self.writeLine + self.scroll_y))
-        self.writeLine += 1
+        if level <= maxLevel:
+            label = Label(labelString, self.width - self.leftPadding - self.rightPadding, self.lineHeight, self.textFont)
+            self.familyTreeScreenSurface.blit(label.localSurface, (self.leftPadding, self.lineHeight * self.writeLine + self.scroll_y))
+            self.writeLine += 1
 
-        if tree.getRoot().getFather() != "":
-            self.printUpFamilyTree(tree.getFather(), level + 1, prefix + " ")
+            if tree.getRoot().getFather() != "":
+                self.printUpFamilyTree(tree.getFather(), level + 1, prefix + " ")
 
-        if tree.getRoot().getMother() != "":
-            self.printUpFamilyTree(tree.getMother(), level + 1, prefix + " ")
+            if tree.getRoot().getMother() != "":
+                self.printUpFamilyTree(tree.getMother(), level + 1, prefix + " ")

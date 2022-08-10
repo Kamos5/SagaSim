@@ -39,8 +39,8 @@ class EyeColor(Enum):
     AMBER = 5, 'amber', (163, 100, 5)                    #bursztynowe
     HAZEL = 4, 'hazel', (218, 143, 30)      #piwne
     GREEN = 3, 'green', (51, 102, 0)
-    BLUE = 2, 'blue', (0, 0 , 153)
-    GRAY = 1, 'gray', (166,166,166)
+    BLUE = 2, 'blue', (0, 0, 153)
+    GRAY = 1, 'gray', (166, 166, 166)
 
 class SkinColor(Enum):
     BLACK = 4, 'black'

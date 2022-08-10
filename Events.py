@@ -1,4 +1,4 @@
-from Enums import LifeStatus, MaritalStatus, CauseOfDeath, Sexes, Settlements
+from Enums import LifeStatus, MaritalStatus, CauseOfDeath, Sexes, Settlements, Traits
 import Utils
 import time
 from Family import Family as Family
@@ -139,7 +139,12 @@ def settlementGoodsProduction(world):
                 settlement.increaseSettlementFoodProduced(foodProd)
 
                 for worker in foodTile.getWorkerList():
-                    goodProduced = foodTile.prodYield * foodTile.foundationType.value.yieldModifier / 100
+                    workerModifier = 0
+                    if Traits.LAZY in worker.getTraits():
+                        workerModifier = -10
+                    if Traits.DILIGENT in worker.getTraits():
+                        workerModifier = 10
+                    goodProduced = foodTile.prodYield * (foodTile.foundationType.value.yieldModifier + workerModifier) / 100
                     worker.changeFreeWealth(goodProduced * (100 - settlement.getLocalIncomeTax()) / 100)
                     settlement.changeFreeWealth(goodProduced * (settlement.getLocalIncomeTax()) / 100)
 
@@ -174,7 +179,12 @@ def settlementGoodsProduction(world):
                 settlement.increaseSettlementProdProduced(prodProd)
 
                 for worker in prodTile.getWorkerList():
-                    goodProduced = prodTile.prodYield * prodTile.foundationType.value.yieldModifier / 100
+                    workerModifier = 0
+                    if Traits.LAZY in worker.getTraits():
+                        workerModifier = -10
+                    if Traits.DILIGENT in worker.getTraits():
+                        workerModifier = 10
+                    goodProduced = prodTile.prodYield * (prodTile.foundationType.value.yieldModifier + workerModifier) / 100
                     worker.changeFreeWealth(goodProduced * (100-settlement.getLocalIncomeTax())/100)
                     settlement.changeFreeWealth(goodProduced * (settlement.getLocalIncomeTax())/100)
 
