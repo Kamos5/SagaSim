@@ -61,8 +61,8 @@ def birthPeople (world):
                     spouseObj.numberOfChildren += 1
                     if person.modifiedLifespan-person.age > 1:
                         person.modifiedLifespan -= 1
-                    person.childrens.append(personObj)
-                    spouseObj.childrens.append(personObj)
+                    person.appendAliveChildrenList(personObj)
+                    spouseObj.appendAliveChildrenList(personObj)
                     personObj.changeMaritalStatus(MS.CHILD)
 
                     # change of dying from childbirth (mother and child)
@@ -327,7 +327,7 @@ def getRandomMigrantListForSingleRandomPerson(person, parent, randomMigrantsList
             #     getParent.lastName = newLastName
             randomMigrantsList.append(getParent)
 
-        parentChildrensList = getParent.childrens
+        parentChildrensList = getParent.getAliveChildrenList()
         for parentChildren in parentChildrensList:
             if parentChildren.age < 15:
                 if parentChildren not in randomMigrantsList:
@@ -341,7 +341,7 @@ def getRandomMigrantListForSingleRandomPerson(person, parent, randomMigrantsList
                 # if newLastName != '':
                 #     getParent.lastName = newLastName
 
-            parentSpouseChildrensList = getParent.spouse.childrens
+            parentSpouseChildrensList = getParent.spouse.aliveChildren
             for parentSpouseChildren in parentSpouseChildrensList:
                 if parentSpouseChildren.age < 15:
                     if parentSpouseChildren not in randomMigrantsList:

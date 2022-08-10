@@ -171,7 +171,6 @@ def randomDislikedTrait (person):
             else:
                 clear0 = not clear0
 
-        print("Dupa")
     else:
         randomTrait = randomFromEnumCollection(Enums.Traits)
         while clear:
@@ -183,8 +182,6 @@ def randomDislikedTrait (person):
                 return randomTrait
             else:
                 clear = not clear
-
-        print("Dupa")
 
 def randomLikedTrait (person):
 
@@ -371,3 +368,40 @@ def triangularNumber(n):
         deathChance += i
     return deathChance
 
+
+def printDownFamilyTree(tree, level=0, prefix=""):
+
+    if tree.getRoot().getFather() != "" and tree.getRoot().getMother() != "":
+        print(prefix + "-" + tree.getRoot().getFirstName() + tree.getRoot().getLastName() + " (" + str(tree.getRoot().getYearOfBirth()) + "-" + str(tree.getRoot().getYearOfDeath()) + ")" + " <" + tree.getRoot().getFather().getFirstName() + " " + tree.getRoot().getFather().getLastName() + " + " + tree.getRoot().getMother().getFirstName() + " " + tree.getRoot().getMother().getFamilyName() + ">")
+
+    else:
+        print(prefix + "-" + tree.getRoot().getFirstName() + " " + tree.getRoot().getLastName() + " (" + str(tree.getRoot().getYearOfBirth()) + "-" + str(tree.getRoot().getYearOfDeath()) + ")")
+
+    if len(tree.getChildren()) > 0:
+        for branch in tree.getChildren():
+            printDownFamilyTree(branch, level + 1, prefix + " ")
+
+def printUpFamilyTree(tree, level=0, prefix=""):
+
+    sexPrefix = ""
+
+    if len(tree.getRoot().getAllChildren()) > 0:
+        if tree.getRoot().getSex() == Enums.Sexes.MALE:
+            sexPrefix = "Father: "
+        else:
+            sexPrefix = "Mother: "
+
+    rootString = prefix + sexPrefix + tree.getRoot().getFirstName() + " " + tree.getRoot().getLastName() + " (" + str(tree.getRoot().getYearOfBirth()) + "-" + str(tree.getRoot().getYearOfDeath()) + ")"
+    siblingString = ""
+
+    if len(tree.getSiblings()) > 0:
+        siblingString += " Siblings:"
+        for sibling in tree.getSiblings():
+            siblingString += " (" + sibling.getFirstName() + " " + sibling.getLastName() + ")"
+
+    print(rootString + siblingString)
+    if tree.getRoot().getFather() != "":
+        printUpFamilyTree(tree.getFather(), level + 1, prefix + " ")
+
+    if tree.getRoot().getMother() != "":
+        printUpFamilyTree(tree.getMother(), level + 1, prefix + " ")

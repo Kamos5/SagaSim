@@ -70,7 +70,7 @@ class HelpScreen:
         self.helpScreenSurface.blit(self.helpLabel.localSurface, (self.width * 0.05, self.writeLine*self.lineHeight))
         self.writeLine += 1
 
-        self.helpLabel = Label("\"left arrow key\" - goes back to previous focused object", 500, self.lineHeight, self.miniTextFont, False, True, 1)
+        self.helpLabel = Label("\"end key\" - goes back to previous focused object", 500, self.lineHeight, self.miniTextFont, False, True, 1)
         self.helpLabel.setActiveRectColor(self.screenColor[0], self.screenColor[1], self.screenColor[2])
         self.helpLabel.setActiveBorderColor(self.screenColor[0], self.screenColor[1], self.screenColor[2])
 

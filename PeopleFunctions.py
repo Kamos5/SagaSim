@@ -79,27 +79,28 @@ def deathProcedures(person, world):
     # changing statutes
     person.changeLifeStatus(LifeStatus.DEAD)
     person.maritalStatus = MaritalStatus.DEAD
+    person.yearOfDeath = world.getYear()
     PLEH.died(person, world)
 
     if person.age < 15:
         PLEH.lostChild(person.mother, person, world)
     if person.getFather() != '':
-        person.getFather().getChildrensList().remove(person)
-        person.getFather().getDeadChildrens().append(person)
+        person.getFather().getAliveChildrenList().remove(person)
+        person.getFather().appendDeadChildrenList(person)
     if person.getMother() != '':
-        person.getMother().getChildrensList().remove(person)
-        person.getMother().getDeadChildrens().append(person)
+        person.getMother().getAliveChildrenList().remove(person)
+        person.getMother().appendDeadChildrenList(person)
 
     if person.getOccupation() is not None:
         person.getOccupation().removeWorker(person)
         person.setOccupation(None)
 
     #wealth inheretance (to children only)
-    for child in person.getChildrensList():
-        child.changeFreeWealth(person.getFreeWealth()/len(person.getChildrensList()))
+    for child in person.getAliveChildrenList():
+        child.changeFreeWealth(person.getFreeWealth() / len(person.getAliveChildrenList()))
 
     #If no alive children city takes it all
-    if len(person.getChildrensList()) == 0:
+    if len(person.getAliveChildrenList()) == 0:
         person.getSettlement().changeFreeWealth(person.getFreeWealth())
 
     person.setFreeWealth(0)

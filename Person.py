@@ -1,7 +1,9 @@
 from Family import Family as FamilyObj
 import Utils
 import NameGenerator
+from FamilyTreeNode import BinaryTreeNode
 from Enums import LifeStatus, MaritalStatus, HairColor, CauseOfDeath, Sexes, EyeColor
+
 
 
 class Person:
@@ -57,12 +59,15 @@ class Person:
         self.eyeColorGen1 = [EyeColor.GRAY, 0]
         self.eyeColorGen2 = self.eyeColorGen1
         self.traits = []
-        self.childrens = []
-        self.deadChildrens = []
+        self.allChildren = []
+        self.aliveChildren = []
+        self.deadChildren = []
         self.lifeEvents = []
         self.occupation = None
         self.occupationName = ''
         self.freeWealth = 0
+        self.familyTree = None
+        self.yearOfDeath = ""
         pass
 
     def setInitValues(self, familyName, yearOfBirth, age, randomLifespan, sex, hairColor, hairColorGen1, hairColorGen2, eyeColor, eyeColorGen1, eyeColorGen2, familyObj):
@@ -145,6 +150,9 @@ class Person:
     def getYearOfBirth(self):
         return self.yearOfBirth
 
+    def getYearOfDeath(self):
+        return self.yearOfDeath
+
     def getSex(self):
         return self.sex
 
@@ -178,11 +186,21 @@ class Person:
     def getLifeEvent(self):
         return self.lifeEvents
 
-    def getChildrensList(self):
-        return self.childrens
+    def getAliveChildrenList(self):
+        return self.aliveChildren
+
+    def appendAliveChildrenList(self, newChild):
+        self.allChildren.append(newChild)
+        self.aliveChildren.append(newChild)
+
+    def getAllChildren(self):
+        return self.allChildren
 
     def getDeadChildrens(self):
-        return self.deadChildrens
+        return self.deadChildren
+
+    def appendDeadChildrenList(self, child):
+        self.deadChildren.append(child)
 
     def getFamilyObjectRef(self):
         return self.familyObjRef
@@ -253,3 +271,37 @@ class Person:
     def changeFreeWealth(self, modifier):
         self.freeWealth += modifier
         self.freeWealth = round(self.freeWealth, 2)
+
+    def initGenDownFamilyTree(self):
+
+        return self.generateDownFamilyTree(BinaryTreeNode(self))
+
+    def initGenUpFamilyTree(self):
+
+        return self.generateUpFamilyTree(BinaryTreeNode(self))
+
+
+    def generateDownFamilyTree(self, treeroot):
+
+        for child in self.getAllChildren():
+            treeroot.children.append(child.generateDownFamilyTree(BinaryTreeNode(child)))
+
+        return treeroot
+
+    def generateUpFamilyTree(self, treeroot):
+
+        father = treeroot.getRoot().getFather()
+        mother = treeroot.getRoot().getMother()
+        if father != '':
+            for fatherChild in father.getAllChildren():
+                if fatherChild != treeroot.getRoot():
+                    treeroot.siblings.append(fatherChild)
+            treeroot.father = father.generateUpFamilyTree(BinaryTreeNode(father))
+        if mother != '':
+            for motherChild in mother.getAllChildren():
+                if motherChild != treeroot.getRoot() and motherChild not in treeroot.siblings:
+                        treeroot.siblings.append(motherChild)
+            treeroot.mother = mother.generateUpFamilyTree(BinaryTreeNode(mother))
+
+        return treeroot
+

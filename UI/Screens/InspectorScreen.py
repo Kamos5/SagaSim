@@ -196,6 +196,8 @@ class InspectorScreen:
         self.writeLine += 1
         label = Label("Family name: " + str(object.getFamilyName()), 500, self.lineHeight, self.textFont, True)
         self.inspectorScreenSurfaceObjsRect.append([self.inspectorScreenSurface.blit(label.localSurface, (self.width * 0.05, self.lineHeight * self.writeLine + self.scroll_y)), object.getOriginFamilyObjectRef()])
+        label = Label("Show family tree", 150, self.lineHeight, self.textFont, True)
+        self.inspectorScreenSurfaceObjsRect.append([self.inspectorScreenSurface.blit(label.localSurface, (self.width - 150, self.lineHeight * self.writeLine + self.scroll_y)), 'FamilyTree', object])
         self.writeLine += 1
         label = Label("Year of birth: " + str(object.getYearOfBirth()), 500, self.lineHeight, self.textFont)
         self.inspectorScreenSurface.blit(label.localSurface, (self.width * 0.05, self.lineHeight * self.writeLine + self.scroll_y))
@@ -223,7 +225,7 @@ class InspectorScreen:
             label = Label("Mother: " + str(object.getMother().getFirstName()) + " " + str(object.getMother().getLastName()), 500, self.lineHeight, self.textFont, True)
             self.inspectorScreenSurfaceObjsRect.append([self.inspectorScreenSurface.blit(label.localSurface, (self.width * 0.05, self.lineHeight * self.writeLine + self.scroll_y)), object.getMother()])
             self.writeLine += 1
-        if object.getSpouse() != None:
+        if object.getSpouse() is not None:
             label = Label("Spouse: " + str(object.getSpouse().getFirstName()) + " " + str(object.getSpouse().getLastName()), 500, self.lineHeight, self.textFont, True)
             self.inspectorScreenSurfaceObjsRect.append([self.inspectorScreenSurface.blit(label.localSurface, (self.width * 0.05, self.lineHeight * self.writeLine + self.scroll_y)), object.getSpouse()])
             self.writeLine += 1
@@ -264,11 +266,11 @@ class InspectorScreen:
             label = Label("Dislikes: " + str(traits).strip(), 500, self.lineHeight, self.textFont)
             self.inspectorScreenSurface.blit(label.localSurface, (self.width * 0.05, self.lineHeight * self.writeLine + self.scroll_y))
             self.writeLine += 1
-        if len(object.getChildrensList()) > 0:
+        if len(object.getAliveChildrenList()) > 0:
             label = Label("Alive childrens:", 500, self.lineHeight, self.textFont)
             self.inspectorScreenSurface.blit(label.localSurface, (self.width * 0.05, self.lineHeight * self.writeLine + self.scroll_y))
             self.writeLine += 1
-            for children in object.getChildrensList():
+            for children in object.getAliveChildrenList():
                 if children.getSex().value[1] == 'M':
                     label = Label("Son: " + children.getFirstName(), 500, self.lineHeight, self.textFont, True)
                 else:

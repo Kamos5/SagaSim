@@ -275,6 +275,7 @@ class Family:
 
     def getAllChildrenList(self):
         return self.getChildrenFemalesList() + self.getChildrenMalesList()
+
     def addChildren(self, person):
         if person.sex == Sexes.FEMALE:
             self.appendChildrenFemalesList(person)

@@ -132,10 +132,10 @@ def findParentsDeadChildrensList(people, UUID):
     foundMother = 0
     for x in people:
         if (x.personUUID == UUID.father):
-            fatherList = x.deadChildrens
+            fatherList = x.deadChildren
             foundFather = 1
         if (x.personUUID == UUID.mother):
-            motherList = x.deadChildrens
+            motherList = x.deadChildren
             foundMother = 1
         if foundFather == 1 and foundMother == 1:
             return fatherList, motherList

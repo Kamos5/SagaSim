@@ -46,7 +46,7 @@ class Label:
 
     def addText(self, text):
         textSurface = self.font.render(text, True, self.textColor)
-        self.localSurface.blit(textSurface, (self.x+self.borderSize*2, self.y))
+        self.localSurface.blit(textSurface, (self.borderSize*5, self.y))
         self.text = text
 
     def getText(self):
