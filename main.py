@@ -268,7 +268,7 @@ def main():
         #     temp = world.getPeople()[0].generateDownFamilyTree(BinaryTreeNode(world.getPeople()[0]))
         #     Utils.printDownFamilyTree(temp)
         #     return
-        if world.getYear() == 600:
+        if world.getYear() == 1200:
 
             return
 
