@@ -6,6 +6,9 @@ from Region import Region
 from Settlements import Settlements
 from UI.Utils.Fonts import Fonts
 from UI.Utils.Label import Label
+from UI.Utils.MultiLineLabel import MultiLineLabel
+from UI.Utils.MultiLineSurface import MultiLineSurface
+from UI.Utils.SingleLineSurface import SingleLineSurface
 
 
 class InspectorScreen:
@@ -24,6 +27,7 @@ class InspectorScreen:
         self.scroll_y = 0
         self.screenPosX = screenPosX
         self.screenPosY = screenPosY
+        self.leftPadding = self.width * 0.05
 
         self.inspectorScreenSurface = pygame.Surface([self.width, self.height - self.heightOffSet])
         self.inspectorScreenSurfaceObjsRect = []
@@ -51,7 +55,7 @@ class InspectorScreen:
     def addInspectorLabel(self):
 
         label = Label("Inspector: ", 100, self.lineHeight, self.textFont)
-        self.inspectorScreenSurface.blit(label.localSurface, (0, self.lineHeight * self.writeLine + self.scroll_y))
+        self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding, self.lineHeight * self.writeLine + self.scroll_y))
         self.writeLine += 1
 
     def drawCircle (self, x, y, radius, color):
@@ -84,164 +88,166 @@ class InspectorScreen:
     def addInspectorForRegion(self, object):
 
         label = Label("Region name: " + object.getRegionName(), 500, self.lineHeight, self.textFont)
-        self.inspectorScreenSurface.blit(label.localSurface, (self.width * 0.05, self.lineHeight * self.writeLine + self.scroll_y))
+        self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding*2, self.lineHeight * self.writeLine + self.scroll_y))
         self.writeLine += 1
         label = Label("Settlements:", 500, self.lineHeight, self.textFont)
-        self.inspectorScreenSurface.blit(label.localSurface, (self.width * 0.05, self.lineHeight * self.writeLine + self.scroll_y))
+        self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding*2, self.lineHeight * self.writeLine + self.scroll_y))
         self.writeLine += 1
         for settlement in object.getSettlements():
             label = Label("Settlements name: " + settlement.getSettlementName(), 500, self.lineHeight, self.textFont, True)
-            self.inspectorScreenSurfaceObjsRect.append([self.inspectorScreenSurface.blit(label.localSurface, (self.width * 0.10, self.lineHeight * self.writeLine + self.scroll_y)), settlement])
+            self.inspectorScreenSurfaceObjsRect.append([self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding*3, self.lineHeight * self.writeLine + self.scroll_y)), settlement])
             self.writeLine += 1
 
 
     def addInspectorForSettlements(self, object):
 
         label = Label("Settlement name: " + object.getSettlementName(), 500, self.lineHeight, self.textFont)
-        self.inspectorScreenSurface.blit(label.localSurface, (self.width * 0.05, self.lineHeight * self.writeLine + self.scroll_y))
+        self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding, self.lineHeight * self.writeLine + self.scroll_y))
         self.writeLine += 1
         label = Label("Population: " + str(object.getPopulation()), 500, self.lineHeight, self.textFont)
-        self.inspectorScreenSurface.blit(label.localSurface, (self.width * 0.05, self.lineHeight * self.writeLine + self.scroll_y))
+        self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding, self.lineHeight * self.writeLine + self.scroll_y))
         self.writeLine += 1
         label = Label("Founded in: " + str(object.getFounedIn()), 500, self.lineHeight, self.textFont)
-        self.inspectorScreenSurface.blit(label.localSurface, (self.width * 0.05, self.lineHeight * self.writeLine + self.scroll_y))
+        self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding, self.lineHeight * self.writeLine + self.scroll_y))
         self.writeLine += 1
         label = Label("Provides to: " + str(object.getProvision()), 500, self.lineHeight, self.textFont)
-        self.inspectorScreenSurface.blit(label.localSurface, (self.width * 0.05, self.lineHeight * self.writeLine + self.scroll_y))
+        self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding, self.lineHeight * self.writeLine + self.scroll_y))
         self.writeLine += 1
         label = Label("Number of employed residents: " + str(len(object.getEmployedResidentsList())), 500, self.lineHeight, self.textFont)
-        self.inspectorScreenSurface.blit(label.localSurface, (self.width * 0.05, self.lineHeight * self.writeLine + self.scroll_y))
+        self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding, self.lineHeight * self.writeLine + self.scroll_y))
         self.writeLine += 1
         label = Label("Number of unemployed residents: " + str(len(object.getUnemployedResidentsList())), 500, self.lineHeight, self.textFont)
-        self.inspectorScreenSurface.blit(label.localSurface, (self.width * 0.05, self.lineHeight * self.writeLine + self.scroll_y))
+        self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding, self.lineHeight * self.writeLine + self.scroll_y))
         self.writeLine += 1
         label = Label("Food produced last year: " + str(object.getSettlementFoodProducedLastYear()), 500, self.lineHeight, self.textFont)
-        self.inspectorScreenSurface.blit(label.localSurface, (self.width * 0.05, self.lineHeight * self.writeLine + self.scroll_y))
+        self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding, self.lineHeight * self.writeLine + self.scroll_y))
         self.writeLine += 1
         label = Label("Food consumed last year: " + str(object.getSettlementFoodConsumedLastYear()), 500, self.lineHeight, self.textFont)
-        self.inspectorScreenSurface.blit(label.localSurface, (self.width * 0.05, self.lineHeight * self.writeLine + self.scroll_y))
+        self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding, self.lineHeight * self.writeLine + self.scroll_y))
         self.writeLine += 1
         label = Label("Food net last year: " + str(object.getNetFoodLastYear()), 500, self.lineHeight, self.textFont)
-        self.inspectorScreenSurface.blit(label.localSurface, (self.width * 0.05, self.lineHeight * self.writeLine + self.scroll_y))
+        self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding, self.lineHeight * self.writeLine + self.scroll_y))
         self.writeLine += 1
         label = Label("Free food: " + str(object.getFreeFood()), 500, self.lineHeight, self.textFont)
-        self.inspectorScreenSurface.blit(label.localSurface, (self.width * 0.05, self.lineHeight * self.writeLine + self.scroll_y))
+        self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding, self.lineHeight * self.writeLine + self.scroll_y))
         self.writeLine += 1
         label = Label("Production produced last year: " + str(object.getSettlementProodProducedLastYear()), 500, self.lineHeight, self.textFont)
-        self.inspectorScreenSurface.blit(label.localSurface, (self.width * 0.05, self.lineHeight * self.writeLine + self.scroll_y))
+        self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding, self.lineHeight * self.writeLine + self.scroll_y))
         self.writeLine += 1
         label = Label("All-time food prod: " + str(object.getSettlementFoodProduced()), 500, self.lineHeight, self.textFont)
-        self.inspectorScreenSurface.blit(label.localSurface, (self.width * 0.05, self.lineHeight * self.writeLine + self.scroll_y))
+        self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding, self.lineHeight * self.writeLine + self.scroll_y))
         self.writeLine += 1
         label = Label("Free production: " + str(object.getFreeProd()), 500, self.lineHeight, self.textFont)
-        self.inspectorScreenSurface.blit(label.localSurface, (self.width * 0.05, self.lineHeight * self.writeLine + self.scroll_y))
+        self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding, self.lineHeight * self.writeLine + self.scroll_y))
         self.writeLine += 1
         label = Label("Free wealth: " + str(object.getFreeWealth()), 500, self.lineHeight, self.textFont)
-        self.inspectorScreenSurface.blit(label.localSurface, (self.width * 0.05, self.lineHeight * self.writeLine + self.scroll_y))
+        self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding, self.lineHeight * self.writeLine + self.scroll_y))
         self.writeLine += 1
         label = Label("Income Tax Rate: " + str(round(object.getLocalIncomeTax(), 2)) + "%", 500, self.lineHeight, self.textFont)
-        self.inspectorScreenSurface.blit(label.localSurface, (self.width * 0.05, self.lineHeight * self.writeLine + self.scroll_y))
+        self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding, self.lineHeight * self.writeLine + self.scroll_y))
         self.writeLine += 1
 
         if object.getProvision() is not None:
             label = Label("Provides to: " + str(object.getProvision()), 500, self.lineHeight, self.textFont, True)
-            self.inspectorScreenSurfaceObjsRect.append([self.inspectorScreenSurface.blit(label.localSurface, (self.width * 0.05, self.lineHeight * self.writeLine + self.scroll_y)), object.getProvision()])
+            self.inspectorScreenSurfaceObjsRect.append([self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding, self.lineHeight * self.writeLine + self.scroll_y)), object.getProvision()])
             self.writeLine += 1
 
         label = Label("Features:", 500, self.lineHeight, self.textFont)
-        self.inspectorScreenSurface.blit(label.localSurface, (self.width * 0.05, self.lineHeight * self.writeLine + self.scroll_y))
+        self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding, self.lineHeight * self.writeLine + self.scroll_y))
         self.writeLine += 1
         for feature in object.getFoodFeatures():
-            label = Label("Food feature: " + str(feature.getName()) + " Quality: " + str(feature.getFoundationType().value.name), 500, self.lineHeight, self.textFont)
-            self.inspectorScreenSurface.blit(label.localSurface, (self.width * 0.10, self.lineHeight * self.writeLine + self.scroll_y))
+            label = Label("Food feature: " + str(feature.getName()) + " Quality: " + str(feature.getFoundationType().value.name) + " (" + str(feature.getWorkerListNumber()) + "/" + str(feature.getMaxWorkersNumber()) + ")", 500, self.lineHeight, self.textFont, True)
+            self.inspectorScreenSurfaceObjsRect.append([self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding*2, self.lineHeight * self.writeLine + self.scroll_y)), feature])
             self.writeLine += 1
-            for worker in feature.getWorkerList():
-                label = Label(str(worker.getFirstName() + " " + str(worker.getLastName())), 500, self.lineHeight, self.textFont, True)
-                self.inspectorScreenSurfaceObjsRect.append([self.inspectorScreenSurface.blit(label.localSurface, (self.width * 0.15, self.lineHeight * self.writeLine + self.scroll_y)), worker])
-                self.writeLine += 1
+            if feature.getUIExpand():
+                for worker in feature.getWorkerList():
+                    label = Label(str(worker.getFirstName() + " " + str(worker.getLastName())), 500, self.lineHeight, self.textFont, True)
+                    self.inspectorScreenSurfaceObjsRect.append([self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding*3, self.lineHeight * self.writeLine + self.scroll_y)), worker])
+                    self.writeLine += 1
         for feature in object.getProdFeatures():
-            label = Label("Prod feature: " + str(feature.getName()) + " Quality: " + str(feature.getFoundationType().value.name), 500, self.lineHeight, self.textFont)
-            self.inspectorScreenSurface.blit(label.localSurface, (self.width * 0.10, self.lineHeight * self.writeLine + self.scroll_y))
+            label = Label("Prod feature: " + str(feature.getName()) + " Quality: " + str(feature.getFoundationType().value.name) + " (" + str(feature.getWorkerListNumber()) + "/" + str(feature.getMaxWorkersNumber()) + ")"  , 500, self.lineHeight, self.textFont, True)
+            self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding*2, self.lineHeight * self.writeLine + self.scroll_y))
             self.writeLine += 1
-            for worker in feature.getWorkerList():
-                label = Label(str(worker.getFirstName() + " " + str(worker.getLastName())), 500, self.lineHeight, self.textFont, True)
-                self.inspectorScreenSurfaceObjsRect.append([self.inspectorScreenSurface.blit(label.localSurface, (self.width * 0.15, self.lineHeight * self.writeLine + self.scroll_y)), worker])
-                self.writeLine += 1
+            if feature.getUIExpand():
+                for worker in feature.getWorkerList():
+                    label = Label(str(worker.getFirstName() + " " + str(worker.getLastName())), 500, self.lineHeight, self.textFont, True)
+                    self.inspectorScreenSurfaceObjsRect.append([self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding*3, self.lineHeight * self.writeLine + self.scroll_y)), worker])
+                    self.writeLine += 1
 
     def addInspectorForFamily(self, object):
 
         label = Label("Family name: " + object.getFamilyName(), 500, self.lineHeight, self.textFont)
-        self.inspectorScreenSurface.blit(label.localSurface, (self.width * 0.05, self.lineHeight * self.writeLine + self.scroll_y))
+        self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding, self.lineHeight * self.writeLine + self.scroll_y))
         self.writeLine += 1
         label = Label("Founding year: " + str(object.getFoundingYear()), 500, self.lineHeight, self.textFont)
-        self.inspectorScreenSurface.blit(label.localSurface, (self.width * 0.05, self.lineHeight * self.writeLine + self.scroll_y))
+        self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding, self.lineHeight * self.writeLine + self.scroll_y))
         self.writeLine += 1
         label = Label("Founded by: " + str(object.getFoundedBy().getFirstName()) + " " + str(object.getFoundedBy().getLastName()), 500, self.lineHeight, self.textFont, True)
-        self.inspectorScreenSurfaceObjsRect.append([self.inspectorScreenSurface.blit(label.localSurface, (self.width * 0.05, self.lineHeight * self.writeLine + self.scroll_y)), object.getFoundedBy()])
+        self.inspectorScreenSurfaceObjsRect.append([self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding, self.lineHeight * self.writeLine + self.scroll_y)), object.getFoundedBy()])
         self.writeLine += 1
         label = Label("Original region: " + str(object.getOriginRegion().getRegionName()), 500, self.lineHeight, self.textFont, True)
-        self.inspectorScreenSurfaceObjsRect.append([self.inspectorScreenSurface.blit(label.localSurface, (self.width * 0.05, self.lineHeight * self.writeLine + self.scroll_y)), object.getOriginRegion()])
+        self.inspectorScreenSurfaceObjsRect.append([self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding, self.lineHeight * self.writeLine + self.scroll_y)), object.getOriginRegion()])
         self.writeLine += 1
         label = Label("Original settlement: " + str(object.getOriginSettlement().getSettlementName()), 500, self.lineHeight, self.textFont, True)
-        self.inspectorScreenSurfaceObjsRect.append([self.inspectorScreenSurface.blit(label.localSurface, (self.width * 0.05, self.lineHeight * self.writeLine + self.scroll_y)), object.getOriginSettlement()])
+        self.inspectorScreenSurfaceObjsRect.append([self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding, self.lineHeight * self.writeLine + self.scroll_y)), object.getOriginSettlement()])
         self.writeLine += 1
 
     def addInspectorForPerson(self, object):
 
         label = Label("Name: " + str(object.getFirstName()), 500, self.lineHeight, self.textFont)
-        self.inspectorScreenSurface.blit(label.localSurface, (self.width * 0.05, self.lineHeight * self.writeLine + self.scroll_y))
+        self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding, self.lineHeight * self.writeLine + self.scroll_y))
         self.writeLine += 1
         label = Label("Last name: " + str(object.getLastName()), 500, self.lineHeight, self.textFont)
-        self.inspectorScreenSurface.blit(label.localSurface, (self.width * 0.05, self.lineHeight * self.writeLine + self.scroll_y))
+        self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding, self.lineHeight * self.writeLine + self.scroll_y))
         self.writeLine += 1
         label = Label("Family name: " + str(object.getFamilyName()), 500, self.lineHeight, self.textFont, True)
-        self.inspectorScreenSurfaceObjsRect.append([self.inspectorScreenSurface.blit(label.localSurface, (self.width * 0.05, self.lineHeight * self.writeLine + self.scroll_y)), object.getOriginFamilyObjectRef()])
+        self.inspectorScreenSurfaceObjsRect.append([self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding, self.lineHeight * self.writeLine + self.scroll_y)), object.getOriginFamilyObjectRef()])
         label = Label("Show family tree", 150, self.lineHeight, self.textFont, True)
         self.inspectorScreenSurfaceObjsRect.append([self.inspectorScreenSurface.blit(label.localSurface, (self.width - 150, self.lineHeight * self.writeLine + self.scroll_y)), 'FamilyTree', object])
         self.writeLine += 1
         label = Label("Year of birth: " + str(object.getYearOfBirth()), 500, self.lineHeight, self.textFont)
-        self.inspectorScreenSurface.blit(label.localSurface, (self.width * 0.05, self.lineHeight * self.writeLine + self.scroll_y))
+        self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding, self.lineHeight * self.writeLine + self.scroll_y))
         self.writeLine += 1
         label = Label("Age: " + str(object.getAge()), 500, self.lineHeight, self.textFont)
-        self.inspectorScreenSurface.blit(label.localSurface, (self.width * 0.05, self.lineHeight * self.writeLine + self.scroll_y))
+        self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding, self.lineHeight * self.writeLine + self.scroll_y))
         self.writeLine += 1
         label = Label("Life Status: " + str(object.getLifeStatus().value), 500, self.lineHeight, self.textFont)
-        self.inspectorScreenSurface.blit(label.localSurface, (self.width * 0.05, self.lineHeight * self.writeLine + self.scroll_y))
+        self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding, self.lineHeight * self.writeLine + self.scroll_y))
         self.writeLine += 1
         label = Label("Sex: " + str(object.getSex().value[1]), 500, self.lineHeight, self.textFont)
-        self.inspectorScreenSurface.blit(label.localSurface, (self.width * 0.05, self.lineHeight * self.writeLine + self.scroll_y))
+        self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding, self.lineHeight * self.writeLine + self.scroll_y))
         self.writeLine += 1
         label = Label("Living in: " + str(object.getSettlement().getSettlementName()), 500, self.lineHeight, self.textFont, True)
-        self.inspectorScreenSurfaceObjsRect.append([self.inspectorScreenSurface.blit(label.localSurface, (self.width * 0.05, self.lineHeight * self.writeLine + self.scroll_y)), object.getSettlement()])
+        self.inspectorScreenSurfaceObjsRect.append([self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding, self.lineHeight * self.writeLine + self.scroll_y)), object.getSettlement()])
         self.writeLine += 1
         label = Label("Free wealth: " + str(object.getFreeWealth()), 500, self.lineHeight, self.textFont)
-        self.inspectorScreenSurface.blit(label.localSurface, (self.width * 0.05, self.lineHeight * self.writeLine + self.scroll_y))
+        self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding, self.lineHeight * self.writeLine + self.scroll_y))
         self.writeLine += 1
         if object.getFather() != '':
             label = Label("Father: " + str(object.getFather().getFirstName()) + " " + str(object.getFather().getLastName()), 500, self.lineHeight, self.textFont, True)
-            self.inspectorScreenSurfaceObjsRect.append([self.inspectorScreenSurface.blit(label.localSurface, (self.width * 0.05, self.lineHeight * self.writeLine + self.scroll_y)), object.getFather()])
+            self.inspectorScreenSurfaceObjsRect.append([self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding, self.lineHeight * self.writeLine + self.scroll_y)), object.getFather()])
             self.writeLine += 1
         if object.getMother() != '':
             label = Label("Mother: " + str(object.getMother().getFirstName()) + " " + str(object.getMother().getLastName()), 500, self.lineHeight, self.textFont, True)
-            self.inspectorScreenSurfaceObjsRect.append([self.inspectorScreenSurface.blit(label.localSurface, (self.width * 0.05, self.lineHeight * self.writeLine + self.scroll_y)), object.getMother()])
+            self.inspectorScreenSurfaceObjsRect.append([self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding, self.lineHeight * self.writeLine + self.scroll_y)), object.getMother()])
             self.writeLine += 1
         if object.getSpouse() is not None:
             label = Label("Spouse: " + str(object.getSpouse().getFirstName()) + " " + str(object.getSpouse().getLastName()), 500, self.lineHeight, self.textFont, True)
-            self.inspectorScreenSurfaceObjsRect.append([self.inspectorScreenSurface.blit(label.localSurface, (self.width * 0.05, self.lineHeight * self.writeLine + self.scroll_y)), object.getSpouse()])
+            self.inspectorScreenSurfaceObjsRect.append([self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding, self.lineHeight * self.writeLine + self.scroll_y)), object.getSpouse()])
             self.writeLine += 1
         label = Label("Occupation: " + str(object.getOccupationName()), 500, self.lineHeight, self.textFont)
-        self.inspectorScreenSurface.blit(label.localSurface, (self.width * 0.05, self.lineHeight * self.writeLine + self.scroll_y))
+        self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding, self.lineHeight * self.writeLine + self.scroll_y))
         self.writeLine += 1
         label = Label("Height: " + str(object.getHeight()), 500, self.lineHeight, self.textFont)
-        self.inspectorScreenSurface.blit(label.localSurface, (self.width * 0.05, self.lineHeight * self.writeLine + self.scroll_y))
+        self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding, self.lineHeight * self.writeLine + self.scroll_y))
         self.writeLine += 1
         label = Label("Hair Color: " + str(object.getHairColor().value[1]), 500, self.lineHeight, self.textFont)
-        self.inspectorScreenSurface.blit(label.localSurface, (self.width * 0.05, self.lineHeight * self.writeLine + self.scroll_y))
+        self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding, self.lineHeight * self.writeLine + self.scroll_y))
         self.drawCircle(self.width * 0.30 + self.lineHeight/2, self.lineHeight * self.writeLine + self.scroll_y + self.lineHeight/2, self.lineHeight/2, (object.getHairColor().value[2]))
         #self.inspectorScreenSurface.fill(object.getHairColor().value[2], (self.width * 0.30 + 5, self.lineHeight * self.writeLine + self.scroll_y + 2, self.lineHeight - 4, self.lineHeight - 4))
         self.writeLine += 1
         label = Label("Eye Color: " + str(object.getEyeColor().value[1]), 500, self.lineHeight, self.textFont)
-        self.inspectorScreenSurface.blit(label.localSurface, (self.width * 0.05, self.lineHeight * self.writeLine + self.scroll_y))
+        self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding, self.lineHeight * self.writeLine + self.scroll_y))
         self.drawCircle(self.width * 0.30 + self.lineHeight / 2, self.lineHeight * self.writeLine + self.scroll_y + self.lineHeight / 2, self.lineHeight / 2, (object.getEyeColor().value[2]))
         #self.inspectorScreenSurface.fill(object.getEyeColor().value[2], (self.width * 0.30 + 5, self.lineHeight * self.writeLine + self.scroll_y + 2, self.lineHeight - 4, self.lineHeight - 4))
         self.writeLine += 1
@@ -250,48 +256,53 @@ class InspectorScreen:
             for trait in object.getTraits():
                 traits += trait.value[1] + " "
             label = Label("Traits: " + str(traits).strip(), 500, self.lineHeight, self.textFont)
-            self.inspectorScreenSurface.blit(label.localSurface, (self.width * 0.05, self.lineHeight * self.writeLine + self.scroll_y))
+            self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding, self.lineHeight * self.writeLine + self.scroll_y))
             self.writeLine += 1
         if len(object.getLikedTraits()) > 0:
             traits = ""
             for trait in object.getLikedTraits():
                 traits += trait.value[1] + " "
             label = Label("Likes: " + str(traits).strip(), 500, self.lineHeight, self.textFont)
-            self.inspectorScreenSurface.blit(label.localSurface, (self.width * 0.05, self.lineHeight * self.writeLine + self.scroll_y))
+            self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding, self.lineHeight * self.writeLine + self.scroll_y))
             self.writeLine += 1
         if len(object.getDislikedTraits()) > 0:
             traits = ""
             for trait in object.getDislikedTraits():
                 traits += trait.value[1] + " "
             label = Label("Dislikes: " + str(traits).strip(), 500, self.lineHeight, self.textFont)
-            self.inspectorScreenSurface.blit(label.localSurface, (self.width * 0.05, self.lineHeight * self.writeLine + self.scroll_y))
+            self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding, self.lineHeight * self.writeLine + self.scroll_y))
             self.writeLine += 1
         if len(object.getAliveChildrenList()) > 0:
             label = Label("Alive childrens:", 500, self.lineHeight, self.textFont)
-            self.inspectorScreenSurface.blit(label.localSurface, (self.width * 0.05, self.lineHeight * self.writeLine + self.scroll_y))
+            self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding, self.lineHeight * self.writeLine + self.scroll_y))
             self.writeLine += 1
             for children in object.getAliveChildrenList():
                 if children.getSex().value[1] == 'M':
                     label = Label("Son: " + children.getFirstName(), 500, self.lineHeight, self.textFont, True)
                 else:
                     label = Label("Daughter: " + children.getFirstName(), 500, self.lineHeight, self.textFont, True)
-                self.inspectorScreenSurfaceObjsRect.append([self.inspectorScreenSurface.blit(label.localSurface, (self.width * 0.10, self.lineHeight * self.writeLine + self.scroll_y)), children])
+                self.inspectorScreenSurfaceObjsRect.append([self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding*2, self.lineHeight * self.writeLine + self.scroll_y)), children])
                 self.writeLine += 1
         if len(object.getDeadChildrens()) > 0:
             label = Label("Deceased childrens:", 500, self.lineHeight, self.textFont)
-            self.inspectorScreenSurface.blit(label.localSurface, (self.width * 0.05, self.lineHeight * self.writeLine + self.scroll_y))
+            self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding, self.lineHeight * self.writeLine + self.scroll_y))
             self.writeLine += 1
             for children in object.getDeadChildrens():
                 if children.getSex().value[1] == 'M':
                     label = Label("Son: " + children.getFirstName(), 500, self.lineHeight, self.textFont, True)
                 else:
                     label = Label("Daughter: " + children.getFirstName(), 500, self.lineHeight, self.textFont, True)
-                self.inspectorScreenSurfaceObjsRect.append([self.inspectorScreenSurface.blit(label.localSurface, (self.width * 0.10, self.lineHeight * self.writeLine + self.scroll_y)), children])
+                self.inspectorScreenSurfaceObjsRect.append([self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding*2, self.lineHeight * self.writeLine + self.scroll_y)), children])
                 self.writeLine += 1
-        label = Label("Life events:", 500, self.lineHeight, self.textFont)
-        self.inspectorScreenSurface.blit(label.localSurface, (self.width * 0.05, self.lineHeight * self.writeLine + self.scroll_y))
-        self.writeLine += 1
+
+        self.writeLine = SingleLineSurface("Life events:", 500, self.lineHeight, self.textFont, self.leftPadding, self.lineHeight * self.writeLine + self.scroll_y, self.inspectorScreenSurface, self.writeLine)
+
+        # label = Label("Life events:", 500, self.lineHeight, self.textFont)
+        # self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding, self.lineHeight * self.writeLine + self.scroll_y))
+        # self.writeLine += 1
         for liveEvent in object.getLifeEvent():
-            label = Label(str(liveEvent), 700, self.lineHeight, self.textFont)
-            self.inspectorScreenSurface.blit(label.localSurface, (self.width * 0.10, self.lineHeight * self.writeLine + self.scroll_y))
-            self.writeLine += 1
+
+            self.writeLine = MultiLineSurface(str(liveEvent), 500, self.lineHeight, self.textFont, self.leftPadding*2, self.lineHeight * self.writeLine + self.scroll_y, self.inspectorScreenSurface, self.writeLine)
+            # label = Label(str(liveEvent), 700, self.lineHeight, self.textFont)
+            # self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding*2, self.lineHeight * self.writeLine + self.scroll_y))
+            # self.writeLine += 1

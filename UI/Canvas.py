@@ -1,5 +1,6 @@
 import pygame
 
+from SettlementFeatures import Feature
 from UI.Screens.FamilyTreeScreen import FamilyTreeScreen
 from UI.Screens.HelpScreen import HelpScreen
 from UI.Screens.InspectorScreen import InspectorScreen
@@ -176,6 +177,10 @@ class Canvas:
                         if hasattr(itemObj[1], 'getUIExpand'):
                             itemObj[1].setUIExpand(not itemObj[1].getUIExpand())
                         self.focusObj.append(itemObj[1])
+
+                        if isinstance(itemObj[1], Feature):
+                             self.focusObj.pop()
+
                         if isinstance(itemObj[1], TextField):
                             itemObj[1].activate()
                         return True, pausedPressed
@@ -214,6 +219,7 @@ class Canvas:
                 self.showHelp = False
                 if self.showFamilyScreen:
                     self.showFamilyScreen = False
+                    self.familyTreeScreen.setScroll_y(0)
             if pausedPressed == False:
                 self.showHelp = False
             if event.key == pygame.K_q:

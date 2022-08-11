@@ -68,6 +68,7 @@ class Person:
         self.freeWealth = 0
         self.familyTree = None
         self.yearOfDeath = ""
+        self.happiness = 0
         pass
 
     def setInitValues(self, familyName, yearOfBirth, age, randomLifespan, sex, hairColor, hairColorGen1, hairColorGen2, eyeColor, eyeColorGen1, eyeColorGen2, familyObj):
@@ -271,6 +272,12 @@ class Person:
     def changeFreeWealth(self, modifier):
         self.freeWealth += modifier
         self.freeWealth = round(self.freeWealth, 2)
+
+    def getHappiness(self):
+        return self.happiness
+
+    def changeHappiness(self, newValue):
+        self.happiness = newValue
 
     def initGenDownFamilyTree(self):
 

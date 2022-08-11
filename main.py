@@ -5,6 +5,7 @@ import FamilyInitGenerator as FIG
 import MembersInitGenerator as MIG
 import Parameters
 import pygame
+import sys
 
 import Utils
 from Family import Family
@@ -267,7 +268,7 @@ def main():
         #     temp = world.getPeople()[0].generateDownFamilyTree(BinaryTreeNode(world.getPeople()[0]))
         #     Utils.printDownFamilyTree(temp)
         #     return
-        if world.getYear() == 1200:
+        if world.getYear() == 600:
 
             return
 

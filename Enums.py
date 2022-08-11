@@ -14,7 +14,6 @@ class MaritalStatus(Enum):
     DEAD = 'dead'
     DIVORCED = 'divorced'
 
-
 class CauseOfDeath(Enum):
     AGE = 'age'
     CHILDBIRTH = 'childbirth'

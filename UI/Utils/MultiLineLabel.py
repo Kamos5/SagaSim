@@ -1,10 +1,10 @@
 import pygame
 
 
-class Label:
+class MultiLineLabel:
 
 
-    def __init__(self, text, w, h, font, clickable=False, focused=False, borderSize=1):
+    def __init__(self, text, w, h, font, multiLinePart, clickable=False, focused=False, borderSize=1):
 
         self.localSurface = pygame.Surface([w, h])
         self.x = 0
@@ -22,6 +22,7 @@ class Label:
         self.clickableBorderColor = 0, 200, 0
         self.borderSize = borderSize
         self.focused = focused
+        self.multiLinePart = multiLinePart
         if not self.focused:
             self.rectColor = self.inactiveRectColor
             if clickable:
@@ -41,7 +42,12 @@ class Label:
 
     def addRect(self):
         self.border = pygame.draw.rect(self.localSurface, self.borderColor, (self.x, self.y, self.w, self.h))
-        self.rect = pygame.draw.rect(self.localSurface, self.rectColor, (self.x+self.borderSize, self.y+self.borderSize, self.w-2*self.borderSize, self.h-2*self.borderSize))
+        if self.multiLinePart == 0:
+            self.rect = pygame.draw.rect(self.localSurface, self.rectColor, (self.x+self.borderSize, self.y+self.borderSize, self.w-2*self.borderSize, self.h-self.borderSize))
+        if self.multiLinePart == 1:
+            self.rect = pygame.draw.rect(self.localSurface, self.rectColor, (self.x+self.borderSize, self.y, self.w-2*self.borderSize, self.h))
+        if self.multiLinePart == 2:
+            self.rect = pygame.draw.rect(self.localSurface, self.rectColor, (self.x+self.borderSize, self.y, self.w-2*self.borderSize, self.h-2*self.borderSize))
 
     def addText(self, text):
         textSurface = self.font.render(text, True, self.textColor)

@@ -27,7 +27,7 @@ class HelpScreen:
 
     def addHelp(self):
 
-        self.helpLabel = Label("Help Menu:", 120, self.lineHeight, self.textFont, False, True, 2)
+        self.helpLabel = Label("Help Menu:", 140, self.lineHeight, self.textFont, False, True, 2)
         self.helpLabel.setActiveRectColor(20, 20, 20)
         self.helpLabel.setActiveBorderColor(100, 10, 10)
 

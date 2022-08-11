@@ -46,6 +46,7 @@ class Feature:
         self.cordX = cordx
         self.cordY = cordy
         self.featureNumber = featureNumber
+        self.uiExpand = False
 
     def setFoundationType(self, newType):
         self.foundationType = newType
@@ -68,6 +69,9 @@ class Feature:
     def getWorkersNumber(self):
         return self.workers
 
+    def getMaxWorkersNumber(self):
+        return self.maxWorkers
+
     def getFreeWorkersSlots(self):
         return self.maxWorkers - self.workers
 
@@ -76,6 +80,9 @@ class Feature:
 
     def getWorkerList(self):
         return self.workersList
+
+    def getWorkerListNumber(self):
+        return len(self.workersList)
 
     def addWorker(self, worker):
         self.workers += 1
@@ -105,6 +112,15 @@ class Feature:
 
     def setFeatureNumber(self, number):
         self.featureNumber = number
+
+    def getUIExpand(self):
+        return self.uiExpand
+
+    def changeExpandedUI(self):
+        self.uiExpand = not self.uiExpand
+
+    def setUIExpand(self, newValue):
+        self.uiExpand = newValue
 # def setFeatures():
 #
 #     #production yield, description, upgr cost, upgrades to

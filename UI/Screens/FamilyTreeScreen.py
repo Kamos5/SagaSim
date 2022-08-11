@@ -67,6 +67,8 @@ class FamilyTreeScreen:
 
     def printDownFamilyTree(self, tree, level=0, prefix=""):
 
+        screenYPosition = self.lineHeight * self.writeLine + self.scroll_y
+
         maxLevel = 3
         labelString = ""
 
@@ -84,14 +86,17 @@ class FamilyTreeScreen:
             else:
                 labelString = (prefix + "" + tree.getRoot().getFirstName() + " " + tree.getRoot().getLastName() + " (" + str(tree.getRoot().getYearOfBirth()) + "-" + str(tree.getRoot().getYearOfDeath()) + ")")
 
-        if level <= maxLevel:
+
+        if self.height >= screenYPosition:
+        # if level <= maxLevel:
             label = Label(labelString, self.width - self.leftPadding - self.rightPadding, self.lineHeight, self.textFont, False)
-            self.familyTreeScreenSurface.blit(label.localSurface, (self.leftPadding, self.lineHeight * self.writeLine+ self.scroll_y))
+            self.familyTreeScreenSurface.blit(label.localSurface, (self.leftPadding, screenYPosition))
             self.writeLine += 1
 
             if len(tree.getChildren()) > 0:
                 for branch in tree.getChildren():
                     self.printDownFamilyTree(branch, level + 1, prefix + "-")
+
 
     def printUpFamilyTree(self, tree, level=0, prefix=""):
 
