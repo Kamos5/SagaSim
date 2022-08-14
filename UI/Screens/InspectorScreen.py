@@ -165,8 +165,8 @@ class InspectorScreen:
                     self.inspectorScreenSurfaceObjsRect.append([self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding*3, self.lineHeight * self.writeLine + self.scroll_y)), worker])
                     self.writeLine += 1
         for feature in object.getProdFeatures():
-            label = Label("Prod feature: " + str(feature.getName()) + " Quality: " + str(feature.getFoundationType().value.name) + " (" + str(feature.getWorkerListNumber()) + "/" + str(feature.getMaxWorkersNumber()) + ")"  , 500, self.lineHeight, self.textFont, True)
-            self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding*2, self.lineHeight * self.writeLine + self.scroll_y))
+            label = Label("Prod feature: " + str(feature.getName()) + " Quality: " + str(feature.getFoundationType().value.name) + " (" + str(feature.getWorkerListNumber()) + "/" + str(feature.getMaxWorkersNumber()) + ")", 500, self.lineHeight, self.textFont, True)
+            self.inspectorScreenSurfaceObjsRect.append([self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding*2, self.lineHeight * self.writeLine + self.scroll_y)), feature])
             self.writeLine += 1
             if feature.getUIExpand():
                 for worker in feature.getWorkerList():
