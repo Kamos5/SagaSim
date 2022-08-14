@@ -110,7 +110,6 @@ def settlementsPopulationManagement (world):
     for region in world.getRegions():
 
         for settlement in region.getSettlements():
-
             villagesList = SF.getVillages(region.getSettlements())
             townList = SF.getCities(region.getSettlements())
 
@@ -293,7 +292,7 @@ def prepareMigration(settlement, newTargetSettlement, world):
             if len(randomMigrantsList) > 0:
                 complexRandomMigrantList.append(randomMigrantsList)
                 migrantFamilies += 1
-                #randomMigrantsList = []
+                randomMigrantsList = []
 
 
     return complexRandomMigrantList
@@ -328,6 +327,57 @@ def splitFamiliesInMigration(world, region, newTargetSettlement, complexRandomMi
                     family.setFoundedBy(person)
                 family.addNewMember(person)
 
+def crime(world):
+
+    crimeLevel = 0
+    for person in world.getPeople():
+        randomChanceForCrime = Utils.randomRange(1, 100)
+        if randomChanceForCrime < 5 and person.getLifeStatus() == LifeStatus.ALIVE and person.getAge() > 15 and person.getFreeWealth() < person.getSettlement().getAvarageResidentsWealth() and (Traits.VENGEFUL in person.getTraits() or Traits.GREEDY in person.getTraits() or Traits.DECEITFUL in person.getTraits() and person.getOccupation() is None):
+            randomPerson = Utils.randomFromCollection(person.getSettlement().getResidents())
+            if randomPerson != person and randomPerson != person.spouse and randomPerson not in person.getAliveChildrenList():
+                randomCrime = Utils.randomRange(1, 100)
+                #homicide
+                if randomCrime < 10:
+                    print("Homicide")
+                    PF.deathProcedures(randomPerson, world)
+                    offenderIdentified = Utils.randomRange(1, 100)
+                    if offenderIdentified > 50:
+                        PLEH.killedByDuringCrime(randomPerson, person, world)
+                    else:
+                        PLEH.killedByDuringCrime(randomPerson, None, world)
+                    PLEH.killedSMBDuringCrime(person, randomPerson, world)
+                    loot = randomPerson.getFreeWealth()
+                    randomPerson.setFreeWealth(loot / 2)
+                    person.changeFreeWealth(loot)
+                    crimeLevel += 1
+                    continue
+                if randomCrime < 30:
+                    print("Assault")
+                    loot = randomPerson.getFreeWealth()
+                    randomPerson.setFreeWealth(loot / 3)
+                    person.changeFreeWealth(loot)
+                    crimeLevel += 1
+                    continue
+                if randomCrime < 70:
+                    print("Burglary")
+                    loot = randomPerson.getFreeWealth()
+                    randomPerson.setFreeWealth(loot / 4)
+                    person.changeFreeWealth(loot)
+                    crimeLevel += 1
+                    continue
+                if randomCrime < 90:
+                    print("Theft")
+                    loot = randomPerson.getFreeWealth()
+                    randomPerson.setFreeWealth(loot / 5)
+                    person.changeFreeWealth(loot)
+                    crimeLevel += 1
+                    continue
+                if randomCrime <= 100:
+                    print("Crime failed")
+                    crimeLevel += 1
+                    continue
+
+    world.appendCrimesPerYear(crimeLevel)
 
 def moveFoodAndProduction(migrantSize, oldSettlement, newSettlement):
 

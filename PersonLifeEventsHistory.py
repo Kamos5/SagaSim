@@ -25,6 +25,21 @@ def lostChild(person, child, world):
     person.lifeEvents.append(str(person.firstName) + ' had lost a ' + str(sex) + ' named ' + str(child.firstName) + ' in the year ' + str(world.getYear()) + ' due to ' + str(child.causeOfDeath.value))
 
 
+def killedByDuringCrime(victim, offender, world):
+
+    offenderString = ""
+    if offender is None:
+        offenderString = "Unknown"
+
+    else:
+        offenderString = offender.getFirstName() + " " + offender.getLastName()
+
+    victim.lifeEvents.append(str(victim.firstName) + " was killed by" + offenderString + " during crime " + ' in the year ' + str(world.getYear()))
+
+def killedSMBDuringCrime(offender, victim, world):
+
+    offender.lifeEvents.append(str(offender.firstName) + " killed " + victim.getFirstName() + " " + victim.getLastName() + " while committing crime in the year " + str(world.getYear()))
+
 def beenBorn(person, world):
 
     if person.father != '':

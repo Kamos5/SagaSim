@@ -309,11 +309,11 @@ class Person:
     def setSpouseRelation(self, newValue):
         self.spouseRelation = newValue
 
-    def setSpouseRelation(self, newValue):
-        self.spouseRelation = newValue
-
     def changeSpouseRelation(self, newValue):
-        self.spouseRelation += newValue
+        if self.spouseRelation + newValue > 300:
+            self.spouseRelation = 300
+        else:
+            self.spouseRelation += newValue
 
     def getHappiness(self):
         return self.happiness

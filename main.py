@@ -178,6 +178,11 @@ def running (world, manualOverride):
         end1 = time.perf_counter()
         workersManagementTime = end1 - start1
         start1 = time.perf_counter()
+    Events.crime(world)
+    if timers:
+        end1 = time.perf_counter()
+        crimeTime = end1 - start1
+        start1 = time.perf_counter()
     Events.settlementGoodsProduction(world)
     if timers:
         end1 = time.perf_counter()
@@ -192,6 +197,7 @@ def running (world, manualOverride):
             print("DivorcesTime: " + str(divorcesTime) + " %: " + str(round(divorcesTime / fullTime, 2)))
             print("BreakSettlementsPopTime: " + str(breakSettlementsPopTime) + " %: " + str(round(breakSettlementsPopTime/fullTime, 2)))
             print("WorkersManagementTime: " + str(workersManagementTime) + " %: " + str(round(workersManagementTime / fullTime, 2)))
+            print("WorkersManagementTime: " + str(crimeTime) + " %: " + str(round(crimeTime / fullTime, 2)))
             print("SettlementGoodsProdTime: " + str(settlementGoodsProdTime) + " %: " + str(round(settlementGoodsProdTime / fullTime, 2)))
         print(fullTime)
 
@@ -208,6 +214,7 @@ def running (world, manualOverride):
     print("Male population: " + str(malePop))
     print("Female population: " + str(femalePop))
     print("Divorces: " + str(world.getDivorcesNumber()))
+    # print("Crimes: " + str(world.getCrimesPerYear()))
 
 
 def main():

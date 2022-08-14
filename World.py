@@ -21,6 +21,7 @@ class World:
         self.people = []
         self.alivePeople = []
         self.birthsPerYear = []
+        self.crimesPerYear = []
 
     def getPeople(self):
         return self.people
@@ -35,6 +36,11 @@ class World:
         self.people.remove(person)
 
     def getAlivePeople(self):
+
+        self.alivePeople = 0
+        for family in self.getFamilies():
+            self.alivePeople += family.getAliveMembersList()
+
         return self.alivePeople
 
     def setAlivePeople(self, people):
@@ -108,3 +114,9 @@ class World:
 
     def appendBirthsPerYear(self, value):
         self.birthsPerYear.append(int(value))
+
+    def getCrimesPerYear(self):
+        return self.crimesPerYear
+
+    def appendCrimesPerYear(self, value):
+        self.crimesPerYear.append(int(value))

@@ -56,6 +56,7 @@ class Settlements:
         self.uiExpand = False
         self.freeWealth = 0
         self.localIncomeTax = Utils.randomRange(0, 20)
+        self.avarageResidentsWealth = 0
 
         self.createStartingVillageFeatures()
 
@@ -344,3 +345,12 @@ class Settlements:
 
     def getLocalIncomeTax(self):
         return self.localIncomeTax
+
+    def getAvarageResidentsWealth(self):
+
+        tempSumWealth = 0
+
+        for resident in self.getResidents():
+            tempSumWealth += resident.getFreeWealth()
+
+        return round(tempSumWealth/len(self.getResidents()), 3)
