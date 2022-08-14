@@ -27,9 +27,8 @@ class Region():
             return False
 
     def addSettlement(self, world):
-        additionalFeatureThreshold = 10
-        self.settlements.append(Settlements(self.regionName, world.getYear()))
-        newSettlement = self.settlements[len(self.getSettlements())-1]
+        newSettlement = Settlements(self.regionName, world.getYear())
+        self.settlements.append(newSettlement)
         newSettlement.maxPopulation = Parameters.baseVillageSize
 
         return newSettlement
@@ -53,17 +52,14 @@ class Region():
     def setActiveSettlements(self, newActiveSettlements):
         self.activeSettlements = newActiveSettlements
 
-    def getLowestPopulatedSettlement(self, world):
+    def getLowestPopulatedSettlement(self):
 
-
-        settlementsPopulationList = []
-        tempMinPopVal = 10000
-        tempIndexPopVal = 0
+        tempMinPopVal = 1000000
+        lowestPopSettlement = None
         index = 0
-        for settlement in self.settlements:
-            settlementsPopulationList.append(settlement.getResidents())
+        for settlement in self.getSettlements():
             if len(settlement.getResidents()) < tempMinPopVal:
                 tempMinPopVal = len(settlement.getResidents())
-                tempIndexPopVal = index
+                lowestPopSettlement = settlement
             index += 1
-        return self.settlements[tempIndexPopVal]
+        return lowestPopSettlement

@@ -57,6 +57,9 @@ def deathProcedures(person, world):
 
     if person.spouse is not None:
         person.spouse.deadSpouses.append(person)
+        person.getSpouse().setSpouseRelation(0)
+        person.getSpouse().changeSpouseNumberOfLikedTraits(-person.getSpouse().getSpouseNumberOfLikedTraits())
+        person.getSpouse().changeSpouseNumberOfDislikedTraits(-person.getSpouse().getSpouseNumberOfDislikedTraits())
         # changing status of the spouse to WIDOW* and clearing spouse field
         if person.spouse.sex == Sexes.MALE:
             person.spouse.maritalStatus = MaritalStatus.WIDOWER
@@ -75,7 +78,9 @@ def deathProcedures(person, world):
     #         person.maritalStatus = MaritalStatus.DEAD
 
     person.familyObjRef.appendDeadMembersList(person)
-
+    person.setSpouseRelation(0)
+    person.changeSpouseNumberOfLikedTraits(-person.getSpouseNumberOfLikedTraits())
+    person.changeSpouseNumberOfDislikedTraits(-person.getSpouseNumberOfDislikedTraits())
     # changing statutes
     person.changeLifeStatus(LifeStatus.DEAD)
     person.maritalStatus = MaritalStatus.DEAD

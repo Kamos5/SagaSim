@@ -38,6 +38,8 @@ def birthPeople (world):
         # only Females can give birth beetween 15 and 45y old + must be alive and have spouse
         if person.lifeStatus == LifeStatus.ALIVE and person.sex == Sexes.FEMALE and 15 <= person.age <= 45 and person.spouse is not None:
 
+            #change spouseRelation based on liked/disliked traits
+            changeRelationToFromSpouse(person)
             #spouseObj for simplicity
             spouseObj = person.spouse
             # is spouse alive
@@ -45,13 +47,25 @@ def birthPeople (world):
                 chanceOfBirth = Utils.randomRange(1, 100)
                 personSexualityModifier = 1
                 spouseObjSexualityModifier = 1
+                if Traits.CHASTE == person.getTraits():
+                    personSexualityModifier *= 0.5
+                if Traits.CHASTE == spouseObj.getTraits():
+                    spouseObjSexualityModifier *= 0.5
+                if Traits.LUSTFUL == person.getTraits():
+                    personSexualityModifier *= 1.5
+                if Traits.LUSTFUL == spouseObj.getTraits():
+                    spouseObjSexualityModifier *= 1.5
                 if person.sexuality == 'homo':
-                    personSexualityModifier = 0.80
+                    personSexualityModifier *= 0.80
+                    person.setSpouseRelation(-5)
                 if spouseObj.sexuality == 'homo':
-                    spouseObjSexualityModifier = 0.40
+                    spouseObjSexualityModifier *= 0.40
+                    person.getSpouse().setSpouseRelation(-5)
 
-                if chanceOfBirth <= min(person.fertility, spouseObj.fertility) * spouseObj.getSettlement().getBaseFertility() * spouseObj.getSettlement().getFertilityModifier() * personSexualityModifier * spouseObjSexualityModifier/ 100:
+                if (chanceOfBirth <= min(person.fertility, spouseObj.fertility) * spouseObj.getSettlement().getBaseFertility() * spouseObj.getSettlement().getFertilityModifier() * personSexualityModifier * spouseObjSexualityModifier / 100) and person.spouseRelation > 0:
                     # CHILD object
+                    person.changeSpouseRelation(25)
+                    person.getSpouse().changeSpouseRelation(25)
                     personObj = PF.birthChild(world, person, spouseObj)
                     # add child to proper family
                     personObj.familyObjRef.addNewMember(personObj)
@@ -60,7 +74,8 @@ def birthPeople (world):
                     person.numberOfChildren += 1
                     spouseObj.numberOfChildren += 1
                     if person.modifiedLifespan-person.age > 1:
-                        person.modifiedLifespan -= 1
+                        if Utils.randomRange(1, 2) == 1:
+                            person.modifiedLifespan -= 1
                     person.appendAliveChildrenList(personObj)
                     spouseObj.appendAliveChildrenList(personObj)
                     personObj.changeMaritalStatus(MS.CHILD)
@@ -77,10 +92,18 @@ def birthPeople (world):
 
                     births += 1
 
-    print("Births per year:" + str(births))
+    world.appendBirthsPerYear(births)
 
 
     return
+
+def changeRelationToFromSpouse(person):
+
+    person.spouseRelation += person.getSpouseNumberOfLikedTraits()*5
+    person.spouseRelation += -person.getSpouseNumberOfDislikedTraits() * 5
+    person.getSpouse().spouseRelation += person.getSpouse().getSpouseNumberOfLikedTraits() * 5
+    person.getSpouse().spouseRelation += -person.getSpouse().getSpouseNumberOfDislikedTraits() * 5
+
 
 def settlementsPopulationManagement (world):
 
@@ -98,24 +121,23 @@ def settlementsPopulationManagement (world):
                 if chanceOfMigration < Parameters.chanceForMigration:
                     #Check for max size of region
                     if len(region.getSettlements()) == region.regionSize:
-                        newTargetSettlement = Utils.randomFromCollection(townList)
+                        newTargetSettlement = Utils.randomFromCollection(region.getSettlements())
 
                     else:
                         # TODO FIX PEOPLE CAN MOVE TO THE SAME VILLAGE
                         #Take lowest population as dest
-                        lowestSettlementInRegion = region.getLowestPopulatedSettlement(world)
+                        lowestSettlementInRegion = region.getLowestPopulatedSettlement()
                         newTargetSettlement = lowestSettlementInRegion
                         #If lowest pop > lowest max pop * modifier create new setttlement
-                        if lowestSettlementInRegion.getPopulation() > int(lowestSettlementInRegion.getMaxPopulation() * Parameters.percentageVillagePopulationThresholdForCreatingNewVillage and settlement.getSettlementType == SE.TOWN):
-                            if region.canAddSettlement():
-                                newSettlement = region.addSettlement(world)
-                                newSettlement.setMaxPopulation = Parameters.baseVillageSize
-                                newTargetSettlement = newSettlement
+                        if lowestSettlementInRegion.getPopulation() > int(lowestSettlementInRegion.getMaxPopulation() * Parameters.percentageVillagePopulationThresholdForCreatingNewVillage):
+                            newSettlement = region.addSettlement(world)
+                            newSettlement.setMaxPopulation = Parameters.baseVillageSize
+                            newTargetSettlement = newSettlement
 
                     #Migration Wave
                     complexRandomMigrantsList = prepareMigration(settlement, newTargetSettlement, world)
-                    iniciateMigration(complexRandomMigrantsList, newTargetSettlement)
-                    splitFamilies(world, region, newTargetSettlement, complexRandomMigrantsList)
+                    iniciateMigration(complexRandomMigrantsList, newTargetSettlement, world)
+                    splitFamiliesInMigration(world, region, newTargetSettlement, complexRandomMigrantsList)
 
         #Upgrading from Village to City
         randomVillage = Utils.randomFromCollection(villagesList)
@@ -156,7 +178,7 @@ def settlementGoodsProduction(world):
                 if resident.getAge() < 10:
                     foodConsumed += 0.5
                     settlement.increaseSettlementFoodConsumed(0.5)
-                elif resident.getAge() >= 10 and resident.getAge() <15:
+                elif 10 <= resident.getAge() < 15:
                     foodConsumed += 0.75
                     settlement.increaseSettlementFoodConsumed(0.75)
                 else:
@@ -270,14 +292,13 @@ def prepareMigration(settlement, newTargetSettlement, world):
                 getRandomMigrantListForSingleRandomPerson(randomPerson, "Adult", randomMigrantsList, settlement, world)
             if len(randomMigrantsList) > 0:
                 complexRandomMigrantList.append(randomMigrantsList)
-                PLEH.movedHome(randomPerson, settlement, newTargetSettlement, world)
                 migrantFamilies += 1
-                randomMigrantsList = []
+                #randomMigrantsList = []
 
 
     return complexRandomMigrantList
 
-def splitFamilies(world, region, newTargetSettlement, complexRandomMigrantsList):
+def splitFamiliesInMigration(world, region, newTargetSettlement, complexRandomMigrantsList):
 
 
     for randomMigrantList in complexRandomMigrantsList:
@@ -302,16 +323,24 @@ def splitFamilies(world, region, newTargetSettlement, complexRandomMigrantsList)
                 person.familyName = newFamilyName
                 person.lastName = newFamilyName
                 person.familyObjRef = family
+                person.setOriginFamilyObjectRef(family)
                 if family.getFemaleNumber() == 0 and family.getMaleNumber() == 0:
                     family.setFoundedBy(person)
                 family.addNewMember(person)
 
 
+def moveFoodAndProduction(migrantSize, oldSettlement, newSettlement):
 
-def iniciateMigration(complexMigrantList, settlementTarget):
+    foodPackages = 2* migrantSize
+    if oldSettlement.getFreeFood() > foodPackages:
+        oldSettlement.changeFreeFood(foodPackages)
+        newSettlement.changeFreeFood(foodPackages)
+
+def iniciateMigration(complexMigrantList, settlementTarget, world):
 
     for migrantList in complexMigrantList:
         for migrant in migrantList:
+            PLEH.movedHome(migrant, migrant.getSettlement(), settlementTarget, world)
             migrant.getSettlement().decreasePopulation()
             migrant.getSettlement().removeResident(migrant)
             migrant.setSettlement(settlementTarget)
@@ -425,13 +454,13 @@ def deathChangeFromGivingBirth(person, child, modifier=0):
     if numberOfChildren == 0:
         chanceOfMotherDeath = Utils.randomRange(1, 100)
     elif numberOfChildren == 1:
-        chanceOfMotherDeath = Utils.randomRange(1, 95)
+        chanceOfMotherDeath = Utils.randomRange(1, 98)
     elif numberOfChildren == 2:
-        chanceOfMotherDeath = Utils.randomRange(1, 90)
+        chanceOfMotherDeath = Utils.randomRange(1, 95)
     else:
-        chanceOfMotherDeath = Utils.randomRange(1, 85)
+        chanceOfMotherDeath = Utils.randomRange(1, 90)
 
-    if chanceOfMotherDeath > 80 + modifier:
+    if chanceOfMotherDeath > 88 + modifier:
         person.causeOfDeath = CauseOfDeath.CHILDBIRTH
         motherDeath = True
 

@@ -35,53 +35,100 @@ def AddToMarriedList (person, spouse):
         person.familyObjRef.addMarriedMember(person)
         person.familyObjRef.addMarriedMember(spouse)
 
+def changeToOriginalFamilyNameAfterDivorce(person, spouse, world):
 
+    spouseObj = spouse
+    if person.familyObjRef.getOriginCulture().getInheritanceBy() != person.sex:
+        PLEH.changedLastName(person, world, person.getFamilyName())
+        person.lastName = person.getFamilyName()
+        person.familyObjRef = person.getOriginFamilyObjectRef()
+    else:
+        PLEH.changedLastName(spouseObj, world, spouseObj.getFamilyName())
+        spouseObj.lastName = spouse.getFamilyName()
+        spouse.familyObjRef = spouse.getOriginFamilyObjectRef()
 
-def ChangeFamilyName (person, spouse):
+def ChangeFamilyName (person, spouse, world):
 
     spouseObj = spouse
     #if female change lastName => could be modified by culture
     #exception when it is only member of family, don't change
     #CULTURE MIX WHAT IF 2 DIFF CULTURES MEET? => random who is first as person
+
+
     if person.familyObjRef.getOriginCulture().getInheritanceBy() != person.sex:
-        person.lastName = spouseObj.lastName
+        PLEH.changedLastName(person, world, spouseObj.getLastName())
+        person.lastName = spouseObj.getLastName()
         person.familyObjRef = spouse.familyObjRef
     else:
-        spouseObj.lastName = person.lastName
+        PLEH.changedLastName(spouseObj, world, person.getFamilyName())
+        spouseObj.lastName = person.getLastName()
         spouse.familyObjRef = person.familyObjRef
 
+def Divorces (world):
+
+    for person in world.getPeople():
+        if person.lifeStatus == Enums.LifeStatus.ALIVE and person.getMaritialStatus() == Enums.MaritalStatus.MARRIED and person.getSpouseRelation() < -25:
+            randomChance = Utils.randomRange(1, 100)
+            if randomChance < abs(person.getSpouseRelation()):
+                person.changeMaritalStatus(Enums.MaritalStatus.DIVORCED)
+                person.spouse.changeMaritalStatus(Enums.MaritalStatus.DIVORCED)
+                PLEH.divorced(person, world)
+                PLEH.divorced(person.getSpouse(), world)
+                person.setSpouseRelation(0)
+                person.changeSpouseNumberOfLikedTraits(0)
+                person.changeSpouseNumberOfDislikedTraits(0)
+                person.getSpouse().setSpouseRelation(0)
+                person.getSpouse().changeSpouseNumberOfLikedTraits(0)
+                person.getSpouse().changeSpouseNumberOfDislikedTraits(0)
+                person.getFamilyObjectRef().removeMarriedMember(person)
+                person.getSpouse().getFamilyObjectRef().removeMarriedMember(person.getSpouse())
+                person.getOriginFamilyObjectRef().addUnmarriedMember(person)
+                person.getSpouse().getOriginFamilyObjectRef().addUnmarriedMember(person.getSpouse())
+                changeToOriginalFamilyNameAfterDivorce(person.getSpouse(), person, world)
+                person.getSpouse().setSpouse(None)
+                person.setSpouse(None)
+                world.changeDivorcesNumber(1)
 
 
 def SpouseMatchmaking (world):
 
-    timeTable1 = []
-    timeTable2 = []
-    timeTable3 = []
-    tempVar=0
-
     #CANT USE PERSON IN UNMARIED LIST BECAUSE OF STRANGE ERRORS CONNECTED WITH PREVIOUS SPOUS DYING IN THE SAME YEAR AND LOOP family.getUnmarried list NOT RECOGNIZING IT!!!
+
     for person in world.getPeople():
          if person.lifeStatus == Enums.LifeStatus.ALIVE and person.age >= 15 and person.spouse is None and (person.maritalStatus == Enums.MaritalStatus.SINGLE or person.maritalStatus == Enums.MaritalStatus.WIDOW or person.maritalStatus == Enums.MaritalStatus.WIDOWER or person.maritalStatus == Enums.MaritalStatus.DIVORCED):
 
             availableSpouesesList = FindAvailableSpouses(world.getFamilies(), person)
-            #1 because there can be 2 people alone in the families and changning last name of 1 would make other family empty - which is not cool :(
-            if len(availableSpouesesList) > 1:
-                person.spouse = Utils.randomFromCollection(availableSpouesesList)
-
+            if len(availableSpouesesList) > 0:
+                randomSpouse = Utils.randomFromCollection(availableSpouesesList)
+                person.spouse = randomSpouse
                 spouseObj = person.spouse
-
                 person.maritalStatus = Enums.MaritalStatus.MARRIED
                 spouseObj.spouse = person
                 spouseObj.maritalStatus = Enums.MaritalStatus.MARRIED
                 PLEH.married(person, world)
                 PLEH.married(spouseObj, world)
+                checkLDTraitsNumber(person)
+                person.changeSpouseRelation(50)
+                spouseObj.changeSpouseRelation(50)
 
+                #TODO FIX ISSUE WHEN ONLY 1 FEMALE IS IN FAMILY
                 RemoveFromUnmarriedList(person, spouseObj)
-
                 AddToMarriedList(person, spouseObj)
-                ChangeFamilyName(person, spouseObj)
+                ChangeFamilyName(person, spouseObj, world)
 
 
+def checkLDTraitsNumber(person):
+
+    for trait in person.getTraits():
+        if trait in person.getSpouse().getLikedTraits():
+            person.getSpouse().changeSpouseNumberOfLikedTraits(1)
+        if trait in person.getSpouse().getDislikedTraits():
+            person.getSpouse().changeSpouseNumberOfDislikedTraits(1)
+    for trait in person.getSpouse().getTraits():
+        if trait in person.getLikedTraits():
+            person.changeSpouseNumberOfLikedTraits(1)
+        if trait in person.getDislikedTraits():
+            person.changeSpouseNumberOfDislikedTraits(1)
 
 def FindNextHeir (families, people):
 

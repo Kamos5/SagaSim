@@ -100,6 +100,8 @@ class ListScreen:
 
     def addFamily(self, family, focusObj):
 
+        screenYPosition = self.lineHeight * self.writeLine + self.scroll_y
+
         text = str(family.getFamilyName() + " (" + str(family.getAliveMemberNumber()) + ")" + " - " + " Origin: " + str(family.getOriginRegion().getRegionName()))
 
         if focusObj == family:
@@ -107,9 +109,10 @@ class ListScreen:
         else:
             label = Label(text, 300, self.lineHeight, self.textFont, True)
 
-        self.listScreenSurfaceObjsRect.append([self.listScreenSurface.blit(label.localSurface, (self.width * 0.10, self.lineHeight * self.writeLine + self.scroll_y)), family])
+        if self.height >= screenYPosition:
 
-        self.writeLine += 1
+            self.listScreenSurfaceObjsRect.append([self.listScreenSurface.blit(label.localSurface, (self.width * 0.10, self.lineHeight * self.writeLine + self.scroll_y)), family])
+            self.writeLine += 1
 
     def addDeadFamilyPeople(self, family, focusObj):
 

@@ -69,9 +69,6 @@ class FamilyTreeScreen:
 
         screenYPosition = self.lineHeight * self.writeLine + self.scroll_y
 
-        maxLevel = 3
-        labelString = ""
-
         if level == 0:
             if tree.getRoot().getSpouse() != None:
                 labelString = (prefix + "" + tree.getRoot().getFirstName() + tree.getRoot().getLastName() + " (" + str(tree.getRoot().getYearOfBirth()) + "-" + str(tree.getRoot().getYearOfDeath()) + ")" + " Spouse:" + tree.getRoot().getSpouse().getFirstName() + " " + tree.getRoot().getSpouse().getFamilyName() + " (" + str(tree.getRoot().getSpouse().getYearOfBirth()) + "-" + str(tree.getRoot().getSpouse().getYearOfDeath()) + ")")

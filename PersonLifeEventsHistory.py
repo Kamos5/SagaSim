@@ -55,6 +55,13 @@ def married(person, world):
 
     person.lifeEvents.append(str(person.firstName) + " married " + str(person.spouse.firstName) + " " + str(person.spouse.lastName) + " in the year: " + str(world.getYear()))
 
+def divorced(person, world):
+
+    person.lifeEvents.append(str(person.firstName) + " divorced " + str(person.spouse.firstName) + " " + str(person.spouse.familyName) + " in the year: " + str(world.getYear()))
+
+def changedLastName(person, world, newFamilyName):
+    person.lifeEvents.append(str(person.firstName) + " " + str(person.lastName) + " changed family name to " + str(newFamilyName) + " in the year: " + str(world.getYear()))
+
 def lostSpouse(person, world):
 
     if person.sex == Sexes.FEMALE:

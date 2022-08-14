@@ -16,8 +16,11 @@ class World:
         self.year = self.initYear
         self.regions = []
         self.gameSpeed = 50
+        self.divorcesNumber = 0
         self.families = []
         self.people = []
+        self.alivePeople = []
+        self.birthsPerYear = []
 
     def getPeople(self):
         return self.people
@@ -30,6 +33,18 @@ class World:
 
     def removePeople(self, person):
         self.people.remove(person)
+
+    def getAlivePeople(self):
+        return self.alivePeople
+
+    def setAlivePeople(self, people):
+        self.alivePeople = people
+
+    def addAlivePerson(self, person):
+        self.alivePeople.append(person)
+
+    def removePeople(self, person):
+        self.alivePeople.remove(person)
 
     def getFamilies(self):
         return self.families
@@ -49,6 +64,11 @@ class World:
     def setGameSpeed(self, newSpeed):
         self.gameSpeed = newSpeed
 
+    def getDivorcesNumber(self):
+        return self.divorcesNumber
+
+    def changeDivorcesNumber(self, value):
+        self.divorcesNumber += value
     def getYear(self):
         return self.year
 
@@ -82,3 +102,9 @@ class World:
 
     def getRegions(self):
         return self.regions
+
+    def getBirthsPerYear(self):
+        return self.birthsPerYear
+
+    def appendBirthsPerYear(self, value):
+        self.birthsPerYear.append(int(value))

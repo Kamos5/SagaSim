@@ -43,7 +43,7 @@ class Settlements:
         self.foodConsumedLastYear = 0
         self.prodConsumedLastYear = 0
         self.foodNetLastYear = 0
-        self.freeFood = 0
+        self.freeFood = 100
         self.freeProd = 0
         self.residents = []
         self.foodFeatures = []
@@ -73,11 +73,9 @@ class Settlements:
 
     def increasePopulation(self):
         self.population += 1
-        self.adjustFertilityModifier()
 
     def decreasePopulation(self):
         self.population -= 1
-        self.adjustFertilityModifier()
 
     def getMaxPopulation(self):
         return self.maxPopulation
@@ -111,16 +109,20 @@ class Settlements:
 
     def getFertilityModifier(self):
         return self.fertilityModifier
+
     def setFertilityModifier(self, modifier):
         self.fertilityModifier = modifier
 
     def adjustFertilityModifier(self):
-        if self.getPopulation() >= self.maxPopulation:
-            self.setFertilityModifier(0.5)
-        elif self.getPopulation() <= int(self.maxPopulation * 0.5):
-            self.setFertilityModifier(1.2)
+        if self.getFreeFood() < self.getPopulation() * 1:
+            self.setFertilityModifier(0.33) #0.33
+            return
+        if self.getFreeFood() > self.getPopulation() * 3:
+            self.setFertilityModifier(1.2) #1.2
+            return
         else:
-            self.setFertilityModifier(1)
+            self.setFertilityModifier(1) #1
+            return
 
     def changeSettlementName(self, newName):
         self.name = newName
@@ -196,6 +198,7 @@ class Settlements:
     def changeFreeFood(self, value):
         self.freeFood += value
         self.freeFood = round(self.freeFood, 2)
+        self.adjustFertilityModifier()
 
     def getFreeProd(self):
         return self.freeProd

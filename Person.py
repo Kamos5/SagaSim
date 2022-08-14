@@ -43,6 +43,9 @@ class Person:
         self.dislikeAtributes = []
         self.lover = ''
         self.spouse = None
+        self.spouseRelation = 0
+        self.spouseNumberOfLikedTraits = 0
+        self.spouseNumberOfDislikedTraits = 0
         self.maritalStatus = MaritalStatus.SINGLE
         self.deadSpouses = []
         self.lifeStatus = LifeStatus.ALIVE
@@ -175,6 +178,9 @@ class Person:
     def getSpouse(self):
         return self.spouse
 
+    def setSpouse(self, newSpouse):
+        self.spouse = newSpouse
+
     def getHairColor(self):
         return self.hairColor
 
@@ -209,8 +215,14 @@ class Person:
     def getOriginFamilyObjectRef(self):
         return self.originFamilyObjRef
 
+    def setOriginFamilyObjectRef(self, newFamily):
+        self.originFamilyObjRef = newFamily
+
     def changeLifeStatus(self, newLifeStatus):
         self.lifeStatus = newLifeStatus
+
+    def getMaritialStatus(self):
+        return self.maritalStatus
 
     def changeMaritalStatus(self, newMaritalStatus):
         self.maritalStatus = newMaritalStatus
@@ -251,6 +263,24 @@ class Person:
         if len(self.dislikeTraits) < 3:
             self.dislikeTraits.append(trait)
 
+    def getSpouseNumberOfLikedTraits(self):
+        return self.spouseNumberOfLikedTraits
+
+    def setSpouseNumberOfLikedTraits(self, number):
+        self.spouseNumberOfLikedTraits = number
+
+    def changeSpouseNumberOfLikedTraits(self, number):
+        self.spouseNumberOfLikedTraits += number
+
+    def getSpouseNumberOfDislikedTraits(self):
+        return self.spouseNumberOfDislikedTraits
+
+    def setSpouseNumberOfDislikedTraits(self, number):
+        self.spouseNumberOfDislikedTraits = number
+
+    def changeSpouseNumberOfDislikedTraits(self, number):
+        self.spouseNumberOfDislikedTraits += number
+
     def getOccupation(self):
         return self.occupation
 
@@ -272,6 +302,18 @@ class Person:
     def changeFreeWealth(self, modifier):
         self.freeWealth += modifier
         self.freeWealth = round(self.freeWealth, 2)
+
+    def getSpouseRelation(self):
+        return self.spouseRelation
+
+    def setSpouseRelation(self, newValue):
+        self.spouseRelation = newValue
+
+    def setSpouseRelation(self, newValue):
+        self.spouseRelation = newValue
+
+    def changeSpouseRelation(self, newValue):
+        self.spouseRelation += newValue
 
     def getHappiness(self):
         return self.happiness

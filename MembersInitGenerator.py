@@ -84,9 +84,11 @@ def InitMarriegies (husband, wife):
 
     husband.maritalStatus = MaritalStatus.MARRIED
     husband.spouse = wife
+    husband.spouse.setSpouseRelation(50)
 
     wife.maritalStatus = MaritalStatus.MARRIED
     wife.spouse = husband
+    wife.spouse.setSpouseRelation(50)
 
     return
 

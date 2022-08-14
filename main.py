@@ -38,36 +38,35 @@ def running (world, manualOverride):
 
     start = time.perf_counter()
     print(world.getYear())
-
-    isAliveFlag = False
-    personUUIDFLAG = False
-    personFirstNameFLAG = False
-    personLastNameFLAG = False
-    personSexFLAG = False
-    personSexGen1FLAG = False
-    personSexGen2FLAG = False
-    personAgeFLAG = False
-    personLifeSpanFLAG = False
-    personModLifeSpanFLAG = False
-    personLifeStatFLAG = False
-    fatherFLAG = False
-    fatherIDFLAG = False
-    motherFLAG = False
-    motherIDFLAG = False
-    spouseFLAG = False
-    causeOfDeathFLAG = False
-    hairColorFLAG = False
-    personHairColorGensFLAG = False
-    deadChildrenListFLAG = False
-
-    blackCount = 0
-    brownCount = 0
-    yellowCount = 0
-    redCount = 0
-    whiteCount = 0
-    grayCount = 0
     timers = True
 
+    # isAliveFlag = False
+    # personUUIDFLAG = False
+    # personFirstNameFLAG = False
+    # personLastNameFLAG = False
+    # personSexFLAG = False
+    # personSexGen1FLAG = False
+    # personSexGen2FLAG = False
+    # personAgeFLAG = False
+    # personLifeSpanFLAG = False
+    # personModLifeSpanFLAG = False
+    # personLifeStatFLAG = False
+    # fatherFLAG = False
+    # fatherIDFLAG = False
+    # motherFLAG = False
+    # motherIDFLAG = False
+    # spouseFLAG = False
+    # causeOfDeathFLAG = False
+    # hairColorFLAG = False
+    # personHairColorGensFLAG = False
+    # deadChildrenListFLAG = False
+    #
+    # blackCount = 0
+    # brownCount = 0
+    # yellowCount = 0
+    # redCount = 0
+    # whiteCount = 0
+    # grayCount = 0
     # for person in people:
     #
     #     printString = ''
@@ -136,6 +135,8 @@ def running (world, manualOverride):
 
     isAlive = 0
     isDead = 0
+    malePop = 0
+    femalePop = 0
 
     if manualOverride:
         input()
@@ -162,6 +163,11 @@ def running (world, manualOverride):
         end1 = time.perf_counter()
         spouseMMTime = end1 - start1
         start1 = time.perf_counter()
+    FF.Divorces(world)
+    if timers:
+        end1 = time.perf_counter()
+        divorcesTime = end1 - start1
+        start1 = time.perf_counter()
     Events.settlementsPopulationManagement(world)
     if timers:
         end1 = time.perf_counter()
@@ -183,6 +189,7 @@ def running (world, manualOverride):
             print("IncAgeTime: " + str(incAgeTime) + " %: " + str(round(incAgeTime/fullTime, 2)))
             print("BirthTime: " + str(birthtime) + " %: " + str(round(birthtime/fullTime, 2)))
             print("SpouseMMTime: " + str(spouseMMTime) + " %: " + str(round(spouseMMTime/fullTime, 2)))
+            print("DivorcesTime: " + str(divorcesTime) + " %: " + str(round(divorcesTime / fullTime, 2)))
             print("BreakSettlementsPopTime: " + str(breakSettlementsPopTime) + " %: " + str(round(breakSettlementsPopTime/fullTime, 2)))
             print("WorkersManagementTime: " + str(workersManagementTime) + " %: " + str(round(workersManagementTime / fullTime, 2)))
             print("SettlementGoodsProdTime: " + str(settlementGoodsProdTime) + " %: " + str(round(settlementGoodsProdTime / fullTime, 2)))
@@ -191,12 +198,16 @@ def running (world, manualOverride):
     for family in world.getFamilies():
         isAlive += family.getAliveMemberNumber()
         isDead += family.getDeadMemberNumber()
+        malePop += family.getMaleNumber()
+        femalePop += family.getFemaleNumber()
 
     print("PeopleOBJNUMBER: " + str(len(world.getPeople())))
     print("Population alive: " + str(isAlive))
     print("Population dead: " + str(isDead))
     print("Population sum: " + str(isAlive+isDead))
-
+    print("Male population: " + str(malePop))
+    print("Female population: " + str(femalePop))
+    print("Divorces: " + str(world.getDivorcesNumber()))
 
 
 def main():
