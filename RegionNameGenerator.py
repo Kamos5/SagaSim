@@ -1,5 +1,7 @@
 import random
 
+import Utils
+
 englishRegionNames = [
 
     'Englaland',
@@ -18,7 +20,48 @@ slavicRegionNames = [
 
 ]
 
+middleEastRegionNames = [
+
+    'Assyria',
+    'Babylon',
+    'Mitanii',
+    'Hittite'
+]
+
+scandinavianRegionNames = [
+
+    'Midgard',
+    'Nidavellir',
+    'Alfheim',
+    'Svartalfheim',
+    'Muspelheim',
+    'Saami'
+]
+
+egiptRegionNames = [
+
+]
+
+
+
 activeNames = []
+
+def getRandomRegionName():
+
+    Utils.randomFromCollection(getRegionNameList())
+
+def getRegionNameList():
+
+    englishRegionName = randomEnglishRegionName()
+    norseRegionName = randomNorseRegionName()
+    slavicRegionName = randomSlavicRegionName()
+
+    regionsName = [
+        englishRegionName,
+        norseRegionName
+    ]
+
+    return regionsName
 
 def randomEnglishRegionName ():
 
@@ -65,6 +108,17 @@ def randomRomanRegionName():
     return choice
 
 def randomAfricanRegionName():
+
+    if len(englishRegionNames) > 0:
+        listToChooseFrom = englishRegionNames
+        choice = random.choice(listToChooseFrom)
+        englishRegionNames.remove(choice)
+        activeNames.append(choice)
+    else:
+        choice = 'Generic Village Name'
+    return choice
+
+def randomNorseRegionName():
 
     if len(englishRegionNames) > 0:
         listToChooseFrom = englishRegionNames

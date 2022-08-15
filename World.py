@@ -15,7 +15,7 @@ class World:
         self.initYear = startYear
         self.year = self.initYear
         self.regions = []
-        self.gameSpeed = 50
+        self.gameSpeed = 10
         self.divorcesNumber = 0
         self.families = []
         self.people = []

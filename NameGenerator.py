@@ -1,7 +1,7 @@
 import random
 
 
-maleNameList = [
+maleEnglishNameList = [
     'Adam',
     'Alvin',
     'Balthazar',
@@ -34,7 +34,38 @@ maleNameList = [
     'York'
 ]
 
-femaleNameList = [
+maleNorseNameList = [
+
+    'Arne',
+    'Birger',
+    'Bjørn',
+    'Bo',
+    'Erik',
+    'Frode',
+    'Gorm',
+    'Halfdan',
+    'Harald',
+    'Knud',
+    'Kåre',
+    'Leif',
+    'Njal',
+    'Roar',
+    'Rune',
+    'Sten',
+    'Skarde',
+    'Sune',
+    'Svend',
+    'Troels',
+    'Toke',
+    'Torsten',
+    'Trygve',
+    'Ulf',
+    'Ødger',
+    'Åge'
+]
+
+
+femaleEnglishNameList = [
     'Abigail',
     'Alodie',
     'Bella',
@@ -61,12 +92,42 @@ femaleNameList = [
 
 ]
 
+femaleNorseNameList = [
+
+    'Astrid',
+    'Bodil',
+    'Frida',
+    'Gertrud',
+    'Gro',
+    'Estrid',
+    'Hilda',
+    'Gudrun',
+    'Gunhild',
+    'Helga',
+    'Inga',
+    'Liv',
+    'Randi',
+    'Signe',
+    'Sigrid',
+    'Revna',
+    'Sif',
+    'Tora',
+    'Tove',
+    'Thyra',
+    'Thurid',
+    'Yrsa',
+    'Ulfhild',
+    'Åse'
+
+]
+
+
 def randomMName ():
 
-    return random.choice(maleNameList)
+    return random.choice(maleEnglishNameList)
 
 
 def randomFName():
-    return random.choice(femaleNameList)
+    return random.choice(femaleEnglishNameList)
 
 #def nameFromFamilyHistory (family, people)
