@@ -13,7 +13,7 @@ import SettlementFeatures as SFeat
 
 def increaseAge (world):
 
-    for person in world.getPeople():
+    for person in world.getAlivePeople():
         if person.lifeStatus != LifeStatus.DEAD:
             person.increaseAge()
             if person.age < 15:
@@ -32,11 +32,11 @@ def increaseAge (world):
 def birthPeople (world):
 
     births = 0
-    for person in world.getPeople():
+    for person in world.getAlivePeople():
 
         # person here is MOTHER
         # only Females can give birth beetween 15 and 45y old + must be alive and have spouse
-        if person.lifeStatus == LifeStatus.ALIVE and person.sex == Sexes.FEMALE and 15 <= person.age <= 45 and person.spouse is not None:
+        if person.sex == Sexes.FEMALE and 15 <= person.age <= 45 and person.spouse is not None and person.lifeStatus == LifeStatus.ALIVE:
 
             #change spouseRelation based on liked/disliked traits
             changeRelationToFromSpouse(person)
@@ -70,6 +70,7 @@ def birthPeople (world):
                     # add child to proper family
                     personObj.familyObjRef.addNewMember(personObj)
                     world.addPerson(personObj)
+                    world.addAlivePerson(personObj)
                     PLEH.beenBorn(personObj, world)
                     person.numberOfChildren += 1
                     spouseObj.numberOfChildren += 1
@@ -307,15 +308,34 @@ def splitFamiliesInMigration(world, region, newTargetSettlement, complexRandomMi
                 len(randomMigrantList) > 1 and
                 randomMigrantList[0].familyObjRef.aliveMemberNumber > 1 and
                 randomMigrantList[0].familyObjRef.getOriginCulture().getInheritanceBy() != randomMigrantList[0].sex):
-            newFamilyName = FNG.getNewRandomLastName()
-            family = Family(newFamilyName)
-            family.setFoundingYear(world.getYear())
-            family.setOriginRegion(region)
-            family.setOriginSettlement(newTargetSettlement)
-            family.setOriginCulture(randomMigrantList[0].familyObjRef.getOriginCulture())
-            family.setFamilyBranchedFrom(randomMigrantList[0].familyObjRef)
-            randomMigrantList[0].familyObjRef.addOffspringBranch(family)
-            world.addFamily(family)
+            chanceForRevingAncestralFamily = Utils.randomRange(1, 100)
+
+            if chanceForRevingAncestralFamily > 20:
+                newFamilyName = FNG.getNewRandomLastName()
+                family = Family(newFamilyName)
+                family.setFoundingYear(world.getYear())
+                family.setOriginRegion(region)
+                family.setOriginSettlement(newTargetSettlement)
+                family.setOriginCulture(randomMigrantList[0].familyObjRef.getOriginCulture())
+                family.setFamilyBranchedFrom(randomMigrantList[0].familyObjRef)
+                randomMigrantList[0].familyObjRef.addOffspringBranch(family)
+                world.addFamily(family)
+            else:
+                ancestralFamilies = randomMigrantList[0].getAncestralFamilies()
+                if len(ancestralFamilies) > 1:
+                    ancestralFamilies.pop(0)
+                    family = Utils.randomFromCollection(ancestralFamilies)
+                    newFamilyName = family.getFamilyName()
+                else:
+                    newFamilyName = FNG.getNewRandomLastName()
+                    family = Family(newFamilyName)
+                    family.setFoundingYear(world.getYear())
+                    family.setOriginRegion(region)
+                    family.setOriginSettlement(newTargetSettlement)
+                    family.setOriginCulture(randomMigrantList[0].familyObjRef.getOriginCulture())
+                    family.setFamilyBranchedFrom(randomMigrantList[0].familyObjRef)
+                    randomMigrantList[0].familyObjRef.addOffspringBranch(family)
+                    world.addFamily(family)
 
             for person in randomMigrantList:
                 person.familyObjRef.removeFromFamily(person)
@@ -330,15 +350,15 @@ def splitFamiliesInMigration(world, region, newTargetSettlement, complexRandomMi
 def crime(world):
 
     crimeLevel = 0
-    for person in world.getPeople():
+    for person in world.getAlivePeople():
         randomChanceForCrime = Utils.randomRange(1, 100)
-        if randomChanceForCrime < 5 and person.getLifeStatus() == LifeStatus.ALIVE and person.getAge() > 15 and person.getFreeWealth() < person.getSettlement().getAvarageResidentsWealth() and (Traits.VENGEFUL in person.getTraits() or Traits.GREEDY in person.getTraits() or Traits.DECEITFUL in person.getTraits() and person.getOccupation() is None):
+        if randomChanceForCrime < 5 and (Traits.VENGEFUL in person.getTraits() or Traits.GREEDY in person.getTraits() or Traits.DECEITFUL in person.getTraits() and person.getOccupation() is None) and person.getAge() > 15 and person.getLifeStatus() == LifeStatus.ALIVE and person.getFreeWealth() < person.getSettlement().getAvarageResidentsWealth():
             randomPerson = Utils.randomFromCollection(person.getSettlement().getResidents())
             if randomPerson != person and randomPerson != person.spouse and randomPerson not in person.getAliveChildrenList():
                 randomCrime = Utils.randomRange(1, 100)
                 #homicide
                 if randomCrime < 10:
-                    print("Homicide")
+                    # print("Homicide")
                     PF.deathProcedures(randomPerson, world)
                     offenderIdentified = Utils.randomRange(1, 100)
                     if offenderIdentified > 50:
@@ -352,28 +372,28 @@ def crime(world):
                     crimeLevel += 1
                     continue
                 if randomCrime < 30:
-                    print("Assault")
+                    # print("Assault")
                     loot = randomPerson.getFreeWealth()
                     randomPerson.setFreeWealth(loot / 3)
                     person.changeFreeWealth(loot)
                     crimeLevel += 1
                     continue
                 if randomCrime < 70:
-                    print("Burglary")
+                    # print("Burglary")
                     loot = randomPerson.getFreeWealth()
                     randomPerson.setFreeWealth(loot / 4)
                     person.changeFreeWealth(loot)
                     crimeLevel += 1
                     continue
                 if randomCrime < 90:
-                    print("Theft")
+                    # print("Theft")
                     loot = randomPerson.getFreeWealth()
                     randomPerson.setFreeWealth(loot / 5)
                     person.changeFreeWealth(loot)
                     crimeLevel += 1
                     continue
                 if randomCrime <= 100:
-                    print("Crime failed")
+                    # print("Crime failed")
                     crimeLevel += 1
                     continue
 

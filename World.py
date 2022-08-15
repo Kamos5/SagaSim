@@ -37,7 +37,10 @@ class World:
 
     def getAlivePeople(self):
 
-        self.alivePeople = 0
+        return self.alivePeople
+
+    def getAlivePeopleFunction(self):
+
         for family in self.getFamilies():
             self.alivePeople += family.getAliveMembersList()
 
@@ -49,7 +52,7 @@ class World:
     def addAlivePerson(self, person):
         self.alivePeople.append(person)
 
-    def removePeople(self, person):
+    def removeAlivePeople(self, person):
         self.alivePeople.remove(person)
 
     def getFamilies(self):
@@ -120,3 +123,7 @@ class World:
 
     def appendCrimesPerYear(self, value):
         self.crimesPerYear.append(int(value))
+
+    def updateAlive(self):
+        self.alivePeople = []
+        self.alivePeople = self.getAlivePeopleFunction()

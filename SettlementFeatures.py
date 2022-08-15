@@ -1,7 +1,5 @@
 from enum import Enum
 
-import Utils
-
 features = []
 
 class FeatureType():
@@ -187,9 +185,9 @@ def getNewRockyTerrain():
 def getNewFallenLogs():
     return Feature(FeatureTypes.PRODTYPE, 1, 8, 'Fallen Logs', 'Trees that took a bit to long nap', 'Wood hawler')
 def getNewSimplefarm():
-    return Feature(FeatureTypes.FOODTYPE, 2, 10, 'Simple farm', 'simple farm', 'Farmer', 20, 'Fallow')
+    return Feature(FeatureTypes.FOODTYPE, 12, 2, 'Simple farm', 'simple farm', 'Farmer', 20, 'Fallow')
 def getNewOrchard():
-    return Feature(FeatureTypes.FOODTYPE, 3, 20, 'Orchard', 'fruit tree paradise', 'Fruit grower', 20, 'Fallow')
+    return Feature(FeatureTypes.FOODTYPE, 12, 2, 'Orchard', 'fruit tree paradise', 'Fruit grower', 20, 'Fallow')
 def getNewForest():
     return Feature(FeatureTypes.FOODTYPE, 2, 8, 'Forest', 'forest with wild life and forage supply', 'Gatherer', 20, 'Wilderness')
 def getNewMill():

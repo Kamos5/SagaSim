@@ -329,6 +329,39 @@ class Person:
 
         return self.generateUpFamilyTree(BinaryTreeNode(self))
 
+    def getAncestralFamilies(self):
+
+        ancestorsFamiles = []
+        tree = self.generateUpFamilyTree(BinaryTreeNode(self))
+
+        ancestorsFamiles = self.getAncestralFamiliesAsListFromTree(tree, ancestorsFamiles)
+
+        return ancestorsFamiles
+
+    def getAncestralFamiliesAsListFromTree(self, tree, ancestorsFamiles = None, fatherSide = True, motherSide = True):
+
+        if ancestorsFamiles is None:
+            ancestorsFamiles = []
+
+        father = ''
+        mother = ''
+        if fatherSide:
+            father = tree.getRoot().getFather()
+        if motherSide:
+            mother = tree.getRoot().getMother()
+
+        if fatherSide and father != '':
+            if father.getOriginFamilyObjectRef() not in ancestorsFamiles:
+                ancestorsFamiles.append(father.getOriginFamilyObjectRef())
+            father.getAncestralFamiliesAsListFromTree(BinaryTreeNode(father), ancestorsFamiles)
+
+        if motherSide and mother != '':
+            if mother.getOriginFamilyObjectRef() not in ancestorsFamiles:
+                ancestorsFamiles.append(mother.getOriginFamilyObjectRef())
+            mother.getAncestralFamiliesAsListFromTree(BinaryTreeNode(mother), ancestorsFamiles)
+
+        return ancestorsFamiles
+
 
     def generateDownFamilyTree(self, treeroot):
 
@@ -346,6 +379,7 @@ class Person:
                 if fatherChild != treeroot.getRoot():
                     treeroot.siblings.append(fatherChild)
             treeroot.father = father.generateUpFamilyTree(BinaryTreeNode(father))
+
         if mother != '':
             for motherChild in mother.getAllChildren():
                 if motherChild != treeroot.getRoot() and motherChild not in treeroot.siblings:

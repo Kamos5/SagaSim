@@ -1,3 +1,4 @@
+import gc
 import time
 import Events
 import FamilyFunctions as FF
@@ -187,6 +188,11 @@ def running (world, manualOverride):
     if timers:
         end1 = time.perf_counter()
         settlementGoodsProdTime = end1 - start1
+        start1 = time.perf_counter()
+    world.updateAlive()
+    if timers:
+        end1 = time.perf_counter()
+        updateAliveTime = end1 - start1
         end = time.perf_counter()
         fullTime = end-start
         if fullTime > 0.0:
@@ -197,8 +203,9 @@ def running (world, manualOverride):
             print("DivorcesTime: " + str(divorcesTime) + " %: " + str(round(divorcesTime / fullTime, 2)))
             print("BreakSettlementsPopTime: " + str(breakSettlementsPopTime) + " %: " + str(round(breakSettlementsPopTime/fullTime, 2)))
             print("WorkersManagementTime: " + str(workersManagementTime) + " %: " + str(round(workersManagementTime / fullTime, 2)))
-            print("WorkersManagementTime: " + str(crimeTime) + " %: " + str(round(crimeTime / fullTime, 2)))
+            print("Crime: " + str(crimeTime) + " %: " + str(round(crimeTime / fullTime, 2)))
             print("SettlementGoodsProdTime: " + str(settlementGoodsProdTime) + " %: " + str(round(settlementGoodsProdTime / fullTime, 2)))
+            print("UpdateAliveTime: " + str(updateAliveTime) + " %: " + str(round(updateAliveTime / fullTime, 2)))
         print(fullTime)
 
     for family in world.getFamilies():
@@ -242,6 +249,8 @@ def main():
     tickStartTime = time.time() * 1000.0
 
     canvas = Canvas.Canvas()
+
+    world.updateAlive()
 
     while sun:
 
