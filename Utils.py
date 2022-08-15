@@ -117,6 +117,17 @@ def inheretTraits(person, parent1, parent2, trueParent1, trueParent2):
     dislikedTrait3 = randomDislikedTrait(person)
     person.addDislikedTraits(dislikedTrait3)
 
+    if Enums.Traits.CHASTE == person.getTraits():
+        person.changeMultPersonalSexualModifier(0.5)
+    if Enums.Traits.LUSTFUL == person.getTraits():
+        person.changeMultPersonalSexualModifier(1.5)
+
+    if person.sexuality == 'homo':
+        if person.getSex() == Enums.Sexes.MALE:
+            person.changeMultPersonalSexualModifier(0.8)
+        else:
+            person.changeMultPersonalSexualModifier(0.4)
+
 def traitsFromParerts (person, parent1, parent2):
 
     notClear = True

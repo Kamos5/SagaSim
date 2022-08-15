@@ -57,8 +57,8 @@ class Settlements:
         self.freeWealth = 0
         self.localIncomeTax = Utils.randomRange(0, 20)
         self.avarageResidentsWealth = 0
-
         self.createStartingVillageFeatures()
+        self.adjustFertilityModifier()
 
     def updateFeaturesForTown(self):
         self.createUpdateVillageFeaturesForTown()
@@ -116,13 +116,13 @@ class Settlements:
 
     def adjustFertilityModifier(self):
         if self.getFreeFood() < self.getPopulation() * 1:
-            self.setFertilityModifier(0.33) #0.33
+            self.setFertilityModifier(1.2) #0.33
             return
         if self.getFreeFood() > self.getPopulation() * 3:
             self.setFertilityModifier(1.2) #1.2
             return
         else:
-            self.setFertilityModifier(1) #1
+            self.setFertilityModifier(1.2) #1
             return
 
     def changeSettlementName(self, newName):

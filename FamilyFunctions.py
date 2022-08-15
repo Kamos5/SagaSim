@@ -67,7 +67,7 @@ def ChangeFamilyName (person, spouse, world):
 def Divorces (world):
 
     for person in world.getAlivePeople():
-        if person.lifeStatus == Enums.LifeStatus.ALIVE and person.getMaritialStatus() == Enums.MaritalStatus.MARRIED and person.getSpouseRelation() < -25:
+        if person.getSpouseRelation() < -25 and person.getMaritialStatus() == Enums.MaritalStatus.MARRIED and person.lifeStatus == Enums.LifeStatus.ALIVE:
             randomChance = Utils.randomRange(1, 100)
             if randomChance < abs(person.getSpouseRelation()):
                 person.changeMaritalStatus(Enums.MaritalStatus.DIVORCED)
@@ -95,6 +95,7 @@ def SpouseMatchmaking (world):
     #CANT USE PERSON IN UNMARIED LIST BECAUSE OF STRANGE ERRORS CONNECTED WITH PREVIOUS SPOUS DYING IN THE SAME YEAR AND LOOP family.getUnmarried list NOT RECOGNIZING IT!!!
 
     for person in world.getAlivePeople():
+
          if person.lifeStatus == Enums.LifeStatus.ALIVE and person.age >= 15 and person.spouse is None and (person.maritalStatus == Enums.MaritalStatus.SINGLE or person.maritalStatus == Enums.MaritalStatus.WIDOW or person.maritalStatus == Enums.MaritalStatus.WIDOWER or person.maritalStatus == Enums.MaritalStatus.DIVORCED):
 
             availableSpouesesList = FindAvailableSpouses(world.getFamilies(), person)

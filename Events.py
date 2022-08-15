@@ -38,58 +38,45 @@ def birthPeople (world):
         # only Females can give birth beetween 15 and 45y old + must be alive and have spouse
         if person.sex == Sexes.FEMALE and 15 <= person.age <= 45 and person.spouse is not None and person.lifeStatus == LifeStatus.ALIVE:
 
-            #change spouseRelation based on liked/disliked traits
+            # change spouseRelation based on liked/disliked traits
             changeRelationToFromSpouse(person)
-            #spouseObj for simplicity
-            spouseObj = person.spouse
             # is spouse alive
-            if spouseObj.lifeStatus == LifeStatus.ALIVE:
+            if person.getSpouse().lifeStatus == LifeStatus.ALIVE:
                 chanceOfBirth = Utils.randomRange(1, 100)
-                personSexualityModifier = 1
-                spouseObjSexualityModifier = 1
-                if Traits.CHASTE == person.getTraits():
-                    personSexualityModifier *= 0.5
-                if Traits.CHASTE == spouseObj.getTraits():
-                    spouseObjSexualityModifier *= 0.5
-                if Traits.LUSTFUL == person.getTraits():
-                    personSexualityModifier *= 1.5
-                if Traits.LUSTFUL == spouseObj.getTraits():
-                    spouseObjSexualityModifier *= 1.5
+
                 if person.sexuality == 'homo':
-                    personSexualityModifier *= 0.80
                     person.setSpouseRelation(-5)
-                if spouseObj.sexuality == 'homo':
-                    spouseObjSexualityModifier *= 0.40
+                if person.getSpouse().sexuality == 'homo':
                     person.getSpouse().setSpouseRelation(-5)
 
-                if (chanceOfBirth <= min(person.fertility, spouseObj.fertility) * spouseObj.getSettlement().getBaseFertility() * spouseObj.getSettlement().getFertilityModifier() * personSexualityModifier * spouseObjSexualityModifier / 100) and person.spouseRelation > 0:
+                if (chanceOfBirth <= min(person.fertility, person.getSpouse().fertility) * person.getSpouse().getSettlement().getBaseFertility() * person.getSpouse().getSettlement().getFertilityModifier() * person.getPersonalSexualModifier() * person.getSpouse().getPersonalSexualModifier()) and person.spouseRelation > 0:
                     # CHILD object
                     person.changeSpouseRelation(25)
                     person.getSpouse().changeSpouseRelation(25)
-                    personObj = PF.birthChild(world, person, spouseObj)
+                    childObj = PF.birthChild(world, person, person.getSpouse())
                     # add child to proper family
-                    personObj.familyObjRef.addNewMember(personObj)
-                    world.addPerson(personObj)
-                    world.addAlivePerson(personObj)
-                    PLEH.beenBorn(personObj, world)
+                    childObj.familyObjRef.addNewMember(childObj)
+                    world.addPerson(childObj)
+                    world.addAlivePerson(childObj)
+                    PLEH.beenBorn(childObj, world)
                     person.numberOfChildren += 1
-                    spouseObj.numberOfChildren += 1
+                    person.getSpouse().numberOfChildren += 1
                     if person.modifiedLifespan-person.age > 1:
                         if Utils.randomRange(1, 2) == 1:
                             person.modifiedLifespan -= 1
-                    person.appendAliveChildrenList(personObj)
-                    spouseObj.appendAliveChildrenList(personObj)
-                    personObj.changeMaritalStatus(MS.CHILD)
+                    person.appendAliveChildrenList(childObj)
+                    person.getSpouse().appendAliveChildrenList(childObj)
+                    childObj.changeMaritalStatus(MS.CHILD)
 
                     # change of dying from childbirth (mother and child)
-                    motherDeath, childdeath = deathChangeFromGivingBirth(person, personObj)
+                    motherDeath, childdeath = deathChangeFromGivingBirth(person, childObj)
 
                     if motherDeath:
                         PF.deathProcedures(person, world)
 
                     if childdeath:
                         #parameters: child
-                        PF.deathProcedures(personObj, world)
+                        PF.deathProcedures(childObj, world)
 
                     births += 1
 

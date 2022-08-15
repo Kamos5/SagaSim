@@ -72,6 +72,7 @@ class Person:
         self.familyTree = None
         self.yearOfDeath = ""
         self.happiness = 0
+        self.personalSexualityModifier = 1
         pass
 
     def setInitValues(self, familyName, yearOfBirth, age, randomLifespan, sex, hairColor, hairColorGen1, hairColorGen2, eyeColor, eyeColorGen1, eyeColorGen2, familyObj):
@@ -110,6 +111,7 @@ class Person:
         self.region = self.homeRegion
         self.homeSettlement = familyObj.getOriginSettlement()
         self.settlement = self.homeSettlement
+        self.personalSexualityModifier = 1
 
     def birthNewPerson(self, firstName, lastName, familyName, yearOfBirth, lifespan, sex, sexGen1, sexGen2, sexuality, fertility, height, hairColor, hairColorGen1, hairColorGen2, eyeColor, eyeColorGen1, eyeColorGen2, mother, father, trueMother, trueFather, familyObj):
 
@@ -141,6 +143,8 @@ class Person:
         self.homeSettlement = father.getSettlement()
         self.region = self.homeRegion
         self.settlement = self.homeSettlement
+
+
 
     def getFirstName(self):
         return self.firstName
@@ -320,6 +324,12 @@ class Person:
 
     def changeHappiness(self, newValue):
         self.happiness = newValue
+
+    def getPersonalSexualModifier(self):
+        return self.personalSexualityModifier
+
+    def changeMultPersonalSexualModifier(self, newValue):
+        self.personalSexualityModifier *= newValue
 
     def initGenDownFamilyTree(self):
 
