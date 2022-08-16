@@ -78,9 +78,9 @@ class Person:
     def setInitValues(self, familyName, yearOfBirth, age, randomLifespan, sex, hairColor, hairColorGen1, hairColorGen2, eyeColor, eyeColorGen1, eyeColorGen2, familyObj):
 
         if sex == Sexes.MALE:
-            self.firstName = NameGenerator.randomMName()
+            self.firstName = NameGenerator.getRandomMNameForRegion(familyObj.getOriginRegion())
         else:
-            self.firstName = NameGenerator.randomFName()
+            self.firstName = NameGenerator.getRandomMNameForRegion(familyObj.getOriginRegion())
 
         self.familyName = familyName
         self.lastName = familyObj.familyName

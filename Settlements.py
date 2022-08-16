@@ -60,6 +60,12 @@ class Settlements:
         self.createStartingVillageFeatures()
         self.adjustFertilityModifier()
 
+    def getRegion(self):
+        return self.region
+
+    def setRegion(self, newRegion):
+        self.region = newRegion
+
     def updateFeaturesForTown(self):
         self.createUpdateVillageFeaturesForTown()
 

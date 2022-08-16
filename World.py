@@ -92,14 +92,15 @@ class World:
 
     def generateRegions(self, regionsNumber = 5):
 
-        for region in range(regionsNumber):
-            self.regions.append(Region(RNG.randomEnglishRegionName()))
+        self.regions.append(Region(RNG.randomEnglishRegionName()))
+        self.regions.append(Region(RNG.randomNorseRegionName()))
 
     def generateSettlements(self):
 
         for region in self.regions:
             for i in range(self.settlementsInitNumber):
                 newSettlement = region.addSettlement(self)
+                newSettlement.setRegion(region)
                 # First settlement is always TOWN
                 if i == 0:
                     newSettlement.changeSettlementType(Settlements.TOWN)

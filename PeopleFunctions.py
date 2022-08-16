@@ -23,9 +23,9 @@ def birthChild(world, parent1, parent2, trueParent1='', trueParent2=''):
         sexuality = 'hetero'
 
     if sex == Sexes.MALE:
-        firstName = NameGenerator.randomMName()
+        firstName = NameGenerator.getRandomMNameForRegion(parent1.getSettlement().getRegion())
     else:
-        firstName = NameGenerator.randomFName()
+        firstName = NameGenerator.getRandomFNameForRegion(parent1.getSettlement().getRegion())
 
     lifespan = Utils.geneticRandomFromValues(trueParent1.lifespan, trueParent2.lifespan)
 

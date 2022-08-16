@@ -1,5 +1,6 @@
 import random
 
+from RegionNameGenerator import englishRegionNames, norseRegionNames
 
 maleEnglishNameList = [
     'Adam',
@@ -121,13 +122,34 @@ femaleNorseNameList = [
 
 ]
 
+def getRandomMNameForRegion(region):
 
-def randomMName ():
+    try:
+        if region.getRegionName() in englishRegionNames:
+            return randomEnglishMName()
+        if region.getRegionName() in norseRegionNames:
+            return randomNorseMName()
+    except:
+        print("Aaaa")
+
+def getRandomFNameForRegion(region):
+
+    if region.getRegionName() in englishRegionNames:
+        return randomEnglishFName()
+    if region.getRegionName() in norseRegionNames:
+        return randomNorseFName()
+
+def randomEnglishMName():
 
     return random.choice(maleEnglishNameList)
 
-
-def randomFName():
+def randomEnglishFName():
     return random.choice(femaleEnglishNameList)
+
+def randomNorseMName():
+    return random.choice(maleNorseNameList)
+
+def randomNorseFName():
+    return random.choice(femaleNorseNameList)
 
 #def nameFromFamilyHistory (family, people)

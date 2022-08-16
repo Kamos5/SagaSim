@@ -118,6 +118,7 @@ def settlementsPopulationManagement (world):
                         #If lowest pop > lowest max pop * modifier create new setttlement
                         if lowestSettlementInRegion.getPopulation() > int(lowestSettlementInRegion.getMaxPopulation() * Parameters.percentageVillagePopulationThresholdForCreatingNewVillage):
                             newSettlement = region.addSettlement(world)
+                            newSettlement.setRegion(settlement.getRegion())
                             newSettlement.setMaxPopulation = Parameters.baseVillageSize
                             newTargetSettlement = newSettlement
 

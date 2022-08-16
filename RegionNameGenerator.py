@@ -28,7 +28,7 @@ middleEastRegionNames = [
     'Hittite'
 ]
 
-scandinavianRegionNames = [
+norseRegionNames = [
 
     'Midgard',
     'Nidavellir',
@@ -68,7 +68,6 @@ def randomEnglishRegionName ():
     if len(englishRegionNames) > 0:
         listToChooseFrom = englishRegionNames
         choice = random.choice(listToChooseFrom)
-        englishRegionNames.remove(choice)
         activeNames.append(choice)
     else:
         choice = 'Generic British Region Name'
@@ -79,10 +78,9 @@ def randomSlavicRegionName ():
     if len(englishRegionNames) > 0:
         listToChooseFrom = englishRegionNames
         choice = random.choice(listToChooseFrom)
-        englishRegionNames.remove(choice)
         activeNames.append(choice)
     else:
-        choice = 'Generic Village Name'
+        choice = 'Generic Region Name'
     return choice
 
 def randomMusslimRegionName():
@@ -90,10 +88,9 @@ def randomMusslimRegionName():
     if len(englishRegionNames) > 0:
         listToChooseFrom = englishRegionNames
         choice = random.choice(listToChooseFrom)
-        englishRegionNames.remove(choice)
         activeNames.append(choice)
     else:
-        choice = 'Generic Village Name'
+        choice = 'Generic Region Name'
     return choice
 
 def randomRomanRegionName():
@@ -101,10 +98,9 @@ def randomRomanRegionName():
     if len(englishRegionNames) > 0:
         listToChooseFrom = englishRegionNames
         choice = random.choice(listToChooseFrom)
-        englishRegionNames.remove(choice)
         activeNames.append(choice)
     else:
-        choice = 'Generic Village Name'
+        choice = 'Generic Region Name'
     return choice
 
 def randomAfricanRegionName():
@@ -112,19 +108,17 @@ def randomAfricanRegionName():
     if len(englishRegionNames) > 0:
         listToChooseFrom = englishRegionNames
         choice = random.choice(listToChooseFrom)
-        englishRegionNames.remove(choice)
         activeNames.append(choice)
     else:
-        choice = 'Generic Village Name'
+        choice = 'Generic Region Name'
     return choice
 
 def randomNorseRegionName():
 
     if len(englishRegionNames) > 0:
-        listToChooseFrom = englishRegionNames
+        listToChooseFrom = norseRegionNames
         choice = random.choice(listToChooseFrom)
-        englishRegionNames.remove(choice)
         activeNames.append(choice)
     else:
-        choice = 'Generic Village Name'
+        choice = 'Generic Region Name'
     return choice
