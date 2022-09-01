@@ -1,4 +1,4 @@
-import random
+from random import choice as randomChoice
 
 import Utils
 
@@ -67,7 +67,7 @@ def randomEnglishRegionName ():
 
     if len(englishRegionNames) > 0:
         listToChooseFrom = englishRegionNames
-        choice = random.choice(listToChooseFrom)
+        choice = randomChoice(listToChooseFrom)
         activeNames.append(choice)
     else:
         choice = 'Generic British Region Name'
@@ -77,7 +77,7 @@ def randomSlavicRegionName ():
 
     if len(englishRegionNames) > 0:
         listToChooseFrom = englishRegionNames
-        choice = random.choice(listToChooseFrom)
+        choice = randomChoice(listToChooseFrom)
         activeNames.append(choice)
     else:
         choice = 'Generic Region Name'
@@ -87,7 +87,7 @@ def randomMusslimRegionName():
 
     if len(englishRegionNames) > 0:
         listToChooseFrom = englishRegionNames
-        choice = random.choice(listToChooseFrom)
+        choice = randomChoice(listToChooseFrom)
         activeNames.append(choice)
     else:
         choice = 'Generic Region Name'
@@ -97,7 +97,7 @@ def randomRomanRegionName():
 
     if len(englishRegionNames) > 0:
         listToChooseFrom = englishRegionNames
-        choice = random.choice(listToChooseFrom)
+        choice = randomChoice(listToChooseFrom)
         activeNames.append(choice)
     else:
         choice = 'Generic Region Name'
@@ -107,7 +107,7 @@ def randomAfricanRegionName():
 
     if len(englishRegionNames) > 0:
         listToChooseFrom = englishRegionNames
-        choice = random.choice(listToChooseFrom)
+        choice = randomChoice(listToChooseFrom)
         activeNames.append(choice)
     else:
         choice = 'Generic Region Name'
@@ -117,7 +117,7 @@ def randomNorseRegionName():
 
     if len(englishRegionNames) > 0:
         listToChooseFrom = norseRegionNames
-        choice = random.choice(listToChooseFrom)
+        choice = randomChoice(listToChooseFrom)
         activeNames.append(choice)
     else:
         choice = 'Generic Region Name'

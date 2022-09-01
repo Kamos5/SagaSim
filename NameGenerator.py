@@ -1,4 +1,4 @@
-import random
+from random import choice
 
 from RegionNameGenerator import englishRegionNames, norseRegionNames
 
@@ -141,15 +141,15 @@ def getRandomFNameForRegion(region):
 
 def randomEnglishMName():
 
-    return random.choice(maleEnglishNameList)
+    return choice(maleEnglishNameList)
 
 def randomEnglishFName():
-    return random.choice(femaleEnglishNameList)
+    return choice(femaleEnglishNameList)
 
 def randomNorseMName():
-    return random.choice(maleNorseNameList)
+    return choice(maleNorseNameList)
 
 def randomNorseFName():
-    return random.choice(femaleNorseNameList)
+    return choice(femaleNorseNameList)
 
 #def nameFromFamilyHistory (family, people)

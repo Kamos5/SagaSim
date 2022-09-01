@@ -1,8 +1,5 @@
 from Settlements import Settlements
-from RegionFeatures import Features
-import SettlementFeatures as SF
 import Parameters
-import Utils
 
 class Region():
 

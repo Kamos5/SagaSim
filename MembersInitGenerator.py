@@ -1,6 +1,5 @@
-import random
+from random import choice, seed, SystemRandom
 from Person import Person as PersonObj
-import FamilyNameGenerator as FNG
 from Enums import MaritalStatus, HairColor, Sexes, EyeColor
 import Utils
 
@@ -8,10 +7,10 @@ people = []
 
 def Init(families, world):
 
-    random.seed(random.SystemRandom().random())
+    seed(SystemRandom().random())
 
     for family in families:
-        randomNumber = random.randint(4, 4)
+        randomNumber = Utils.randomRange(4, 4)
 
         for number in range(randomNumber):
             member = PersonObj()
@@ -70,8 +69,8 @@ def initInitMarrieges(family):
 
     while family.getUnmarriedFemaleNumber() > 0 and family.getUnmarriedMaleNumber() > 0:
 
-            pip1 = random.choice(family.getUnmarriedMalesList())
-            pip2 = random.choice(family.getUnmarriedFemalesList())
+            pip1 = choice(family.getUnmarriedMalesList())
+            pip2 = choice(family.getUnmarriedFemalesList())
             InitMarriegies(pip1, pip2)
             family.addMarriedMember(pip1)
             family.addMarriedMember(pip2)

@@ -1,35 +1,24 @@
-import time
-import uuid
-import random
-
-import pygame
-
+from random import randint, choice
 import Enums
-import PeopleInterface as PI
-
-def createUUID():
-
-    return str(uuid.uuid4())
-
 
 def randomRange(min, max):
 
-    returnVal = random.randint(min, max)
+    returnVal = randint(min, max)
     return returnVal
 
 
 def randomFromCollection(collection):
 
-    return random.choice(collection)
+    return choice(collection)
 
 
 def randomFromEnumCollection(collection):
 
-    return random.choice(list(collection))
+    return choice(list(collection))
 
 def randomFromEnumCollectionWithWeights(collection):
 
-    returnVal = random.randint(1, 100)
+    returnVal = randint(1, 100)
 
     for element in collection:
         if returnVal <= element.value.chanceWeightModifier:

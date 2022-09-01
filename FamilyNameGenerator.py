@@ -1,6 +1,7 @@
 from enum import Enum
 
 import random
+
 englishFamilyNames = [
     'Parkin',
     'Rodgers',
@@ -34,7 +35,23 @@ englishFamilyNames = [
     'Craven',
 ]
 
+norseFamilyNames = [
 
+    'Aland',
+    'Asketill',
+    'Bielke',
+    'Borg',
+    'Brando',
+    'Christensen',
+    'Adal',
+    'Wulf',
+    'Ellingboe',
+    'Erling',
+    'Eskildsen',
+    'Frisk',
+
+
+]
 
 
 

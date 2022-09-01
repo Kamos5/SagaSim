@@ -1,6 +1,5 @@
 from Person import Person as PersonObj
 import Utils
-import PeopleInterface as PI
 import NameGenerator
 from Enums import LifeStatus, MaritalStatus, HairColor, Sexes
 import PersonLifeEventsHistory as PLEH

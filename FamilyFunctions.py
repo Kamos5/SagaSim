@@ -1,7 +1,6 @@
 from Enums import MaritalStatus, Sexes
 import Enums
 import Utils
-import time
 import PersonLifeEventsHistory as PLEH
 
 def FindAvailableSpouses (families, person):

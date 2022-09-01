@@ -78,7 +78,7 @@ class ListScreen:
 
     def addSettlement(self, settlement, focusObj):
 
-        text = str(settlement.getSettlementName()) + " (" + str(settlement.getSettlementType().value) + ")" + " - alive population (" + str(settlement.getPopulation()) + ")"
+        text = ''.join([str(settlement.getSettlementName()), " (", str(settlement.getSettlementType().value), ")", " - alive population (", str(settlement.getPopulation()), ")"])
 
         if focusObj == settlement:
                 label = Label(text, 400, self.lineHeight, self.textFont, True, True)
@@ -102,7 +102,7 @@ class ListScreen:
 
         screenYPosition = self.lineHeight * self.writeLine + self.scroll_y
 
-        text = str(family.getFamilyName() + " (" + str(family.getAliveMemberNumber()) + ")" + " - " + " Origin: " + str(family.getOriginRegion().getRegionName()))
+        text = ''.join([str(family.getFamilyName()), " (", str(family.getAliveMemberNumber()), ")", " - ", " Origin: ", str(family.getOriginRegion().getRegionName())])
 
         if focusObj == family:
             label = Label(text, 300, self.lineHeight, self.textFont, True, True)
@@ -116,7 +116,7 @@ class ListScreen:
 
     def addDeadFamilyPeople(self, family, focusObj):
 
-        text = str(family.getFamilyName() + " (" + str(family.getDeadMemberNumber()) + ")")
+        text = ''.join([str(family.getFamilyName()), " (", str(family.getDeadMemberNumber()), ")"])
 
         if focusObj == family:
             label = Label(text, 300, self.lineHeight, self.textFont, True, True)
@@ -135,9 +135,9 @@ class ListScreen:
         occupationName = str(person.getOccupationName())
         if occupationName != '':
             occupationName = "<"+occupationName+">"
-        age = str (person.age)
+        age = str(person.age)
         maritalStatus = str(person.maritalStatus.value)
-        text = firstName + " " + occupationName + " " + lastName + " Age: " + age + " " + maritalStatus
+        text = ''.join([firstName, " ",  occupationName, " ", lastName, " Age: ", age, " ", maritalStatus])
 
         if focusObj == person:
             label = Label(text, 400, self.lineHeight, self.textFont, True, True)
@@ -155,9 +155,9 @@ class ListScreen:
 
         firstName = str(person.getFirstName())
         lastName = str(person.getLastName())
-        age = str (person.age)
+        age = str(person.age)
         maritalStatus = str(person.maritalStatus.value)
-        text = firstName + " " + lastName + " Age: " + age + " " + maritalStatus
+        text = ''.join([firstName, " ", lastName, " Age: ", age, " ", maritalStatus])
 
         if focusObj == person:
             label = Label(text, 400, self.lineHeight, self.textFont, True, True)

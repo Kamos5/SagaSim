@@ -1,15 +1,11 @@
-from Family import Family as FamilyObj
 import Utils
 import NameGenerator
 from FamilyTreeNode import BinaryTreeNode
 from Enums import LifeStatus, MaritalStatus, HairColor, CauseOfDeath, Sexes, EyeColor
 
-
-
 class Person:
 
     def __init__(self):
-        self.personUUID = Utils.createUUID()
         self.title = ''
         self.firstName = ''
         self.secondName = ''

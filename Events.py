@@ -1,13 +1,11 @@
 from Enums import LifeStatus, MaritalStatus, CauseOfDeath, Sexes, Settlements, Traits
 import Utils
-import time
 from Family import Family as Family
 import Parameters
 import FamilyNameGenerator as FNG
 import PeopleFunctions as PF
 import PersonLifeEventsHistory as PLEH
 from Enums import MaritalStatus as MS
-from Enums import Settlements as SE
 import SettlementsFunctions as SF
 import SettlementFeatures as SFeat
 

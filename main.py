@@ -1,4 +1,3 @@
-import gc
 import time
 import Events
 import FamilyFunctions as FF
@@ -6,11 +5,7 @@ import FamilyInitGenerator as FIG
 import MembersInitGenerator as MIG
 import Parameters
 import pygame
-import sys
-
-import Utils
 from Family import Family
-from FamilyTreeNode import BinaryTreeNode
 from Region import Region
 from Settlements import Settlements
 from UI import Canvas
@@ -222,7 +217,9 @@ def running (world, manualOverride):
     print("Female population: " + str(femalePop))
     print("Divorces: " + str(world.getDivorcesNumber()))
     # print("Crimes: " + str(world.getCrimesPerYear()))
-
+    # print(psutil.cpu_percent())
+    # print(psutil.virtual_memory())  # physical memory usage
+    # print('memory % used:', psutil.virtual_memory()[2])
 
 def main():
 

@@ -1,11 +1,9 @@
-import Utils
 from Enums import Sexes, MaritalStatus
 
 
 class Family:
 
     def __init__(self, fname):
-        self.familyUUID = Utils.createUUID()
         self.familyName = fname
         self.familyBranchedFrom = ''
         self.familyOffstringBranches = []

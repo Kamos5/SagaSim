@@ -1,4 +1,4 @@
-from Enums import LifeStatus, Settlements
+from Enums import Settlements
 from Region import Region
 import RegionNameGenerator as RNG
 import Parameters
@@ -15,7 +15,7 @@ class World:
         self.initYear = startYear
         self.year = self.initYear
         self.regions = []
-        self.gameSpeed = 10
+        self.gameSpeed = 50
         self.divorcesNumber = 0
         self.families = []
         self.people = []

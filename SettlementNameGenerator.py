@@ -1,4 +1,4 @@
-import random
+from random import choice as randomChoice
 
 englishSettlementsNames = [
 
@@ -34,7 +34,7 @@ def randomEnglishSettlementsName (rebuildOldSettlement = False):
         listToChooseFrom = englishSettlementsNames
         if rebuildOldSettlement:
             listToChooseFrom = abandonedSettlements
-        choice = random.choice(listToChooseFrom)
+        choice = randomChoice(listToChooseFrom)
         englishSettlementsNames.remove(choice)
         activeNames.append(choice)
     else:
@@ -47,7 +47,7 @@ def randomSlavicSettlementsName (rebuildOldSettlement = False):
         listToChooseFrom = englishSettlementsNames
         if rebuildOldSettlement:
             listToChooseFrom = abandonedSettlements
-        choice = random.choice(listToChooseFrom)
+        choice = randomChoice(listToChooseFrom)
         englishSettlementsNames.remove(choice)
         activeNames.append(choice)
     else:
@@ -60,7 +60,7 @@ def randomMusslimSettlementsName(rebuildOldSettlement = False):
         listToChooseFrom = englishSettlementsNames
         if rebuildOldSettlement:
             listToChooseFrom = abandonedSettlements
-        choice = random.choice(listToChooseFrom)
+        choice = randomChoice(listToChooseFrom)
         englishSettlementsNames.remove(choice)
         activeNames.append(choice)
     else:
@@ -73,7 +73,7 @@ def randomRomanSettlementsName(rebuildOldSettlement = False):
         listToChooseFrom = englishSettlementsNames
         if rebuildOldSettlement:
             listToChooseFrom = abandonedSettlements
-        choice = random.choice(listToChooseFrom)
+        choice = randomChoice(listToChooseFrom)
         englishSettlementsNames.remove(choice)
         activeNames.append(choice)
     else:
@@ -86,7 +86,7 @@ def randomAfricanSettlementsName(rebuildOldSettlement = False):
         listToChooseFrom = englishSettlementsNames
         if rebuildOldSettlement:
             listToChooseFrom = abandonedSettlements
-        choice = random.choice(listToChooseFrom)
+        choice = randomChoice(listToChooseFrom)
         englishSettlementsNames.remove(choice)
         activeNames.append(choice)
     else:
