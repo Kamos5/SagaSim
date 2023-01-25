@@ -1,3 +1,4 @@
+import HouseFunctions
 from Enums import LifeStatus, MaritalStatus, CauseOfDeath, Sexes, Settlements, Traits
 import Utils
 from Family import Family as Family
@@ -65,6 +66,7 @@ def birthPeople (world):
                     person.appendAliveChildrenList(childObj)
                     person.getSpouse().appendAliveChildrenList(childObj)
                     childObj.changeMaritalStatus(MS.CHILD)
+                    person.getAccommodation().addHouseResident(childObj)
 
                     # change of dying from childbirth (mother and child)
                     motherDeath, childdeath = deathChangeFromGivingBirth(person, childObj)
@@ -222,6 +224,25 @@ def settlementGoodsProduction(world):
                                 return
 
 
+def accommodationManagment(world):
+
+    for region in world.getRegions():
+
+        for settlement in region.getSettlements():
+
+            for house in settlement.getHousing():
+
+                HouseFunctions.payForUpkeep(house)
+
+                if house.getHouseDurability() == 0:
+                    if len(house.getHouseResidents()) == 0:
+                        settlement.removeHouse(house)
+                    else:
+                        HouseFunctions.downgradeHouse(house)
+
+                HouseFunctions.payForUpgrade(house)
+
+
 def settlementWorkersManagement(world):
 
     for region in world.getRegions():
@@ -323,7 +344,16 @@ def splitFamiliesInMigration(world, region, newTargetSettlement, complexRandomMi
                     randomMigrantList[0].familyObjRef.addOffspringBranch(family)
                     world.addFamily(family)
 
+            newHouse = HouseFunctions.getNewHouse()
+            newTargetSettlement.buildNewHouse(newHouse)
+            HouseFunctions.setHouseDurability(newHouse, Utils.randomRange(60, 90))
+
             for person in randomMigrantList:
+
+                person.getAccommodation().removeHouseResident(person)
+                HouseFunctions.setNewHouseToPerson(person, newHouse)
+                newHouse.addHouseResident(person)
+
                 person.familyObjRef.removeFromFamily(person)
                 person.familyName = newFamilyName
                 person.lastName = newFamilyName

@@ -109,6 +109,9 @@ def deathProcedures(person, world):
 
     person.setFreeWealth(0)
 
+    person.getAccommodation().removeHouseResident(person)
+    person.setAccommodation(None)
+
     # adding dead kids to the list od dead children
     # not needed. all kids that have Status.DEAD in child list is what we need
 

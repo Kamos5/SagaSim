@@ -90,7 +90,6 @@ class Canvas:
         self.listScreenObj = None
         self.detailsScreenObj = None
 
-
     def drawStuff(self, world):
 
         if len(self.focusObj) > 0:

@@ -8,7 +8,6 @@ from UI.Utils.Label import Label
 class FamilyTreeScreen:
 
     def __init__(self, width, height, widthOffSet, heightOffSet, screenPosX, screenPosY):
-
         self.screenColor = 5, 25, 5
         self.writeLine = 1
         self.width = width

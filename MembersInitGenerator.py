@@ -1,4 +1,6 @@
 from random import choice, seed, SystemRandom
+
+import HouseFunctions
 from Person import Person as PersonObj
 from Enums import MaritalStatus, HairColor, Sexes, EyeColor
 import Utils
@@ -36,6 +38,12 @@ def Init(families, world):
             member.addDislikedTraits(Utils.randomDislikedTrait(member))
             member.addDislikedTraits(Utils.randomDislikedTrait(member))
             member.addDislikedTraits(Utils.randomDislikedTrait(member))
+
+            newHouse = HouseFunctions.getNewHouse()
+            member.getSettlement().buildNewHouse(newHouse)
+            HouseFunctions.setNewHouseToPerson(member, newHouse)
+            HouseFunctions.setHouseDurability(newHouse, Utils.randomRange(60, 90))
+            newHouse.addHouseResident(member)
 
             if family.getFemaleNumber() == 0 and family.getMaleNumber() == 0:
                 family.setFoundedBy(member)
@@ -76,6 +84,9 @@ def initInitMarrieges(family):
             family.addMarriedMember(pip2)
             family.removeUnmarriedMember(pip1)
             family.removeUnmarriedMember(pip2)
+            pip2.getAccommodation().removeHouseResident(pip2)
+            pip2.setAccommodation(pip1.getAccommodation())
+            pip2.getAccommodation().addHouseResident(pip2)
 
     return
 
@@ -88,6 +99,10 @@ def InitMarriegies (husband, wife):
     wife.maritalStatus = MaritalStatus.MARRIED
     wife.spouse = husband
     wife.spouse.setSpouseRelation(50)
+
+    wife.getAccommodation().removeHouseResident(wife)
+    wife.setAccommodation(husband.getAccommodation())
+    wife.getAccommodation().addHouseResident(wife)
 
     return
 

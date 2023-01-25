@@ -1,6 +1,7 @@
 import pygame
 
 from Family import Family
+from House import House
 from Person import Person
 from Region import Region
 from Settlements import Settlements
@@ -83,6 +84,9 @@ class InspectorScreen:
 
         elif isinstance(object, Person):
             self.addInspectorForPerson(object)
+
+        elif isinstance(object, House):
+            self.addInspectorForHouses(object)
 
 
     def addInspectorForRegion(self, object):
@@ -192,6 +196,27 @@ class InspectorScreen:
         self.inspectorScreenSurfaceObjsRect.append([self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding, self.lineHeight * self.writeLine + self.scroll_y)), object.getOriginSettlement()])
         self.writeLine += 1
 
+    def addInspectorForHouses(self, object):
+
+        label = Label("House: " + str(object.getHouseType().value.getHouseTypeName()), 500, self.lineHeight, self.textFont)
+        self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding, self.lineHeight * self.writeLine + self.scroll_y))
+        self.writeLine += 1
+        label = Label("House dur: " + str(object.getHouseDurability()), 500, self.lineHeight, self.textFont)
+        self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding, self.lineHeight * self.writeLine + self.scroll_y))
+        self.writeLine += 1
+        label = Label("Residents:", 500, self.lineHeight, self.textFont)
+        self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding, self.lineHeight * self.writeLine + self.scroll_y))
+        self.writeLine += 1
+        if len(object.getHouseResidents()) > 0:
+            for resident in object.getHouseResidents():
+                label = Label("Name: " + str(resident.getFirstName()), 500, self.lineHeight, self.textFont)
+                self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding*2, self.lineHeight * self.writeLine + self.scroll_y))
+                self.writeLine += 1
+                label = Label("Free wealth: " + str(resident.getFreeWealth()), 500, self.lineHeight, self.textFont)
+                self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding*3, self.lineHeight * self.writeLine + self.scroll_y))
+                self.writeLine += 1
+
+
     def addInspectorForPerson(self, object):
 
         label = Label("Name: " + str(object.getFirstName()), 500, self.lineHeight, self.textFont)
@@ -220,6 +245,13 @@ class InspectorScreen:
         label = Label("Living in: " + str(object.getSettlement().getSettlementName()), 500, self.lineHeight, self.textFont, True)
         self.inspectorScreenSurfaceObjsRect.append([self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding, self.lineHeight * self.writeLine + self.scroll_y)), object.getSettlement()])
         self.writeLine += 1
+        if object.getAccommodation() is not None:
+            label = Label("House: " + str(object.getAccommodation().getHouseType().value.getHouseTypeName()), 500, self.lineHeight, self.textFont, True)
+            self.inspectorScreenSurfaceObjsRect.append([self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding, self.lineHeight * self.writeLine + self.scroll_y)), object.getAccommodation()])
+            self.writeLine += 1
+            label = Label("House dur: " + str(object.getAccommodation().getHouseDurability()), 500, self.lineHeight, self.textFont)
+            self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding, self.lineHeight * self.writeLine + self.scroll_y))
+            self.writeLine += 1
         label = Label("Free wealth: " + str(object.getFreeWealth()), 500, self.lineHeight, self.textFont)
         self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding, self.lineHeight * self.writeLine + self.scroll_y))
         self.writeLine += 1

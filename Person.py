@@ -2,6 +2,8 @@ import Utils
 import NameGenerator
 from FamilyTreeNode import BinaryTreeNode
 from Enums import LifeStatus, MaritalStatus, HairColor, CauseOfDeath, Sexes, EyeColor
+from House import House
+
 
 class Person:
 
@@ -69,6 +71,7 @@ class Person:
         self.yearOfDeath = ""
         self.happiness = 0
         self.personalSexualityModifier = 1
+        self.accommodation = None
         pass
 
     def setInitValues(self, familyName, yearOfBirth, age, randomLifespan, sex, hairColor, hairColorGen1, hairColorGen2, eyeColor, eyeColorGen1, eyeColorGen2, familyObj):
@@ -108,6 +111,7 @@ class Person:
         self.homeSettlement = familyObj.getOriginSettlement()
         self.settlement = self.homeSettlement
         self.personalSexualityModifier = 1
+        self.accommodation = House()
 
     def birthNewPerson(self, firstName, lastName, familyName, yearOfBirth, lifespan, sex, sexGen1, sexGen2, sexuality, fertility, height, hairColor, hairColorGen1, hairColorGen2, eyeColor, eyeColorGen1, eyeColorGen2, mother, father, trueMother, trueFather, familyObj):
 
@@ -139,6 +143,7 @@ class Person:
         self.homeSettlement = father.getSettlement()
         self.region = self.homeRegion
         self.settlement = self.homeSettlement
+        self.setAccommodation(trueMother.getAccommodation())
 
 
 
@@ -320,6 +325,12 @@ class Person:
 
     def changeHappiness(self, newValue):
         self.happiness = newValue
+
+    def getAccommodation(self):
+        return self.accommodation
+
+    def setAccommodation(self, newAccommodation):
+        self.accommodation = newAccommodation
 
     def getPersonalSexualModifier(self):
         return self.personalSexualityModifier

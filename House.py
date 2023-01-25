@@ -1,14 +1,20 @@
+import HouseTypes
 
-class House():
+
+class House:
 
     def __init__(self):
         self.region = None
         self.settlement = None
-        self.houseType = None
+        self.houseType = HouseTypes.HouseEnums.NULL
         self.firstOwner = None
         self.secondOwner = None
         self.residents = []
         self.durability = 100
+
+    def getBasicHouse(self):
+        self.houseType = HouseTypes.HouseEnums.TENT
+        return self
 
     def getHouseRegion(self):
         return self.region
@@ -22,10 +28,10 @@ class House():
     def setHouseSettlement(self, newSettlement):
         self.settlement = newSettlement
 
-    def getHouseHouseType(self):
+    def getHouseType(self):
         return self.houseType
 
-    def setHouseHouseType(self, houseType):
+    def setHouseType(self, houseType):
         self.houseType = houseType
 
     def getHouseFirstOwner(self):
@@ -49,6 +55,9 @@ class House():
     def addHouseResident(self, newResident):
         self.residents.append(newResident)
 
+    def removeHouseResident(self, resident):
+        self.residents.remove(resident)
+
     def getHouseDurability(self):
         return self.durability
 
@@ -56,4 +65,11 @@ class House():
         self.durability = durability
 
     def changeHouseDurability(self, value):
-        self.durability += value
+        if self.durability + value >= 100:
+            self.durability = 100
+            return
+        if self.durability - value <= 0:
+            self.durability = 0
+            return
+        else:
+            self.durability += value

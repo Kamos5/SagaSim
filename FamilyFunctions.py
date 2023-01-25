@@ -1,3 +1,4 @@
+import HouseFunctions
 from Enums import MaritalStatus, Sexes
 import Enums
 import Utils
@@ -63,7 +64,7 @@ def ChangeFamilyName (person, spouse, world):
         spouseObj.lastName = person.getLastName()
         spouse.familyObjRef = person.familyObjRef
 
-def Divorces (world):
+def divorces (world):
 
     for person in world.getAlivePeople():
         if person.getSpouseRelation() < -25 and person.getMaritialStatus() == Enums.MaritalStatus.MARRIED and person.lifeStatus == Enums.LifeStatus.ALIVE:
@@ -89,7 +90,7 @@ def Divorces (world):
                 world.changeDivorcesNumber(1)
 
 
-def SpouseMatchmaking (world):
+def spouseMatchmaking (world):
 
     #CANT USE PERSON IN UNMARIED LIST BECAUSE OF STRANGE ERRORS CONNECTED WITH PREVIOUS SPOUS DYING IN THE SAME YEAR AND LOOP family.getUnmarried list NOT RECOGNIZING IT!!!
 
@@ -115,6 +116,16 @@ def SpouseMatchmaking (world):
                 RemoveFromUnmarriedList(person, spouseObj)
                 AddToMarriedList(person, spouseObj)
                 ChangeFamilyName(person, spouseObj, world)
+
+                if len(person.getAccommodation().getHouseResidents()) > 1:
+                    newHouse = HouseFunctions.getNewHouse()
+                    person.getSettlement().buildNewHouse(newHouse)
+                    HouseFunctions.setHouseDurability(newHouse, Utils.randomRange(60, 90))
+                    HouseFunctions.setNewHouseToPerson(person, newHouse)
+                    HouseFunctions.setNewHouseToPerson(spouseObj, newHouse)
+                    newHouse.addHouseResident(person)
+                    if person.getSpouse() is not None:
+                        newHouse.addHouseResident(person.getSpouse())
 
 
 def checkLDTraitsNumber(person):

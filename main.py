@@ -1,3 +1,4 @@
+import Utils
 import time
 import Events
 import FamilyFunctions as FF
@@ -6,6 +7,7 @@ import MembersInitGenerator as MIG
 import Parameters
 import pygame
 from Family import Family
+from House import House
 from Region import Region
 from Settlements import Settlements
 from UI import Canvas
@@ -154,12 +156,12 @@ def running (world, manualOverride):
         end1 = time.perf_counter()
         birthtime = end1 - start1
         start1 = time.perf_counter()
-    FF.SpouseMatchmaking(world)
+    FF.spouseMatchmaking(world)
     if timers:
         end1 = time.perf_counter()
         spouseMMTime = end1 - start1
         start1 = time.perf_counter()
-    FF.Divorces(world)
+    FF.divorces(world)
     if timers:
         end1 = time.perf_counter()
         divorcesTime = end1 - start1
@@ -180,6 +182,11 @@ def running (world, manualOverride):
         crimeTime = end1 - start1
         start1 = time.perf_counter()
     Events.settlementGoodsProduction(world)
+    if timers:
+        end1 = time.perf_counter()
+        accommodationMenagmentTime = end1 - start1
+        start1 = time.perf_counter()
+    Events.accommodationManagment(world)
     if timers:
         end1 = time.perf_counter()
         settlementGoodsProdTime = end1 - start1
