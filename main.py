@@ -1,3 +1,6 @@
+import win32gui
+from keyboard._winmouse import user32
+
 import Utils
 import time
 import Events
@@ -237,7 +240,6 @@ def main():
 
     windowWidth = 1024
     windowHeight = 768
-
     #pygame init stuff
     pygame.init()
     fps = 60
@@ -266,7 +268,6 @@ def main():
         canvas.clearCanvas()
         canvas.navBarScreen.addHelp()
         canvas.navBarScreen.addDateTimer(world)
-
         canvas.drawStuff(world)
 
         #GameLogic

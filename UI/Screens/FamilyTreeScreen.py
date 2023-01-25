@@ -59,10 +59,10 @@ class FamilyTreeScreen:
 
         if showUpTree:
             init = obj.initGenUpFamilyTree()
-            self.printUpFamilyTree(init, showUpTree)
+            self.printUpFamilyTree(init)
         if showDownTree:
             init = obj.initGenDownFamilyTree()
-            self.printDownFamilyTree(init, showDownTree)
+            self.printDownFamilyTree(init)
 
     def printDownFamilyTree(self, tree, level=0, prefix=""):
 
@@ -105,6 +105,9 @@ class FamilyTreeScreen:
                 sexPrefix = "Father: "
             else:
                 sexPrefix = "Mother: "
+
+        if level == 0:
+            sexPrefix = ""
 
         rootString = prefix + sexPrefix + tree.getRoot().getFirstName() + " " + tree.getRoot().getLastName() + " (" + str(tree.getRoot().getYearOfBirth()) + "-" + str(tree.getRoot().getYearOfDeath()) + ")"
         siblingString = ""

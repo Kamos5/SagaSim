@@ -11,9 +11,14 @@ from UI.Utils.TextField import TextField
 
 class Canvas:
 
+    windowWidth = 1920 # 1366
+    windowHeight = 1080 # 768
+
     def __init__(self):
-        self.windowWidth = 1366
-        self.windowHeight = 768
+
+        self.redrawScreen()
+
+    def redrawScreen(self):
 
         self.navbarWidth = self.windowWidth
         self.navBarHeight = 20
@@ -50,7 +55,7 @@ class Canvas:
         self.familyTreePosX = int(self.windowWidth / 8)
         self.familyTreePosY = int(self.windowHeight / 8)
 
-        self.screen = pygame.display.set_mode((self.windowWidth, self.windowHeight))
+        self.screen = pygame.display.set_mode((self.windowWidth, self.windowHeight), pygame.RESIZABLE)
 
         self.helpScreen = HelpScreen(self.helpWidth, self.helpHeight, self.helpWidthOffSet, self.helpHeightOffSet, self.helpPosX, self.helpPosY)
         self.helpScreenSurface = self.helpScreen.getHelpScreenSurface()
@@ -76,6 +81,12 @@ class Canvas:
         self.showFamilyObj = None
         self.showUpTree = False
         self.showDownTree = False
+
+    def changeCanvasSize(self):
+
+        self.windowHeight = self.windowHeight*2
+        self.redrawScreen()
+
 
     def clearCanvas(self):
 
