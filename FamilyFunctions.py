@@ -117,15 +117,15 @@ def spouseMatchmaking (world):
                 AddToMarriedList(person, spouseObj)
                 ChangeFamilyName(person, spouseObj, world)
 
-                if len(person.getAccommodation().getHouseResidents()) > 1:
-                    newHouse = HouseFunctions.getNewHouse()
-                    person.getSettlement().buildNewHouse(newHouse)
-                    HouseFunctions.setHouseDurability(newHouse, Utils.randomRange(60, 90))
-                    HouseFunctions.setNewHouseToPerson(person, newHouse)
-                    HouseFunctions.setNewHouseToPerson(spouseObj, newHouse)
-                    newHouse.addHouseResident(person)
-                    if person.getSpouse() is not None:
-                        newHouse.addHouseResident(person.getSpouse())
+                newHouse = HouseFunctions.getNewHouse()
+                person.getSettlement().buildNewHouse(newHouse)
+                HouseFunctions.setHouseDurability(newHouse, Utils.randomRange(60, 90))
+                person.getAccommodation().removeHouseResident(person)
+                person.getSpouse().getAccommodation().removeHouseResident(spouseObj)
+                HouseFunctions.setNewHouseToPerson(person, newHouse)
+                HouseFunctions.setNewHouseToPerson(spouseObj, newHouse)
+                newHouse.addHouseResident(person)
+                newHouse.addHouseResident(person.getSpouse())
 
 
 def checkLDTraitsNumber(person):

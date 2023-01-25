@@ -178,6 +178,14 @@ class InspectorScreen:
                     self.inspectorScreenSurfaceObjsRect.append([self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding*3, self.lineHeight * self.writeLine + self.scroll_y)), worker])
                     self.writeLine += 1
 
+        label = Label("Houses: ", 500, self.lineHeight, self.textFont)
+        self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding, self.lineHeight * self.writeLine + self.scroll_y))
+        self.writeLine += 1
+        for house in object.getHousing():
+            label = Label(house.getHouseType().value.getHouseTypeName() + " (" + str(len(house.getHouseResidents())) + ")", 500, self.lineHeight, self.textFont, True)
+            self.inspectorScreenSurfaceObjsRect.append([self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding*2, self.lineHeight * self.writeLine + self.scroll_y)), house])
+            self.writeLine += 1
+
     def addInspectorForFamily(self, object):
 
         label = Label("Family name: " + object.getFamilyName(), 500, self.lineHeight, self.textFont)
@@ -209,8 +217,11 @@ class InspectorScreen:
         self.writeLine += 1
         if len(object.getHouseResidents()) > 0:
             for resident in object.getHouseResidents():
-                label = Label("Name: " + str(resident.getFirstName()), 500, self.lineHeight, self.textFont)
-                self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding*2, self.lineHeight * self.writeLine + self.scroll_y))
+                label = Label("Name: " + str(resident.getFirstName()), 500, self.lineHeight, self.textFont, True)
+                self.inspectorScreenSurfaceObjsRect.append([self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding*2, self.lineHeight * self.writeLine + self.scroll_y)), resident])
+                self.writeLine += 1
+                label = Label("Age: " + str(resident.getAge()), 500, self.lineHeight, self.textFont)
+                self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding * 2, self.lineHeight * self.writeLine + self.scroll_y))
                 self.writeLine += 1
                 label = Label("Free wealth: " + str(resident.getFreeWealth()), 500, self.lineHeight, self.textFont)
                 self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding*3, self.lineHeight * self.writeLine + self.scroll_y))

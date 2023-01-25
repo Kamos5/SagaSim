@@ -68,8 +68,9 @@ class House:
         if self.durability + value >= 100:
             self.durability = 100
             return
-        if self.durability - value <= 0:
+        elif self.durability - value <= 0:
             self.durability = 0
             return
         else:
             self.durability += value
+            return

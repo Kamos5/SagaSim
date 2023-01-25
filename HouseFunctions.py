@@ -24,7 +24,7 @@ def payForUpkeep (house):
             break
 
     if not upkeepWasPaid:
-        house.changeHouseDurability(-10)
+        house.changeHouseDurability(-25)
 
 def payForUpgrade (house):
 
