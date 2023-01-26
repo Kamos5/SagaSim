@@ -123,6 +123,12 @@ class InspectorScreen:
         label = Label("Number of unemployed residents: " + str(len(object.getUnemployedResidentsList())), 500, self.lineHeight, self.textFont)
         self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding, self.lineHeight * self.writeLine + self.scroll_y))
         self.writeLine += 1
+        if (len(object.getEmployedResidentsList())+len(object.getUnemployedResidentsList())*100) > 0:
+            label = Label("Percentage unemployed: " + str(round(len(object.getUnemployedResidentsList())/(len(object.getEmployedResidentsList())+len(object.getUnemployedResidentsList()))*100)) + "%", 500, self.lineHeight, self.textFont)
+        else:
+            label = Label("Percentage unemployed: " + "0%", 500, self.lineHeight, self.textFont)
+        self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding, self.lineHeight * self.writeLine + self.scroll_y))
+        self.writeLine += 1
         label = Label("Food produced last year: " + str(object.getSettlementFoodProducedLastYear()), 500, self.lineHeight, self.textFont)
         self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding, self.lineHeight * self.writeLine + self.scroll_y))
         self.writeLine += 1
