@@ -169,15 +169,15 @@ def get0ProdZone():
             returnArray.append(feature)
     return returnArray
 
-
+#     #featuretype, maxworkers, production yield, name, description, workername, upgr cost, ,upgrades to
 def getNewFallow():
-    return Feature(FeatureTypes.FOODTYPE, 10, 1, 'Fallow', 'fallow land', 'Fallow farmer')
+    return Feature(FeatureTypes.FOODTYPE, 15, 1, 'Fallow', 'fallow land', 'Fallow farmer')
 def getNewWildrness():
-    return Feature(FeatureTypes.FOODTYPE, 10, 1, 'Wilderness', 'unpassable terrain', 'Primitive gatherer')
+    return Feature(FeatureTypes.FOODTYPE, 30, 1, 'Wilderness', 'unpassable terrain', 'Primitive gatherer')
 def getNewRiver():
-    return Feature(FeatureTypes.FOODTYPE, 4, 5, 'River', 'running volume of not sparkling water', 'River fisher')
+    return Feature(FeatureTypes.FOODTYPE, 10, 5, 'River', 'running volume of not sparkling water', 'River fisher')
 def getNewSeaSide():
-    return Feature(FeatureTypes.FOODTYPE, 3, 3, 'Sea side', 'running volume of not sparkling salt water', 'Sea fisher')
+    return Feature(FeatureTypes.FOODTYPE, 10, 3, 'Sea side', 'running volume of not sparkling salt water', 'Sea fisher')
 def getNewWildlife():
     return Feature(FeatureTypes.FOODTYPE, 3, 5, 'Wild animals', 'Packs of wild animals are roaming around', 'Primitive hunter')
 def getNewRockyTerrain():
@@ -185,19 +185,19 @@ def getNewRockyTerrain():
 def getNewFallenLogs():
     return Feature(FeatureTypes.PRODTYPE, 1, 8, 'Fallen Logs', 'Trees that took a bit to long nap', 'Wood hawler')
 def getNewSimplefarm():
-    return Feature(FeatureTypes.FOODTYPE, 12, 2, 'Simple farm', 'simple farm', 'Farmer', 20, 'Fallow')
+    return Feature(FeatureTypes.FOODTYPE, 20, 2, 'Simple farm', 'simple farm', 'Farmer', 200, 'Fallow')
 def getNewOrchard():
-    return Feature(FeatureTypes.FOODTYPE, 12, 2, 'Orchard', 'fruit tree paradise', 'Fruit grower', 20, 'Fallow')
+    return Feature(FeatureTypes.FOODTYPE, 12, 2, 'Orchard', 'fruit tree paradise', 'Fruit grower', 200, 'Fallow')
 def getNewForest():
-    return Feature(FeatureTypes.FOODTYPE, 2, 8, 'Forest', 'forest with wild life and forage supply', 'Gatherer', 20, 'Wilderness')
+    return Feature(FeatureTypes.FOODTYPE, 2, 8, 'Forest', 'forest with wild life and forage supply', 'Gatherer', 200, 'Wilderness')
 def getNewMill():
-    return Feature(FeatureTypes.FOODTYPE, 6, 4, 'Mill', 'running volume of not sparkling water', 'Miller', 20, 'River')
+    return Feature(FeatureTypes.FOODTYPE, 6, 4, 'Mill', 'running volume of not sparkling water', 'Miller', 200, 'River')
 def getNewBigGame():
-    return Feature(FeatureTypes.FOODTYPE, 4, 5, 'Big Game', 'there are signs of big hunter game in the area', 'Hunter', 20, 'Wild animals')
+    return Feature(FeatureTypes.FOODTYPE, 4, 5, 'Big Game', 'there are signs of big hunter game in the area', 'Hunter', 200, 'Wild animals')
 def getNewLumberMill():
-    return Feature(FeatureTypes.PRODTYPE, 3, 10, 'Lumber mill', 'Mill that produces lumber', 'Logger', 20, 'Fallen Logs')
+    return Feature(FeatureTypes.PRODTYPE, 3, 10, 'Lumber mill', 'Mill that produces lumber', 'Logger', 200, 'Fallen Logs')
 def getNewQuarry():
-    return Feature(FeatureTypes.PRODTYPE, 3, 10, 'Quarry', 'Man made rock farm', 'Miner', 20, 'Rocky Terrain')
+    return Feature(FeatureTypes.PRODTYPE, 3, 10, 'Quarry', 'Man made rock farm', 'Miner', 200, 'Rocky Terrain')
 
 
 def createZones():

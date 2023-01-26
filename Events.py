@@ -206,7 +206,7 @@ def settlementGoodsProduction(world):
             #UPGRADING FEATURES
 
             if float(settlement.getFreeProd()) > 0:
-                if settlement.getSettlementFoodProducedLastYear() - settlement.getSettlementFoodConsumedLastYear() < int(round(len(settlement.getResidents())/2)):
+#                if settlement.getSettlementFoodProducedLastYear() - settlement.getSettlementFoodConsumedLastYear() < int(round(len(settlement.getResidents())/2)):
                     for tile in settlement.getFoodFeatures():
                         for upgradable in (SFeat.getPotencialUpgradesForZone(tile.getName())):
                             if float(settlement.getFreeProd()) >= float(upgradable.value.getUpgradeCost()):
@@ -249,9 +249,9 @@ def settlementWorkersManagement(world):
 
         for settlement in region.getSettlements():
 
-            unemployedWorkerList = settlement.getUnemployedResidentsList()
+                unemployedWorkerList = settlement.getUnemployedResidentsList()
 
-            if settlement.getSettlementFoodProducedLastYear() - settlement.getSettlementFoodConsumedLastYear() < int(round(len(settlement.getResidents())/2)):
+            #if settlement.getSettlementFoodProducedLastYear() - settlement.getSettlementFoodConsumedLastYear() < int(round(len(settlement.getResidents())/2)):
                 for foodTile in settlement.getFoodFeatures():
 
                     for occupations in range(foodTile.getFreeWorkersSlots()):
@@ -262,7 +262,7 @@ def settlementWorkersManagement(world):
                             newWorker.setOccupation(foodTile)
                             newWorker.setOccupationName(foodTile.getOccupationName())
                             PLEH.foundEmpoyment(newWorker, world)
-            else:
+            #else:
                 for prodTile in settlement.getProdFeatures():
 
                     for occupations in range(prodTile.getFreeWorkersSlots()):

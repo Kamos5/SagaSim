@@ -1,5 +1,3 @@
-import win32gui
-from keyboard._winmouse import user32
 
 import Utils
 import time
