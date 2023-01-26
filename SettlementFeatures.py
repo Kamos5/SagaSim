@@ -206,13 +206,13 @@ def getNewLumberMill():
 def getNewQuarry():
     return Feature(FeatureTypes.PRODTYPE, 3, 10, 'Quarry', 'Man made rock farm', 'Miner', 200, 'Rocky Terrain', 100)
 def getNewCoalMine():
-    return Feature(FeatureTypes.PRODTYPE, 3, 10, 'Coal mine', 'Dirty rocks', 'Coal miner', 200, 'Rocky Terrain', 80)
+    return Feature(FeatureTypes.PRODTYPE, 3, 15, 'Coal mine', 'Dirty rocks', 'Coal miner', 200, 'Rocky Terrain', 80)
 def getNewIronMine():
-    return Feature(FeatureTypes.PRODTYPE, 3, 10, 'Iron mine', 'Hard rocks', 'Iron miner', 200, 'Rocky Terrain', 50)
+    return Feature(FeatureTypes.PRODTYPE, 3, 20, 'Iron mine', 'Hard rocks', 'Iron miner', 200, 'Rocky Terrain', 50)
 def getNewSilverMine():
-    return Feature(FeatureTypes.PRODTYPE, 3, 10, 'Silver mine', 'Shiny white rocks', 'Silver miner', 200, 'Rocky Terrain', 25)
+    return Feature(FeatureTypes.PRODTYPE, 3, 30, 'Silver mine', 'Shiny white rocks', 'Silver miner', 200, 'Rocky Terrain', 25)
 def getNewGoldMine():
-    return Feature(FeatureTypes.PRODTYPE, 3, 10, 'Gold mine', 'Shiny rocks', 'Gold miner', 200, 'Rocky Terrain', 10)
+    return Feature(FeatureTypes.PRODTYPE, 3, 40, 'Gold mine', 'Shiny rocks', 'Gold miner', 200, 'Rocky Terrain', 10)
 
 def createZones():
 
