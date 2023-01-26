@@ -205,6 +205,12 @@ def getNewLumberMill():
     return Feature(FeatureTypes.PRODTYPE, 3, 10, 'Lumber mill', 'Mill that produces lumber', 'Logger', 200, 'Fallen Logs')
 def getNewQuarry():
     return Feature(FeatureTypes.PRODTYPE, 3, 10, 'Quarry', 'Man made rock farm', 'Miner', 200, 'Rocky Terrain', 100)
+def getNewCoalMine():
+    return Feature(FeatureTypes.PRODTYPE, 3, 10, 'Coal mine', 'Dirty rocks', 'Coal miner', 200, 'Rocky Terrain', 80)
+def getNewIronMine():
+    return Feature(FeatureTypes.PRODTYPE, 3, 10, 'Iron mine', 'Hard rocks', 'Iron miner', 200, 'Rocky Terrain', 50)
+def getNewSilverMine():
+    return Feature(FeatureTypes.PRODTYPE, 3, 10, 'Silver mine', 'Shiny white rocks', 'Silver miner', 200, 'Rocky Terrain', 25)
 def getNewGoldMine():
     return Feature(FeatureTypes.PRODTYPE, 3, 10, 'Gold mine', 'Shiny rocks', 'Gold miner', 200, 'Rocky Terrain', 10)
 
@@ -227,6 +233,9 @@ def createZones():
     zones.append(getNewLumberMill())
     zones.append(getNewQuarry())
     zones.append(getNewGoldMine())
+    zones.append(getNewCoalMine())
+    zones.append(getNewIronMine())
+    zones.append(getNewSilverMine())
 
     return zones
 
@@ -252,6 +261,11 @@ class Zones(Enum):
     QUARRY = getNewQuarry()
 
     GOLDMINE = getNewGoldMine()
+    COALMINE = getNewCoalMine()
+    IRONMINE = getNewIronMine()
+    SILVERMINE = getNewSilverMine()
+
+
 
 
 

@@ -442,10 +442,10 @@ def iniciateMigration(complexMigrantList, settlementTarget, world):
 def getRandomMigrantListForSingleRandomPerson(person, parent, randomMigrantsList, settlement, world):
 
     getParent = ''
-    if person.getFather().lifeStatus != LifeStatus.DEAD:
+    if person.getFather() is not None and person.getFather().lifeStatus != LifeStatus.DEAD:
         if parent == "Father":
             getParent = person.getFather()
-    if person.getMother().lifeStatus != LifeStatus.DEAD:
+    if person.getFather() is not None and person.getMother().lifeStatus != LifeStatus.DEAD:
         if parent == "Mother":
             getParent = person.getMother()
     if parent == "Adult":
