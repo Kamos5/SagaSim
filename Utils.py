@@ -1,4 +1,7 @@
 from random import randint, choice
+
+import numpy
+
 import Enums
 
 def randomRange(min, max):
@@ -10,6 +13,22 @@ def randomRange(min, max):
 def randomFromCollection(collection):
 
     return choice(collection)
+
+def randomFromCollectionWithWeight(collection):
+
+    weightSum = 0
+
+    for element in collection:
+        weightSum += element.value.getUpgrWeightValue()
+
+    randValue = randint(1, weightSum)
+
+    for element in collection:
+        if randValue <= element.value.getUpgrWeightValue():
+            return element
+        randValue -= element.value.getUpgrWeightValue()
+
+    return element
 
 
 def randomFromEnumCollection(collection):

@@ -208,7 +208,9 @@ def settlementGoodsProduction(world):
             if float(settlement.getFreeProd()) > 0:
 #                if settlement.getSettlementFoodProducedLastYear() - settlement.getSettlementFoodConsumedLastYear() < int(round(len(settlement.getResidents())/2)):
                     for tile in settlement.getFoodFeatures():
-                        for upgradable in (SFeat.getPotencialUpgradesForZone(tile.getName())):
+                        if len(SFeat.getPotencialUpgradesForZone(tile.getName())) > 0:
+                            upgradable = Utils.randomFromCollectionWithWeight(SFeat.getPotencialUpgradesForZone(tile.getName()))
+                            #for upgradable in (SFeat.getPotencialUpgradesForZone(tile.getName())):
                             if float(settlement.getFreeProd()) >= float(upgradable.value.getUpgradeCost()):
                                 settlement.changeFreeProd(-upgradable.value.getUpgradeCost())
                                 newFeature = SFeat.createZones()[SFeat.getFeatureIndexFromName(upgradable.value.getName())]
@@ -216,7 +218,9 @@ def settlementGoodsProduction(world):
                                 return
 
                     for tile in settlement.getProdFeatures():
-                        for upgradable in (SFeat.getPotencialUpgradesForZone(tile.getName())):
+                        if len(SFeat.getPotencialUpgradesForZone(tile.getName())) > 0:
+                            upgradable = Utils.randomFromCollectionWithWeight(SFeat.getPotencialUpgradesForZone(tile.getName()))
+    #                        for upgradable in (SFeat.getPotencialUpgradesForZone(tile.getName())):
                             if float(settlement.getFreeProd()) >= float(upgradable.value.getUpgradeCost()):
                                 settlement.changeFreeProd(-upgradable.value.getUpgradeCost())
                                 newFeature = SFeat.createZones()[SFeat.getFeatureIndexFromName(upgradable.value.getName())]

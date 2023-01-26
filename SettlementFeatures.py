@@ -1,5 +1,7 @@
 from enum import Enum
 
+import Utils
+
 features = []
 
 class FeatureType():
@@ -29,7 +31,7 @@ class FeatureTypes(Enum):
 
 class Feature:
 
-    def __init__(self, featureType=None, prodYield=0, maxWorkers=0, name='', desc='', occupationName='', upgrCost=0, upgrFrom=None, cordx=0, cordy=0, featureNumber=0):
+    def __init__(self, featureType=None, prodYield=0, maxWorkers=0, name='', desc='', occupationName='', upgrCost=0, upgrFrom=None, upgrWeightValue=100, cordx=0, cordy=0, featureNumber=0):
         self.featureType = featureType
         self.prodYield = prodYield
         self.workers = 0
@@ -41,6 +43,7 @@ class Feature:
         self.description = desc
         self.upgradeCost = upgrCost
         self.upgrFrom = upgrFrom
+        self.upgrWeightValue = upgrWeightValue
         self.cordX = cordx
         self.cordY = cordy
         self.featureNumber = featureNumber
@@ -111,6 +114,9 @@ class Feature:
     def setFeatureNumber(self, number):
         self.featureNumber = number
 
+    def getUpgrWeightValue(self):
+        return self.upgrWeightValue
+
     def getUIExpand(self):
         return self.uiExpand
 
@@ -169,7 +175,8 @@ def get0ProdZone():
             returnArray.append(feature)
     return returnArray
 
-#     #featuretype, maxworkers, production yield, name, description, workername, upgr cost, ,upgrades to
+
+#foundation type, workersNumber, productionValue, name, descr, workerName, upgrCost, upgrFrom, weightUpgrValue
 def getNewFallow():
     return Feature(FeatureTypes.FOODTYPE, 15, 1, 'Fallow', 'fallow land', 'Fallow farmer')
 def getNewWildrness():
@@ -185,9 +192,9 @@ def getNewRockyTerrain():
 def getNewFallenLogs():
     return Feature(FeatureTypes.PRODTYPE, 1, 8, 'Fallen Logs', 'Trees that took a bit to long nap', 'Wood hawler')
 def getNewSimplefarm():
-    return Feature(FeatureTypes.FOODTYPE, 20, 2, 'Simple farm', 'simple farm', 'Farmer', 200, 'Fallow')
+    return Feature(FeatureTypes.FOODTYPE, 20, 2, 'Simple farm', 'simple farm', 'Farmer', 200, 'Fallow', 100)
 def getNewOrchard():
-    return Feature(FeatureTypes.FOODTYPE, 12, 2, 'Orchard', 'fruit tree paradise', 'Fruit grower', 200, 'Fallow')
+    return Feature(FeatureTypes.FOODTYPE, 12, 2, 'Orchard', 'fruit tree paradise', 'Fruit grower', 200, 'Fallow', 100)
 def getNewForest():
     return Feature(FeatureTypes.FOODTYPE, 2, 8, 'Forest', 'forest with wild life and forage supply', 'Gatherer', 200, 'Wilderness')
 def getNewMill():
@@ -197,8 +204,9 @@ def getNewBigGame():
 def getNewLumberMill():
     return Feature(FeatureTypes.PRODTYPE, 3, 10, 'Lumber mill', 'Mill that produces lumber', 'Logger', 200, 'Fallen Logs')
 def getNewQuarry():
-    return Feature(FeatureTypes.PRODTYPE, 3, 10, 'Quarry', 'Man made rock farm', 'Miner', 200, 'Rocky Terrain')
-
+    return Feature(FeatureTypes.PRODTYPE, 3, 10, 'Quarry', 'Man made rock farm', 'Miner', 200, 'Rocky Terrain', 100)
+def getNewGoldMine():
+    return Feature(FeatureTypes.PRODTYPE, 3, 10, 'Gold mine', 'Shiny rocks', 'Gold miner', 200, 'Rocky Terrain', 10)
 
 def createZones():
 
@@ -218,6 +226,7 @@ def createZones():
     zones.append(getNewBigGame())
     zones.append(getNewLumberMill())
     zones.append(getNewQuarry())
+    zones.append(getNewGoldMine())
 
     return zones
 
@@ -242,6 +251,8 @@ class Zones(Enum):
     LUMBERMILL = getNewLumberMill()
     QUARRY = getNewQuarry()
 
+    GOLDMINE = getNewGoldMine()
+
 
 
     #bonus to max pop, description
@@ -259,13 +270,17 @@ class Zones(Enum):
 
 def getFeatureIndexFromName(name):
     index = 0
+    indexList = []
     for feature in Zones:
         if feature.value.getName() == name:
-            return index
+            indexList.append(index)
         else:
             index +=1
 
-    return -1
+    if len(indexList) > 0:
+        return Utils.randomFromCollection(indexList)
+    else:
+        return -1
 
 def getListOfTier0FoodFeatures():
     returnArray = []
