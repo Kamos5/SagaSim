@@ -9,6 +9,10 @@ def getNewHouse():
 def setNewHouseToPerson(person, house):
     person.setAccommodation(house)
 
+# def addNewOwner(person, house):
+#     house.setHouseFirstOwner(person)
+#     person.addRealEstate(house)
+
 def setHouseDurability(house, newValue):
     house.setHouseDurability(newValue)
 

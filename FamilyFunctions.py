@@ -89,6 +89,14 @@ def divorces (world):
                 person.setSpouse(None)
                 world.changeDivorcesNumber(1)
 
+                newHouse = HouseFunctions.getNewHouse()
+                person.getSettlement().buildNewHouse(newHouse)
+                HouseFunctions.setHouseDurability(newHouse, Utils.randomRange(60, 90))
+                person.getAccommodation().removeHouseResident(person)
+                newHouse.addHouseResident(person)
+                HouseFunctions.setNewHouseToPerson(person, newHouse)
+                #HouseFunctions.addNewOwner(person, newHouse)
+
 
 def spouseMatchmaking (world):
 
@@ -117,15 +125,17 @@ def spouseMatchmaking (world):
                 AddToMarriedList(person, spouseObj)
                 ChangeFamilyName(person, spouseObj, world)
 
-                newHouse = HouseFunctions.getNewHouse()
-                person.getSettlement().buildNewHouse(newHouse)
-                HouseFunctions.setHouseDurability(newHouse, Utils.randomRange(60, 90))
-                person.getAccommodation().removeHouseResident(person)
-                person.getSpouse().getAccommodation().removeHouseResident(spouseObj)
-                HouseFunctions.setNewHouseToPerson(person, newHouse)
-                HouseFunctions.setNewHouseToPerson(spouseObj, newHouse)
-                newHouse.addHouseResident(person)
-                newHouse.addHouseResident(person.getSpouse())
+                # #new House for marriage
+                # newHouse = HouseFunctions.getNewHouse()
+                # person.getSettlement().buildNewHouse(newHouse)
+                # HouseFunctions.setHouseDurability(newHouse, Utils.randomRange(60, 90))
+                # person.getAccommodation().removeHouseResident(person)
+                # person.getSpouse().getAccommodation().removeHouseResident(spouseObj)
+                # HouseFunctions.setNewHouseToPerson(person, newHouse)
+                # #HouseFunctions.addNewOwner(person, newHouse)
+                # HouseFunctions.setNewHouseToPerson(spouseObj, newHouse)
+                # newHouse.addHouseResident(person)
+                # newHouse.addHouseResident(person.getSpouse())
 
 
 def checkLDTraitsNumber(person):

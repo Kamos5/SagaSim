@@ -361,6 +361,7 @@ def splitFamiliesInMigration(world, region, newTargetSettlement, complexRandomMi
                 person.setOriginFamilyObjectRef(family)
                 if family.getFemaleNumber() == 0 and family.getMaleNumber() == 0:
                     family.setFoundedBy(person)
+                    #HouseFunctions.addNewOwner(person, newHouse)
                 family.addNewMember(person)
 
 def crime(world):

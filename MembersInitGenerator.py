@@ -42,6 +42,7 @@ def Init(families, world):
             newHouse = HouseFunctions.getNewHouse()
             member.getSettlement().buildNewHouse(newHouse)
             HouseFunctions.setNewHouseToPerson(member, newHouse)
+            #HouseFunctions.addNewOwner(member, newHouse)
             HouseFunctions.setHouseDurability(newHouse, Utils.randomRange(60, 90))
             newHouse.addHouseResident(member)
 
@@ -85,7 +86,7 @@ def initInitMarrieges(family):
             family.removeUnmarriedMember(pip1)
             family.removeUnmarriedMember(pip2)
             pip2.getAccommodation().removeHouseResident(pip2)
-            pip2.setAccommodation(pip1.getAccommodation())
+            HouseFunctions.setNewHouseToPerson(pip2, pip1.getAccommodation())
             pip2.getAccommodation().addHouseResident(pip2)
 
     return
@@ -101,7 +102,7 @@ def InitMarriegies (husband, wife):
     wife.spouse.setSpouseRelation(50)
 
     wife.getAccommodation().removeHouseResident(wife)
-    wife.setAccommodation(husband.getAccommodation())
+    HouseFunctions.setNewHouseToPerson(wife, husband.getAccommodation())
     wife.getAccommodation().addHouseResident(wife)
 
     return

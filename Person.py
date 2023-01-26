@@ -72,6 +72,7 @@ class Person:
         self.happiness = 0
         self.personalSexualityModifier = 1
         self.accommodation = None
+        self.realEstate = []
         pass
 
     def setInitValues(self, familyName, yearOfBirth, age, randomLifespan, sex, hairColor, hairColorGen1, hairColorGen2, eyeColor, eyeColorGen1, eyeColorGen2, familyObj):
@@ -345,6 +346,15 @@ class Person:
     def initGenUpFamilyTree(self):
 
         return self.generateUpFamilyTree(BinaryTreeNode(self))
+
+    def getRealEstate (self):
+        return self.realEstate
+
+    def addRealEstate(self, newEstate):
+        self.realEstate.append(newEstate)
+
+    def removeRealEstate(self, estate):
+        self.realEstate.remove(estate)
 
     def getAncestralFamilies(self):
 

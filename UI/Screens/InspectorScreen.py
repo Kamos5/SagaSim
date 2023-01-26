@@ -178,7 +178,7 @@ class InspectorScreen:
                     self.inspectorScreenSurfaceObjsRect.append([self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding*3, self.lineHeight * self.writeLine + self.scroll_y)), worker])
                     self.writeLine += 1
 
-        label = Label("Houses: ", 500, self.lineHeight, self.textFont)
+        label = Label("Houses: " + str(len(object.getHousing())), 500, self.lineHeight, self.textFont)
         self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding, self.lineHeight * self.writeLine + self.scroll_y))
         self.writeLine += 1
         for house in object.getHousing():
