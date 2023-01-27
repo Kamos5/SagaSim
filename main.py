@@ -224,6 +224,8 @@ def running (world, manualOverride):
     print("Male population: " + str(malePop))
     print("Female population: " + str(femalePop))
     print("Divorces: " + str(world.getDivorcesNumber()))
+
+    world.makeHistory()
     # print("Crimes: " + str(world.getCrimesPerYear()))
     # print(psutil.cpu_percent())
     # print(psutil.virtual_memory())  # physical memory usage
@@ -265,6 +267,7 @@ def main():
         # VisualLogic
         canvas.clearCanvas()
         canvas.navBarScreen.addHelp()
+        canvas.navBarScreen.addPlots()
         canvas.navBarScreen.addDateTimer(world)
         canvas.drawStuff(world)
 
@@ -309,10 +312,10 @@ def pygameEvents(event, canvas, pausedPressed):
         #scroll up
         if event.button == 4:
             pos = pygame.mouse.get_pos()
-            if canvas.listScreenObj.collidepoint(pos) and not canvas.showHelp and not canvas.showFamilyScreen:
+            if canvas.listScreenObj.collidepoint(pos) and not canvas.showHelp and not canvas.showPlots and not canvas.showFamilyScreen:
                 scroll_y = min(canvas.listScreen.getScroll_y() + 50, 0)
                 canvas.refreshScreen(world, scroll_y, canvas.inspectorScreen.getScroll_y(), canvas.familyTreeScreen.getScroll_y())
-            if canvas.detailsScreenObj.collidepoint(pos) and not canvas.showHelp and not canvas.showFamilyScreen:
+            if canvas.detailsScreenObj.collidepoint(pos) and not canvas.showHelp and not canvas.showPlots and not canvas.showFamilyScreen:
                 scroll_y = min(canvas.inspectorScreen.getScroll_y() + 50, 0)
                 canvas.refreshScreen(world, canvas.listScreen.getScroll_y(), scroll_y, canvas.familyTreeScreen.getScroll_y())
 
@@ -323,13 +326,13 @@ def pygameEvents(event, canvas, pausedPressed):
         # scroll down
         if event.button == 5:
             pos = pygame.mouse.get_pos()
-            if canvas.listScreenObj.collidepoint(pos) and not canvas.showHelp and not canvas.showFamilyScreen:
+            if canvas.listScreenObj.collidepoint(pos) and not canvas.showHelp and not canvas.showPlots and not canvas.showFamilyScreen:
                 if canvas.listScreen.lineHeight*canvas.listScreen.writeLine > canvas.listScreen.height/2:
                     scroll_y = max(canvas.listScreen.getScroll_y() - 50, -int(canvas.listScreen.lineHeight*canvas.listScreen.writeLine) + canvas.listScreen.height/2)
                 else:
                     scroll_y = 0
                 canvas.refreshScreen(world, scroll_y, canvas.inspectorScreen.getScroll_y(), canvas.familyTreeScreen.getScroll_y())
-            if canvas.detailsScreenObj.collidepoint(pos) and not canvas.showHelp and not canvas.showFamilyScreen:
+            if canvas.detailsScreenObj.collidepoint(pos) and not canvas.showHelp and not canvas.showPlots and not canvas.showFamilyScreen:
                 if canvas.inspectorScreen.lineHeight*canvas.inspectorScreen.writeLine > canvas.inspectorScreen.height/2:
                     scroll_y = max(canvas.inspectorScreen.getScroll_y() - 50, -int(canvas.inspectorScreen.lineHeight*canvas.inspectorScreen.writeLine) + canvas.inspectorScreen.height/2)
                 else:

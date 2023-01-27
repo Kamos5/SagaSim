@@ -6,6 +6,7 @@ from UI.Screens.HelpScreen import HelpScreen
 from UI.Screens.InspectorScreen import InspectorScreen
 from UI.Screens.ListScreen import ListScreen
 from UI.Screens.NavBarScreen import NavBarScreen
+from UI.Screens.PlotsScreen import PlotsScreen
 from UI.Utils.TextField import TextField
 
 
@@ -34,6 +35,13 @@ class Canvas:
         self.helpPosX = int(self.windowWidth/8)
         self.helpPosY = int(self.windowHeight/8)
 
+        self.plotsWidth = int(self.windowWidth*3/4)
+        self.plotsHeight = int(self.windowHeight*3/4)
+        self.plotsWidthOffSet = 0
+        self.plotsHeightOffSet = 0
+        self.plotsPosX = int(self.windowWidth/8)
+        self.plotsPosY = int(self.windowHeight/8)
+
         self.listScreenWidth = int(self.windowWidth/2)
         self.listScreenHeight = self.windowHeight
         self.listScreenWidthOffSet = 0
@@ -60,6 +68,9 @@ class Canvas:
         self.helpScreen = HelpScreen(self.helpWidth, self.helpHeight, self.helpWidthOffSet, self.helpHeightOffSet, self.helpPosX, self.helpPosY)
         self.helpScreenSurface = self.helpScreen.getHelpScreenSurface()
 
+        self.plotsScreen = PlotsScreen(self.plotsWidth, self.plotsHeight, self.plotsWidthOffSet, self.plotsHeightOffSet, self.plotsPosX, self.plotsPosY)
+        self.plotsScreenSurface = self.plotsScreen.getPlotsScreenSurface()
+
         self.navBarScreen = NavBarScreen(self.navbarWidth, self.navBarHeight, self.navBarWidthOffSet, self.navBarHeightOffSet, self.navBarPosX, self.navBarPosY)
         self.navBarScreenSurface = self.navBarScreen.getNavBarScreenSurface()
 
@@ -77,6 +88,7 @@ class Canvas:
         self.lastFocusObj = None
 
         self.showHelp = False
+        self.showPlots = False
         self.showFamilyScreen = False
         self.showFamilyObj = None
         self.showUpTree = False
@@ -92,6 +104,7 @@ class Canvas:
 
         self.screen.fill((0, 0, 0), (0, 0, self.windowWidth, self.windowHeight))
         HelpScreen.cleanScreen(self.helpScreen)
+        PlotsScreen.cleanScreen(self.plotsScreen)
         NavBarScreen.cleanScreen(self.navBarScreen)
         ListScreen.cleanScreen(self.listScreen)
         InspectorScreen.cleanScreen(self.inspectorScreen)
@@ -109,6 +122,7 @@ class Canvas:
         self.listScreen.resetWriteLine()
         self.listScreen.addRegions(self.lastFocusObj)
         self.helpScreen.resetWriteLine()
+        self.plotsScreen.resetWriteLine()
         self.familyTreeScreen.resetWriteLine()
         self.inspectorScreen.resetWriteLine()
         self.inspectorScreen.addInspectorLabel()
@@ -141,6 +155,10 @@ class Canvas:
             self.helpScreen.addHelp()
             self.helpScreenObj = self.screen.blit(self.helpScreenSurface, (self.helpPosX, self.helpPosY))
 
+        if self.showPlots:
+            self.plotsScreen.addPlots(world)
+            self.plotsScreenObj = self.screen.blit(self.plotsScreenSurface, (self.plotsPosX, self.plotsPosY))
+
         if self.showFamilyScreen:
             self.familyTreeScreen.addTree(self.showFamilyObj, self.showUpTree, self.showDownTree)
             self.familyTreeScreenObj = self.screen.blit(self.familyTreeScreenSurface, (self.helpPosX, self.helpPosY))
@@ -152,6 +170,7 @@ class Canvas:
         self.familyTreeScreen.setScroll_y(familyTreeScroll_y)
         self.clearCanvas()
         self.navBarScreen.addHelp()
+        self.navBarScreen.addPlots()
         self.navBarScreen.addDateTimer(world)
         self.drawStuff(world)
         pygame.display.update()
@@ -169,7 +188,7 @@ class Canvas:
 
         for itemObjRect, itemObjRectScreen in zip(itemsObjRectArray, itemsObjRectScreensArray):
             itemsObj = itemObjRect
-            if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1 and self.showHelp is False and self.showFamilyScreen is False:
+            if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1 and self.showPlots is False and self.showHelp is False and self.showFamilyScreen is False:
                 self.showDownTree = False
                 self.showUpTree = False
                 mouseX, mouseY = pygame.mouse.get_pos()
@@ -218,20 +237,28 @@ class Canvas:
                 self.showHelp = True
 
             if self.navBarScreen.navBarScreenSurfaceObjsRect[1][0].collidepoint(pos) and not self.showFamilyScreen and not self.showHelp:
+                if not pausedPressed:
+                    pausedPressed = True
+                self.showPlots = True
+
+            if self.navBarScreen.navBarScreenSurfaceObjsRect[2][0].collidepoint(pos) and not self.showFamilyScreen and not self.showHelp:
                 pausedPressed = not pausedPressed
             if pausedPressed == False:
                 self.showHelp = False
+                self.showPlots = False
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_SPACE:
                 if not self.showFamilyScreen:
                     pausedPressed = not pausedPressed
             if event.key == pygame.K_ESCAPE:
                 self.showHelp = False
+                self.showPlots = False
                 if self.showFamilyScreen:
                     self.showFamilyScreen = False
                     self.familyTreeScreen.setScroll_y(0)
             if pausedPressed == False:
                 self.showHelp = False
+                self.showPlots = False
             if event.key == pygame.K_q:
                 exit()
 

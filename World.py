@@ -23,6 +23,14 @@ class World:
         self.birthsPerYear = []
         self.crimesPerYear = []
 
+        self.worldHistory = []
+        self.peopleNumberHistory = []
+        self.alivePeopleNumberHistory = []
+        self.birthsPerYearNumberHistory = []
+        self.crimesPerYearNumberHistory = []
+        self.familiesMembersNumberHistory = []
+        self.peopleAliveHistory = []
+
     def getPeople(self):
         return self.people
 
@@ -78,6 +86,7 @@ class World:
 
     def changeDivorcesNumber(self, value):
         self.divorcesNumber += value
+
     def getYear(self):
         return self.year
 
@@ -128,3 +137,27 @@ class World:
     def updateAlive(self):
         self.alivePeople = []
         self.alivePeople = self.getAlivePeopleFunction()
+
+    def makeHistory(self):
+        self.worldHistory.append(self.year)
+        self.peopleNumberHistory.append(len(self.getPeople()))
+        self.alivePeopleNumberHistory.append(len(self.getAlivePeople()))
+        self.birthsPerYearNumberHistory = self.getBirthsPerYear()
+        self.crimesPerYearNumberHistory = self.getCrimesPerYear()
+        self.peopleAliveHistory.append(self.getAlivePeople())
+
+
+    def getAlivePeopleNumberHistory(self):
+        return self.alivePeopleNumberHistory
+
+    def getBirthsPerYearNumberHistory(self):
+        return self.birthsPerYearNumberHistory
+
+    def getWorldYearHistory(self):
+        return self.worldHistory
+
+    # def getFamiliesMembersNumberHistory(self):
+    #     return self.familiesMembersNumberHistory
+
+    def getPeopleAliveHistory(self):
+        return self.peopleAliveHistory

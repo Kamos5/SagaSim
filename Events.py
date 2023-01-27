@@ -422,7 +422,7 @@ def crime(world):
 
 def moveFoodAndProduction(migrantSize, oldSettlement, newSettlement):
 
-    foodPackages = 2* migrantSize
+    foodPackages = 2 * migrantSize
     if oldSettlement.getFreeFood() > foodPackages:
         oldSettlement.changeFreeFood(foodPackages)
         newSettlement.changeFreeFood(foodPackages)
