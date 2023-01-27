@@ -13,7 +13,8 @@ from UI.Utils.TextField import TextField
 class Canvas:
 
     windowWidth = 1920 # 1366
-    windowHeight = 1080 # 768
+    windowHeight = 768#1080 # 768
+    temp = 0
 
     def __init__(self):
 
@@ -173,8 +174,8 @@ class Canvas:
         self.navBarScreen.addPlots()
         self.navBarScreen.addDateTimer(world)
         self.drawStuff(world)
+        self.temp += world.getYear()+1-world.getYear()
         pygame.display.update()
-
 
     def handleClickOnCollection(self, event, pausedPressed):
 

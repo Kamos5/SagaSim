@@ -288,6 +288,7 @@ def main():
                     pausedPressed = pygameEvents(event, canvas, pausedPressed)
 
 
+
         pygame.display.update()  # Call this only once per loop
         clock.tick(fps)
 

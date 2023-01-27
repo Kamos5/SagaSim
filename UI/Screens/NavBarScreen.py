@@ -45,7 +45,7 @@ class NavBarScreen:
 
     def addPlots (self):
 
-        self.plotsLabel = Label("Plots", 50, self.lineHeight, self.textFont, True, False, 1)
+        self.plotsLabel = Label("Graphs", 75, self.lineHeight, self.textFont, True, False, 1)
         self.plotsLabel.setActiveRectColor(20, 60, 20)
         self.plotsLabel.setActiveBorderColor(100, 10, 10)
         self.navBarScreenSurfaceObjsRect.append([self.navBarScreenSurface.blit(self.plotsLabel.localSurface, (self.width * 0.05, 0)), 'Plots'])

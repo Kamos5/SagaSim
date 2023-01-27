@@ -85,25 +85,27 @@ class PlotsScreen:
                     peopleWithGrayEyeColorTemp+=1
 
             peopleWithBlackEyeColor.append(peopleWithBlackEyeColorTemp)
-            peopleEyeColorArray.append(peopleWithBlackEyeColor)
             peopleWithBrownEyeColor.append(peopleWithBrownEyeColorTemp)
-            peopleEyeColorArray.append(peopleWithBrownEyeColor)
             peopleWithAmberEyeColor.append(peopleWithAmberEyeColorTemp)
-            peopleEyeColorArray.append(peopleWithAmberEyeColor)
             peopleWithHazelEyeColor.append(peopleWithHazelEyeColorTemp)
-            peopleEyeColorArray.append(peopleWithHazelEyeColor)
             peopleWithGreenEyeColor.append(peopleWithGreenEyeColorTemp)
-            peopleEyeColorArray.append(peopleWithGreenEyeColor)
             peopleWithBlueEyeColor.append(peopleWithBlueEyeColorTemp)
-            peopleEyeColorArray.append(peopleWithBlueEyeColor)
             peopleWithGrayEyeColor.append(peopleWithGrayEyeColorTemp)
-            peopleEyeColorArray.append(peopleWithGrayEyeColor)
+        peopleEyeColorArray.append(peopleWithBlackEyeColor)
+        peopleEyeColorArray.append(peopleWithBrownEyeColor)
+        peopleEyeColorArray.append(peopleWithAmberEyeColor)
+        peopleEyeColorArray.append(peopleWithHazelEyeColor)
+        peopleEyeColorArray.append(peopleWithGreenEyeColor)
+        peopleEyeColorArray.append(peopleWithBlueEyeColor)
+        peopleEyeColorArray.append(peopleWithGrayEyeColor)
 
         plot = Plots(self.width-self.marginLeftOffSet-self.marginRightOffSet, self.height*.8, world.getWorldYearHistory(), peopleEyeColorArray)
 
         self.plotsField = plot.getPlotSurface()
 
         self.plotsScreenSurface.blit(self.plotsField, (self.marginLeftOffSet, self.writeLine * self.lineHeight))
+
+        plot.closePlot()
 
     def resetWriteLine(self):
 

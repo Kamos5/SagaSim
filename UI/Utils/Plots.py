@@ -1,3 +1,4 @@
+import matplotlib.pyplot
 import pygame
 import matplotlib.backends.backend_agg as agg
 import pylab
@@ -16,11 +17,12 @@ class Plots:
             if i == 0:
                 i += 1
                 continue
-            ax.plot(xAxisData, data)
+            ax.plot(xAxisData, data, label='Label'+ str(i))
             i += 1
-        ax.get_title()
-        ax.set_title('TITLE')
-        ax.legend(legendArray)
+        matplotlib.pyplot.xlabel('Year')
+        matplotlib.pyplot.ylabel('Population')
+        matplotlib.pyplot.title('Eye Color')
+        matplotlib.pyplot.legend(legendArray)
 
         canvas = agg.FigureCanvasAgg(fig)
         canvas.draw()
@@ -35,3 +37,6 @@ class Plots:
     def getPlotSurface(self):
 
         return self.surf
+
+    def closePlot(self):
+        matplotlib.pyplot.close()
