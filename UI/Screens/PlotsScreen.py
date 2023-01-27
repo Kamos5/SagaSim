@@ -57,6 +57,8 @@ class PlotsScreen:
         peopleWithGreenEyeColor = []
         peopleWithBlueEyeColor = []
         peopleWithGrayEyeColor = []
+        peopleEyeColorArray = []
+        peopleEyeColorArray.append(['Black', 'Brown', 'Amber', 'Hazel', 'Green', 'Blue', 'Gray'])
 
         for year in world.getPeopleAliveHistory():
             peopleWithBlackEyeColorTemp = 0
@@ -83,14 +85,21 @@ class PlotsScreen:
                     peopleWithGrayEyeColorTemp+=1
 
             peopleWithBlackEyeColor.append(peopleWithBlackEyeColorTemp)
+            peopleEyeColorArray.append(peopleWithBlackEyeColor)
             peopleWithBrownEyeColor.append(peopleWithBrownEyeColorTemp)
+            peopleEyeColorArray.append(peopleWithBrownEyeColor)
             peopleWithAmberEyeColor.append(peopleWithAmberEyeColorTemp)
+            peopleEyeColorArray.append(peopleWithAmberEyeColor)
             peopleWithHazelEyeColor.append(peopleWithHazelEyeColorTemp)
+            peopleEyeColorArray.append(peopleWithHazelEyeColor)
             peopleWithGreenEyeColor.append(peopleWithGreenEyeColorTemp)
+            peopleEyeColorArray.append(peopleWithGreenEyeColor)
             peopleWithBlueEyeColor.append(peopleWithBlueEyeColorTemp)
+            peopleEyeColorArray.append(peopleWithBlueEyeColor)
             peopleWithGrayEyeColor.append(peopleWithGrayEyeColorTemp)
+            peopleEyeColorArray.append(peopleWithGrayEyeColor)
 
-        plot = Plots(world.getWorldYearHistory(), peopleWithBrownEyeColor, self.width-self.marginLeftOffSet-self.marginRightOffSet, self.height*.8)
+        plot = Plots(self.width-self.marginLeftOffSet-self.marginRightOffSet, self.height*.8, world.getWorldYearHistory(), peopleEyeColorArray)
 
         self.plotsField = plot.getPlotSurface()
 

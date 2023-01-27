@@ -5,12 +5,22 @@ import pylab
 
 class Plots:
 
-    def __init__(self, xAxisData, yAxisData , x, y):
+    def __init__(self,  x, y, xAxisData, *yAxisData ):
 
         dpi = 100
         fig = pylab.figure(figsize=[x/dpi, y/dpi],  dpi=dpi)
         ax = fig.gca()
-        ax.plot(xAxisData, yAxisData)
+        i = 0
+        legendArray = yAxisData[0][0]
+        for data in yAxisData[0]:
+            if i == 0:
+                i += 1
+                continue
+            ax.plot(xAxisData, data)
+            i += 1
+        ax.get_title()
+        ax.set_title('TITLE')
+        ax.legend(legendArray)
 
         canvas = agg.FigureCanvasAgg(fig)
         canvas.draw()
