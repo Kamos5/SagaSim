@@ -4,11 +4,11 @@ from PIL import ImageFont
 
 class Label2:
 
-    def __init__(self, text, font, clickable=False, focused=False, borderSize=1):
+    def __init__(self, text, font, clickable=False, focused=False, horizontalMargin = 2, verticalMargin = 2, borderSize=1):
 
         fontW, fontH = font.size(text)
-        self.horizontalMargin = 2
-        self.verticalMargin = 2
+        self.horizontalMargin = horizontalMargin
+        self.verticalMargin = verticalMargin
         w = fontW + 2 * borderSize + 2 * self.horizontalMargin
         h = fontH + 2 * borderSize + 2 * self.verticalMargin
         self.localSurface = pygame.Surface([w, h])

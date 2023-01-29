@@ -23,7 +23,7 @@ class PlotsScreen:
     def __init__(self, width, height, widthOffSet, heightOffSet, screenPosX, screenPosY):
 
         self.screenColor = 20, 60, 20
-        self.writeLine = 1
+        self.writeLine = 0
         self.width = width
         self.height = height
         self.widthOffSet = widthOffSet
@@ -35,6 +35,9 @@ class PlotsScreen:
         self.scroll_y = 0
         self.screenPosX = screenPosX
         self.screenPosY = screenPosY
+        self.labelBoarderDefault = 1
+        self.labelMarginHorizontalDefault = 2
+        self.labelMarginVerticalDefault = 2
 
         self.plotsScreenSurface = pygame.Surface([self.width, self.height - self.heightOffSet])
         self.plotsScreenSurfaceObjsRect = []
@@ -52,39 +55,42 @@ class PlotsScreen:
 
     def addHeaderPlot(self, lastFocusObj, world):
 
+        self.writeLine += 1
+
         self.plotsLabel = Label2("Plots Menu:", self.textFont, False, 1)
         self.plotsLabel.setActiveRectColor(50, 50, 50)
         self.plotsLabel.setActiveBorderColor(10, 10, 100)
-        self.plotsScreenSurface.blit(self.plotsLabel.localSurface, (self.width * 0.10, self.writeLine*self.lineHeight))
+        self.plotsScreenSurface.blit(self.plotsLabel.localSurface, (self.width * 0.10, self.getVerticalPositioning()))
+
         self.writeLine += 2
 
         if isinstance(lastFocusObj, Button) and lastFocusObj.getButtonName() == 'globalPopulation':
-            self.plotsLabel = Label("Population", 120, self.lineHeight, self.textFont, True, lastFocusObj.getButtonFlag())
+            self.plotsLabel = Label2("Population", self.textFont, True, lastFocusObj.getButtonFlag())
         else:
-            self.plotsLabel = Label("Population", 120, self.lineHeight, self.textFont, True)
+            self.plotsLabel = Label2("Population", self.textFont, True)
 
-        self.plotsScreenSurfaceObjsRect.append([self.plotsScreenSurface.blit(self.plotsLabel.localSurface, (self.width * 0.10, self.writeLine * self.lineHeight)), Button('globalPopulation')])
+        self.plotsScreenSurfaceObjsRect.append([self.plotsScreenSurface.blit(self.plotsLabel.localSurface, (self.width * 0.05, self.getVerticalPositioning())), Button('globalPopulation'),])
 
         if isinstance(lastFocusObj, Button) and lastFocusObj.getButtonName() == 'eyes':
-            self.plotsLabel = Label("Eye", 50, self.lineHeight, self.textFont, True, lastFocusObj.getButtonFlag())
+            self.plotsLabel = Label2("Eye Colour", self.textFont, True, lastFocusObj.getButtonFlag())
         else:
-            self.plotsLabel = Label("Eye", 50, self.lineHeight, self.textFont, True)
+            self.plotsLabel = Label2("Eye Colour", self.textFont, True)
 
-        self.plotsScreenSurfaceObjsRect.append([self.plotsScreenSurface.blit(self.plotsLabel.localSurface, (self.width * 0.20, self.writeLine * self.lineHeight)), Button('eyes')])
+        self.plotsScreenSurfaceObjsRect.append([self.plotsScreenSurface.blit(self.plotsLabel.localSurface, (self.width * 0.15, self.getVerticalPositioning())), Button('eyes')])
 
         if isinstance(lastFocusObj, Button) and lastFocusObj.getButtonName() == 'hairs':
-            self.plotsLabel = Label("Hair", 55, self.lineHeight, self.textFont, True, lastFocusObj.getButtonFlag())
+            self.plotsLabel = Label2("Hair Colour", self.textFont, True, lastFocusObj.getButtonFlag())
         else:
-            self.plotsLabel = Label("Hair", 55, self.lineHeight, self.textFont, True)
+            self.plotsLabel = Label2("Hair Colour", self.textFont, True)
 
-        self.plotsScreenSurfaceObjsRect.append([self.plotsScreenSurface.blit(self.plotsLabel.localSurface, (self.width * 0.25, self.writeLine * self.lineHeight)), Button('hairs')])
+        self.plotsScreenSurfaceObjsRect.append([self.plotsScreenSurface.blit(self.plotsLabel.localSurface, (self.width * 0.25, self.getVerticalPositioning())), Button('hairs')])
 
         if isinstance(lastFocusObj, Button) and lastFocusObj.getButtonName() == 'crime':
-            self.plotsLabel = Label("Crime", 70, self.lineHeight, self.textFont, True, lastFocusObj.getButtonFlag())
+            self.plotsLabel = Label2("Crime Levels", self.textFont, True, lastFocusObj.getButtonFlag())
         else:
-            self.plotsLabel = Label("Crime", 70, self.lineHeight, self.textFont, True)
+            self.plotsLabel = Label2("Crime Levels", self.textFont, True)
 
-        self.plotsScreenSurfaceObjsRect.append([self.plotsScreenSurface.blit(self.plotsLabel.localSurface, (self.width * 0.30, self.writeLine * self.lineHeight)), Button('crime')])
+        self.plotsScreenSurfaceObjsRect.append([self.plotsScreenSurface.blit(self.plotsLabel.localSurface, (self.width * 0.35, self.getVerticalPositioning())), Button('crime')])
 
         self.writeLine += 2
 
@@ -98,7 +104,7 @@ class PlotsScreen:
         plot = Plots(self.width-self.marginLeftOffSet-self.marginRightOffSet, self.height*.8, self.titleLabel, xLabel, yLabel, world.getWorldYearHistory(), self.arrayLabel, self.arrayLabelColor, self.arrayData)
 
         self.plotsField = plot.getPlotSurface()
-        self.plotsScreenSurface.blit(self.plotsField, (self.marginLeftOffSet, self.writeLine * self.lineHeight))
+        self.plotsScreenSurface.blit(self.plotsField, (self.marginLeftOffSet, self.getVerticalPositioning()))
 
         plot.closePlot()
 
@@ -139,7 +145,7 @@ class PlotsScreen:
 
     def resetWriteLine(self):
 
-        self.writeLine = 1
+        self.writeLine = 0
 
     def cleanScreen(self):
 
@@ -149,7 +155,5 @@ class PlotsScreen:
     def getPlotsScreenSurface(self):
         return self.plotsScreenSurface
 
-    # def addPopulationButton (self):
-    #
-    #     self.helpLabel = Label("Help", 50, self.lineHeight, self.textFont, True, True, 1)
-    #     self.navBarScreenSurfaceObjsRect.append([self.navBarScreenSurface.blit(self.helpLabel.localSurface, (self.width * 0.01, 0)), 'Help'])
+    def getVerticalPositioning(self):
+        return self.writeLine * (self.lineHeight + 2 * self.labelBoarderDefault + 2 * self.labelMarginVerticalDefault)
