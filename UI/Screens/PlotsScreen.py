@@ -47,19 +47,31 @@ class PlotsScreen:
         self.arrayLabelColor = ['']
         self.arrayData = []
 
-    def addHeaderPlot(self):
+    def addHeaderPlot(self, lastFocusObj, world):
 
-        self.writeLine += 1
-        self.plotsLabel = Label("Plots Menu:", 140, self.lineHeight, self.textFont, False, True, 2)
+        self.plotsLabel = Label("Plots Menu:", 130, self.lineHeight, self.textFont, False, 1)
         self.plotsLabel.setActiveRectColor(50, 50, 50)
         self.plotsLabel.setActiveBorderColor(10, 10, 100)
         self.plotsScreenSurface.blit(self.plotsLabel.localSurface, (self.width * 0.10, self.writeLine*self.lineHeight))
-        self.writeLine += 1
+        self.writeLine += 2
 
-        self.plotsLabel = Label("Eye", 50, self.lineHeight, self.textFont, False, True, 2)
-        self.plotsScreenSurface.blit(self.plotsLabel.localSurface, (self.width * 0.10, self.writeLine * self.lineHeight))
+        if lastFocusObj == 'eyes':
+            self.plotsLabel = Label("Eye", 55, self.lineHeight, self.textFont, True, True)
+        else:
+            self.plotsLabel = Label("Eye", 55, self.lineHeight, self.textFont, True)
 
-        self.writeLine += 1
+        self.plotsScreenSurfaceObjsRect.append([self.plotsScreenSurface.blit(self.plotsLabel.localSurface, (self.width * 0.10, self.writeLine * self.lineHeight)), 'eyes'])
+
+        if lastFocusObj == 'hairs':
+            self.plotsLabel = Label("Hair", 60, self.lineHeight, self.textFont, True, True)
+        else:
+            self.plotsLabel = Label("Hair", 60, self.lineHeight, self.textFont, True)
+
+        self.plotsScreenSurfaceObjsRect.append([self.plotsScreenSurface.blit(self.plotsLabel.localSurface, (self.width * 0.15, self.writeLine * self.lineHeight)), 'hairs'])
+
+        self.writeLine += 2
+
+        self.addGeneralPlotsFields(lastFocusObj, world)
 
     def addPlots(self, world):
 
@@ -73,15 +85,15 @@ class PlotsScreen:
 
         plot.closePlot()
 
-    def addGeneralPlotsFields(self, object, world):
+    def addGeneralPlotsFields(self, lastFocusObj, world):
 
-        if object == 'Eyes':
+        if lastFocusObj == 'eyes':
             self.titleLabel = 'Eye Colour in Population'
             self.arrayLabel = [Parameters.eyeColorArray[0][0], Parameters.eyeColorArray[1][0], Parameters.eyeColorArray[2][0], Parameters.eyeColorArray[3][0], Parameters.eyeColorArray[4][0], Parameters.eyeColorArray[5][0], Parameters.eyeColorArray[6][0]]
             self.arrayLabelColor = [Parameters.eyeColorArray[0][1], Parameters.eyeColorArray[1][1], Parameters.eyeColorArray[2][1], Parameters.eyeColorArray[3][1], Parameters.eyeColorArray[4][1], Parameters.eyeColorArray[5][1], Parameters.eyeColorArray[6][1]]
             self.arrayData = world.getPeopleEyeColorsComplexArray()
 
-        elif object == 'Hairs':
+        elif lastFocusObj == 'hairs':
             self.titleLabel = 'Hair Colour in Population'
             self.arrayLabel = [Parameters.hairColorArray[0][0], Parameters.hairColorArray[1][0], Parameters.hairColorArray[2][0], Parameters.hairColorArray[3][0], Parameters.hairColorArray[4][0], Parameters.hairColorArray[5][0]]
             self.arrayLabelColor = [Parameters.hairColorArray[0][1], Parameters.hairColorArray[1][1], Parameters.hairColorArray[2][1], Parameters.hairColorArray[3][1], Parameters.hairColorArray[4][1], Parameters.hairColorArray[5][1]]

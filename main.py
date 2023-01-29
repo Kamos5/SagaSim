@@ -266,8 +266,8 @@ def main():
 
         # VisualLogic
         canvas.clearCanvas()
-        canvas.navBarScreen.addHelp()
-        canvas.navBarScreen.addPlots()
+        canvas.navBarScreen.addHelpButton()
+        canvas.navBarScreen.addPlotsButton()
         canvas.navBarScreen.addDateTimer(world)
         canvas.drawStuff(world)
 

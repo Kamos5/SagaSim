@@ -13,7 +13,7 @@ from UI.Utils.TextField import TextField
 class Canvas:
 
     windowWidth = 1920 # 1366
-    windowHeight = 768#1080 # 768
+    windowHeight = 1080 # 768
     temp = 0
 
     def __init__(self):
@@ -129,7 +129,6 @@ class Canvas:
         self.inspectorScreen.addInspectorLabel()
 
         self.inspectorScreen.addGeneralInspectorFields(self.lastFocusObj)
-        self.plotsScreen.addGeneralPlotsFields(self.lastFocusObj, world)
 
         for region in world.getRegions():
             self.listScreen.addRegion(region, self.lastFocusObj)
@@ -158,7 +157,7 @@ class Canvas:
             self.helpScreenObj = self.screen.blit(self.helpScreenSurface, (self.helpPosX, self.helpPosY))
 
         if self.showPlots:
-            self.plotsScreen.addHeaderPlot()
+            self.plotsScreen.addHeaderPlot(self.lastFocusObj, world)
             self.plotsScreenObj = self.screen.blit(self.plotsScreenSurface, (self.plotsPosX, self.plotsPosY))
 
         if self.showFamilyScreen:
@@ -171,8 +170,8 @@ class Canvas:
         self.inspectorScreen.setScroll_y(detailsScroll_y)
         self.familyTreeScreen.setScroll_y(familyTreeScroll_y)
         self.clearCanvas()
-        self.navBarScreen.addHelp()
-        self.navBarScreen.addPlots()
+        self.navBarScreen.addHelpButton()
+        self.navBarScreen.addPlotsButton()
         self.navBarScreen.addDateTimer(world)
         self.drawStuff(world)
         self.temp += world.getYear()+1-world.getYear()
@@ -181,16 +180,16 @@ class Canvas:
     def handleClickOnCollection(self, event, pausedPressed):
 
         #arrays of objects to click
-        itemsObjRectArray = [self.listScreen.listScreenSurfaceObjsRect, self.inspectorScreen.inspectorScreenSurfaceObjsRect, self.familyTreeScreen.familyTreeScreenSurfaceObjsRect]
+        itemsObjRectArray = [self.listScreen.listScreenSurfaceObjsRect, self.inspectorScreen.inspectorScreenSurfaceObjsRect, self.familyTreeScreen.familyTreeScreenSurfaceObjsRect, self.plotsScreen.plotsScreenSurfaceObjsRect]
         navBarObjRectArray = [self.navBarScreen.navBarScreenSurfaceObjsRect]
 
         #arrays of screens with objects to
-        itemsObjRectScreensArray = [self.listScreen, self.inspectorScreen, self.familyTreeScreen]
+        itemsObjRectScreensArray = [self.listScreen, self.inspectorScreen, self.familyTreeScreen, self.plotsScreen]
         navBarObjRectScreensArray = [self.navBarScreen]
 
         for itemObjRect, itemObjRectScreen in zip(itemsObjRectArray, itemsObjRectScreensArray):
             itemsObj = itemObjRect
-            if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1 and self.showPlots is False and self.showHelp is False and self.showFamilyScreen is False:
+            if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1 and self.showHelp is False and self.showFamilyScreen is False:
                 self.showDownTree = False
                 self.showUpTree = False
                 mouseX, mouseY = pygame.mouse.get_pos()
@@ -214,6 +213,7 @@ class Canvas:
 
                         if isinstance(itemObj[1], TextField):
                             itemObj[1].activate()
+
                         return True, pausedPressed
 
             if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1 and self.showFamilyScreen is True:
@@ -242,6 +242,7 @@ class Canvas:
                 if not pausedPressed:
                     pausedPressed = True
                 self.showPlots = True
+
 
             if self.navBarScreen.navBarScreenSurfaceObjsRect[2][0].collidepoint(pos) and not self.showFamilyScreen and not self.showHelp:
                 pausedPressed = not pausedPressed

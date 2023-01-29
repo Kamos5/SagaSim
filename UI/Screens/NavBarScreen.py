@@ -37,13 +37,13 @@ class NavBarScreen:
     def getNavBarScreenSurface(self):
         return self.navBarScreenSurface
 
-    def addHelp (self):
+    def addHelpButton (self):
 
         self.helpLabel = Label("Help", 50, self.lineHeight, self.textFont, True, True, 1)
         self.navBarScreenSurfaceObjsRect.append([self.navBarScreenSurface.blit(self.helpLabel.localSurface, (self.width * 0.01, 0)), 'Help'])
 
 
-    def addPlots (self):
+    def addPlotsButton (self):
 
         self.plotsLabel = Label("Graphs", 75, self.lineHeight, self.textFont, True, False, 1)
         self.plotsLabel.setActiveRectColor(20, 60, 20)
