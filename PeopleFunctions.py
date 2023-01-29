@@ -16,7 +16,7 @@ def birthChild(world, parent1, parent2, trueParent1='', trueParent2=''):
 
     randomChanceForBeingGay = Utils.randomRange(1, 100)
 
-    if randomChanceForBeingGay < 5:
+    if randomChanceForBeingGay < 10:
         sexuality = 'homo'
     else:
         sexuality = 'hetero'
@@ -33,9 +33,11 @@ def birthChild(world, parent1, parent2, trueParent1='', trueParent2=''):
 
     fertility = Utils.geneticRandomFromValues(trueParent1.fertility, trueParent2.fertility)
 
-    offspringHeight = Utils.geneticRandomFromValuesForHeight(trueParent1.height, trueParent2.height)
+    #offspringHeight = Utils.geneticRandomFromValuesForHeight(trueParent1.height, trueParent2.height)
     if sex == Sexes.MALE:
-        offspringHeight = int(offspringHeight*Utils.randomRange(99, 102)/100)
+        offspringHeight = int(trueParent2.height * Utils.randomRange(98, 104)/100)
+    else:
+        offspringHeight = int(trueParent1.height * Utils.randomRange(98, 104) / 100)
 
     hairColor, hairColorGen1, hairColorGen2 = Utils.geneticHairColor(trueParent1, trueParent2)
     eyeColor, eyeColorGen1, eyeColorGen2 = Utils.geneticEyeColor(trueParent1, trueParent2)

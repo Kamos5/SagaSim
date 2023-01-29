@@ -23,6 +23,10 @@ class World:
         self.alivePeople = []
         self.birthsPerYear = []
         self.crimesPerYear = []
+        self.avarageLifeSpamHistory = []
+        self.averageHeightHistory = []
+        self.averageHeightMHistory = []
+        self.averageHeightFHistory = []
 
         self.crimeHomicidePerYear = []
         self.crimeAssaultPerYear = []
@@ -30,6 +34,11 @@ class World:
         self.crimeTheftPerYear = []
         self.crimeFailedPerYear = []
 
+        self.sexualityHomoHistory = []
+        self.sexualityHeteroHistory = []
+
+        self.sexualityHomoPctHistory = []
+        self.sexualityHeteroPctHistory = []
 
         self.worldHistory = []
         self.peopleNumberHistory = []
@@ -152,6 +161,18 @@ class World:
     def appendBirthsPerYear(self, value):
         self.birthsPerYear.append(int(value))
 
+    def getSexualityHetero(self):
+        return self.sexualityHeteroHistory
+
+    def getSexualityHomo(self):
+        return self.sexualityHomoHistory
+
+    def getSexualityHeteroPct(self):
+        return self.sexualityHeteroPctHistory
+
+    def getSexualityHomoPct(self):
+        return self.sexualityHomoPctHistory
+
     def getCrimesPerYear(self):
         return self.crimesPerYear
 
@@ -191,7 +212,43 @@ class World:
         self.peopleAliveHistory.append(self.getAlivePeople())
         self.countEyeColor()
         self.countHairColor()
+        self.countPersonStatistics()
 
+
+
+    def countPersonStatistics(self):
+
+        heteroCountTemp = 0
+        homoCountTemp = 0
+        heightTemp = 0
+        heightMTemp = 0
+        heightFTemp = 0
+        liveAdultsTemp = 0
+        liveAdultsMTemp = 0
+        liveAdultsFTemp = 0
+
+        for person in self.getAlivePeople():
+            if person.getSexuality() == 'hetero':
+                heteroCountTemp += 1
+            else:
+                homoCountTemp += 1
+            if person.getAge() >= 15:
+                heightTemp += person.getHeight()
+                liveAdultsTemp += 1
+                if person.getSex() == Enums.Sexes.MALE:
+                    heightMTemp += person.getHeight()
+                    liveAdultsMTemp += 1
+                else:
+                    heightFTemp += person.getHeight()
+                    liveAdultsFTemp += 1
+
+        self.averageHeightHistory.append((heightTemp / liveAdultsTemp))
+        self.averageHeightMHistory.append((heightMTemp / liveAdultsMTemp))
+        self.averageHeightFHistory.append((heightFTemp / liveAdultsFTemp))
+        self.sexualityHeteroHistory.append(heteroCountTemp)
+        self.sexualityHeteroPctHistory.append(heteroCountTemp/len(self.getAlivePeople())*100)
+        self.sexualityHomoHistory.append(homoCountTemp)
+        self.sexualityHomoPctHistory.append(homoCountTemp / len(self.getAlivePeople())*100)
 
     def countEyeColor(self):
 
@@ -255,6 +312,12 @@ class World:
     def getBirthsPerYearNumberHistory(self):
         return self.birthsPerYearNumberHistory
 
+    def getAvarageLifeSpam(self):
+        return self.avarageLifeSpamHistory
+
+    def getAverageHeightHistory(self):
+        return [self.averageHeightHistory, self.averageHeightMHistory, self.averageHeightFHistory]
+
     def getWorldYearHistory(self):
         return self.worldHistory
 
@@ -263,6 +326,12 @@ class World:
 
     def getCrimeHistory(self):
         return [self.getCrimesPerYear(), self.getCrimesHomicidePerYear(), self.getCrimesAssaultPerYear(), self.getCrimesBurglaryPerYear(), self.getCrimesTheftPerYear(), self.getCrimesFailedPerYear()]
+
+    def getSexualityHistory(self):
+        return [self.getSexualityHetero(), self.getSexualityHomo()]
+
+    def getSexualityPctHistory(self):
+        return [self.getSexualityHeteroPct(), self.getSexualityHomoPct()]
 
     def getPeopleAliveHistory(self):
         return [self.peopleAliveHistory]

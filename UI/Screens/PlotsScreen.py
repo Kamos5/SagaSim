@@ -87,6 +87,27 @@ class PlotsScreen:
 
         self.plotsScreenSurfaceObjsRect.append([self.plotsScreenSurface.blit(self.plotsLabel.localSurface, (self.width * 0.35, self.getVerticalPositioning())), Button('crime')])
 
+        if isinstance(lastFocusObj, Button) and lastFocusObj.getButtonName() == 'sexuality':
+            self.plotsLabel = Label2("Sexuality", self.textFont, True, lastFocusObj.getButtonFlag())
+        else:
+            self.plotsLabel = Label2("Sexuality", self.textFont, True)
+
+        self.plotsScreenSurfaceObjsRect.append([self.plotsScreenSurface.blit(self.plotsLabel.localSurface, (self.width * 0.45, self.getVerticalPositioning())), Button('sexuality')])
+
+        if isinstance(lastFocusObj, Button) and lastFocusObj.getButtonName() == 'sexuality%':
+            self.plotsLabel = Label2("%", self.textFont, True, lastFocusObj.getButtonFlag())
+        else:
+            self.plotsLabel = Label2("%", self.textFont, True)
+
+        self.plotsScreenSurfaceObjsRect.append([self.plotsScreenSurface.blit(self.plotsLabel.localSurface, (self.width * 0.51, self.getVerticalPositioning())), Button('sexuality%')])
+
+        if isinstance(lastFocusObj, Button) and lastFocusObj.getButtonName() == 'height':
+            self.plotsLabel = Label2("Height", self.textFont, True, lastFocusObj.getButtonFlag())
+        else:
+            self.plotsLabel = Label2("Height", self.textFont, True)
+
+        self.plotsScreenSurfaceObjsRect.append([self.plotsScreenSurface.blit(self.plotsLabel.localSurface, (self.width * 0.55, self.getVerticalPositioning())), Button('height')])
+
         self.writeLine += 2
 
         self.addGeneralPlotsFields(lastFocusObj, world)
@@ -125,10 +146,27 @@ class PlotsScreen:
 
         elif isinstance(lastFocusObj, Button) and lastFocusObj.getButtonName() == 'crime':
             self.titleLabel = 'Crimes Committed'
-            self.arrayLabel = [Parameters.crimeArray[0][0], Parameters.crimeArray[1][0], Parameters.crimeArray[2][0], Parameters.crimeArray[3][0], Parameters.crimeArray[4][0], Parameters.crimeArray[5][0]]
-            self.arrayLabelColor = [Parameters.crimeArray[0][1], Parameters.crimeArray[1][1], Parameters.crimeArray[2][1], Parameters.crimeArray[3][1], Parameters.crimeArray[4][1], Parameters.crimeArray[5][1]]
+            self.arrayLabel = [Parameters.crimeColorArray[0][0], Parameters.crimeColorArray[1][0], Parameters.crimeColorArray[2][0], Parameters.crimeColorArray[3][0], Parameters.crimeColorArray[4][0], Parameters.crimeColorArray[5][0]]
+            self.arrayLabelColor = [Parameters.crimeColorArray[0][1], Parameters.crimeColorArray[1][1], Parameters.crimeColorArray[2][1], Parameters.crimeColorArray[3][1], Parameters.crimeColorArray[4][1], Parameters.crimeColorArray[5][1]]
             self.arrayData = world.getCrimeHistory()
 
+        elif isinstance(lastFocusObj, Button) and lastFocusObj.getButtonName() == 'sexuality':
+            self.titleLabel = 'Sexuality'
+            self.arrayLabel = [Parameters.sexualityColorArray[0][0], Parameters.sexualityColorArray[1][0]]
+            self.arrayLabelColor = [Parameters.sexualityColorArray[0][1], Parameters.sexualityColorArray[1][1]]
+            self.arrayData = world.getSexualityHistory()
+
+        elif isinstance(lastFocusObj, Button) and lastFocusObj.getButtonName() == 'sexuality%':
+            self.titleLabel = 'Sexuality per Capita'
+            self.arrayLabel = [Parameters.sexualityColorArray[0][0], Parameters.sexualityColorArray[1][0]]
+            self.arrayLabelColor = [Parameters.sexualityColorArray[0][1], Parameters.sexualityColorArray[1][1]]
+            self.arrayData = world.getSexualityPctHistory()
+
+        elif isinstance(lastFocusObj, Button) and lastFocusObj.getButtonName() == 'height':
+            self.titleLabel = 'Average Height'
+            self.arrayLabel = [Parameters.averageHeightColorArray[0][0], Parameters.averageHeightColorArray[1][0], Parameters.averageHeightColorArray[2][0]]
+            self.arrayLabelColor = [Parameters.averageHeightColorArray[0][1], Parameters.averageHeightColorArray[1][1], Parameters.averageHeightColorArray[2][1]]
+            self.arrayData = world.getAverageHeightHistory()
 
         else:
             self.titleLabel = ''

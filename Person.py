@@ -97,7 +97,10 @@ class Person:
             self.sexGen2 = [Sexes.FEMALE, 0]
 
         self.fertility = 50
-        self.heightGen = Utils.randomRange(155, 165)
+        if sex == Sexes.MALE:
+            self.heightGen = Utils.randomRange(150, 160)
+        else:
+            self.heightGen = Utils.randomRange(140, 150)
         self.height = self.heightGen
         self.hairColor = hairColor
         self.hairColorGen1 = hairColorGen1
@@ -165,6 +168,9 @@ class Person:
 
     def getSex(self):
         return self.sex
+
+    def getSexuality(self):
+        return self.sexuality
 
     def getAge(self):
         return self.age

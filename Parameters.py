@@ -33,7 +33,7 @@ crimeAssault = ['Assault', '#A36405']
 crimeBurglary = ['Burglary', '#FFD700']
 crimeTheft = ['Theft', '#119999']
 crimeFailed = ['Crime Failed', '#666666']
-crimeArray = [crime, crimeHomicide, crimeAssault, crimeBurglary, crimeTheft, crimeFailed]
+crimeColorArray = [crime, crimeHomicide, crimeAssault, crimeBurglary, crimeTheft, crimeFailed]
 
 eyeColorBlack = ['Black', '#000000']
 eyeColorBrown = ['Brown', '#542604']
@@ -53,3 +53,12 @@ hairColorWhite = ['White', '#FFFAF0']
 hairColorGray = ['Gray', '#666666']
 
 hairColorArray = [hairColorBlack, hairColorBrown, hairColorYellow, hairColorRed, hairColorWhite, hairColorGray]
+
+sexualityHetero = ['Hetero', '#000099']
+sexualityHomo = ['Homo', '#666666']
+sexualityColorArray = [sexualityHetero, sexualityHomo]
+
+averageHeight = ['Avarage Height', '#A36405']
+averageMHeight = ['Avarage Male Height', '#000099']
+averageFHeight = ['Avarage Female Height', '#B22222']
+averageHeightColorArray = [averageHeight, averageMHeight, averageFHeight]
