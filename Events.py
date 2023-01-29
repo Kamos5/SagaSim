@@ -371,6 +371,12 @@ def splitFamiliesInMigration(world, region, newTargetSettlement, complexRandomMi
 def crime(world):
 
     crimeLevel = 0
+    crimeHomicideTemp = 0
+    crimeAssaultTemp = 0
+    crimeBurglaryTemp = 0
+    crimeTheftTemp = 0
+    crimeFailedTemp = 0
+
     for person in world.getAlivePeople():
         randomChanceForCrime = Utils.randomRange(1, 100)
         if randomChanceForCrime < 5 and (Traits.VENGEFUL in person.getTraits() or Traits.GREEDY in person.getTraits() or Traits.DECEITFUL in person.getTraits() and person.getOccupation() is None) and person.getAge() > 15 and person.getLifeStatus() == LifeStatus.ALIVE and person.getFreeWealth() < person.getSettlement().getAvarageResidentsWealth():
@@ -391,6 +397,7 @@ def crime(world):
                     randomPerson.setFreeWealth(loot / 2)
                     person.changeFreeWealth(loot)
                     crimeLevel += 1
+                    crimeHomicideTemp += 1
                     continue
                 if randomCrime < 30:
                     # print("Assault")
@@ -398,6 +405,7 @@ def crime(world):
                     randomPerson.setFreeWealth(loot / 3)
                     person.changeFreeWealth(loot)
                     crimeLevel += 1
+                    crimeAssaultTemp += 1
                     continue
                 if randomCrime < 70:
                     # print("Burglary")
@@ -405,6 +413,7 @@ def crime(world):
                     randomPerson.setFreeWealth(loot / 4)
                     person.changeFreeWealth(loot)
                     crimeLevel += 1
+                    crimeBurglaryTemp += 1
                     continue
                 if randomCrime < 90:
                     # print("Theft")
@@ -412,13 +421,15 @@ def crime(world):
                     randomPerson.setFreeWealth(loot / 5)
                     person.changeFreeWealth(loot)
                     crimeLevel += 1
+                    crimeTheftTemp += 1
                     continue
                 if randomCrime <= 100:
                     # print("Crime failed")
                     crimeLevel += 1
+                    crimeFailedTemp += 1
                     continue
 
-    world.appendCrimesPerYear(crimeLevel)
+    world.appendCrimesPerYear(crimeLevel, [crimeHomicideTemp, crimeAssaultTemp, crimeBurglaryTemp, crimeTheftTemp,crimeFailedTemp])
 
 def moveFoodAndProduction(migrantSize, oldSettlement, newSettlement):
 

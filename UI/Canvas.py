@@ -7,6 +7,7 @@ from UI.Screens.InspectorScreen import InspectorScreen
 from UI.Screens.ListScreen import ListScreen
 from UI.Screens.NavBarScreen import NavBarScreen
 from UI.Screens.PlotsScreen import PlotsScreen
+from UI.Utils.Button import Button
 from UI.Utils.TextField import TextField
 
 
@@ -180,16 +181,20 @@ class Canvas:
     def handleClickOnCollection(self, event, pausedPressed):
 
         #arrays of objects to click
-        itemsObjRectArray = [self.listScreen.listScreenSurfaceObjsRect, self.inspectorScreen.inspectorScreenSurfaceObjsRect, self.familyTreeScreen.familyTreeScreenSurfaceObjsRect, self.plotsScreen.plotsScreenSurfaceObjsRect]
+        itemsObjRectArray = [self.listScreen.listScreenSurfaceObjsRect, self.inspectorScreen.inspectorScreenSurfaceObjsRect, self.familyTreeScreen.familyTreeScreenSurfaceObjsRect]
         navBarObjRectArray = [self.navBarScreen.navBarScreenSurfaceObjsRect]
 
         #arrays of screens with objects to
-        itemsObjRectScreensArray = [self.listScreen, self.inspectorScreen, self.familyTreeScreen, self.plotsScreen]
+        itemsObjRectScreensArray = [self.listScreen, self.inspectorScreen, self.familyTreeScreen]
         navBarObjRectScreensArray = [self.navBarScreen]
+
+        if self.showPlots:
+            itemsObjRectArray = [self.plotsScreen.plotsScreenSurfaceObjsRect]
+            itemsObjRectScreensArray = [self.plotsScreen]
 
         for itemObjRect, itemObjRectScreen in zip(itemsObjRectArray, itemsObjRectScreensArray):
             itemsObj = itemObjRect
-            if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1 and self.showHelp is False and self.showFamilyScreen is False:
+            if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1 and self.showPlots is False and self.showHelp is False and self.showFamilyScreen is False:
                 self.showDownTree = False
                 self.showUpTree = False
                 mouseX, mouseY = pygame.mouse.get_pos()
@@ -226,6 +231,17 @@ class Canvas:
                         if itemObj[1] == 'DownTree':
                             self.showUpTree = False
                             self.showDownTree = True
+
+        if self.showPlots is True:
+            for itemObjRect, itemObjRectScreen in zip(itemsObjRectArray, itemsObjRectScreensArray):
+                itemsObj = itemObjRect
+                if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+                    mouseX, mouseY = pygame.mouse.get_pos()
+                    for itemObj in itemsObj:
+                        if itemObj[0].collidepoint([mouseX - itemObjRectScreen.screenPosX, mouseY - itemObjRectScreen.screenPosY]):
+                            self.focusObj.append(itemObj[1])
+                            if isinstance(itemObj[1], Button):
+                                itemObj[1].changeActiveStatus()
 
         return False, pausedPressed
 

@@ -24,6 +24,13 @@ class World:
         self.birthsPerYear = []
         self.crimesPerYear = []
 
+        self.crimeHomicidePerYear = []
+        self.crimeAssaultPerYear = []
+        self.crimeBurglaryPerYear = []
+        self.crimeTheftPerYear = []
+        self.crimeFailedPerYear = []
+
+
         self.worldHistory = []
         self.peopleNumberHistory = []
         self.alivePeopleNumberHistory = []
@@ -147,8 +154,28 @@ class World:
     def getCrimesPerYear(self):
         return self.crimesPerYear
 
-    def appendCrimesPerYear(self, value):
+    def getCrimesHomicidePerYear(self):
+        return self.crimeHomicidePerYear
+
+    def getCrimesAssaultPerYear(self):
+        return self.crimeAssaultPerYear
+
+    def getCrimesBurglaryPerYear(self):
+        return self.crimeBurglaryPerYear
+
+    def getCrimesTheftPerYear(self):
+        return self.crimeTheftPerYear
+
+    def getCrimesFailedPerYear(self):
+        return self.crimeFailedPerYear
+
+    def appendCrimesPerYear(self, value, crimes):
         self.crimesPerYear.append(int(value))
+        self.crimeHomicidePerYear.append(crimes[0])
+        self.crimeAssaultPerYear.append(crimes[1])
+        self.crimeBurglaryPerYear.append(crimes[2])
+        self.crimeTheftPerYear.append(crimes[3])
+        self.crimeFailedPerYear.append(crimes[4])
 
     def updateAlive(self):
         self.alivePeople = []
@@ -222,7 +249,7 @@ class World:
 
 
     def getAlivePeopleNumberHistory(self):
-        return self.alivePeopleNumberHistory
+        return [self.alivePeopleNumberHistory]
 
     def getBirthsPerYearNumberHistory(self):
         return self.birthsPerYearNumberHistory
@@ -233,8 +260,11 @@ class World:
     # def getFamiliesMembersNumberHistory(self):
     #     return self.familiesMembersNumberHistory
 
+    def getCrimeHistory(self):
+        return [self.getCrimesPerYear(), self.getCrimesHomicidePerYear(), self.getCrimesAssaultPerYear(), self.getCrimesBurglaryPerYear(), self.getCrimesTheftPerYear(), self.getCrimesFailedPerYear()]
+
     def getPeopleAliveHistory(self):
-        return self.peopleAliveHistory
+        return [self.peopleAliveHistory]
 
     def getPeopleEyeColorsComplexArray(self):
         return [self.eyeColorBlackHistory, self.eyeColorBrownHistory, self.eyeColorAmberHistory, self.eyeColorHazelHistory, self.eyeColorGreenHistory, self.eyeColorBlueHistory, self.eyeColorGrayHistory]

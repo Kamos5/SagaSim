@@ -21,6 +21,17 @@ chanceForChangingLastNameDuringMigration = 10 #aka 5% to chance create new branc
 regionSizeMin = 8
 regionSizeMax = 16
 
+globalPopulation = ['Global Population', '#eeaaaa']
+globalPopulationArray = [globalPopulation]
+
+crime = ['All Crimes', '#000000']
+crimeHomicide = ['Homicide', '#ee2222']
+crimeAssault = ['Assault', '#A36405']
+crimeBurglary = ['Burglary', '#FFD700']
+crimeTheft = ['Theft', '#119999']
+crimeFailed = ['Crime Failed', '#666666']
+crimeArray = [crime, crimeHomicide, crimeAssault, crimeBurglary, crimeTheft, crimeFailed]
+
 eyeColorBlack = ['Black', '#000000']
 eyeColorBrown = ['Brown', '#542604']
 eyeColorAmber = ['Amber', '#A36405']

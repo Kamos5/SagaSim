@@ -3,6 +3,7 @@ import matplotlib
 
 import Enums
 import Parameters
+from UI.Utils.Button import Button
 from UI.Utils.Plots import Plots
 
 matplotlib.use("Agg")
@@ -43,7 +44,7 @@ class PlotsScreen:
         self.selectedPlot = ''
 
         self.titleLabel = ''
-        self.arrayLabel = ['']
+        self.arrayLabel = []
         self.arrayLabelColor = ['']
         self.arrayData = []
 
@@ -55,19 +56,33 @@ class PlotsScreen:
         self.plotsScreenSurface.blit(self.plotsLabel.localSurface, (self.width * 0.10, self.writeLine*self.lineHeight))
         self.writeLine += 2
 
-        if lastFocusObj == 'eyes':
-            self.plotsLabel = Label("Eye", 55, self.lineHeight, self.textFont, True, True)
+        if isinstance(lastFocusObj, Button) and lastFocusObj.getButtonName() == 'globalPopulation':
+            self.plotsLabel = Label("Population", 120, self.lineHeight, self.textFont, True, lastFocusObj.getButtonFlag())
         else:
-            self.plotsLabel = Label("Eye", 55, self.lineHeight, self.textFont, True)
+            self.plotsLabel = Label("Population", 120, self.lineHeight, self.textFont, True)
 
-        self.plotsScreenSurfaceObjsRect.append([self.plotsScreenSurface.blit(self.plotsLabel.localSurface, (self.width * 0.10, self.writeLine * self.lineHeight)), 'eyes'])
+        self.plotsScreenSurfaceObjsRect.append([self.plotsScreenSurface.blit(self.plotsLabel.localSurface, (self.width * 0.10, self.writeLine * self.lineHeight)), Button('globalPopulation')])
 
-        if lastFocusObj == 'hairs':
-            self.plotsLabel = Label("Hair", 60, self.lineHeight, self.textFont, True, True)
+        if isinstance(lastFocusObj, Button) and lastFocusObj.getButtonName() == 'eyes':
+            self.plotsLabel = Label("Eye", 50, self.lineHeight, self.textFont, True, lastFocusObj.getButtonFlag())
         else:
-            self.plotsLabel = Label("Hair", 60, self.lineHeight, self.textFont, True)
+            self.plotsLabel = Label("Eye", 50, self.lineHeight, self.textFont, True)
 
-        self.plotsScreenSurfaceObjsRect.append([self.plotsScreenSurface.blit(self.plotsLabel.localSurface, (self.width * 0.15, self.writeLine * self.lineHeight)), 'hairs'])
+        self.plotsScreenSurfaceObjsRect.append([self.plotsScreenSurface.blit(self.plotsLabel.localSurface, (self.width * 0.20, self.writeLine * self.lineHeight)), Button('eyes')])
+
+        if isinstance(lastFocusObj, Button) and lastFocusObj.getButtonName() == 'hairs':
+            self.plotsLabel = Label("Hair", 55, self.lineHeight, self.textFont, True, lastFocusObj.getButtonFlag())
+        else:
+            self.plotsLabel = Label("Hair", 55, self.lineHeight, self.textFont, True)
+
+        self.plotsScreenSurfaceObjsRect.append([self.plotsScreenSurface.blit(self.plotsLabel.localSurface, (self.width * 0.25, self.writeLine * self.lineHeight)), Button('hairs')])
+
+        if isinstance(lastFocusObj, Button) and lastFocusObj.getButtonName() == 'crime':
+            self.plotsLabel = Label("Crime", 70, self.lineHeight, self.textFont, True, lastFocusObj.getButtonFlag())
+        else:
+            self.plotsLabel = Label("Crime", 70, self.lineHeight, self.textFont, True)
+
+        self.plotsScreenSurfaceObjsRect.append([self.plotsScreenSurface.blit(self.plotsLabel.localSurface, (self.width * 0.30, self.writeLine * self.lineHeight)), Button('crime')])
 
         self.writeLine += 2
 
@@ -87,17 +102,36 @@ class PlotsScreen:
 
     def addGeneralPlotsFields(self, lastFocusObj, world):
 
-        if lastFocusObj == 'eyes':
+        if isinstance(lastFocusObj, Button) and lastFocusObj.getButtonName() == 'globalPopulation':
+            self.titleLabel = 'Global Population'
+            self.arrayLabel = [Parameters.globalPopulationArray[0][0]]
+            self.arrayLabelColor = [Parameters.globalPopulationArray[0][1]]
+            self.arrayData = world.getAlivePeopleNumberHistory()
+
+        elif isinstance(lastFocusObj, Button) and lastFocusObj.getButtonName() == 'eyes':
             self.titleLabel = 'Eye Colour in Population'
             self.arrayLabel = [Parameters.eyeColorArray[0][0], Parameters.eyeColorArray[1][0], Parameters.eyeColorArray[2][0], Parameters.eyeColorArray[3][0], Parameters.eyeColorArray[4][0], Parameters.eyeColorArray[5][0], Parameters.eyeColorArray[6][0]]
             self.arrayLabelColor = [Parameters.eyeColorArray[0][1], Parameters.eyeColorArray[1][1], Parameters.eyeColorArray[2][1], Parameters.eyeColorArray[3][1], Parameters.eyeColorArray[4][1], Parameters.eyeColorArray[5][1], Parameters.eyeColorArray[6][1]]
             self.arrayData = world.getPeopleEyeColorsComplexArray()
 
-        elif lastFocusObj == 'hairs':
+        elif isinstance(lastFocusObj, Button) and lastFocusObj.getButtonName() == 'hairs':
             self.titleLabel = 'Hair Colour in Population'
             self.arrayLabel = [Parameters.hairColorArray[0][0], Parameters.hairColorArray[1][0], Parameters.hairColorArray[2][0], Parameters.hairColorArray[3][0], Parameters.hairColorArray[4][0], Parameters.hairColorArray[5][0]]
             self.arrayLabelColor = [Parameters.hairColorArray[0][1], Parameters.hairColorArray[1][1], Parameters.hairColorArray[2][1], Parameters.hairColorArray[3][1], Parameters.hairColorArray[4][1], Parameters.hairColorArray[5][1]]
             self.arrayData = world.getPeopleHairColorsComplexArray()
+
+        elif isinstance(lastFocusObj, Button) and lastFocusObj.getButtonName() == 'crime':
+            self.titleLabel = 'Crimes Committed'
+            self.arrayLabel = [Parameters.crimeArray[0][0], Parameters.crimeArray[1][0], Parameters.crimeArray[2][0], Parameters.crimeArray[3][0], Parameters.crimeArray[4][0], Parameters.crimeArray[5][0]]
+            self.arrayLabelColor = [Parameters.crimeArray[0][1], Parameters.crimeArray[1][1], Parameters.crimeArray[2][1], Parameters.crimeArray[3][1], Parameters.crimeArray[4][1], Parameters.crimeArray[5][1]]
+            self.arrayData = world.getCrimeHistory()
+
+
+        else:
+            self.titleLabel = ''
+            self.arrayLabel = []
+            self.arrayLabelColor = []
+            self.arrayData = []
 
         self.addPlots(world)
 

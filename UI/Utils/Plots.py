@@ -14,14 +14,15 @@ class Plots:
         ax.set_facecolor('#221f22')
         i = 0
         for data in yAxisData[0]:
-            ax.plot(xAxisData, data, label='Label' + str(i), color=yAxisLabelColor[i])
+            ax.plot(xAxisData, data, label='Label' + str(i), linestyle='--', color=yAxisLabelColor[i], linewidth=1)
             i += 1
         ax.yaxis.set_label_position("right")
         ax.yaxis.tick_right()
         matplotlib.pyplot.xlabel(xLabel)
         matplotlib.pyplot.ylabel(yLabel)
         matplotlib.pyplot.title(title)
-        matplotlib.pyplot.legend(yAxisLabel)
+        if len(yAxisLabel) > 0:
+            matplotlib.pyplot.legend(yAxisLabel)
 
         canvas = agg.FigureCanvasAgg(fig)
         canvas.draw()
