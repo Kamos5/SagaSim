@@ -1,3 +1,4 @@
+import Enums
 from Enums import Settlements
 from Region import Region
 import RegionNameGenerator as RNG
@@ -30,6 +31,21 @@ class World:
         self.crimesPerYearNumberHistory = []
         self.familiesMembersNumberHistory = []
         self.peopleAliveHistory = []
+
+        self.eyeColorBlackHistory = []
+        self.eyeColorBrownHistory = []
+        self.eyeColorAmberHistory = []
+        self.eyeColorHazelHistory = []
+        self.eyeColorGreenHistory = []
+        self.eyeColorBlueHistory = []
+        self.eyeColorGrayHistory = []
+
+        self.hairColorBlackHistory = []
+        self.hairColorBrownHistory = []
+        self.hairColorYellowHistory = []
+        self.hairColorRedHistory = []
+        self.hairColorWhiteHistory = []
+        self.hairColorGrayHistory = []
 
     def getPeople(self):
         return self.people
@@ -145,6 +161,64 @@ class World:
         self.birthsPerYearNumberHistory = self.getBirthsPerYear()
         self.crimesPerYearNumberHistory = self.getCrimesPerYear()
         self.peopleAliveHistory.append(self.getAlivePeople())
+        self.countEyeColor()
+        self.countHairColor()
+
+
+    def countEyeColor(self):
+
+        self.eyeColorHistoryArrayTemp =[]
+        for color in Parameters.eyeColorArray:
+            self.eyeColorHistoryArrayTemp.append(0)
+        for person in self.getAlivePeople():
+            if person.getEyeColor() == Enums.EyeColor.BLACK:
+                self.eyeColorHistoryArrayTemp[0] += 1
+            if person.getEyeColor() == Enums.EyeColor.BROWN:
+                self.eyeColorHistoryArrayTemp[1] += 1
+            if person.getEyeColor() == Enums.EyeColor.AMBER:
+                self.eyeColorHistoryArrayTemp[2] += 1
+            if person.getEyeColor() == Enums.EyeColor.HAZEL:
+                self.eyeColorHistoryArrayTemp[3] += 1
+            if person.getEyeColor() == Enums.EyeColor.GREEN:
+                self.eyeColorHistoryArrayTemp[4] += 1
+            if person.getEyeColor() == Enums.EyeColor.BLUE:
+                self.eyeColorHistoryArrayTemp[5] += 1
+            if person.getEyeColor() == Enums.EyeColor.GRAY:
+                self.eyeColorHistoryArrayTemp[6] += 1
+
+        self.eyeColorBlackHistory.append(self.eyeColorHistoryArrayTemp[0])
+        self.eyeColorBrownHistory.append(self.eyeColorHistoryArrayTemp[1])
+        self.eyeColorAmberHistory.append(self.eyeColorHistoryArrayTemp[2])
+        self.eyeColorHazelHistory.append(self.eyeColorHistoryArrayTemp[3])
+        self.eyeColorGreenHistory.append(self.eyeColorHistoryArrayTemp[4])
+        self.eyeColorBlueHistory.append(self.eyeColorHistoryArrayTemp[5])
+        self.eyeColorGrayHistory.append(self.eyeColorHistoryArrayTemp[6])
+
+    def countHairColor(self):
+
+        self.hairColorHistoryArrayTemp = []
+        for color in Parameters.hairColorArray:
+            self.hairColorHistoryArrayTemp.append(0)
+        for person in self.getAlivePeople():
+            if person.getHairColor() == Enums.HairColor.BLACK:
+                self.hairColorHistoryArrayTemp[0] += 1
+            if person.getHairColor() == Enums.HairColor.BROWN:
+                self.hairColorHistoryArrayTemp[1] += 1
+            if person.getHairColor() == Enums.HairColor.YELLOW:
+                self.hairColorHistoryArrayTemp[2] += 1
+            if person.getHairColor() == Enums.HairColor.RED:
+                self.hairColorHistoryArrayTemp[3] += 1
+            if person.getHairColor() == Enums.HairColor.WHITE:
+                self.hairColorHistoryArrayTemp[4] += 1
+            if person.getHairColor() == Enums.HairColor.GRAY:
+                self.hairColorHistoryArrayTemp[5] += 1
+
+        self.hairColorBlackHistory.append(self.hairColorHistoryArrayTemp[0])
+        self.hairColorBrownHistory.append(self.hairColorHistoryArrayTemp[1])
+        self.hairColorYellowHistory.append(self.hairColorHistoryArrayTemp[2])
+        self.hairColorRedHistory.append(self.hairColorHistoryArrayTemp[3])
+        self.hairColorWhiteHistory.append(self.hairColorHistoryArrayTemp[4])
+        self.hairColorGrayHistory.append(self.hairColorHistoryArrayTemp[5])
 
 
     def getAlivePeopleNumberHistory(self):
@@ -161,3 +235,9 @@ class World:
 
     def getPeopleAliveHistory(self):
         return self.peopleAliveHistory
+
+    def getPeopleEyeColorsComplexArray(self):
+        return [self.eyeColorBlackHistory, self.eyeColorBrownHistory, self.eyeColorAmberHistory, self.eyeColorHazelHistory, self.eyeColorGreenHistory, self.eyeColorBlueHistory, self.eyeColorGrayHistory]
+
+    def getPeopleHairColorsComplexArray(self):
+        return [self.hairColorBlackHistory, self.hairColorBrownHistory, self.hairColorYellowHistory, self.hairColorRedHistory, self.hairColorWhiteHistory, self.eyeColorGrayHistory]

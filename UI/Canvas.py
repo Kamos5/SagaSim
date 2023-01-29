@@ -129,6 +129,7 @@ class Canvas:
         self.inspectorScreen.addInspectorLabel()
 
         self.inspectorScreen.addGeneralInspectorFields(self.lastFocusObj)
+        self.plotsScreen.addGeneralPlotsFields(self.lastFocusObj, world)
 
         for region in world.getRegions():
             self.listScreen.addRegion(region, self.lastFocusObj)
@@ -157,7 +158,7 @@ class Canvas:
             self.helpScreenObj = self.screen.blit(self.helpScreenSurface, (self.helpPosX, self.helpPosY))
 
         if self.showPlots:
-            self.plotsScreen.addPlots(world)
+            self.plotsScreen.addHeaderPlot()
             self.plotsScreenObj = self.screen.blit(self.plotsScreenSurface, (self.plotsPosX, self.plotsPosY))
 
         if self.showFamilyScreen:

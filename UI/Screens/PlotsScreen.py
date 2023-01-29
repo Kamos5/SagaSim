@@ -2,6 +2,7 @@ import pygame
 import matplotlib
 
 import Enums
+import Parameters
 from UI.Utils.Plots import Plots
 
 matplotlib.use("Agg")
@@ -39,73 +40,54 @@ class PlotsScreen:
         self.marginRightWidthMultiplier = 0.05
         self.marginLeftOffSet = self.width*self.marginLeftWidthMultiplier
         self.marginRightOffSet = self.width*self.marginRightWidthMultiplier
+        self.selectedPlot = ''
 
-    def addPlots(self, world):
+        self.titleLabel = ''
+        self.arrayLabel = ['']
+        self.arrayLabelColor = ['']
+        self.arrayData = []
 
+    def addHeaderPlot(self):
+
+        self.writeLine += 1
         self.plotsLabel = Label("Plots Menu:", 140, self.lineHeight, self.textFont, False, True, 2)
         self.plotsLabel.setActiveRectColor(50, 50, 50)
         self.plotsLabel.setActiveBorderColor(10, 10, 100)
-
         self.plotsScreenSurface.blit(self.plotsLabel.localSurface, (self.width * 0.10, self.writeLine*self.lineHeight))
+        self.writeLine += 1
 
-        self.writeLine += 3
+        self.plotsLabel = Label("Eye", 50, self.lineHeight, self.textFont, False, True, 2)
+        self.plotsScreenSurface.blit(self.plotsLabel.localSurface, (self.width * 0.10, self.writeLine * self.lineHeight))
 
-        peopleWithBlackEyeColor = []
-        peopleWithBrownEyeColor = []
-        peopleWithAmberEyeColor = []
-        peopleWithHazelEyeColor = []
-        peopleWithGreenEyeColor = []
-        peopleWithBlueEyeColor = []
-        peopleWithGrayEyeColor = []
-        peopleEyeColorArray = []
-        peopleEyeColorArray.append(['Black', 'Brown', 'Amber', 'Hazel', 'Green', 'Blue', 'Gray'])
+        self.writeLine += 1
 
-        for year in world.getPeopleAliveHistory():
-            peopleWithBlackEyeColorTemp = 0
-            peopleWithBrownEyeColorTemp = 0
-            peopleWithAmberEyeColorTemp = 0
-            peopleWithHazelEyeColorTemp = 0
-            peopleWithGreenEyeColorTemp = 0
-            peopleWithBlueEyeColorTemp = 0
-            peopleWithGrayEyeColorTemp = 0
-            for person in year:
-                if person.getEyeColor() == Enums.EyeColor.BLACK:
-                    peopleWithBlackEyeColorTemp+=1
-                if person.getEyeColor() == Enums.EyeColor.BROWN:
-                    peopleWithBrownEyeColorTemp+=1
-                if person.getEyeColor() == Enums.EyeColor.AMBER:
-                    peopleWithAmberEyeColorTemp+=1
-                if person.getEyeColor() == Enums.EyeColor.HAZEL:
-                    peopleWithHazelEyeColorTemp+=1
-                if person.getEyeColor() == Enums.EyeColor.GREEN:
-                    peopleWithGreenEyeColorTemp+=1
-                if person.getEyeColor() == Enums.EyeColor.BLUE:
-                    peopleWithBlueEyeColorTemp+=1
-                if person.getEyeColor() == Enums.EyeColor.GRAY:
-                    peopleWithGrayEyeColorTemp+=1
+    def addPlots(self, world):
 
-            peopleWithBlackEyeColor.append(peopleWithBlackEyeColorTemp)
-            peopleWithBrownEyeColor.append(peopleWithBrownEyeColorTemp)
-            peopleWithAmberEyeColor.append(peopleWithAmberEyeColorTemp)
-            peopleWithHazelEyeColor.append(peopleWithHazelEyeColorTemp)
-            peopleWithGreenEyeColor.append(peopleWithGreenEyeColorTemp)
-            peopleWithBlueEyeColor.append(peopleWithBlueEyeColorTemp)
-            peopleWithGrayEyeColor.append(peopleWithGrayEyeColorTemp)
-        peopleEyeColorArray.append(peopleWithBlackEyeColor)
-        peopleEyeColorArray.append(peopleWithBrownEyeColor)
-        peopleEyeColorArray.append(peopleWithAmberEyeColor)
-        peopleEyeColorArray.append(peopleWithHazelEyeColor)
-        peopleEyeColorArray.append(peopleWithGreenEyeColor)
-        peopleEyeColorArray.append(peopleWithBlueEyeColor)
-        peopleEyeColorArray.append(peopleWithGrayEyeColor)
+        xLabel = 'Year'
+        yLabel = 'Population'
 
-        plot = Plots(self.width-self.marginLeftOffSet-self.marginRightOffSet, self.height*.8, world.getWorldYearHistory(), peopleEyeColorArray)
+        plot = Plots(self.width-self.marginLeftOffSet-self.marginRightOffSet, self.height*.8, self.titleLabel, xLabel, yLabel, world.getWorldYearHistory(), self.arrayLabel, self.arrayLabelColor, self.arrayData)
 
         self.plotsField = plot.getPlotSurface()
-
         self.plotsScreenSurface.blit(self.plotsField, (self.marginLeftOffSet, self.writeLine * self.lineHeight))
 
         plot.closePlot()
+
+    def addGeneralPlotsFields(self, object, world):
+
+        if object == 'Eyes':
+            self.titleLabel = 'Eye Colour in Population'
+            self.arrayLabel = [Parameters.eyeColorArray[0][0], Parameters.eyeColorArray[1][0], Parameters.eyeColorArray[2][0], Parameters.eyeColorArray[3][0], Parameters.eyeColorArray[4][0], Parameters.eyeColorArray[5][0], Parameters.eyeColorArray[6][0]]
+            self.arrayLabelColor = [Parameters.eyeColorArray[0][1], Parameters.eyeColorArray[1][1], Parameters.eyeColorArray[2][1], Parameters.eyeColorArray[3][1], Parameters.eyeColorArray[4][1], Parameters.eyeColorArray[5][1], Parameters.eyeColorArray[6][1]]
+            self.arrayData = world.getPeopleEyeColorsComplexArray()
+
+        elif object == 'Hairs':
+            self.titleLabel = 'Hair Colour in Population'
+            self.arrayLabel = [Parameters.hairColorArray[0][0], Parameters.hairColorArray[1][0], Parameters.hairColorArray[2][0], Parameters.hairColorArray[3][0], Parameters.hairColorArray[4][0], Parameters.hairColorArray[5][0]]
+            self.arrayLabelColor = [Parameters.hairColorArray[0][1], Parameters.hairColorArray[1][1], Parameters.hairColorArray[2][1], Parameters.hairColorArray[3][1], Parameters.hairColorArray[4][1], Parameters.hairColorArray[5][1]]
+            self.arrayData = world.getPeopleHairColorsComplexArray()
+
+        self.addPlots(world)
 
     def resetWriteLine(self):
 

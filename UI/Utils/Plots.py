@@ -6,23 +6,22 @@ import pylab
 
 class Plots:
 
-    def __init__(self,  x, y, xAxisData, *yAxisData ):
+    def __init__(self,  x, y, title, xLabel, yLabel, xAxisData, yAxisLabel, yAxisLabelColor, *yAxisData ):
 
         dpi = 100
-        fig = pylab.figure(figsize=[x/dpi, y/dpi],  dpi=dpi)
+        fig = pylab.figure(figsize=[x/dpi, y/dpi],  dpi=dpi, facecolor='#aaaaaa')
         ax = fig.gca()
+        ax.set_facecolor('#221f22')
         i = 0
-        legendArray = yAxisData[0][0]
         for data in yAxisData[0]:
-            if i == 0:
-                i += 1
-                continue
-            ax.plot(xAxisData, data, label='Label'+ str(i))
+            ax.plot(xAxisData, data, label='Label' + str(i), color=yAxisLabelColor[i])
             i += 1
-        matplotlib.pyplot.xlabel('Year')
-        matplotlib.pyplot.ylabel('Population')
-        matplotlib.pyplot.title('Eye Color')
-        matplotlib.pyplot.legend(legendArray)
+        ax.yaxis.set_label_position("right")
+        ax.yaxis.tick_right()
+        matplotlib.pyplot.xlabel(xLabel)
+        matplotlib.pyplot.ylabel(yLabel)
+        matplotlib.pyplot.title(title)
+        matplotlib.pyplot.legend(yAxisLabel)
 
         canvas = agg.FigureCanvasAgg(fig)
         canvas.draw()
