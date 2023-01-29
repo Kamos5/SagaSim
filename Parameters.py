@@ -21,6 +21,9 @@ chanceForChangingLastNameDuringMigration = 10 #aka 5% to chance create new branc
 regionSizeMin = 8
 regionSizeMax = 16
 
+
+
+#Graph data
 globalPopulation = ['Global Population', '#eeaaaa']
 globalPopulationArray = [globalPopulation]
 

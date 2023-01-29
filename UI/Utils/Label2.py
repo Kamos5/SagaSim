@@ -2,15 +2,15 @@ import pygame
 from PIL import ImageFont
 
 
-class Label:
+class Label2:
 
     def __init__(self, text, font, clickable=False, focused=False, borderSize=1):
 
-        asd = 'asd'
-
-
-    def __init__(self, text, w, h, font, clickable=False, focused=False, borderSize=1):
-
+        fontW, fontH = font.size(text)
+        self.horizontalMargin = 2
+        self.verticalMargin = 2
+        w = fontW + 2 * borderSize + 2 * self.horizontalMargin
+        h = fontH + 2 * borderSize + 2 * self.verticalMargin
         self.localSurface = pygame.Surface([w, h])
         self.x = 0
         self.y = 0
@@ -46,11 +46,11 @@ class Label:
 
     def addRect(self):
         self.border = pygame.draw.rect(self.localSurface, self.borderColor, (self.x, self.y, self.w, self.h))
-        self.rect = pygame.draw.rect(self.localSurface, self.rectColor, (self.x+self.borderSize, self.y+self.borderSize, self.w-2*self.borderSize, self.h-2*self.borderSize))
+        self.rect = pygame.draw.rect(self.localSurface, self.rectColor, (self.x + self.borderSize, self.y + self.borderSize, self.w - 2 * self.borderSize, self.h - 2 * self.borderSize))
 
     def addText(self, text):
         textSurface = self.font.render(text, True, self.textColor)
-        self.localSurface.blit(textSurface, (self.borderSize*5, self.y))
+        self.localSurface.blit(textSurface, (self.horizontalMargin+self.borderSize, self.verticalMargin+self.borderSize))
         self.text = text
 
     def getText(self):

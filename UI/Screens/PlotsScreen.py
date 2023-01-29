@@ -1,9 +1,11 @@
 import pygame
 import matplotlib
+from PIL import ImageFont
 
 import Enums
 import Parameters
 from UI.Utils.Button import Button
+from UI.Utils.Label2 import Label2
 from UI.Utils.Plots import Plots
 
 matplotlib.use("Agg")
@@ -50,7 +52,7 @@ class PlotsScreen:
 
     def addHeaderPlot(self, lastFocusObj, world):
 
-        self.plotsLabel = Label("Plots Menu:", 130, self.lineHeight, self.textFont, False, 1)
+        self.plotsLabel = Label2("Plots Menu:", self.textFont, False, 1)
         self.plotsLabel.setActiveRectColor(50, 50, 50)
         self.plotsLabel.setActiveBorderColor(10, 10, 100)
         self.plotsScreenSurface.blit(self.plotsLabel.localSurface, (self.width * 0.10, self.writeLine*self.lineHeight))
