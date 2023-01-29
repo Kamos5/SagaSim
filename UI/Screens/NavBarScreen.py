@@ -2,6 +2,7 @@ import pygame
 
 from UI.Utils.Fonts import Fonts
 from UI.Utils.Label import Label
+from UI.Utils.Label2 import Label2
 
 
 class NavBarScreen:
@@ -18,6 +19,9 @@ class NavBarScreen:
         self.textFont = self.font.getFont1()
         self.lineHeight = self.font.getLineHeight()
         self.scroll_y = 0
+        self.labelBoarderDefault = 1
+        self.labelMarginHorizontalDefault = 2
+        self.labelMarginVerticalDefault = 2
         self.screenPosX = screenPosX
         self.screenPosY = screenPosY
 
@@ -27,7 +31,7 @@ class NavBarScreen:
 
     def resetWriteLine(self):
 
-        self.writeLine = 1
+        self.writeLine = 0
 
     def cleanScreen(self):
 
@@ -39,13 +43,13 @@ class NavBarScreen:
 
     def addHelpButton (self):
 
-        self.helpLabel = Label("Help", 50, self.lineHeight, self.textFont, True, True, 1)
+        self.helpLabel = Label2("Help", self.textFont, True, True, borderSize=1)
         self.navBarScreenSurfaceObjsRect.append([self.navBarScreenSurface.blit(self.helpLabel.localSurface, (self.width * 0.01, 0)), 'Help'])
 
 
     def addPlotsButton (self):
 
-        self.plotsLabel = Label("Graphs", 75, self.lineHeight, self.textFont, True, False, 1)
+        self.plotsLabel = Label2("Graphs", self.textFont, True, borderSize=1)
         self.plotsLabel.setActiveRectColor(20, 60, 20)
         self.plotsLabel.setActiveBorderColor(100, 10, 10)
         self.navBarScreenSurfaceObjsRect.append([self.navBarScreenSurface.blit(self.plotsLabel.localSurface, (self.width * 0.05, 0)), 'Plots'])
@@ -53,6 +57,8 @@ class NavBarScreen:
 
     def addDateTimer(self, world):
 
-        self.dateTimeLabel = Label("Year: " + str(world.getYear()), 100, self.lineHeight, self.textFont, True, False, 1)
+        self.dateTimeLabel = Label2("Year: " + str(world.getYear()), self.textFont, True, borderSize=1)
         self.navBarScreenSurfaceObjsRect.append([self.navBarScreenSurface.blit(self.dateTimeLabel.localSurface, (self.width * 0.92, 0)), 'Clock'])
 
+    def getVerticalPositioning(self):
+        return self.writeLine * (self.lineHeight + 2 * self.labelBoarderDefault + 2 * self.labelMarginVerticalDefault)

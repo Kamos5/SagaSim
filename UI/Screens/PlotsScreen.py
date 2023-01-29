@@ -10,12 +10,7 @@ from UI.Utils.Plots import Plots
 
 matplotlib.use("Agg")
 
-import matplotlib.backends.backend_agg as agg
-
-
-import pylab
 from UI.Utils.Fonts import Fonts
-from UI.Utils.Label import Label
 
 
 class PlotsScreen:
@@ -57,7 +52,7 @@ class PlotsScreen:
 
         self.writeLine += 1
 
-        self.plotsLabel = Label2("Plots Menu:", self.textFont, False, 1)
+        self.plotsLabel = Label2("Plots Menu:", self.textFont, False, borderSize=1)
         self.plotsLabel.setActiveRectColor(50, 50, 50)
         self.plotsLabel.setActiveBorderColor(10, 10, 100)
         self.plotsScreenSurface.blit(self.plotsLabel.localSurface, (self.width * 0.10, self.getVerticalPositioning()))

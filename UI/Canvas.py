@@ -24,7 +24,7 @@ class Canvas:
     def redrawScreen(self):
 
         self.navbarWidth = self.windowWidth
-        self.navBarHeight = 20
+        self.navBarHeight = 26
         self.navBarWidthOffSet = 0
         self.navBarHeightOffSet = 0
         self.navBarPosX = 0
@@ -37,12 +37,12 @@ class Canvas:
         self.helpPosX = int(self.windowWidth/8)
         self.helpPosY = int(self.windowHeight/8)
 
-        self.plotsWidth = int(self.windowWidth*3/4)
-        self.plotsHeight = int(self.windowHeight*3/4)
+        self.plotsWidth = int(self.windowWidth*7/8)
+        self.plotsHeight = int(self.windowHeight*7/8)
         self.plotsWidthOffSet = 0
         self.plotsHeightOffSet = 0
-        self.plotsPosX = int(self.windowWidth/8)
-        self.plotsPosY = int(self.windowHeight/8)
+        self.plotsPosX = int(self.windowWidth/16)
+        self.plotsPosY = int(self.windowHeight/16)
 
         self.listScreenWidth = int(self.windowWidth/2)
         self.listScreenHeight = self.windowHeight

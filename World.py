@@ -54,6 +54,7 @@ class World:
         self.hairColorWhiteHistory = []
         self.hairColorGrayHistory = []
 
+
     def getPeople(self):
         return self.people
 
