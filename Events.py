@@ -127,13 +127,16 @@ def settlementsPopulationManagement (world):
                     iniciateMigration(complexRandomMigrantsList, newTargetSettlement, world)
                     splitFamiliesInMigration(world, region, newTargetSettlement, complexRandomMigrantsList)
 
-        #Upgrading from Village to City
-        randomVillage = Utils.randomFromCollection(villagesList)
-        if len(villagesList) >= (len(townList)+1) * (Parameters.villageToTownMultiplier + 1) - len(townList) and randomVillage.getPopulation() > int(randomVillage.getMaxPopulation() * Parameters.percentageVillagePopulationThresholdForUpgradeToTown):
+            #Upgrading from Village to City
+            randomVillage = Utils.randomFromCollection(villagesList)
+            if len(villagesList) >= (len(townList)+1) * (Parameters.villageToTownMultiplier + 1) - len(townList) and randomVillage.getPopulation() > int(randomVillage.getMaxPopulation() * Parameters.percentageVillagePopulationThresholdForUpgradeToTown):
 
-            chanceOfUpgradingToCity = Utils.randomRange(1, 100)
-            if chanceOfUpgradingToCity < Parameters.chancePerYearToUpgradeVillageToTown:
-                randomVillage.changeSettlementType(Settlements.TOWN)
+                chanceOfUpgradingToCity = Utils.randomRange(1, 100)
+                if chanceOfUpgradingToCity < Parameters.chancePerYearToUpgradeVillageToTown:
+                    randomVillage.changeSettlementType(Settlements.TOWN)
+                    Utils.randomFromCollection(randomVillage.getRegion().getVillagesExProvisionToThisTown(randomVillage)).setProvision(randomVillage)
+                    Utils.randomFromCollection(randomVillage.getRegion().getVillagesExProvisionToThisTown(randomVillage)).setProvision(randomVillage)
+                    Utils.randomFromCollection(randomVillage.getRegion().getVillagesExProvisionToThisTown(randomVillage)).setProvision(randomVillage)
 
 def settlementGoodsProduction(world):
 
@@ -141,12 +144,17 @@ def settlementGoodsProduction(world):
 
         for settlement in region.getSettlements():
 
-            ##FOOD AND PRODUCTION PRODUCTION
+            ##FOOD PRODUCTION
             foodProd0 = settlement.getSettlementFoodProduced()
             for foodTile in settlement.getFoodFeatures():
 
                 foodProd = foodTile.prodYield * foodTile.foundationType.value.yieldModifier / 100 * foodTile.getWorkersNumber()
-                settlement.increaseSettlementFoodProduced(foodProd)
+
+                if settlement.getProvision() is not None:
+                    settlement.getProvision().increaseSettlementFoodProduced(foodProd*Parameters.socage)
+                    settlement.increaseSettlementFoodProduced(foodProd*(1-Parameters.socage))
+                else:
+                    settlement.increaseSettlementFoodProduced(foodProd)
 
                 for worker in foodTile.getWorkerList():
                     workerModifier = 0
@@ -180,14 +188,18 @@ def settlementGoodsProduction(world):
 
             settlement.setNetFoodLastYear(foodProd1-foodProd0-foodConsumed)
 
+            ##PRODUCTION PRODUCTION
             prodProd0 = settlement.getSettlementProdProduced()
-
 
             for prodTile in settlement.getProdFeatures():
 
                 prodProd = prodTile.prodYield * prodTile.foundationType.value.yieldModifier / 100 * prodTile.getWorkersNumber()
-                settlement.increaseSettlementProdProduced(prodProd)
 
+                if settlement.getProvision() is not None:
+                    settlement.getProvision().increaseSettlementFoodProduced(prodProd*Parameters.socage)
+                    settlement.increaseSettlementFoodProduced(prodProd*(1-Parameters.socage))
+                else:
+                    settlement.increaseSettlementFoodProduced(prodProd)
                 for worker in prodTile.getWorkerList():
                     workerModifier = 0
                     if Traits.LAZY in worker.getTraits():

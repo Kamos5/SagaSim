@@ -35,9 +35,9 @@ def birthChild(world, parent1, parent2, trueParent1='', trueParent2=''):
 
     #offspringHeight = Utils.geneticRandomFromValuesForHeight(trueParent1.height, trueParent2.height)
     if sex == Sexes.MALE:
-        offspringHeight = int(trueParent2.height * Utils.randomRange(98, 104)/100)
+        offspringHeight = int(trueParent2.height * Utils.randomRange(98, 103)/100)
     else:
-        offspringHeight = int(trueParent1.height * Utils.randomRange(98, 104) / 100)
+        offspringHeight = int(trueParent1.height * Utils.randomRange(98, 103) / 100)
 
     hairColor, hairColorGen1, hairColorGen2 = Utils.geneticHairColor(trueParent1, trueParent2)
     eyeColor, eyeColorGen1, eyeColorGen2 = Utils.geneticEyeColor(trueParent1, trueParent2)

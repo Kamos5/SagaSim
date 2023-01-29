@@ -190,7 +190,7 @@ def getNewWildlife():
 def getNewRockyTerrain():
     return Feature(FeatureTypes.PRODTYPE, 1, 5, 'Rocky Terrain', 'Piece of terrain that has high concentration of rock within.', 'Rock gatherer')
 def getNewFallenLogs():
-    return Feature(FeatureTypes.PRODTYPE, 1, 8, 'Fallen Logs', 'Trees that took a bit to long nap', 'Wood hawler')
+    return Feature(FeatureTypes.PRODTYPE, 1, 8, 'Fallen Logs', 'Trees that took a bit to long nap', 'Wood howler')
 def getNewSimplefarm():
     return Feature(FeatureTypes.FOODTYPE, 12, 2, 'Simple farm', 'simple farm', 'Farmer', 200, 'Fallow', 100)
 def getNewOrchard():

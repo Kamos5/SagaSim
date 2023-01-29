@@ -1,4 +1,5 @@
 import Enums
+import Utils
 from Enums import Settlements
 from Region import Region
 import RegionNameGenerator as RNG
@@ -140,14 +141,18 @@ class World:
     def generateSettlements(self):
 
         for region in self.regions:
+            townInitList = []
             for i in range(self.settlementsInitNumber):
-                newSettlement = region.addSettlement(self)
+                newSettlement = region.addInitSettlement(self)
                 newSettlement.setRegion(region)
                 # First settlement is always TOWN
                 if i == 0:
                     newSettlement.changeSettlementType(Settlements.TOWN)
+                    townInitList.append(newSettlement)
                 else:
                     newSettlement.changeSettlementType(Settlements.VILLAGE)
+                    newSettlement.setProvision(Utils.randomFromCollection(townInitList))
+
 
     def getRegionFromIndex(self, index):
         return self.regions[index]

@@ -10,18 +10,19 @@ percentagePopulationThresholdForMigration = 0.5
 percentageVillagePopulationThresholdForCreatingNewVillage = 0.4
 percentageVillagePopulationThresholdForUpgradeToTown = 0.75
 chancePerYearToUpgradeVillageToTown = 80
-chanceForMigration = 33
+chanceForMigration = 20
 #aka how many village per town there must be
 villageToTownMultiplier = 3
-migrationWaveForTown = 20
-migrationWaveForVillage = 30
+migrationWaveForTown = 5
+migrationWaveForVillage = 10
 
-chanceForChangingLastNameDuringMigration = 10 #aka 5% to chance create new branch family
+chanceForChangingLastNameDuringMigration = 25 #aka 5% to chance create new branch family
 
 regionSizeMin = 8
-regionSizeMax = 16
+regionSizeMax = 8
 
-
+#socage -> % prodution to homeTown TODO _ FIXFIXFIX
+socage = 0
 
 #Graph data
 globalPopulation = ['Global Population', '#eeaaaa']

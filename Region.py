@@ -1,3 +1,5 @@
+import Enums
+import Utils
 from Settlements import Settlements
 import Parameters
 
@@ -6,7 +8,7 @@ class Region():
     def __init__(self, regionName):
         self.regionName = regionName
         self.settlements = []
-        self.regionSize = 8
+        self.regionSize = Parameters.regionSizeMax
         self.activeSettlements = 0
         self.regionCulture = ''
         self.uiExpand = True
@@ -23,10 +25,45 @@ class Region():
         else:
             return False
 
+    def getTowns(self):
+
+        townList =[]
+        for settlement in self.getSettlements():
+            if settlement.getSettlementType() == Enums.Settlements.TOWN:
+                townList.append(settlement)
+
+        return townList
+
+    def getVillages(self):
+
+        villageList = []
+        for settlement in self.getSettlements():
+            if settlement.getSettlementType() == Enums.Settlements.VILLAGE:
+                villageList.append(settlement)
+
+        return villageList
+
+    def getVillagesExProvisionToThisTown(self, town):
+
+        villageList = []
+        for settlement in self.getSettlements():
+            if settlement.getSettlementType() == Enums.Settlements.VILLAGE and settlement.getProvision() is not town:
+                villageList.append(settlement)
+
+        return villageList
+
+    def addInitSettlement(self, world):
+        newSettlement = Settlements(self.regionName, world.getYear())
+        self.settlements.append(newSettlement)
+        newSettlement.maxPopulation = Parameters.baseVillageSize
+
+        return newSettlement
+
     def addSettlement(self, world):
         newSettlement = Settlements(self.regionName, world.getYear())
         self.settlements.append(newSettlement)
         newSettlement.maxPopulation = Parameters.baseVillageSize
+        newSettlement.setProvision(Utils.randomFromCollection(self.getTowns()))
 
         return newSettlement
 
@@ -35,7 +72,6 @@ class Region():
 
     def getRegionName(self):
         return self.regionName
-
 
     def getSettlements(self):
         return self.settlements

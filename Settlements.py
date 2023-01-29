@@ -27,7 +27,7 @@ class Settlements:
         else:
             self.name = SNG.randomEnglishSettlementsName(rebuildFlag)
 
-        self.region = ''
+        self.region = None
         self.population = 0
         self.foundedIn = year
         self.baseFertility = Parameters.baseVillageFertility
@@ -243,6 +243,7 @@ class Settlements:
             self.foodTiles = 8
             self.prodTiles = 16
             self.updateFeaturesForTown()
+            self.setProvision(None)
 
         # for number in range(self.getFoodTilesNumber()-len(self.getFoodFeatures())):
         #     feature = Utils.randomFromCollection(SF.getListOfTier0FoodFeatures())

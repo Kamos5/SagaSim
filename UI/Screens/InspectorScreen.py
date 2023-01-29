@@ -113,9 +113,10 @@ class InspectorScreen:
         label = Label("Founded in: " + str(object.getFounedIn()), 500, self.lineHeight, self.textFont)
         self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding, self.lineHeight * self.writeLine + self.scroll_y))
         self.writeLine += 1
-        label = Label("Provides to: " + str(object.getProvision()), 500, self.lineHeight, self.textFont)
-        self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding, self.lineHeight * self.writeLine + self.scroll_y))
-        self.writeLine += 1
+        if object.getProvision() is not None:
+            label = Label("Provides to: " + str(object.getProvision().getSettlementName()), 500, self.lineHeight, self.textFont, True)
+            self.inspectorScreenSurfaceObjsRect.append([self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding, self.lineHeight * self.writeLine + self.scroll_y)), object.getProvision()])
+            self.writeLine += 1
         label = Label("Number of employed residents: " + str(len(object.getEmployedResidentsList())), 500, self.lineHeight, self.textFont)
         self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding, self.lineHeight * self.writeLine + self.scroll_y))
         self.writeLine += 1
@@ -155,11 +156,6 @@ class InspectorScreen:
         label = Label("Income Tax Rate: " + str(round(object.getLocalIncomeTax(), 2)) + "%", 500, self.lineHeight, self.textFont)
         self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding, self.lineHeight * self.writeLine + self.scroll_y))
         self.writeLine += 1
-
-        if object.getProvision() is not None:
-            label = Label("Provides to: " + str(object.getProvision()), 500, self.lineHeight, self.textFont, True)
-            self.inspectorScreenSurfaceObjsRect.append([self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding, self.lineHeight * self.writeLine + self.scroll_y)), object.getProvision()])
-            self.writeLine += 1
 
         label = Label("Features:", 500, self.lineHeight, self.textFont)
         self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding, self.lineHeight * self.writeLine + self.scroll_y))
