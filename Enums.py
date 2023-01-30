@@ -20,6 +20,7 @@ class CauseOfDeath(Enum):
     NEGLIGENCE = 'negligence'
     KILLED = 'killed'
     SICKNESS = 'sickness'
+    STARVATION = 'starvation'
     UNKNOWN = 'unknown'
     NULL = ''
 

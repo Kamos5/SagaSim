@@ -14,7 +14,9 @@ def increaseAge (world):
 
     for person in world.getAlivePeople():
         if person.lifeStatus != LifeStatus.DEAD:
+
             person.increaseAge()
+
             if person.age < 15:
                 person.increaseHeight()
             if person.age == 15:
@@ -24,9 +26,17 @@ def increaseAge (world):
                 PLEH.adulthoodReached(person, world)
             if deathChanceFromAge(person) or person.age >= person.modifiedLifespan:
                 PF.deathProcedures(person, world)
+                continue
 
             if person.age > 50:
                 PF.retirement(person, world)
+
+            if person.getSettlement().getFreeFood() == 0:
+                chanceForStarvation = Utils.randomRange(1, 100)
+                if chanceForStarvation <= 25:
+                    person.causeOfDeath = CauseOfDeath.STARVATION
+                    PF.deathProcedures(person, world)
+                    continue
 
 def birthPeople (world):
 
