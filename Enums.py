@@ -96,3 +96,32 @@ class Settlements(Enum):
 
     VILLAGE = 'village'
     TOWN = 'town'
+
+class weatherStatus(Enum):
+
+    normal = 'Normal', 0
+
+class mildWeatherStatus(Enum):
+    mildFlood = 'Mild flood', 15
+    mildDrought = 'Mild drought', 15
+    mildWildfire = 'Mild wildfire', 15
+    mildEarthQuake = 'Mild earth quake', 15
+
+class mediumWeatherStatus(Enum):
+    mediumFlood = 'Medium flood', 30
+    mediumDrought = 'Medium drought', 30
+    mediumWildfire = 'Medium wildfire', 30
+    mediumEarthQuake = 'Medium wildfire', 30
+
+class strongWeatherStatus(Enum):
+    strongFlood = 'Strong flood', 45
+    strongDrought = 'Strong drought', 45
+    strongWildfire = 'Strong wildfire', 45
+    strongEarthQuake = 'Strong wildfire', 45
+
+
+class extremeWeatherStatus(Enum):
+    extremeFlood = 'Extreme flood', 60
+    extremeDrought = 'Extreme drought', 60
+    extremeWildfire = 'Extreme wildfire', 60
+    extremeEarthQuake = 'Extreme wildfire', 60

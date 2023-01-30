@@ -54,6 +54,11 @@ def running (world, manualOverride):
         end1 = time.perf_counter()
         worldtime = end1 - start1
         start1 = time.perf_counter()
+    world.weatherChange()
+    if timers:
+        end1 = time.perf_counter()
+        weatherChangeTime = end1 - start1
+        start1 = time.perf_counter()
     Events.increaseAge(world)
     if timers:
         end1 = time.perf_counter()

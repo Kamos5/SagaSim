@@ -93,6 +93,9 @@ class InspectorScreen:
         label = Label("Region name: " + object.getRegionName(), 500, self.lineHeight, self.textFont)
         self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding*2, self.lineHeight * self.writeLine + self.scroll_y))
         self.writeLine += 1
+        label = Label("Last weather: " + object.getWeather().value[0], 500, self.lineHeight, self.textFont)
+        self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding * 2, self.lineHeight * self.writeLine + self.scroll_y))
+        self.writeLine += 1
         label = Label("Settlements:", 500, self.lineHeight, self.textFont)
         self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding*2, self.lineHeight * self.writeLine + self.scroll_y))
         self.writeLine += 1

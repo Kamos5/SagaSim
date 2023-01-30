@@ -12,6 +12,9 @@ class Region():
         self.activeSettlements = 0
         self.regionCulture = ''
         self.uiExpand = True
+        self.weather = Enums.weatherStatus.normal
+
+        self.weatherHistory = []
 
     def getUIExpand(self):
         return self.uiExpand
@@ -24,6 +27,13 @@ class Region():
             return True
         else:
             return False
+
+    def getWeather(self):
+        return self.weather
+
+    def setWeather(self, newWeater):
+        self.weatherHistory.append(newWeater.value[0])
+        self.weather = newWeater
 
     def getTowns(self):
 
@@ -96,3 +106,6 @@ class Region():
                 lowestPopSettlement = settlement
             index += 1
         return lowestPopSettlement
+
+    def getWeatherHistory(self):
+        return self.weatherHistory

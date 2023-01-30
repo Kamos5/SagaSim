@@ -208,6 +208,21 @@ class World:
         self.alivePeople = []
         self.alivePeople = self.getAlivePeopleFunction()
 
+    def weatherChange(self):
+
+        for region in self.getRegions():
+            weatherPattern = Utils.randomRange(0, 100)
+            if weatherPattern <= 80:
+                region.setWeather(Utils.randomFromEnumCollection(Enums.weatherStatus))
+            elif weatherPattern <= 92:
+                region.setWeather(Utils.randomFromEnumCollection(Enums.mildWeatherStatus))
+            elif weatherPattern <= 97:
+                region.setWeather(Utils.randomFromEnumCollection(Enums.mediumWeatherStatus))
+            elif weatherPattern <= 99:
+                region.setWeather(Utils.randomFromEnumCollection(Enums.strongWeatherStatus))
+            else:
+                region.setWeather(Utils.randomFromEnumCollection(Enums.extremeWeatherStatus))
+
     def makeHistory(self):
         self.worldHistory.append(self.year)
         self.peopleNumberHistory.append(len(self.getPeople()))
@@ -325,6 +340,14 @@ class World:
 
     def getWorldYearHistory(self):
         return self.worldHistory
+
+    def getWeatherHistoryForAllRegions(self):
+
+        weatherHistoryForAllRegions = []
+        for region in self.getRegions():
+            weatherHistoryForAllRegions.append(region.weatherHistory)
+
+        return weatherHistoryForAllRegions
 
     # def getFamiliesMembersNumberHistory(self):
     #     return self.familiesMembersNumberHistory

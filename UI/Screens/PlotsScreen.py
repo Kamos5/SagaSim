@@ -108,6 +108,13 @@ class PlotsScreen:
 
         self.plotsScreenSurfaceObjsRect.append([self.plotsScreenSurface.blit(self.plotsLabel.localSurface, (self.width * 0.55, self.getVerticalPositioning())), Button('height')])
 
+        if isinstance(lastFocusObj, Button) and lastFocusObj.getButtonName() == 'weather':
+            self.plotsLabel = Label2("Weather", self.textFont, True, lastFocusObj.getButtonFlag())
+        else:
+            self.plotsLabel = Label2("Weather", self.textFont, True)
+
+        self.plotsScreenSurfaceObjsRect.append([self.plotsScreenSurface.blit(self.plotsLabel.localSurface, (self.width * 0.55, self.getVerticalPositioning())), Button('weather')])
+
         self.writeLine += 2
 
         self.addGeneralPlotsFields(lastFocusObj, world)
@@ -167,6 +174,12 @@ class PlotsScreen:
             self.arrayLabel = [Parameters.averageHeightColorArray[0][0], Parameters.averageHeightColorArray[1][0], Parameters.averageHeightColorArray[2][0]]
             self.arrayLabelColor = [Parameters.averageHeightColorArray[0][1], Parameters.averageHeightColorArray[1][1], Parameters.averageHeightColorArray[2][1]]
             self.arrayData = world.getAverageHeightHistory()
+
+        # elif isinstance(lastFocusObj, Button) and lastFocusObj.getButtonName() == 'weather':
+        #     self.titleLabel = 'Weather History'
+        #     self.arrayLabel = [Parameters.averageHeightColorArray[0][0], Parameters.averageHeightColorArray[1][0]]
+        #     self.arrayLabelColor = [Parameters.averageHeightColorArray[0][1], Parameters.averageHeightColorArray[1][1]]
+        #     self.arrayData = world.getWeatherHistoryForAllRegions()
 
         else:
             self.titleLabel = ''
