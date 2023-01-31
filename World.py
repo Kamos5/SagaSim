@@ -246,8 +246,15 @@ class World:
         liveAdultsTemp = 0
         liveAdultsMTemp = 0
         liveAdultsFTemp = 0
+        SICKTEMP = 0
+        SICKTEMP2 = 0
 
         for person in self.getAlivePeople():
+
+            if person.getSexGen1()[1] == 1:
+                SICKTEMP += 1
+            if person.getSexGen2()[1] == 1:
+                SICKTEMP2 += 1
             if person.getSexuality() == 'hetero':
                 heteroCountTemp += 1
             else:
@@ -269,6 +276,9 @@ class World:
         self.sexualityHeteroPctHistory.append(heteroCountTemp/len(self.getAlivePeople())*100)
         self.sexualityHomoHistory.append(homoCountTemp)
         self.sexualityHomoPctHistory.append(homoCountTemp / len(self.getAlivePeople())*100)
+        print('Sick')
+        print(SICKTEMP)
+        print(SICKTEMP2)
 
     def countEyeColor(self):
 
