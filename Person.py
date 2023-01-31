@@ -169,6 +169,12 @@ class Person:
     def getSex(self):
         return self.sex
 
+    def getSexGen1(self):
+        return self.sexGen1
+
+    def getSexGen2(self):
+        return self.sexGen2
+
     def getSexuality(self):
         return self.sexuality
 

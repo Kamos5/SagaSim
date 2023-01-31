@@ -6,13 +6,18 @@ import pylab
 
 class Plots:
 
-    def __init__(self,  x, y, title, xLabel, yLabel, xAxisData, yAxisLabel, yAxisLabelColor, *yAxisData ):
+    def __init__(self,  x, y, title, xLabel, yLabel, xAxisData, yAxisLabel, yAxisLabelColor, *yAxisData, dummyWeatherFlag=False):
 
         dpi = 100
         fig = pylab.figure(figsize=[x/dpi, y/dpi],  dpi=dpi, facecolor='#aaaaaa')
         ax = fig.gca()
         ax.set_facecolor('#221f22')
         i = 0
+
+        if dummyWeatherFlag:
+            dummy, = ax.plot([500, 501, 502, 503, 504], ['normal weather', 'mild cataclysm', 'medium cataclysm', 'strong cataclysm', 'extreme cataclysm'])
+            dummy.remove()
+
         for data in yAxisData[0]:
             ax.plot(xAxisData, data, label='Label' + str(i), linestyle='--', color=yAxisLabelColor[i], linewidth=1)
             i += 1
@@ -32,7 +37,6 @@ class Plots:
         size = canvas.get_width_height()
 
         self.surf = pygame.image.fromstring(raw_data, size, "RGB")
-
 
     def getPlotSurface(self):
 

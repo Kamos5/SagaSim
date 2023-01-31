@@ -32,7 +32,7 @@ class Region():
         return self.weather
 
     def setWeather(self, newWeater):
-        self.weatherHistory.append(newWeater.value[0])
+        self.weatherHistory.append(newWeater.value[1])
         self.weather = newWeater
 
     def getTowns(self):

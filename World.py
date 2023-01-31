@@ -211,14 +211,14 @@ class World:
     def weatherChange(self):
 
         for region in self.getRegions():
-            weatherPattern = Utils.randomRange(0, 100)
-            if weatherPattern <= 80:
+            weatherPattern = Utils.randomRange(0, 1000)
+            if weatherPattern <= 850:
                 region.setWeather(Utils.randomFromEnumCollection(Enums.weatherStatus))
-            elif weatherPattern <= 92:
+            elif weatherPattern <= 920:
                 region.setWeather(Utils.randomFromEnumCollection(Enums.mildWeatherStatus))
-            elif weatherPattern <= 97:
+            elif weatherPattern <= 970:
                 region.setWeather(Utils.randomFromEnumCollection(Enums.mediumWeatherStatus))
-            elif weatherPattern <= 99:
+            elif weatherPattern <= 990:
                 region.setWeather(Utils.randomFromEnumCollection(Enums.strongWeatherStatus))
             else:
                 region.setWeather(Utils.randomFromEnumCollection(Enums.extremeWeatherStatus))

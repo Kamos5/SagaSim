@@ -63,3 +63,8 @@ averageHeight = ['Avarage Height', '#A36405']
 averageMHeight = ['Avarage Male Height', '#000099']
 averageFHeight = ['Avarage Female Height', '#B22222']
 averageHeightColorArray = [averageHeight, averageMHeight, averageFHeight]
+
+regionColors0 = ["#009999"]
+regionColors1 = ["#990099"]
+regionColors2 = ["#999900"]
+regionColorArray = [regionColors0, regionColors1, regionColors2]

@@ -99,29 +99,30 @@ class Settlements(Enum):
 
 class weatherStatus(Enum):
 
-    normal = 'Normal', 0
+    #weater, intensity, effect
+    normal = 'Normal', 'normal weather'
 
 class mildWeatherStatus(Enum):
-    mildFlood = 'Mild flood', 15
-    mildDrought = 'Mild drought', 15
-    mildWildfire = 'Mild wildfire', 15
-    mildEarthQuake = 'Mild earth quake', 15
+    mildFlood = 'Mild flood', 'mild cataclysm', 15
+    mildDrought = 'Mild drought', 'mild cataclysm', 15
+    mildWildfire = 'Mild wildfire', 'mild cataclysm', 15
+    mildEarthQuake = 'Mild earth quake', 'mild cataclysm', 15
 
 class mediumWeatherStatus(Enum):
-    mediumFlood = 'Medium flood', 30
-    mediumDrought = 'Medium drought', 30
-    mediumWildfire = 'Medium wildfire', 30
-    mediumEarthQuake = 'Medium wildfire', 30
+    mediumFlood = 'Medium flood', 'medium cataclysm', 30
+    mediumDrought = 'Medium drought', 'medium cataclysm', 30
+    mediumWildfire = 'Medium wildfire', 'medium cataclysm', 30
+    mediumEarthQuake = 'Medium wildfire', 'medium cataclysm', 30
 
 class strongWeatherStatus(Enum):
-    strongFlood = 'Strong flood', 45
-    strongDrought = 'Strong drought', 45
-    strongWildfire = 'Strong wildfire', 45
-    strongEarthQuake = 'Strong wildfire', 45
+    strongFlood = 'Strong flood', 'strong cataclysm', 45
+    strongDrought = 'Strong drought', 'strong cataclysm', 45
+    strongWildfire = 'Strong wildfire', 'strong cataclysm', 45
+    strongEarthQuake = 'Strong wildfire', 'strong cataclysm', 45
 
 
 class extremeWeatherStatus(Enum):
-    extremeFlood = 'Extreme flood', 60
-    extremeDrought = 'Extreme drought', 60
-    extremeWildfire = 'Extreme wildfire', 60
-    extremeEarthQuake = 'Extreme wildfire', 60
+    extremeFlood = 'Extreme flood', 'extreme cataclysm', 60
+    extremeDrought = 'Extreme drought', 'extreme cataclysm', 60
+    extremeWildfire = 'Extreme wildfire', 'extreme cataclysm', 60
+    extremeEarthQuake = 'Extreme wildfire', 'extreme cataclysm', 60

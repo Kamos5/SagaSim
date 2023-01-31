@@ -37,8 +37,8 @@ class PlotsScreen:
         self.plotsScreenSurface = pygame.Surface([self.width, self.height - self.heightOffSet])
         self.plotsScreenSurfaceObjsRect = []
 
-        self.marginLeftWidthMultiplier = 0.05
-        self.marginRightWidthMultiplier = 0.05
+        self.marginLeftWidthMultiplier = 0.01
+        self.marginRightWidthMultiplier = 0.01
         self.marginLeftOffSet = self.width*self.marginLeftWidthMultiplier
         self.marginRightOffSet = self.width*self.marginRightWidthMultiplier
         self.selectedPlot = ''
@@ -47,6 +47,7 @@ class PlotsScreen:
         self.arrayLabel = []
         self.arrayLabelColor = ['']
         self.arrayData = []
+        self.yLabelTitle = ''
 
     def addHeaderPlot(self, lastFocusObj, world):
 
@@ -122,10 +123,13 @@ class PlotsScreen:
     def addPlots(self, world):
 
         xLabel = 'Year'
-        yLabel = 'Population'
+        yLabel = self.titleLabel
+        dummyWeatherFlag = False
 
-        plot = Plots(self.width-self.marginLeftOffSet-self.marginRightOffSet, self.height*.8, self.titleLabel, xLabel, yLabel, world.getWorldYearHistory(), self.arrayLabel, self.arrayLabelColor, self.arrayData)
+        if yLabel == 'Weather History':
+            dummyWeatherFlag = True
 
+        plot = Plots(self.width-self.marginLeftOffSet-self.marginRightOffSet, self.height*.8, self.titleLabel, xLabel, yLabel, world.getWorldYearHistory(), self.arrayLabel, self.arrayLabelColor, self.arrayData, dummyWeatherFlag=dummyWeatherFlag)
         self.plotsField = plot.getPlotSurface()
         self.plotsScreenSurface.blit(self.plotsField, (self.marginLeftOffSet, self.getVerticalPositioning()))
 
@@ -138,54 +142,63 @@ class PlotsScreen:
             self.arrayLabel = [Parameters.globalPopulationArray[0][0]]
             self.arrayLabelColor = [Parameters.globalPopulationArray[0][1]]
             self.arrayData = world.getAlivePeopleNumberHistory()
+            self.yLabelTitle = 'Population'
 
         elif isinstance(lastFocusObj, Button) and lastFocusObj.getButtonName() == 'eyes':
             self.titleLabel = 'Eye Colour in Population'
             self.arrayLabel = [Parameters.eyeColorArray[0][0], Parameters.eyeColorArray[1][0], Parameters.eyeColorArray[2][0], Parameters.eyeColorArray[3][0], Parameters.eyeColorArray[4][0], Parameters.eyeColorArray[5][0], Parameters.eyeColorArray[6][0]]
             self.arrayLabelColor = [Parameters.eyeColorArray[0][1], Parameters.eyeColorArray[1][1], Parameters.eyeColorArray[2][1], Parameters.eyeColorArray[3][1], Parameters.eyeColorArray[4][1], Parameters.eyeColorArray[5][1], Parameters.eyeColorArray[6][1]]
             self.arrayData = world.getPeopleEyeColorsComplexArray()
+            self.yLabelTitle = 'Population'
 
         elif isinstance(lastFocusObj, Button) and lastFocusObj.getButtonName() == 'hairs':
             self.titleLabel = 'Hair Colour in Population'
             self.arrayLabel = [Parameters.hairColorArray[0][0], Parameters.hairColorArray[1][0], Parameters.hairColorArray[2][0], Parameters.hairColorArray[3][0], Parameters.hairColorArray[4][0], Parameters.hairColorArray[5][0]]
             self.arrayLabelColor = [Parameters.hairColorArray[0][1], Parameters.hairColorArray[1][1], Parameters.hairColorArray[2][1], Parameters.hairColorArray[3][1], Parameters.hairColorArray[4][1], Parameters.hairColorArray[5][1]]
             self.arrayData = world.getPeopleHairColorsComplexArray()
+            self.yLabelTitle = 'Population'
 
         elif isinstance(lastFocusObj, Button) and lastFocusObj.getButtonName() == 'crime':
             self.titleLabel = 'Crimes Committed'
             self.arrayLabel = [Parameters.crimeColorArray[0][0], Parameters.crimeColorArray[1][0], Parameters.crimeColorArray[2][0], Parameters.crimeColorArray[3][0], Parameters.crimeColorArray[4][0], Parameters.crimeColorArray[5][0]]
             self.arrayLabelColor = [Parameters.crimeColorArray[0][1], Parameters.crimeColorArray[1][1], Parameters.crimeColorArray[2][1], Parameters.crimeColorArray[3][1], Parameters.crimeColorArray[4][1], Parameters.crimeColorArray[5][1]]
             self.arrayData = world.getCrimeHistory()
+            self.yLabelTitle = 'Crimes number'
 
         elif isinstance(lastFocusObj, Button) and lastFocusObj.getButtonName() == 'sexuality':
             self.titleLabel = 'Sexuality'
             self.arrayLabel = [Parameters.sexualityColorArray[0][0], Parameters.sexualityColorArray[1][0]]
             self.arrayLabelColor = [Parameters.sexualityColorArray[0][1], Parameters.sexualityColorArray[1][1]]
             self.arrayData = world.getSexualityHistory()
+            self.yLabelTitle = 'Sexuality type'
 
         elif isinstance(lastFocusObj, Button) and lastFocusObj.getButtonName() == 'sexuality%':
             self.titleLabel = 'Sexuality per Capita'
             self.arrayLabel = [Parameters.sexualityColorArray[0][0], Parameters.sexualityColorArray[1][0]]
             self.arrayLabelColor = [Parameters.sexualityColorArray[0][1], Parameters.sexualityColorArray[1][1]]
             self.arrayData = world.getSexualityPctHistory()
+            self.yLabelTitle = 'Sexuality type'
 
         elif isinstance(lastFocusObj, Button) and lastFocusObj.getButtonName() == 'height':
             self.titleLabel = 'Average Height'
             self.arrayLabel = [Parameters.averageHeightColorArray[0][0], Parameters.averageHeightColorArray[1][0], Parameters.averageHeightColorArray[2][0]]
             self.arrayLabelColor = [Parameters.averageHeightColorArray[0][1], Parameters.averageHeightColorArray[1][1], Parameters.averageHeightColorArray[2][1]]
             self.arrayData = world.getAverageHeightHistory()
+            self.yLabelTitle = 'Height'
 
-        # elif isinstance(lastFocusObj, Button) and lastFocusObj.getButtonName() == 'weather':
-        #     self.titleLabel = 'Weather History'
-        #     self.arrayLabel = [Parameters.averageHeightColorArray[0][0], Parameters.averageHeightColorArray[1][0]]
-        #     self.arrayLabelColor = [Parameters.averageHeightColorArray[0][1], Parameters.averageHeightColorArray[1][1]]
-        #     self.arrayData = world.getWeatherHistoryForAllRegions()
+        elif isinstance(lastFocusObj, Button) and lastFocusObj.getButtonName() == 'weather':
+            self.titleLabel = 'Weather History'
+            self.arrayLabel = self.getRegionsLabelArray(world)
+            self.arrayLabelColor = [Parameters.regionColorArray[0][0], Parameters.regionColorArray[1][0]]
+            self.arrayData = world.getWeatherHistoryForAllRegions()
+            self.yLabelTitle = 'Last season weather pattern'
 
         else:
             self.titleLabel = ''
             self.arrayLabel = []
             self.arrayLabelColor = []
             self.arrayData = []
+            self.yLabelTitle = ''
 
         self.addPlots(world)
 
@@ -203,3 +216,10 @@ class PlotsScreen:
 
     def getVerticalPositioning(self):
         return self.writeLine * (self.lineHeight + 2 * self.labelBoarderDefault + 2 * self.labelMarginVerticalDefault)
+
+    def getRegionsLabelArray(self, world):
+
+        regionsLabelArray = []
+        for region in world.getRegions():
+            regionsLabelArray.append(region.getRegionName())
+        return regionsLabelArray
