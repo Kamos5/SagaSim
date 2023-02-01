@@ -73,6 +73,8 @@ class Person:
         self.personalSexualityModifier = 1
         self.accommodation = None
         self.realEstate = []
+        self.iqGen = 0
+        self.iq = 0
         self.immunityTo = []
         pass
 

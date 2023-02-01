@@ -126,3 +126,17 @@ class extremeWeatherStatus(Enum):
     EXTREMEDROUGHT = 'Extreme drought', 'extreme cataclysm', 60
     EXTREMEWILDFIRE = 'Extreme wildfire', 'extreme cataclysm', 60
     EXTREMEEARTHQUAKE = 'Extreme wildfire', 'extreme cataclysm', 60
+
+
+class normalIllnesses(Enum):
+
+
+    # name, description, time lenght(untreated), [affected object?], [effect in %]
+    PNEUMONIA = 'Pneumonia', 'Takes your breath away', 1, ['fertility'], [20]
+
+
+class geneticIllnesses(Enum):
+    # name, description, [source genes], [affected object?], [effect in %]
+    WHITEDEATH = 'White death', 'Being too white is a terminal sin.', [EyeColor.GRAY, HairColor.WHITE], ['lifespan', 'fertility'], [50, 25]
+    BLACKDEATH = 'Black death', 'Black live does not matter', [EyeColor.GRAY, HairColor.WHITE], ['lifespan', 'fertility'], [25, 50]
+
