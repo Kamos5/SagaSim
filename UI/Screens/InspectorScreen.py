@@ -104,6 +104,10 @@ class InspectorScreen:
             self.inspectorScreenSurfaceObjsRect.append([self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding*3, self.lineHeight * self.writeLine + self.scroll_y)), settlement])
             self.writeLine += 1
 
+        self.writeLine = SingleLineSurface("Events:", 500, self.lineHeight, self.textFont, self.leftPadding, self.lineHeight * self.writeLine + self.scroll_y, self.inspectorScreenSurface, self.writeLine)
+        for liveEvent in object.getEvent():
+
+            self.writeLine = MultiLineSurface(str(liveEvent), 500, self.lineHeight, self.textFont, self.leftPadding*2, self.lineHeight * self.writeLine + self.scroll_y, self.inspectorScreenSurface, self.writeLine)
 
     def addInspectorForSettlements(self, object):
 

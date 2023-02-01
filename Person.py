@@ -73,6 +73,7 @@ class Person:
         self.personalSexualityModifier = 1
         self.accommodation = None
         self.realEstate = []
+        self.immunityTo = []
         pass
 
     def setInitValues(self, familyName, yearOfBirth, age, randomLifespan, sex, hairColor, hairColorGen1, hairColorGen2, eyeColor, eyeColorGen1, eyeColorGen2, familyObj):

@@ -12,8 +12,8 @@ class Region():
         self.activeSettlements = 0
         self.regionCulture = ''
         self.uiExpand = True
-        self.weather = Enums.weatherStatus.normal
-
+        self.weather = Enums.weatherStatus.NORMAL
+        self.events = []
         self.weatherHistory = []
 
     def getUIExpand(self):
@@ -109,3 +109,6 @@ class Region():
 
     def getWeatherHistory(self):
         return self.weatherHistory
+
+    def getEvent(self):
+        return self.events

@@ -100,29 +100,29 @@ class Settlements(Enum):
 class weatherStatus(Enum):
 
     #weater, intensity, effect
-    normal = 'Normal', 'normal weather'
+    NORMAL = 'Normal', 'normal weather'
 
 class mildWeatherStatus(Enum):
-    mildFlood = 'Mild flood', 'mild cataclysm', 15
-    mildDrought = 'Mild drought', 'mild cataclysm', 15
-    mildWildfire = 'Mild wildfire', 'mild cataclysm', 15
-    mildEarthQuake = 'Mild earth quake', 'mild cataclysm', 15
+    MILDFLOOD = 'Mild flood', 'mild cataclysm', 15
+    MILDDROUGHT = 'Mild drought', 'mild cataclysm', 15
+    MILDWILDFIRE = 'Mild wildfire', 'mild cataclysm', 15
+    MILDEARTHQUAKE = 'Mild earth quake', 'mild cataclysm', 15
 
 class mediumWeatherStatus(Enum):
-    mediumFlood = 'Medium flood', 'medium cataclysm', 30
-    mediumDrought = 'Medium drought', 'medium cataclysm', 30
-    mediumWildfire = 'Medium wildfire', 'medium cataclysm', 30
-    mediumEarthQuake = 'Medium wildfire', 'medium cataclysm', 30
+    MEDIUMFLOOD = 'Medium flood', 'medium cataclysm', 30
+    MEDIUMDROUGHT = 'Medium drought', 'medium cataclysm', 30
+    MEDIUMWILDFIRE = 'Medium wildfire', 'medium cataclysm', 30
+    MEDIUMEARTHQUAKE = 'Medium wildfire', 'medium cataclysm', 30
 
 class strongWeatherStatus(Enum):
-    strongFlood = 'Strong flood', 'strong cataclysm', 45
-    strongDrought = 'Strong drought', 'strong cataclysm', 45
-    strongWildfire = 'Strong wildfire', 'strong cataclysm', 45
-    strongEarthQuake = 'Strong wildfire', 'strong cataclysm', 45
+    STRONGFLOOD = 'Strong flood', 'strong cataclysm', 45
+    STRONGDROUGHT = 'Strong drought', 'strong cataclysm', 45
+    STRONGWILDFIRE = 'Strong wildfire', 'strong cataclysm', 45
+    STRONGEARTHQUAKE = 'Strong wildfire', 'strong cataclysm', 45
 
 
 class extremeWeatherStatus(Enum):
-    extremeFlood = 'Extreme flood', 'extreme cataclysm', 60
-    extremeDrought = 'Extreme drought', 'extreme cataclysm', 60
-    extremeWildfire = 'Extreme wildfire', 'extreme cataclysm', 60
-    extremeEarthQuake = 'Extreme wildfire', 'extreme cataclysm', 60
+    EXTREMEFLOOD = 'Extreme flood', 'extreme cataclysm', 60
+    EXTREMEDROUGHT = 'Extreme drought', 'extreme cataclysm', 60
+    EXTREMEWILDFIRE = 'Extreme wildfire', 'extreme cataclysm', 60
+    EXTREMEEARTHQUAKE = 'Extreme wildfire', 'extreme cataclysm', 60

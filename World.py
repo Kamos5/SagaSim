@@ -1,9 +1,12 @@
 import Enums
 import Utils
 from Enums import Settlements
+from PersonLifeEventsHistory import adulthoodReached
 from Region import Region
 import RegionNameGenerator as RNG
 import Parameters
+from RegionLifeEventsHistory import weatherEvent
+
 
 class World:
 
@@ -222,6 +225,8 @@ class World:
                 region.setWeather(Utils.randomFromEnumCollection(Enums.strongWeatherStatus))
             else:
                 region.setWeather(Utils.randomFromEnumCollection(Enums.extremeWeatherStatus))
+
+            weatherEvent(region, self)
 
     def makeHistory(self):
         self.worldHistory.append(self.year)
