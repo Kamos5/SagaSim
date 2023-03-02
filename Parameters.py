@@ -21,7 +21,7 @@ chanceForChangingLastNameDuringMigration = 25 #aka 5% to chance create new branc
 regionSizeMin = 8
 regionSizeMax = 8
 
-#socage -> % prodution to homeTown TODO _ FIXFIXFIX
+#socage -> % production to homeTown TODO _ FIXFIXFIX
 socage = 0
 
 #Graph data
@@ -59,9 +59,9 @@ sexualityHetero = ['Hetero', '#000099']
 sexualityHomo = ['Homo', '#666666']
 sexualityColorArray = [sexualityHetero, sexualityHomo]
 
-averageHeight = ['Avarage Height', '#A36405']
-averageMHeight = ['Avarage Male Height', '#000099']
-averageFHeight = ['Avarage Female Height', '#B22222']
+averageHeight = ['Average Height', '#A36405']
+averageMHeight = ['Average Male Height', '#000099']
+averageFHeight = ['Average Female Height', '#B22222']
 averageHeightColorArray = [averageHeight, averageMHeight, averageFHeight]
 
 regionColors0 = ["#009999"]
