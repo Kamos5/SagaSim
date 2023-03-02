@@ -1,5 +1,4 @@
 
-import Utils
 import time
 import Events
 import FamilyFunctions as FF
@@ -8,7 +7,6 @@ import MembersInitGenerator as MIG
 import Parameters
 import pygame
 from Family import Family
-from House import House
 from Region import Region
 from Settlements import Settlements
 from UI import Canvas
@@ -18,11 +16,13 @@ from World import World as World
 
 world = World()
 
+
 def initFamilies():
 
     families = FIG.Init(world)
 
     return families
+
 
 def initPeople(families):
 
@@ -33,7 +33,8 @@ def initPeople(families):
 
     return people
 
-def running (world, manualOverride):
+
+def running(world, manualOverride):
 
     start = time.perf_counter()
     print(world.getYear())
@@ -143,6 +144,7 @@ def running (world, manualOverride):
     # print(psutil.virtual_memory())  # physical memory usage
     # print('memory % used:', psutil.virtual_memory()[2])
 
+
 def main():
 
     world.generateRegions(Parameters.startingNumberOfRegions)
@@ -217,6 +219,7 @@ def main():
         if world.getYear() == 1200:
 
             return
+
 
 def pygameEvents(event, canvas, pausedPressed):
 
@@ -425,5 +428,6 @@ def pygameEvents(event, canvas, pausedPressed):
     canvas.refreshScreen(world, canvas.listScreen.getScroll_y(), canvas.inspectorScreen.getScroll_y(), canvas.familyTreeScreen.getScroll_y())
 
     return pausedPressed
+
 
 main()
