@@ -16,15 +16,15 @@ villageToTownMultiplier = 3
 migrationWaveForTown = 5
 migrationWaveForVillage = 10
 
-chanceForChangingLastNameDuringMigration = 25 #aka 5% to chance create new branch family
+chanceForChangingLastNameDuringMigration = 25  # aka 5% to chance create new branch family
 
 regionSizeMin = 8
 regionSizeMax = 8
 
-#socage -> % production to homeTown TODO _ FIXFIXFIX
+# socage -> % production to homeTown TODO _ FIXFIXFIX
 socage = 0
 
-#Graph data
+# Graph data
 globalPopulation = ['Global Population', '#eeaaaa']
 globalPopulationArray = [globalPopulation]
 
@@ -68,4 +68,3 @@ regionColors0 = ["#009999"]
 regionColors1 = ["#990099"]
 regionColors2 = ["#999900"]
 regionColorArray = [regionColors0, regionColors1, regionColors2]
-
