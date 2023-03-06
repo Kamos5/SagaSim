@@ -83,7 +83,7 @@ class Person:
         if sex == Sexes.MALE:
             self.firstName = NameGenerator.getRandomMNameForRegion(familyObj.getOriginRegion())
         else:
-            self.firstName = NameGenerator.getRandomMNameForRegion(familyObj.getOriginRegion())
+            self.firstName = NameGenerator.getRandomFNameForRegion(familyObj.getOriginRegion())
 
         self.familyName = familyName
         self.lastName = familyObj.familyName
