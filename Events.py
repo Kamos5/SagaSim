@@ -44,12 +44,13 @@ def increaseAge (world):
             if deathChanceFromAge(person) or person.age >= person.modifiedLifespan:
                 PF.deathProcedures(person, world)
                 continue
-            # if person.getSettlement().getFreeFood() == 0:
-            #     chanceForStarvation = Utils.randomRange(1, 100)
-            #     if chanceForStarvation <= 5:
-            #         person.causeOfDeath = CauseOfDeath.STARVATION
-            #         PF.deathProcedures(person, world)
-            #         continue
+
+            if person.getSettlement().getFreeFood() <= 0:
+                chanceForStarvation = Utils.randomRange(1, 1000)
+                if chanceForStarvation <= 5:
+                    person.causeOfDeath = CauseOfDeath.STARVATION
+                    PF.deathProcedures(person, world)
+                    continue
 
 def loveMaking (world):
 
@@ -110,7 +111,7 @@ def birthPeopleNew (world):
 
     for person in world.getAlivePeople():
         #TIME for labour aka 9m pregnancy
-        if person.sex == Sexes.FEMALE and person.isPregnant:
+        if person.sex == Sexes.FEMALE and person.isPregnant and person.getLifeStatus() != LifeStatus.DEAD:
 
             chanceForMiscarriage = Utils.randomRange(1, 10000)
 
@@ -158,7 +159,6 @@ def birthPeopleNew (world):
                     if person.getSpouse() is not None:
                         person.getSpouse().appendAliveChildrenList(childObj)
                     childObj.changeMaritalStatus(MS.CHILD)
-                    #TODO JEST JAKIS NONETYPE CZASEM aka person = NONE
                     person.getAccommodation().addHouseResident(childObj)
 
                     world.increaseBirthsPerYearTemp()
