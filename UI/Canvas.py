@@ -122,7 +122,7 @@ class Canvas:
             self.lastFocusObj = self.focusObj[len(self.focusObj)-1]
 
         self.listScreen.resetWriteLine()
-        self.listScreen.addRegions(self.lastFocusObj)
+        self.listScreen.addRegions(world, self.lastFocusObj)
         self.helpScreen.resetWriteLine()
         self.plotsScreen.resetWriteLine()
         self.familyTreeScreen.resetWriteLine()
@@ -173,6 +173,7 @@ class Canvas:
         self.clearCanvas()
         self.navBarScreen.addHelpButton()
         self.navBarScreen.addPlotsButton()
+        self.navBarScreen.addGameSpeedCounter(world)
         self.navBarScreen.addDateTimer(world)
         self.drawStuff(world)
         self.temp += world.getYear()+1-world.getYear()

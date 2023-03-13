@@ -4,13 +4,15 @@ import NameGenerator
 from Enums import LifeStatus, MaritalStatus, HairColor, Sexes
 import PersonLifeEventsHistory as PLEH
 
+#mother, mother's spouse, trueMother, trueFather
 
-def birthChild(world, parent1, parent2, trueParent1='', trueParent2=''):
-    # parent2 is father
-    if trueParent1 == '':
-        trueParent1 = parent1
-    if trueParent2 == '':
-        trueParent2 = parent2
+
+def birthChild(world, parent1, parent2=None, trueParent1=None, trueParent2=None):
+
+    if parent2 is None:
+        secondParent = parent1
+    else:
+        secondParent = parent2
 
     sex, sexGen1, sexGen2 = Utils.geneticSex(trueParent1, trueParent2)
 
@@ -35,7 +37,7 @@ def birthChild(world, parent1, parent2, trueParent1='', trueParent2=''):
 
     #offspringHeight = Utils.geneticRandomFromValuesForHeight(trueParent1.height, trueParent2.height)
     if sex == Sexes.MALE:
-        offspringHeight = int(trueParent2.height * Utils.randomRange(98, 103)/100)
+        offspringHeight = int(trueParent2.height * Utils.randomRange(98, 103) / 100)
     else:
         offspringHeight = int(trueParent1.height * Utils.randomRange(98, 103) / 100)
 
@@ -45,11 +47,11 @@ def birthChild(world, parent1, parent2, trueParent1='', trueParent2=''):
     person = PersonObj()
 
     #Child goes to father's family
-    person.birthNewPerson(firstName, trueParent2.familyName, trueParent2.familyName, world.getYear(), lifespan, sex,
+    person.birthNewPerson(firstName, secondParent.familyName, secondParent.familyName, world.getDay(), world.getMonth(), world.getYear(), lifespan, sex,
                           sexGen1, sexGen2, sexuality, fertility, offspringHeight, hairColor, hairColorGen1, hairColorGen2, eyeColor, eyeColorGen1, eyeColorGen2,
-                          parent1, parent2, trueParent1, trueParent2, trueParent2.familyObjRef)
+                          parent1, parent2, trueParent1, trueParent2, secondParent.familyObjRef)
 
-    Utils.inheretTraits(person, parent1, parent2, trueParent1, trueParent2)
+    Utils.inheretTraits(person, parent1, secondParent, trueParent1, trueParent2)
 
     return person
 
@@ -90,10 +92,10 @@ def deathProcedures(person, world):
 
     if person.age < 15:
         PLEH.lostChild(person.mother, person, world)
-    if person.getFather() != '':
+    if person.getFather() is not None:
         person.getFather().getAliveChildrenList().remove(person)
         person.getFather().appendDeadChildrenList(person)
-    if person.getMother() != '':
+    if person.getMother() is not None:
         person.getMother().getAliveChildrenList().remove(person)
         person.getMother().appendDeadChildrenList(person)
 

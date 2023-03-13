@@ -59,7 +59,10 @@ class Settlements:
         self.avarageResidentsWealth = 0
         self.housings = []
         self.createStartingVillageFeatures()
+        self.timeSinceMigration = 0 #in days
         self.adjustFertilityModifier()
+        self.migrationMonth = Utils.randomFromEnumCollection(Enums.Months)
+        self.migrationDay = Utils.randomRange(1, self.migrationMonth.value[2])
 
     def getRegion(self):
         return self.region
@@ -363,6 +366,15 @@ class Settlements:
     def getLocalIncomeTax(self):
         return self.localIncomeTax
 
+    def getTimeSinceMigration(self):
+        return self.timeSinceMigration
+
+    def increaseTimeSinceMigration(self):
+        self.timeSinceMigration += 1
+
+    def resetTimeSinceMigration(self):
+        self.timeSinceMigration = 0
+
     def getAvarageResidentsWealth(self):
 
         tempSumWealth = 0
@@ -371,3 +383,11 @@ class Settlements:
             tempSumWealth += resident.getFreeWealth()
 
         return round(tempSumWealth/len(self.getResidents()), 3)
+
+    def getMigrationDay(self):
+        return self.migrationDay
+
+    def getMigrationMonth(self):
+        return self.migrationMonth
+
+

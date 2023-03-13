@@ -13,6 +13,7 @@ class Region():
         self.regionCulture = ''
         self.uiExpand = True
         self.weather = Enums.weatherStatus.NORMAL
+        self.daysSinceLastWeatherChange = 0
         self.events = []
         self.weatherHistory = []
 
@@ -85,6 +86,23 @@ class Region():
 
     def getSettlements(self):
         return self.settlements
+
+    def setDaysSinceWeatherChangeCounter(self, days):
+        self.daysSinceLastWeatherChange = days
+
+    def increaseDaysSinceWeatherChangeCounter(self):
+        self.daysSinceLastWeatherChange += 1
+
+    def decreaseDaysSinceWeatherChangeCounter(self):
+
+        if self.daysSinceLastWeatherChange > 0:
+            self.daysSinceLastWeatherChange -= 1
+
+    def getDaysSinceWeatherChange(self):
+        return self.daysSinceLastWeatherChange
+
+    def resetDaysSinceWeatherChange(self):
+        self.daysSinceLastWeatherChange = 0
 
     def getActiveSettlements(self):
         return self.activeSettlements

@@ -1,5 +1,20 @@
 from enum import Enum
 
+class Months (Enum):
+
+    JANUARY = 1, 'January', 31, #31
+    FEBRUARY = 2, 'February', 28 #28
+    MARCH = 3, 'March', 31 #31
+    APRIL = 4, 'April', 30 #30
+    MAY = 5, 'May', 31 #31
+    JUNE = 6, 'June', 30 #30
+    JULY = 7, 'July', 31 #31
+    AUGUST = 8, 'August', 31 #31
+    SEPTEMBER = 9, 'September', 30 #30
+    OCTOBER = 10, 'October', 31 #31
+    NOVEMBER = 11, 'November', 30 #30
+    DECEMBER = 12, 'December', 31 #31
+
 class LifeStatus(Enum):
     ALIVE = 'alive'
     DEAD = 'dead'
@@ -99,33 +114,67 @@ class Settlements(Enum):
 
 class weatherStatus(Enum):
 
-    #weater, intensity, effect
-    NORMAL = 'Normal', 'normal weather'
+            #weater, intensity, effect, duration(days)
+    NORMAL = 'Normal', 'normal weather', 0, 0
+
+class weatherFloods(Enum): #MAR/APR/MAY
+    MILD = 'Mild flood', 'mild cataclysm', 15, 7
+    MEDIUM = 'Medium flood', 'medium cataclysm', 30, 14
+    STRONG = 'Strong flood', 'strong cataclysm', 45, 21
+    EXTREME = 'Extreme flood', 'extreme cataclysm', 60, 28
+
+class weatherDroughts(Enum): #JUN/JUL/AUG
+    MILD = 'Mild drought', 'mild cataclysm', 15, 14
+    MEDIUM = 'Medium drought', 'medium cataclysm', 30, 28
+    STRONG = 'Strong drought', 'strong cataclysm', 45, 42
+    EXTREME = 'Extreme drought', 'extreme cataclysm', 60, 56
+
+class weatherWildFire(Enum): #SEP/OCT/NOV
+    MILD = 'Mild wildfire', 'mild cataclysm', 15, 7
+    MEDIUM = 'Medium wildfire', 'medium cataclysm', 30, 14
+    STRONG = 'Strong wildfire', 'strong cataclysm', 45, 21
+    EXTREME = 'Extreme wildfire', 'extreme cataclysm', 60, 28
+
+class weatherBlizzard(Enum):  #DEC/JAN/FEB
+    MILD = 'Mild blizzard', 'mild cataclysm', 15, 7
+    MEDIUM = 'Medium blizzard', 'medium cataclysm', 30, 14
+    STRONG = 'Strong blizzard', 'strong cataclysm', 45, 21
+    EXTREME = 'Extreme blizzard', 'extreme cataclysm', 60, 28
+
+class weatherEarthQuake(Enum):
+    MILD = 'Mild earth quake', 'mild cataclysm', 15, 2
+    MEDIUM = 'Medium wildfire', 'medium cataclysm', 30, 3
+    STRONG = 'Strong wildfire', 'strong cataclysm', 45, 5
+    EXTREME = 'Extreme wildfire', 'extreme cataclysm', 60, 7
+
+
+
+
 
 class mildWeatherStatus(Enum):
-    MILDFLOOD = 'Mild flood', 'mild cataclysm', 15
-    MILDDROUGHT = 'Mild drought', 'mild cataclysm', 15
-    MILDWILDFIRE = 'Mild wildfire', 'mild cataclysm', 15
-    MILDEARTHQUAKE = 'Mild earth quake', 'mild cataclysm', 15
+    MILDFLOOD = 'Mild flood', 'mild cataclysm', 15, 7
+    MILDDROUGHT = 'Mild drought', 'mild cataclysm', 15, 14
+    MILDWILDFIRE = 'Mild wildfire', 'mild cataclysm', 15, 7
+    MILDEARTHQUAKE = 'Mild earth quake', 'mild cataclysm', 15, 2
 
 class mediumWeatherStatus(Enum):
-    MEDIUMFLOOD = 'Medium flood', 'medium cataclysm', 30
-    MEDIUMDROUGHT = 'Medium drought', 'medium cataclysm', 30
-    MEDIUMWILDFIRE = 'Medium wildfire', 'medium cataclysm', 30
-    MEDIUMEARTHQUAKE = 'Medium wildfire', 'medium cataclysm', 30
+    MEDIUMFLOOD = 'Medium flood', 'medium cataclysm', 30, 14
+    MEDIUMDROUGHT = 'Medium drought', 'medium cataclysm', 30, 28
+    MEDIUMWILDFIRE = 'Medium wildfire', 'medium cataclysm', 30, 14
+    MEDIUMEARTHQUAKE = 'Medium wildfire', 'medium cataclysm', 30, 3
 
 class strongWeatherStatus(Enum):
-    STRONGFLOOD = 'Strong flood', 'strong cataclysm', 45
-    STRONGDROUGHT = 'Strong drought', 'strong cataclysm', 45
-    STRONGWILDFIRE = 'Strong wildfire', 'strong cataclysm', 45
-    STRONGEARTHQUAKE = 'Strong wildfire', 'strong cataclysm', 45
+    STRONGFLOOD = 'Strong flood', 'strong cataclysm', 45, 21
+    STRONGDROUGHT = 'Strong drought', 'strong cataclysm', 45, 42
+    STRONGWILDFIRE = 'Strong wildfire', 'strong cataclysm', 45, 21
+    STRONGEARTHQUAKE = 'Strong wildfire', 'strong cataclysm', 45, 5
 
 
 class extremeWeatherStatus(Enum):
-    EXTREMEFLOOD = 'Extreme flood', 'extreme cataclysm', 60
-    EXTREMEDROUGHT = 'Extreme drought', 'extreme cataclysm', 60
-    EXTREMEWILDFIRE = 'Extreme wildfire', 'extreme cataclysm', 60
-    EXTREMEEARTHQUAKE = 'Extreme wildfire', 'extreme cataclysm', 60
+    EXTREMEFLOOD = 'Extreme flood', 'extreme cataclysm', 60, 28
+    EXTREMEDROUGHT = 'Extreme drought', 'extreme cataclysm', 60, 56
+    EXTREMEWILDFIRE = 'Extreme wildfire', 'extreme cataclysm', 60, 28
+    EXTREMEEARTHQUAKE = 'Extreme wildfire', 'extreme cataclysm', 60, 7
 
 
 class normalIllnesses(Enum):

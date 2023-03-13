@@ -103,36 +103,36 @@ class FamilyTreeScreen:
         labelString = ""
         sexPrefix = ""
         lifeSymbol = ""
+        if tree is not None:
+            if tree.getRoot().getLifeStatus() == Enums.LifeStatus.DEAD:
+                lifeSymbol = "†"
 
-        if tree.getRoot().getLifeStatus() == Enums.LifeStatus.DEAD:
-            lifeSymbol = "†"
+            if len(tree.getRoot().getAllChildren()) > 0:
+                if tree.getRoot().getSex() == Enums.Sexes.MALE:
+                    sexPrefix = "Father: "
+                else:
+                    sexPrefix = "Mother: "
 
-        if len(tree.getRoot().getAllChildren()) > 0:
-            if tree.getRoot().getSex() == Enums.Sexes.MALE:
-                sexPrefix = "Father: "
-            else:
-                sexPrefix = "Mother: "
+            if level == 0:
+                sexPrefix = ""
 
-        if level == 0:
-            sexPrefix = ""
+            rootString = prefix + sexPrefix + tree.getRoot().getFirstName() + " " + lifeSymbol + " " + tree.getRoot().getLastName() + " (" + str(tree.getRoot().getYearOfBirth()) + "-" + str(tree.getRoot().getYearOfDeath()) + ")"
+            siblingString = ""
 
-        rootString = prefix + sexPrefix + tree.getRoot().getFirstName() + " " + lifeSymbol + " " + tree.getRoot().getLastName() + " (" + str(tree.getRoot().getYearOfBirth()) + "-" + str(tree.getRoot().getYearOfDeath()) + ")"
-        siblingString = ""
+            if len(tree.getSiblings()) > 0:
+                siblingString += " Siblings:"
+                for sibling in tree.getSiblings():
+                    siblingString += " (" + sibling.getFirstName() + " " + sibling.getLastName() + ")"
 
-        if len(tree.getSiblings()) > 0:
-            siblingString += " Siblings:"
-            for sibling in tree.getSiblings():
-                siblingString += " (" + sibling.getFirstName() + " " + sibling.getLastName() + ")"
+            labelString = (rootString + siblingString)
 
-        labelString = (rootString + siblingString)
+            if level <= maxLevel:
+                label = Label(labelString, self.width - self.leftPadding - self.rightPadding, self.lineHeight, self.textFont)
+                self.familyTreeScreenSurface.blit(label.localSurface, (self.leftPadding, self.lineHeight * self.writeLine + self.scroll_y))
+                self.writeLine += 1
 
-        if level <= maxLevel:
-            label = Label(labelString, self.width - self.leftPadding - self.rightPadding, self.lineHeight, self.textFont)
-            self.familyTreeScreenSurface.blit(label.localSurface, (self.leftPadding, self.lineHeight * self.writeLine + self.scroll_y))
-            self.writeLine += 1
+                if tree.getRoot().getFather() != "":
+                    self.printUpFamilyTree(tree.getFather(), level + 1, prefix + " ")
 
-            if tree.getRoot().getFather() != "":
-                self.printUpFamilyTree(tree.getFather(), level + 1, prefix + " ")
-
-            if tree.getRoot().getMother() != "":
-                self.printUpFamilyTree(tree.getMother(), level + 1, prefix + " ")
+                if tree.getRoot().getMother() != "":
+                    self.printUpFamilyTree(tree.getMother(), level + 1, prefix + " ")

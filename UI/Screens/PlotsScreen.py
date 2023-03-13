@@ -4,6 +4,7 @@ from PIL import ImageFont
 
 import Enums
 import Parameters
+import Utils
 from UI.Utils.Button import Button
 from UI.Utils.Label2 import Label2
 from UI.Utils.Plots import Plots
@@ -109,12 +110,12 @@ class PlotsScreen:
 
         self.plotsScreenSurfaceObjsRect.append([self.plotsScreenSurface.blit(self.plotsLabel.localSurface, (self.width * 0.55, self.getVerticalPositioning())), Button('height')])
 
-        if isinstance(lastFocusObj, Button) and lastFocusObj.getButtonName() == 'weather':
-            self.plotsLabel = Label2("Weather", self.textFont, True, lastFocusObj.getButtonFlag())
-        else:
-            self.plotsLabel = Label2("Weather", self.textFont, True)
-
-        self.plotsScreenSurfaceObjsRect.append([self.plotsScreenSurface.blit(self.plotsLabel.localSurface, (self.width * 0.55, self.getVerticalPositioning())), Button('weather')])
+        # if isinstance(lastFocusObj, Button) and lastFocusObj.getButtonName() == 'weather':
+        #     self.plotsLabel = Label2("Weather", self.textFont, True, lastFocusObj.getButtonFlag())
+        # else:
+        #     self.plotsLabel = Label2("Weather", self.textFont, True)
+        #
+        # self.plotsScreenSurfaceObjsRect.append([self.plotsScreenSurface.blit(self.plotsLabel.localSurface, (self.width * 0.65, self.getVerticalPositioning())), Button('weather')])
 
         self.writeLine += 2
 
@@ -126,10 +127,24 @@ class PlotsScreen:
         yLabel = self.titleLabel
         dummyWeatherFlag = False
 
+        worldYearHistoryParam = world.getWorldYearHistory()
+
         if yLabel == 'Weather History':
             dummyWeatherFlag = True
 
-        plot = Plots(self.width-self.marginLeftOffSet-self.marginRightOffSet, self.height*.8, self.titleLabel, xLabel, yLabel, world.getWorldYearHistory(), self.arrayLabel, self.arrayLabelColor, self.arrayData, dummyWeatherFlag=dummyWeatherFlag)
+        if yLabel == 'Global Population':
+            worldYearHistoryParam = world.getWorldYearHistoryReduced()
+
+        if yLabel == 'Eye Colour in Population':
+            worldYearHistoryParam = world.getWorldYearHistoryReduced()
+
+        if yLabel == 'Hair Colour in Population':
+            worldYearHistoryParam = world.getWorldYearHistoryReduced()
+
+        if yLabel == 'Crimes Committed':
+            worldYearHistoryParam = world.getWorldYearHistoryReduced()
+
+        plot = Plots(self.width-self.marginLeftOffSet-self.marginRightOffSet, self.height*.8, self.titleLabel, xLabel, yLabel, worldYearHistoryParam, self.arrayLabel, self.arrayLabelColor, self.arrayData, dummyWeatherFlag=dummyWeatherFlag)
         self.plotsField = plot.getPlotSurface()
         self.plotsScreenSurface.blit(self.plotsField, (self.marginLeftOffSet, self.getVerticalPositioning()))
 
@@ -138,6 +153,7 @@ class PlotsScreen:
     def addGeneralPlotsFields(self, lastFocusObj, world):
 
         if isinstance(lastFocusObj, Button) and lastFocusObj.getButtonName() == 'globalPopulation':
+            world.getAlivePeopleNumberHistoryReduced()
             self.titleLabel = 'Global Population'
             self.arrayLabel = [Parameters.globalPopulationArray[0][0]]
             self.arrayLabelColor = [Parameters.globalPopulationArray[0][1]]
@@ -145,6 +161,7 @@ class PlotsScreen:
             self.yLabelTitle = 'Population'
 
         elif isinstance(lastFocusObj, Button) and lastFocusObj.getButtonName() == 'eyes':
+            world.countEyeColor()
             self.titleLabel = 'Eye Colour in Population'
             self.arrayLabel = [Parameters.eyeColorArray[0][0], Parameters.eyeColorArray[1][0], Parameters.eyeColorArray[2][0], Parameters.eyeColorArray[3][0], Parameters.eyeColorArray[4][0], Parameters.eyeColorArray[5][0], Parameters.eyeColorArray[6][0]]
             self.arrayLabelColor = [Parameters.eyeColorArray[0][1], Parameters.eyeColorArray[1][1], Parameters.eyeColorArray[2][1], Parameters.eyeColorArray[3][1], Parameters.eyeColorArray[4][1], Parameters.eyeColorArray[5][1], Parameters.eyeColorArray[6][1]]
@@ -152,6 +169,7 @@ class PlotsScreen:
             self.yLabelTitle = 'Population'
 
         elif isinstance(lastFocusObj, Button) and lastFocusObj.getButtonName() == 'hairs':
+            world.countHairColor()
             self.titleLabel = 'Hair Colour in Population'
             self.arrayLabel = [Parameters.hairColorArray[0][0], Parameters.hairColorArray[1][0], Parameters.hairColorArray[2][0], Parameters.hairColorArray[3][0], Parameters.hairColorArray[4][0], Parameters.hairColorArray[5][0]]
             self.arrayLabelColor = [Parameters.hairColorArray[0][1], Parameters.hairColorArray[1][1], Parameters.hairColorArray[2][1], Parameters.hairColorArray[3][1], Parameters.hairColorArray[4][1], Parameters.hairColorArray[5][1]]
@@ -159,10 +177,11 @@ class PlotsScreen:
             self.yLabelTitle = 'Population'
 
         elif isinstance(lastFocusObj, Button) and lastFocusObj.getButtonName() == 'crime':
+            world.countCrime()
             self.titleLabel = 'Crimes Committed'
             self.arrayLabel = [Parameters.crimeColorArray[0][0], Parameters.crimeColorArray[1][0], Parameters.crimeColorArray[2][0], Parameters.crimeColorArray[3][0], Parameters.crimeColorArray[4][0], Parameters.crimeColorArray[5][0]]
             self.arrayLabelColor = [Parameters.crimeColorArray[0][1], Parameters.crimeColorArray[1][1], Parameters.crimeColorArray[2][1], Parameters.crimeColorArray[3][1], Parameters.crimeColorArray[4][1], Parameters.crimeColorArray[5][1]]
-            self.arrayData = world.getCrimeHistory()
+            self.arrayData = world.getCrimeHistoryReduced()
             self.yLabelTitle = 'Crimes number'
 
         elif isinstance(lastFocusObj, Button) and lastFocusObj.getButtonName() == 'sexuality':
@@ -200,7 +219,9 @@ class PlotsScreen:
             self.arrayData = []
             self.yLabelTitle = ''
 
-        self.addPlots(world)
+
+        plotTime = Utils.timeFunction(True, self.addPlots, world)
+        #print("Plot Time: " + str(plotTime))
 
     def resetWriteLine(self):
 

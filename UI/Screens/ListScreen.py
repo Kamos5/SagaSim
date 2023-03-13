@@ -46,9 +46,9 @@ class ListScreen:
     def getInspectorScreenSurface(self):
         return self.listScreenSurface
 
-    def addRegions(self, focusObj):
+    def addRegions(self, world, focusObj):
 
-        label = Label("Regions: ", 200, self.lineHeight, self.textFont)
+        label = Label("Regions: (" + str(len(world.getAlivePeople())) + ")", 200, self.lineHeight, self.textFont)
         self.listScreenSurface.blit(label.localSurface, (self.width * 0.05, self.lineHeight * self.writeLine + self.scroll_y))
 
         label = Label("Search: ", 80, self.lineHeight, self.textFont)

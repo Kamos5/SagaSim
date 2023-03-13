@@ -1,3 +1,4 @@
+import Enums
 import Utils
 import NameGenerator
 from FamilyTreeNode import BinaryTreeNode
@@ -31,15 +32,22 @@ class Person:
         self.sexuality = 'hetero'
         self.fertility = 0
         self.numberOfChildren = 0
-        self.mother = ''
-        self.father = ''
-        self.trueMother = ''
-        self.trueFather = ''
+        self.isPregnant = None
+        self.impregnationMonth = None
+        self.laborDay = 1
+        self.laborMonth = None
+        self.pregnancyFather = ''
+        self.pregnancyTrueFather = ''
+        self.lastBirthMonth = Enums.Months.JANUARY
+        self.mother = None
+        self.father = None
+        self.trueMother = None
+        self.trueFather = None
         self.likeTraits = []
         self.dislikeTraits = []
         self.likeAtributes = []
         self.dislikeAtributes = []
-        self.lover = ''
+        self.lovers = []
         self.spouse = None
         self.spouseRelation = 0
         self.spouseNumberOfLikedTraits = 0
@@ -88,6 +96,8 @@ class Person:
         self.familyName = familyName
         self.lastName = familyObj.familyName
         self.yearOfBirth = yearOfBirth-age
+        self.monthOfBirth = Utils.randomFromEnumCollection(Enums.Months)
+        self.dayOfBirth = Utils.randomRange(1, self.getMonthOfBirth().value[2])
         self.age = age
         self.lifespan = randomLifespan
         self.modifiedLifespan = self.lifespan
@@ -98,6 +108,7 @@ class Person:
         else:
             self.sexGen1 = [Sexes.FEMALE, 0]
             self.sexGen2 = [Sexes.FEMALE, 0]
+            self.isPregnant = False
 
         self.fertility = 50
         if sex == Sexes.MALE:
@@ -120,12 +131,14 @@ class Person:
         self.personalSexualityModifier = 1
         self.accommodation = House()
 
-    def birthNewPerson(self, firstName, lastName, familyName, yearOfBirth, lifespan, sex, sexGen1, sexGen2, sexuality, fertility, height, hairColor, hairColorGen1, hairColorGen2, eyeColor, eyeColorGen1, eyeColorGen2, mother, father, trueMother, trueFather, familyObj):
+    def birthNewPerson(self, firstName, lastName, familyName, dayOfBirth, monthOfBirth, yearOfBirth, lifespan, sex, sexGen1, sexGen2, sexuality, fertility, height, hairColor, hairColorGen1, hairColorGen2, eyeColor, eyeColorGen1, eyeColorGen2, mother, father, trueMother, trueFather, familyObj):
 
         self.firstName = firstName
         self.lastName = lastName
         self.familyName = familyName
         self.yearOfBirth = yearOfBirth
+        self.monthOfBirth = monthOfBirth
+        self.dayOfBirth = dayOfBirth
         self.lifespan = lifespan
         self.modifiedLifespan = lifespan
         self.sex = sex
@@ -146,8 +159,12 @@ class Person:
         self.trueFather = trueFather
         self.originFamilyObjRef = familyObj
         self.familyObjRef = familyObj
-        self.homeRegion = father.getRegion()
-        self.homeSettlement = father.getSettlement()
+        if father is not None:
+            self.homeRegion = father.getRegion()
+            self.homeSettlement = father.getSettlement()
+        else:
+            self.homeRegion = mother.getRegion()
+            self.homeSettlement = mother.getSettlement()
         self.region = self.homeRegion
         self.settlement = self.homeSettlement
         self.setAccommodation(trueMother.getAccommodation())
@@ -162,6 +179,12 @@ class Person:
 
     def getFamilyName(self):
         return self.familyName
+
+    def getMonthOfBirth(self):
+        return self.monthOfBirth
+
+    def getDayOfBirth(self):
+        return self.dayOfBirth
 
     def getYearOfBirth(self):
         return self.yearOfBirth
@@ -254,6 +277,75 @@ class Person:
     def setRegion(self, newRegion):
         self.region = newRegion
 
+    def getLovers(self):
+        return self.lovers
+
+    def getImpregnationMonth(self):
+        return self.impregnationMonth
+
+    def setImpregnationMonth(self, month):
+        self.impregnationMonth = month
+
+    def getLaborDay(self):
+        return self.laborDay
+
+    def getLaborMonth(self):
+        return self.laborMonth
+
+    def setLaborMonth(self, month):
+        self.laborMonth = month
+
+    def setLaborDay(self, impregnationMonth):
+
+        if impregnationMonth == Enums.Months.JANUARY:
+            self.laborDay = Utils.randomRange(1, 31)
+            self.setLaborMonth(Enums.Months.OCTOBER)
+        if impregnationMonth == Enums.Months.FEBRUARY:
+            self.laborDay = Utils.randomRange(1, 30)
+            self.setLaborMonth(Enums.Months.NOVEMBER)
+        if impregnationMonth == Enums.Months.MARCH:
+            self.laborDay = Utils.randomRange(1, 31)
+            self.setLaborMonth(Enums.Months.DECEMBER)
+        if impregnationMonth == Enums.Months.APRIL:
+            self.laborDay = Utils.randomRange(1, 31)
+            self.setLaborMonth(Enums.Months.JANUARY)
+        if impregnationMonth == Enums.Months.MAY:
+            self.laborDay = Utils.randomRange(1, 28)
+            self.setLaborMonth(Enums.Months.FEBRUARY)
+        if impregnationMonth == Enums.Months.JUNE:
+            self.laborDay = Utils.randomRange(1, 31)
+            self.setLaborMonth(Enums.Months.MARCH)
+        if impregnationMonth == Enums.Months.JULY:
+            self.laborDay = Utils.randomRange(1, 30)
+            self.setLaborMonth(Enums.Months.APRIL)
+        if impregnationMonth == Enums.Months.AUGUST:
+            self.laborDay = Utils.randomRange(1, 31)
+            self.setLaborMonth(Enums.Months.MAY)
+        if impregnationMonth == Enums.Months.SEPTEMBER:
+            self.laborDay = Utils.randomRange(1, 30)
+            self.setLaborMonth(Enums.Months.JUNE)
+        if impregnationMonth == Enums.Months.OCTOBER:
+            self.laborDay = Utils.randomRange(1, 31)
+            self.setLaborMonth(Enums.Months.JULY)
+        if impregnationMonth == Enums.Months.NOVEMBER:
+            self.laborDay = Utils.randomRange(1, 31)
+            self.setLaborMonth(Enums.Months.AUGUST)
+        if impregnationMonth == Enums.Months.DECEMBER:
+            self.laborDay = Utils.randomRange(1, 30)
+            self.setLaborMonth(Enums.Months.SEPTEMBER)
+
+    def getPregnancyFather(self):
+        return self.pregnancyFather
+
+    def setPregnancyFather(self, father):
+        self.pregnancyFather = father
+
+    def getPregnancyTrueFather(self):
+        return self.pregnancyTrueFather
+
+    def setPregnancyTrueFather(self, trueFather):
+        self.pregnancyTrueFather = trueFather
+
     def getSettlement(self):
         return self.settlement
 
@@ -331,8 +423,8 @@ class Person:
         self.spouseRelation = newValue
 
     def changeSpouseRelation(self, newValue):
-        if self.spouseRelation + newValue > 300:
-            self.spouseRelation = 300
+        if self.spouseRelation + newValue > 10000:
+            self.spouseRelation = 10000
         else:
             self.spouseRelation += newValue
 
@@ -361,6 +453,18 @@ class Person:
     def initGenUpFamilyTree(self):
 
         return self.generateUpFamilyTree(BinaryTreeNode(self))
+
+    def getLastBirthMonth(self):
+        return self.lastBirthMonth
+
+    def setLastBirthMonth(self, newMonth):
+        self.lastBirthMonth = newMonth
+
+    def getIsPregnant(self):
+        return self.isPregnant
+
+    def setIsPregnant(self, newIsPregnant):
+        self.isPregnant = newIsPregnant
 
     def getRealEstate (self):
         return self.realEstate
@@ -392,12 +496,12 @@ class Person:
         if motherSide:
             mother = tree.getRoot().getMother()
 
-        if fatherSide and father != '':
+        if fatherSide and father is not None:
             if father.getOriginFamilyObjectRef() not in ancestorsFamiles:
                 ancestorsFamiles.append(father.getOriginFamilyObjectRef())
             father.getAncestralFamiliesAsListFromTree(BinaryTreeNode(father), ancestorsFamiles)
 
-        if motherSide and mother != '':
+        if motherSide and mother is not None:
             if mother.getOriginFamilyObjectRef() not in ancestorsFamiles:
                 ancestorsFamiles.append(mother.getOriginFamilyObjectRef())
             mother.getAncestralFamiliesAsListFromTree(BinaryTreeNode(mother), ancestorsFamiles)
@@ -416,13 +520,13 @@ class Person:
 
         father = treeroot.getRoot().getFather()
         mother = treeroot.getRoot().getMother()
-        if father != '':
+        if father is not None:
             for fatherChild in father.getAllChildren():
                 if fatherChild != treeroot.getRoot():
                     treeroot.siblings.append(fatherChild)
             treeroot.father = father.generateUpFamilyTree(BinaryTreeNode(father))
 
-        if mother != '':
+        if mother is not None:
             for motherChild in mother.getAllChildren():
                 if motherChild != treeroot.getRoot() and motherChild not in treeroot.siblings:
                         treeroot.siblings.append(motherChild)

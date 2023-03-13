@@ -1,3 +1,4 @@
+import time
 from random import randint, choice
 
 import numpy
@@ -154,6 +155,20 @@ def traitsFromParerts (person, parent1, parent2):
                     notClear = False
 
         return randomTrait
+
+def timeFunction(timerFlag, function, params=None):
+
+    if timerFlag:
+        start = time.perf_counter()
+        if params is not None:
+            function(params)
+        else:
+            function()
+        end = time.perf_counter()
+        return end - start
+    else:
+#        function() TODO TEMP
+        return 0
 
 def randomTrait (person):
 

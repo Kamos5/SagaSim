@@ -24,6 +24,7 @@ class NavBarScreen:
         self.labelMarginVerticalDefault = 2
         self.screenPosX = screenPosX
         self.screenPosY = screenPosY
+        self.leftPadding = self.width * 0.05
 
         self.navBarScreenSurface = pygame.Surface([self.width, self.height - self.heightOffSet])
         self.navBarScreenSurfaceObjsRect = []
@@ -55,10 +56,22 @@ class NavBarScreen:
         self.navBarScreenSurfaceObjsRect.append([self.navBarScreenSurface.blit(self.plotsLabel.localSurface, (self.width * 0.05, 0)), 'Plots'])
 
 
+    def addGameSpeedCounter(self, world):
+
+        self.gameSpeedCounter = Label2("Speed:", self.textFont, False, borderSize=1)
+        self.navBarScreenSurface.blit(self.gameSpeedCounter.localSurface, (self.width * 0.70, 0))
+
+        gameSpeedString = ""
+        for gameSpeedCounter in range(world.getGameSpeedCounter()):
+            gameSpeedString += "|"
+
+        self.gameSpeedCounter = Label2(gameSpeedString, self.textFont, False, borderSize=1)
+        self.navBarScreenSurface.blit(self.gameSpeedCounter.localSurface, (self.width * 0.70 + 70, 0))
+
     def addDateTimer(self, world):
 
-        self.dateTimeLabel = Label2("Year: " + str(world.getYear()), self.textFont, True, borderSize=1)
-        self.navBarScreenSurfaceObjsRect.append([self.navBarScreenSurface.blit(self.dateTimeLabel.localSurface, (self.width * 0.92, 0)), 'Clock'])
+        self.dateTimeLabel = Label2("Day: " + str(world.getDay()) + " Month: " + str(world.getMonth().value[1]) + " Year: " + str(world.getYear()), self.textFont, True, borderSize=1)
+        self.navBarScreenSurfaceObjsRect.append([self.navBarScreenSurface.blit(self.dateTimeLabel.localSurface, (self.width * 0.80, 0)), 'Clock'])
 
     def getVerticalPositioning(self):
         return self.writeLine * (self.lineHeight + 2 * self.labelBoarderDefault + 2 * self.labelMarginVerticalDefault)

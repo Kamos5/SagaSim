@@ -1,3 +1,5 @@
+import time
+
 import HouseFunctions
 from Enums import MaritalStatus, Sexes
 import Enums
@@ -68,7 +70,7 @@ def divorces (world):
 
     for person in world.getAlivePeople():
         if person.getSpouseRelation() < -25 and person.getMaritialStatus() == Enums.MaritalStatus.MARRIED and person.lifeStatus == Enums.LifeStatus.ALIVE:
-            randomChance = Utils.randomRange(1, 100)
+            randomChance = Utils.randomRange(1, 10000)
             if randomChance < abs(person.getSpouseRelation()):
                 person.changeMaritalStatus(Enums.MaritalStatus.DIVORCED)
                 person.spouse.changeMaritalStatus(Enums.MaritalStatus.DIVORCED)
@@ -102,12 +104,19 @@ def spouseMatchmaking (world):
 
     #CANT USE PERSON IN UNMARIED LIST BECAUSE OF STRANGE ERRORS CONNECTED WITH PREVIOUS SPOUS DYING IN THE SAME YEAR AND LOOP family.getUnmarried list NOT RECOGNIZING IT!!!
 
+    times = 0
     for person in world.getAlivePeople():
 
          if person.lifeStatus == Enums.LifeStatus.ALIVE and person.age >= 15 and person.spouse is None and (person.maritalStatus == Enums.MaritalStatus.SINGLE or person.maritalStatus == Enums.MaritalStatus.WIDOW or person.maritalStatus == Enums.MaritalStatus.WIDOWER or person.maritalStatus == Enums.MaritalStatus.DIVORCED):
 
+            changeForFindingSpouse = Utils.randomRange(1, 100)
+
+            start = time.perf_counter()
             availableSpouesesList = FindAvailableSpouses(world.getFamilies(), person)
-            if len(availableSpouesesList) > 0:
+            end = time.perf_counter()
+            findSpouseTime = end - start
+            times +=findSpouseTime
+            if len(availableSpouesesList) > 0 and changeForFindingSpouse < 10:
                 randomSpouse = Utils.randomFromCollection(availableSpouesesList)
                 person.spouse = randomSpouse
                 spouseObj = person.spouse
@@ -119,6 +128,15 @@ def spouseMatchmaking (world):
                 checkLDTraitsNumber(person)
                 person.changeSpouseRelation(50)
                 spouseObj.changeSpouseRelation(50)
+
+                if person.getSex() == Sexes.MALE:
+                    spouseObj.getAccommodation().removeHouseResident(spouseObj)
+                    spouseObj.setAccommodation(person.getAccommodation())
+                    spouseObj.getAccommodation().addHouseResident(spouseObj)
+                else:
+                    person.getAccommodation().removeHouseResident(person)
+                    person.setAccommodation(spouseObj.getAccommodation())
+                    person.getAccommodation().addHouseResident(person)
 
                 #TODO FIX ISSUE WHEN ONLY 1 FEMALE IS IN FAMILY
                 RemoveFromUnmarriedList(person, spouseObj)
@@ -137,6 +155,7 @@ def spouseMatchmaking (world):
                 # newHouse.addHouseResident(person)
                 # newHouse.addHouseResident(person.getSpouse())
 
+    print("SposesSumTime: " + str(times))
 
 def checkLDTraitsNumber(person):
 

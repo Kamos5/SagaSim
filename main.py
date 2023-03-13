@@ -6,6 +6,8 @@ import FamilyInitGenerator as FIG
 import MembersInitGenerator as MIG
 import Parameters
 import pygame
+
+import Utils
 from Family import Family
 from Region import Region
 from Settlements import Settlements
@@ -36,8 +38,9 @@ def initPeople(families):
 
 def running(world, manualOverride):
 
+    dayOfWeekFlag = 1
     start = time.perf_counter()
-    print(world.getYear())
+    print(str(world.getDay()) + "/" + str(world.getMonth()) + "/" + str(world.getYear()))
     timers = True
 
     isAlive = 0
@@ -48,80 +51,39 @@ def running(world, manualOverride):
     if manualOverride:
         input()
 
-    if timers:
-        start1 = time.perf_counter()
-    world.increaseYear()
-    if timers:
-        end1 = time.perf_counter()
-        worldtime = end1 - start1
-        start1 = time.perf_counter()
-    world.weatherChange()
-    if timers:
-        end1 = time.perf_counter()
-        weatherChangeTime = end1 - start1
-        start1 = time.perf_counter()
-    Events.increaseAge(world)
-    if timers:
-        end1 = time.perf_counter()
-        incAgeTime = end1 - start1
-        start1 = time.perf_counter()
-    Events.birthPeople(world)
-    if timers:
-        end1 = time.perf_counter()
-        birthtime = end1 - start1
-        start1 = time.perf_counter()
-    FF.spouseMatchmaking(world)
-    if timers:
-        end1 = time.perf_counter()
-        spouseMMTime = end1 - start1
-        start1 = time.perf_counter()
-    FF.divorces(world)
-    if timers:
-        end1 = time.perf_counter()
-        divorcesTime = end1 - start1
-        start1 = time.perf_counter()
-    Events.settlementsPopulationManagement(world)
-    if timers:
-        end1 = time.perf_counter()
-        breakSettlementsPopTime = end1 - start1
-        start1 = time.perf_counter()
-    Events.settlementWorkersManagement(world)
-    if timers:
-        end1 = time.perf_counter()
-        workersManagementTime = end1 - start1
-        start1 = time.perf_counter()
-    Events.crime(world)
-    if timers:
-        end1 = time.perf_counter()
-        crimeTime = end1 - start1
-        start1 = time.perf_counter()
-    Events.settlementGoodsProduction(world)
-    if timers:
-        end1 = time.perf_counter()
-        accommodationMenagmentTime = end1 - start1
-        start1 = time.perf_counter()
-    Events.accommodationManagment(world)
-    if timers:
-        end1 = time.perf_counter()
-        settlementGoodsProdTime = end1 - start1
-        start1 = time.perf_counter()
-    world.updateAlive()
-    if timers:
-        end1 = time.perf_counter()
-        updateAliveTime = end1 - start1
-        end = time.perf_counter()
-        fullTime = end-start
-        if fullTime > 0.0:
-            print("WorldTime: " + str(worldtime) + " %: " + str(round(worldtime/fullTime, 2)))
-            print("IncAgeTime: " + str(incAgeTime) + " %: " + str(round(incAgeTime/fullTime, 2)))
-            print("BirthTime: " + str(birthtime) + " %: " + str(round(birthtime/fullTime, 2)))
-            print("SpouseMMTime: " + str(spouseMMTime) + " %: " + str(round(spouseMMTime/fullTime, 2)))
-            print("DivorcesTime: " + str(divorcesTime) + " %: " + str(round(divorcesTime / fullTime, 2)))
-            print("BreakSettlementsPopTime: " + str(breakSettlementsPopTime) + " %: " + str(round(breakSettlementsPopTime/fullTime, 2)))
-            print("WorkersManagementTime: " + str(workersManagementTime) + " %: " + str(round(workersManagementTime / fullTime, 2)))
-            print("Crime: " + str(crimeTime) + " %: " + str(round(crimeTime / fullTime, 2)))
-            print("SettlementGoodsProdTime: " + str(settlementGoodsProdTime) + " %: " + str(round(settlementGoodsProdTime / fullTime, 2)))
-            print("UpdateAliveTime: " + str(updateAliveTime) + " %: " + str(round(updateAliveTime / fullTime, 2)))
+    worldtime = Utils.timeFunction(timers, world.increaseDay)
+    weatherChangeTime = Utils.timeFunction(timers, world.weatherChange)
+    incAgeTime = Utils.timeFunction(timers, Events.increaseAge, world)
+    loveMakingTime = Utils.timeFunction(timers, Events.loveMaking, world)
+    birthtime = Utils.timeFunction(timers, Events.birthPeopleNew, world)
+    spouseMMTime = Utils.timeFunction(timers, FF.spouseMatchmaking, world)
+    divorcesTime = Utils.timeFunction(timers, FF.divorces, world)
+    breakSettlementsPopTime = Utils.timeFunction(timers, Events.settlementsPopulationManagement, world)     #ONCE PER YEAR (CHANCE 100% - PARAM)
+    workersManagementTime = Utils.timeFunction(timers, Events.settlementWorkersManagement, world)           #DONE ! MAYBE OPTIMIZE IT SOMEHOW LATER ON
+    crimeTime = Utils.timeFunction(timers, Events.crime, world)
+    settlementGoodsProdTime = Utils.timeFunction(timers, Events.settlementGoodsProduction, world)           #ONCE PER WEEK (ALWAYS ON MONDAYS)
+    accommodationMenagmentTime = Utils.timeFunction(timers, Events.accommodationManagment, world)           #ONCE PER WEEK (ALWAYS ON MONDAYS)
+    updateAliveTime = Utils.timeFunction(timers, world.updateAlive)
+
+    makeHistoryTime = Utils.timeFunction(timers, world.makeHistory)
+
+    end = time.perf_counter()
+    fullTime = end-start
+    if fullTime > 0.0:
+        print("WorldTime: " + str(worldtime) + " %: " + str(round(worldtime/fullTime, 2)))
+        print("WeaterTime: " + str(weatherChangeTime) + " %: " + str(round(weatherChangeTime / fullTime, 2)))
+        print("IncAgeTime: " + str(incAgeTime) + " %: " + str(round(incAgeTime/fullTime, 2)))
+        print("LovemakingTime: " + str(loveMakingTime) + " %: " + str(round(loveMakingTime / fullTime, 2)))
+        print("BirthTime: " + str(birthtime) + " %: " + str(round(birthtime/fullTime, 2)))
+        print("SpouseMMTime: " + str(spouseMMTime) + " %: " + str(round(spouseMMTime/fullTime, 2)))
+        print("DivorcesTime: " + str(divorcesTime) + " %: " + str(round(divorcesTime / fullTime, 2)))
+        print("BreakSettlementsPopTime: " + str(breakSettlementsPopTime) + " %: " + str(round(breakSettlementsPopTime/fullTime, 2)))
+        print("WorkersManagementTime: " + str(workersManagementTime) + " %: " + str(round(workersManagementTime / fullTime, 2)))
+        print("Crime: " + str(crimeTime) + " %: " + str(round(crimeTime / fullTime, 2)))
+        print("SettlementGoodsProdTime: " + str(settlementGoodsProdTime) + " %: " + str(round(settlementGoodsProdTime / fullTime, 2)))
+        print("AccomodationTime: " + str(accommodationMenagmentTime) + " %: " + str(round(accommodationMenagmentTime / fullTime, 2)))
+        print("UpdateAliveTime: " + str(updateAliveTime) + " %: " + str(round(updateAliveTime / fullTime, 2)))
+        print("MakeHistoryTime: " + str(makeHistoryTime) + " %: " + str(round(makeHistoryTime / fullTime, 2)))
         print(fullTime)
 
     for family in world.getFamilies():
@@ -136,14 +98,7 @@ def running(world, manualOverride):
     print("Population sum: " + str(isAlive+isDead))
     print("Male population: " + str(malePop))
     print("Female population: " + str(femalePop))
-    print("Divorces: " + str(world.getDivorcesNumber()))
-
-    world.makeHistory()
-    # print("Crimes: " + str(world.getCrimesPerYear()))
-    # print(psutil.cpu_percent())
-    # print(psutil.virtual_memory())  # physical memory usage
-    # print('memory % used:', psutil.virtual_memory()[2])
-
+    print("Births: " + str(world.getBirthsPerYearTemp()))
 
 def main():
 
@@ -156,7 +111,7 @@ def main():
     windowHeight = 768
     #pygame init stuff
     pygame.init()
-    fps = 60
+    fps = 6000
     clock = pygame.time.Clock()
 
     manualOverride = False
@@ -178,12 +133,18 @@ def main():
 
         pTime = 1000 / pCount
 
+        start = time.perf_counter()
         # VisualLogic
         canvas.clearCanvas()
         canvas.navBarScreen.addHelpButton()
         canvas.navBarScreen.addPlotsButton()
+        canvas.navBarScreen.addGameSpeedCounter(world)
         canvas.navBarScreen.addDateTimer(world)
         canvas.drawStuff(world)
+
+        end = time.perf_counter()
+        timeUI = end - start
+        print("UITime: " + str(timeUI))
 
         #GameLogic
         tickCurrentTime = time.time() * 1000.0
@@ -266,30 +227,52 @@ def pygameEvents(event, canvas, pausedPressed):
     if event.type == pygame.KEYDOWN:
 
         pCount = world.getGameSpeed()
-        if event.key == pygame.K_KP_PLUS:
+        if event.key == pygame.K_KP_PLUS or event.key == pygame.K_PERIOD:
             if pCount == 1:
                 pCount = 5
+                world.setGameSpeedCounter(2)
             elif pCount == 5:
                 pCount = 10
+                world.setGameSpeedCounter(3)
             elif pCount == 10:
                 pCount = 50
+                world.setGameSpeedCounter(4)
             elif pCount == 50:
                 pCount = 100
+                world.setGameSpeedCounter(5)
             elif pCount == 100:
                 pCount = 500
+                world.setGameSpeedCounter(6)
+            elif pCount == 500:
+                pCount = 1000
+                world.setGameSpeedCounter(7)
+            elif pCount == 1000:
+                pCount = 3000
+                world.setGameSpeedCounter(8)
             world.setGameSpeed(pCount)
 
-        if event.key == pygame.K_KP_MINUS:
-            if pCount == 500:
+        if event.key == pygame.K_KP_MINUS or event.key == pygame.K_COMMA:
+            if pCount == 3000:
+                pCount = 1000
+                world.setGameSpeedCounter(7)
+            elif pCount == 1000:
+                pCount = 500
+                world.setGameSpeedCounter(6)
+            elif pCount == 500:
                 pCount = 100
+                world.setGameSpeedCounter(5)
             elif pCount == 100:
                 pCount = 50
+                world.setGameSpeedCounter(4)
             elif pCount == 50:
                 pCount = 10
+                world.setGameSpeedCounter(3)
             elif pCount == 10:
                 pCount = 5
+                world.setGameSpeedCounter(2)
             elif pCount == 5:
                 pCount = 1
+                world.setGameSpeedCounter(1)
             world.setGameSpeed(pCount)
 
         # going to previous focusObj

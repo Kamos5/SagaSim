@@ -1,3 +1,6 @@
+import time
+
+import Enums
 import HouseFunctions
 from Enums import LifeStatus, MaritalStatus, CauseOfDeath, Sexes, Settlements, Traits
 import Utils
@@ -15,28 +18,168 @@ def increaseAge (world):
     for person in world.getAlivePeople():
         if person.lifeStatus != LifeStatus.DEAD:
 
-            person.increaseAge()
+            if person.getDayOfBirth() == world.getDay() and person.getMonthOfBirth() == world.getMonth():
+                person.increaseAge()
 
-            if person.age < 15:
-                person.increaseHeight()
-            if person.age == 15:
-                person.height = person.heightGen
-                person.familyObjRef.moveChildToAdultMembers(person)
-                person.changeMaritalStatus(MS.SINGLE)
-                PLEH.adulthoodReached(person, world)
+                if person.age < 15:
+                    person.increaseHeight()
+
+                    #for accelerating groth in children
+                    if Parameters.growthSpeed > 0:
+                        for grothAccelerator in range(Parameters.growthSpeed-1):
+                            person.increaseAge()
+
+                    if person.age > 15:
+                        person.age = 15
+
+                if person.age == 15:
+                    person.height = person.heightGen
+                    person.familyObjRef.moveChildToAdultMembers(person)
+                    person.changeMaritalStatus(MS.SINGLE)
+                    PLEH.adulthoodReached(person, world)
+
+                if person.age > 50:
+                    PF.retirement(person, world)
+
             if deathChanceFromAge(person) or person.age >= person.modifiedLifespan:
                 PF.deathProcedures(person, world)
                 continue
+            # if person.getSettlement().getFreeFood() == 0:
+            #     chanceForStarvation = Utils.randomRange(1, 100)
+            #     if chanceForStarvation <= 5:
+            #         person.causeOfDeath = CauseOfDeath.STARVATION
+            #         PF.deathProcedures(person, world)
+            #         continue
 
-            if person.age > 50:
-                PF.retirement(person, world)
+def loveMaking (world):
 
-            if person.getSettlement().getFreeFood() == 0:
-                chanceForStarvation = Utils.randomRange(1, 100)
-                if chanceForStarvation <= 25:
-                    person.causeOfDeath = CauseOfDeath.STARVATION
-                    PF.deathProcedures(person, world)
+    for person in world.getAlivePeople():
+        if person.sex == Sexes.FEMALE and 15 <= person.age and (person.spouse is not None or len(person.getLovers()) > 0) and person.lifeStatus == LifeStatus.ALIVE and not person.isPregnant:
+
+            lovemakingWithSpouse = 99
+            lovemakingWithLovers = 1
+
+            if (Traits.LUSTFUL in person.getTraits() or Traits.DECEITFUL in person.getTraits() or Traits.CYNICAL in person.getTraits()) and len(person.getLovers()) > 0:
+                lovemakingWithSpouse = 25
+                lovemakingWithLovers = 75
+
+                if person.getSpouse() is None:
+                    lovemakingWithSpouse = 0
+                    lovemakingWithLovers = 100
+
+            if (Traits.LUSTFUL not in person.getTraits() and Traits.DECEITFUL not in person.getTraits() and Traits.CYNICAL not in person.getTraits()) and len(person.getLovers()) > 0:
+                lovemakingWithSpouse = 50
+                lovemakingWithLovers = 50
+
+                if person.getSpouse() is None:
+                    lovemakingWithSpouse = 0
+                    lovemakingWithLovers = 100
+
+            if Traits.CHASTE in person.getTraits():
+                lovemakingWithSpouse = 10
+                lovemakingWithLovers = 10
+
+            changeForLovemaking = Utils.randomRange(1, 100)
+
+            if changeForLovemaking < lovemakingWithSpouse and person.getSpouseRelation() > 0:
+                chanceOfPregnancy = Utils.randomRange(1, 100)
+                if person.getAge() > 45:
+                    chanceOfPregnancy = 101
+                if chanceOfPregnancy < min(person.fertility, person.getSpouse().fertility) * person.getSpouse().getSettlement().getBaseFertility() * person.getSpouse().getSettlement().getFertilityModifier() * person.getPersonalSexualModifier() * person.getSpouse().getPersonalSexualModifier():
+                    person.setIsPregnant(True)
+                    person.setPregnancyFather(person.getSpouse())
+                    person.setPregnancyTrueFather(person.getSpouse())
+                    person.setImpregnationMonth(world.getMonth())
+                    person.setLaborDay(world.getMonth())
+            elif changeForLovemaking < lovemakingWithLovers:
+                if len(person.getLovers()) > 0:
+                    lover = Utils.randomFromCollection(person.getLovers())
+                    chanceOfPregnancy = Utils.randomRange(1, 100)
+                    if person.getAge() > 45 or lover.getSex() == Enums.Sexes.FEMALE:
+                        chanceOfPregnancy = 101
+                    if chanceOfPregnancy < min(person.fertility, lover.fertility) * person.getSettlement().getBaseFertility() * person.getSettlement().getFertilityModifier() * person.getPersonalSexualModifier() * lover.getPersonalSexualModifier():
+                        person.setIsPregnant(True)
+                        person.setPregnancyTrueFather(lover)
+                        if person.getSpouse() is not None:
+                            person.setPregnancyFather(person.getSpouse())
+                        person.setImpregnationMonth(world.getMonth())
+                        person.setLaborDay(world.getMonth())
+
+
+def birthPeopleNew (world):
+
+    for person in world.getAlivePeople():
+        #TIME for labour aka 9m pregnancy
+        if person.sex == Sexes.FEMALE and person.isPregnant:
+
+            chanceForMiscarriage = Utils.randomRange(1, 10000)
+
+            if chanceForMiscarriage <= 5:
+                person.setIsPregnant(False)
+                person.setImpregnationMonth(None)
+                person.setPregnancyFather("")
+                person.setPregnancyTrueFather("")
+                PLEH.miscarriage(person, world)
+                continue
+
+            # if (world.getMonth().value[0] > person.getImpregnationMonth().value[0] and world.getMonth().value[0]-person.getImpregnationMonth().value[0] == 9) or (world.getMonth().value[0] < person.getImpregnationMonth().value[0] and person.getImpregnationMonth().value[0] - world.getMonth().value[0] == 3):
+            if world.getMonth() == person.getLaborMonth() and world.getDay() == person.getLaborDay():
+
+                person.setLaborMonth(None)
+                person.setLaborDay(None)
+
+                chanceOfBirth = Utils.randomRange(1, 100)
+
+                if chanceOfBirth <= 95:
+                    # CHILD object
+                    if person.getSpouse() is not None:
+                        person.changeSpouseRelation(25)
+                        person.getSpouse().changeSpouseRelation(25)
+                    childObj = PF.birthChild(world, person, person.getSpouse(), person, person.getPregnancyFather())
+                    # add child to proper family
+                    childObj.familyObjRef.addNewMember(childObj)
+                    world.addPerson(childObj)
+                    world.addAlivePerson(childObj)
+                    PLEH.beenBorn(childObj, world)
+
+                    person.setIsPregnant(False)
+                    person.setImpregnationMonth(None)
+                    person.setPregnancyFather("")
+                    person.setPregnancyTrueFather("")
+
+                    person.numberOfChildren += 1
+                    if person.getSpouse() is not None:
+                        person.getSpouse().numberOfChildren += 1
+
+                    if person.modifiedLifespan-person.age > 1:
+                        if Utils.randomRange(1, 2) == 1:
+                            person.modifiedLifespan -= 1
+                    person.appendAliveChildrenList(childObj)
+                    if person.getSpouse() is not None:
+                        person.getSpouse().appendAliveChildrenList(childObj)
+                    childObj.changeMaritalStatus(MS.CHILD)
+                    #TODO JEST JAKIS NONETYPE CZASEM aka person = NONE
+                    person.getAccommodation().addHouseResident(childObj)
+
+                    world.increaseBirthsPerYearTemp()
+
+                    # change of dying from childbirth (mother and child)
+                    motherDeath, childdeath = deathChangeFromGivingBirth(person, childObj)
+
+                    if motherDeath:
+                        PF.deathProcedures(person, world)
+
+                    if childdeath:
+                        #parameters: child
+                        PF.deathProcedures(childObj, world)
+
+                else:
+                    person.setIsPregnant(False)
+                    person.setImpregnationMonth(None)
+                    person.setPregnancyFather(None)
+                    PLEH.stillborn(person, world)
                     continue
+
 
 def birthPeople (world):
 
@@ -44,7 +187,7 @@ def birthPeople (world):
     for person in world.getAlivePeople():
 
         # person here is MOTHER
-        # only Females can give birth beetween 15 and 45y old + must be alive and have spouse
+        # only Females can give birth between 15 and 45y old + must be alive and have spouse
         if person.sex == Sexes.FEMALE and 15 <= person.age <= 45 and person.spouse is not None and person.lifeStatus == LifeStatus.ALIVE:
 
             # change spouseRelation based on liked/disliked traits
@@ -58,7 +201,7 @@ def birthPeople (world):
                 if person.getSpouse().sexuality == 'homo':
                     person.getSpouse().setSpouseRelation(-5)
 
-                if (chanceOfBirth <= min(person.fertility, person.getSpouse().fertility) * person.getSpouse().getSettlement().getBaseFertility() * person.getSpouse().getSettlement().getFertilityModifier() * person.getPersonalSexualModifier() * person.getSpouse().getPersonalSexualModifier()) and person.spouseRelation > 0:
+                if (chanceOfBirth <= min(person.fertility, person.getSpouse().fertility) * person.getSpouse().getSettlement().getBaseFertility() * person.getSpouse().getSettlement().getFertilityModifier() * person.getPersonalSexualModifier() * person.getSpouse().getPersonalSexualModifier()) and person.getSpouseRelation() > 0:
                     # CHILD object
                     person.changeSpouseRelation(25)
                     person.getSpouse().changeSpouseRelation(25)
@@ -97,176 +240,204 @@ def birthPeople (world):
 
 def changeRelationToFromSpouse(person):
 
-    person.spouseRelation += person.getSpouseNumberOfLikedTraits()*5
-    person.spouseRelation += -person.getSpouseNumberOfDislikedTraits() * 5
-    person.getSpouse().spouseRelation += person.getSpouse().getSpouseNumberOfLikedTraits() * 5
-    person.getSpouse().spouseRelation += -person.getSpouse().getSpouseNumberOfDislikedTraits() * 5
+    person.changeSpouseRelation(person.getSpouseNumberOfLikedTraits()*5)
+    person.changeSpouseRelation(-person.getSpouseNumberOfDislikedTraits() * 5)
+    person.getSpouse().changeSpouseRelation(person.getSpouse().getSpouseNumberOfLikedTraits() * 5)
+    person.getSpouse().changeSpouseRelation(-person.getSpouse().getSpouseNumberOfDislikedTraits() * 5)
 
+def changeRelationFromLovemaking(person, lover):
+
+
+    #TODO dorobić zmianę relacji
+    return
 
 def settlementsPopulationManagement (world):
 
+    timeArray = []
+
     for region in world.getRegions():
-
+        regionTimeArray = []
         for settlement in region.getSettlements():
-            villagesList = SF.getVillages(region.getSettlements())
-            townList = SF.getCities(region.getSettlements())
+            if world.getDay() == settlement.getMigrationDay() and world.getMonth() == settlement.getMigrationMonth():
+                start1 = time.perf_counter()
 
-            #Treshhold to create migration wave
-            if settlement.getPopulation() >= int(settlement.getMaxPopulation() * Parameters.percentagePopulationThresholdForMigration):
-                chanceOfMigration = Utils.randomRange(1, 100)
-                #Chance of migration happening
-                if chanceOfMigration < Parameters.chanceForMigration:
-                    #Check for max size of region
-                    if len(region.getSettlements()) == region.regionSize:
-                        newTargetSettlement = Utils.randomFromCollection(region.getSettlements())
+                villagesList = SF.getVillages(region.getSettlements())
+                townList = SF.getCities(region.getSettlements())
 
-                    else:
-                        # TODO FIX PEOPLE CAN MOVE TO THE SAME VILLAGE
-                        #Take lowest population as dest
-                        lowestSettlementInRegion = region.getLowestPopulatedSettlement()
-                        newTargetSettlement = lowestSettlementInRegion
-                        #If lowest pop > lowest max pop * modifier create new setttlement
-                        if lowestSettlementInRegion.getPopulation() > int(lowestSettlementInRegion.getMaxPopulation() * Parameters.percentageVillagePopulationThresholdForCreatingNewVillage):
-                            newSettlement = region.addSettlement(world)
-                            newSettlement.setRegion(settlement.getRegion())
-                            newSettlement.setMaxPopulation = Parameters.baseVillageSize
-                            newTargetSettlement = newSettlement
+                #Treshhold to create migration wave
+                if (len(settlement.getEmployedResidentsList()) + len(settlement.getUnemployedResidentsList())) > 0 and round(len(settlement.getUnemployedResidentsList()) / (len(settlement.getEmployedResidentsList()) + len(settlement.getUnemployedResidentsList())) * 100) > 15 and world.getYear() > 510:
+                # if settlement.getPopulation() >= int(settlement.getMaxPopulation() * Parameters.percentagePopulationThresholdForMigration):
+                    chanceOfMigration = Utils.randomRange(1, 100)
+                    #Chance of migration happening
+                    if chanceOfMigration <= Parameters.chanceForMigration:
+                        #Check for max size of region
+                        if len(region.getSettlements()) == region.regionSize:
+                            newTargetSettlement = Utils.randomFromCollection(region.getSettlements())
 
-                    #Migration Wave
-                    complexRandomMigrantsList = prepareMigration(settlement, newTargetSettlement, world)
-                    iniciateMigration(complexRandomMigrantsList, newTargetSettlement, world)
-                    splitFamiliesInMigration(world, region, newTargetSettlement, complexRandomMigrantsList)
+                        else:
+                            # # TODO FIX PEOPLE CAN MOVE TO THE SAME VILLAGE
+                            # #Take lowest population as dest
+                            # lowestSettlementInRegion = region.getLowestPopulatedSettlement()
+                            # newTargetSettlement = lowestSettlementInRegion
+                            # #If lowest pop > lowest max pop * modifier create new setttlement
+                            # if lowestSettlementInRegion.getPopulation() > int(lowestSettlementInRegion.getMaxPopulation() * Parameters.percentageVillagePopulationThresholdForCreatingNewVillage):
+                                newSettlement = region.addSettlement(world)
+                                newSettlement.setRegion(settlement.getRegion())
+                                newSettlement.setMaxPopulation = Parameters.baseVillageSize
+                                newTargetSettlement = newSettlement
 
-            #Upgrading from Village to City
-            randomVillage = Utils.randomFromCollection(villagesList)
-            if len(villagesList) >= (len(townList)+1) * (Parameters.villageToTownMultiplier + 1) - len(townList) and randomVillage.getPopulation() > int(randomVillage.getMaxPopulation() * Parameters.percentageVillagePopulationThresholdForUpgradeToTown):
+                        #Migration Wave
+                        complexRandomMigrantsList = prepareMigration(settlement, newTargetSettlement, world)
+                        iniciateMigration(complexRandomMigrantsList, newTargetSettlement, world)
+                        splitFamiliesInMigration(world, region, newTargetSettlement, complexRandomMigrantsList)
+                end1 = time.perf_counter()
+                start2 = time.perf_counter()
+                #Upgrading from Village to City
+                if len(villagesList) >= (len(townList)+1) * (Parameters.villageToTownMultiplier + 1) - len(townList):
+                    randomVillage = Utils.randomFromCollection(villagesList)
+                    if randomVillage.getPopulation() > int(randomVillage.getMaxPopulation() * Parameters.percentageVillagePopulationThresholdForUpgradeToTown):
+                        chanceOfUpgradingToCity = Utils.randomRange(1, 100)
+                        if chanceOfUpgradingToCity < Parameters.chancePerYearToUpgradeVillageToTown:
+                            randomVillage.changeSettlementType(Settlements.TOWN)
+                            Utils.randomFromCollection(randomVillage.getRegion().getVillagesExProvisionToThisTown(randomVillage)).setProvision(randomVillage)
+                            Utils.randomFromCollection(randomVillage.getRegion().getVillagesExProvisionToThisTown(randomVillage)).setProvision(randomVillage)
+                            Utils.randomFromCollection(randomVillage.getRegion().getVillagesExProvisionToThisTown(randomVillage)).setProvision(randomVillage)
+                end2 = time.perf_counter()
+                regionTimeArray.append(0)
+                regionTimeArray.append(end1-start1)
+                regionTimeArray.append(end2-start2)
+        timeArray.append(regionTimeArray)
 
-                chanceOfUpgradingToCity = Utils.randomRange(1, 100)
-                if chanceOfUpgradingToCity < Parameters.chancePerYearToUpgradeVillageToTown:
-                    randomVillage.changeSettlementType(Settlements.TOWN)
-                    Utils.randomFromCollection(randomVillage.getRegion().getVillagesExProvisionToThisTown(randomVillage)).setProvision(randomVillage)
-                    Utils.randomFromCollection(randomVillage.getRegion().getVillagesExProvisionToThisTown(randomVillage)).setProvision(randomVillage)
-                    Utils.randomFromCollection(randomVillage.getRegion().getVillagesExProvisionToThisTown(randomVillage)).setProvision(randomVillage)
+    # print(timeArray)
+    # sum = 0
+    # for timeRegions in timeArray:
+    #     for timeSet in timeRegions:
+    #         sum += timeSet
+    #
+    # print(sum)
 
 def settlementGoodsProduction(world):
 
-    for region in world.getRegions():
+    if world.dayOfWeekFlag == 1:  # Only on Monday produce goods
+        for region in world.getRegions():
 
-        for settlement in region.getSettlements():
+            for settlement in region.getSettlements():
 
-            ##FOOD PRODUCTION
-            foodProd0 = settlement.getSettlementFoodProduced()
-            for foodTile in settlement.getFoodFeatures():
+                ##  FOOD PRODUCTION
+                foodProd0 = settlement.getSettlementFoodProduced()
+                for foodTile in settlement.getFoodFeatures():
 
-                foodProd = foodTile.prodYield * foodTile.foundationType.value.yieldModifier / 100 * foodTile.getWorkersNumber()
+                    foodProd = foodTile.prodYield * foodTile.foundationType.value.yieldModifier / 100 * foodTile.getWorkersNumber()
 
-                if settlement.getProvision() is not None:
-                    settlement.getProvision().increaseSettlementFoodProduced(foodProd*Parameters.socage)
-                    settlement.increaseSettlementFoodProduced(foodProd*(1-Parameters.socage))
+                    if settlement.getProvision() is not None:
+                        settlement.getProvision().increaseSettlementFoodProduced(foodProd*Parameters.socage)
+                        settlement.increaseSettlementFoodProduced(foodProd*(1-Parameters.socage))
+                    else:
+                        settlement.increaseSettlementFoodProduced(foodProd)
+
+                    for worker in foodTile.getWorkerList():
+                        workerModifier = 0
+                        if Traits.LAZY in worker.getTraits():
+                            workerModifier = -10
+                        if Traits.DILIGENT in worker.getTraits():
+                            workerModifier = 10
+                        goodProduced = foodTile.prodYield * (foodTile.foundationType.value.yieldModifier + workerModifier) / 100
+                        worker.changeFreeWealth(goodProduced * (100 - settlement.getLocalIncomeTax()) / 100)
+                        settlement.changeFreeWealth(goodProduced * (settlement.getLocalIncomeTax()) / 100)
+
+                foodProd1 = settlement.getSettlementFoodProduced()
+                settlement.setSettlementFoodProducedLastYear(foodProd1-foodProd0)
+
+                foodConsumed = 0
+                for resident in settlement.getResidents():
+                    if resident.getAge() < 10:
+                        foodConsumed += 0.5
+                        settlement.increaseSettlementFoodConsumed(0.5)
+                    elif 10 <= resident.getAge() < 15:
+                        foodConsumed += 0.75
+                        settlement.increaseSettlementFoodConsumed(0.75)
+                    else:
+                        foodConsumed += 1
+                        settlement.increaseSettlementFoodConsumed(1)
+                settlement.setSettlementFoodConsumedLastYear(foodConsumed)
+                if settlement.getFreeFood() + (foodProd1 - foodProd0) - foodConsumed < 0:
+                    settlement.setFreeFood(0)
                 else:
-                    settlement.increaseSettlementFoodProduced(foodProd)
+                    settlement.changeFreeFood(foodProd1 - foodProd0 - foodConsumed)
 
-                for worker in foodTile.getWorkerList():
-                    workerModifier = 0
-                    if Traits.LAZY in worker.getTraits():
-                        workerModifier = -10
-                    if Traits.DILIGENT in worker.getTraits():
-                        workerModifier = 10
-                    goodProduced = foodTile.prodYield * (foodTile.foundationType.value.yieldModifier + workerModifier) / 100
-                    worker.changeFreeWealth(goodProduced * (100 - settlement.getLocalIncomeTax()) / 100)
-                    settlement.changeFreeWealth(goodProduced * (settlement.getLocalIncomeTax()) / 100)
+                settlement.setNetFoodLastYear(foodProd1-foodProd0-foodConsumed)
 
-            foodProd1 = settlement.getSettlementFoodProduced()
-            settlement.setSettlementFoodProducedLastYear(foodProd1-foodProd0)
+                ##PRODUCTION PRODUCTION
+                prodProd0 = settlement.getSettlementProdProduced()
 
-            foodConsumed = 0
-            for resident in settlement.getResidents():
-                if resident.getAge() < 10:
-                    foodConsumed += 0.5
-                    settlement.increaseSettlementFoodConsumed(0.5)
-                elif 10 <= resident.getAge() < 15:
-                    foodConsumed += 0.75
-                    settlement.increaseSettlementFoodConsumed(0.75)
-                else:
-                    foodConsumed += 1
-                    settlement.increaseSettlementFoodConsumed(1)
-            settlement.setSettlementFoodConsumedLastYear(foodConsumed)
-            if settlement.getFreeFood() + (foodProd1 - foodProd0) - foodConsumed < 0:
-                settlement.setFreeFood(0)
-            else:
-                settlement.changeFreeFood(foodProd1 - foodProd0 - foodConsumed)
+                for prodTile in settlement.getProdFeatures():
 
-            settlement.setNetFoodLastYear(foodProd1-foodProd0-foodConsumed)
+                    prodProd = prodTile.prodYield * prodTile.foundationType.value.yieldModifier / 100 * prodTile.getWorkersNumber()
 
-            ##PRODUCTION PRODUCTION
-            prodProd0 = settlement.getSettlementProdProduced()
+                    if settlement.getProvision() is not None:
+                        settlement.getProvision().increaseSettlementProdProduced(prodProd*Parameters.socage)
+                        settlement.increaseSettlementProdProduced(prodProd*(1-Parameters.socage))
+                    else:
+                        settlement.increaseSettlementProdProduced(prodProd)
+                    for worker in prodTile.getWorkerList():
+                        workerModifier = 0
+                        if Traits.LAZY in worker.getTraits():
+                            workerModifier = -10
+                        if Traits.DILIGENT in worker.getTraits():
+                            workerModifier = 10
+                        goodProduced = prodTile.prodYield * (prodTile.foundationType.value.yieldModifier + workerModifier) / 100
+                        worker.changeFreeWealth(goodProduced * (100-settlement.getLocalIncomeTax())/100)
+                        settlement.changeFreeWealth(goodProduced * (settlement.getLocalIncomeTax())/100)
 
-            for prodTile in settlement.getProdFeatures():
-
-                prodProd = prodTile.prodYield * prodTile.foundationType.value.yieldModifier / 100 * prodTile.getWorkersNumber()
-
-                if settlement.getProvision() is not None:
-                    settlement.getProvision().increaseSettlementFoodProduced(prodProd*Parameters.socage)
-                    settlement.increaseSettlementFoodProduced(prodProd*(1-Parameters.socage))
-                else:
-                    settlement.increaseSettlementFoodProduced(prodProd)
-                for worker in prodTile.getWorkerList():
-                    workerModifier = 0
-                    if Traits.LAZY in worker.getTraits():
-                        workerModifier = -10
-                    if Traits.DILIGENT in worker.getTraits():
-                        workerModifier = 10
-                    goodProduced = prodTile.prodYield * (prodTile.foundationType.value.yieldModifier + workerModifier) / 100
-                    worker.changeFreeWealth(goodProduced * (100-settlement.getLocalIncomeTax())/100)
-                    settlement.changeFreeWealth(goodProduced * (settlement.getLocalIncomeTax())/100)
-
-            prodProd1 = settlement.getSettlementProdProduced()
-            settlement.changeFreeProd(prodProd1 - prodProd0)
-            settlement.setSettlementProdProducedLastYear(prodProd1 - prodProd0)
+                prodProd1 = settlement.getSettlementProdProduced()
+                settlement.changeFreeProd(prodProd1 - prodProd0)
+                settlement.setSettlementProdProducedLastYear(prodProd1 - prodProd0)
 
 
-            #UPGRADING FEATURES
+                #UPGRADING FEATURES
 
-            if float(settlement.getFreeProd()) > 0:
-#                if settlement.getSettlementFoodProducedLastYear() - settlement.getSettlementFoodConsumedLastYear() < int(round(len(settlement.getResidents())/2)):
-                    for tile in settlement.getFoodFeatures():
-                        if len(SFeat.getPotencialUpgradesForZone(tile.getName())) > 0:
-                            upgradable = Utils.randomFromCollectionWithWeight(SFeat.getPotencialUpgradesForZone(tile.getName()))
-                            #for upgradable in (SFeat.getPotencialUpgradesForZone(tile.getName())):
-                            if float(settlement.getFreeProd()) >= float(upgradable.value.getUpgradeCost()):
-                                settlement.changeFreeProd(-upgradable.value.getUpgradeCost())
-                                newFeature = SFeat.createZones()[SFeat.getFeatureIndexFromName(upgradable.value.getName())]
-                                settlement.upgradeTile(tile, newFeature)
-                                return
+                if float(settlement.getFreeProd()) > 0:
+    #                if settlement.getSettlementFoodProducedLastYear() - settlement.getSettlementFoodConsumedLastYear() < int(round(len(settlement.getResidents())/2)):
+                        for tile in settlement.getFoodFeatures():
+                            if len(SFeat.getPotencialUpgradesForZone(tile.getName())) > 0:
+                                upgradable = Utils.randomFromCollectionWithWeight(SFeat.getPotencialUpgradesForZone(tile.getName()))
+                                #for upgradable in (SFeat.getPotencialUpgradesForZone(tile.getName())):
+                                if float(settlement.getFreeProd()) >= float(upgradable.value.getUpgradeCost()):
+                                    settlement.changeFreeProd(-upgradable.value.getUpgradeCost())
+                                    newFeature = SFeat.createZones()[SFeat.getFeatureIndexFromName(upgradable.value.getName())]
+                                    settlement.upgradeTile(tile, newFeature)
+                                    return
 
-                    for tile in settlement.getProdFeatures():
-                        if len(SFeat.getPotencialUpgradesForZone(tile.getName())) > 0:
-                            upgradable = Utils.randomFromCollectionWithWeight(SFeat.getPotencialUpgradesForZone(tile.getName()))
-    #                        for upgradable in (SFeat.getPotencialUpgradesForZone(tile.getName())):
-                            if float(settlement.getFreeProd()) >= float(upgradable.value.getUpgradeCost()):
-                                settlement.changeFreeProd(-upgradable.value.getUpgradeCost())
-                                newFeature = SFeat.createZones()[SFeat.getFeatureIndexFromName(upgradable.value.getName())]
-                                settlement.upgradeTile(tile, newFeature)
-                                return
+                        for tile in settlement.getProdFeatures():
+                            if len(SFeat.getPotencialUpgradesForZone(tile.getName())) > 0:
+                                upgradable = Utils.randomFromCollectionWithWeight(SFeat.getPotencialUpgradesForZone(tile.getName()))
+        #                        for upgradable in (SFeat.getPotencialUpgradesForZone(tile.getName())):
+                                if float(settlement.getFreeProd()) >= float(upgradable.value.getUpgradeCost()):
+                                    settlement.changeFreeProd(-upgradable.value.getUpgradeCost())
+                                    newFeature = SFeat.createZones()[SFeat.getFeatureIndexFromName(upgradable.value.getName())]
+                                    settlement.upgradeTile(tile, newFeature)
+                                    return
 
 
 def accommodationManagment(world):
 
-    for region in world.getRegions():
+    if world.dayOfWeekFlag == 1:  # Only on Monday produce goods
 
-        for settlement in region.getSettlements():
+        for region in world.getRegions():
 
-            for house in settlement.getHousing():
+            for settlement in region.getSettlements():
 
-                HouseFunctions.payForUpkeep(house)
+                for house in settlement.getHousing():
 
-                if house.getHouseDurability() == 0:
-                    if len(house.getHouseResidents()) == 0:
-                        settlement.removeHouse(house)
-                    else:
-                        HouseFunctions.downgradeHouse(house)
+                    HouseFunctions.payForUpkeep(house)
 
-                HouseFunctions.payForUpgrade(house)
+                    if house.getHouseDurability() == 0:
+                        if len(house.getHouseResidents()) == 0:
+                            settlement.removeHouse(house)
+                        else:
+                            HouseFunctions.downgradeHouse(house)
+
+                    HouseFunctions.payForUpgrade(house)
 
 
 def settlementWorkersManagement(world):
@@ -400,8 +571,8 @@ def crime(world):
     crimeFailedTemp = 0
 
     for person in world.getAlivePeople():
-        randomChanceForCrime = Utils.randomRange(1, 100)
-        if randomChanceForCrime < 5 and (Traits.VENGEFUL in person.getTraits() or Traits.GREEDY in person.getTraits() or Traits.DECEITFUL in person.getTraits() and person.getOccupation() is None) and person.getAge() > 15 and person.getLifeStatus() == LifeStatus.ALIVE and person.getFreeWealth() < person.getSettlement().getAvarageResidentsWealth():
+        randomChanceForCrime = Utils.randomRange(1, 10000)
+        if randomChanceForCrime < 3 and (Traits.VENGEFUL in person.getTraits() or Traits.GREEDY in person.getTraits() or Traits.DECEITFUL in person.getTraits() and person.getOccupation() is None) and person.getAge() > 15 and person.getLifeStatus() == LifeStatus.ALIVE and person.getFreeWealth() < person.getSettlement().getAvarageResidentsWealth():
             randomPerson = Utils.randomFromCollection(person.getSettlement().getResidents())
             if randomPerson != person and randomPerson != person.spouse and randomPerson not in person.getAliveChildrenList():
                 randomCrime = Utils.randomRange(1, 100)
@@ -451,7 +622,7 @@ def crime(world):
                     crimeFailedTemp += 1
                     continue
 
-    world.appendCrimesPerYear(crimeLevel, [crimeHomicideTemp, crimeAssaultTemp, crimeBurglaryTemp, crimeTheftTemp,crimeFailedTemp])
+    world.appendCrimesPerYear(crimeLevel, [crimeHomicideTemp, crimeAssaultTemp, crimeBurglaryTemp, crimeTheftTemp, crimeFailedTemp])
 
 def moveFoodAndProduction(migrantSize, oldSettlement, newSettlement):
 
@@ -518,7 +689,7 @@ def getRandomMigrantListForSingleRandomPerson(person, parent, randomMigrantsList
 
 def deathFromNegligence(person):
 
-    if person.father != '' and person.mother != '':
+    if person.father is not None and person.mother is not None:
         if person.father.lifeStatus == LifeStatus.DEAD and person.mother.lifeStatus == LifeStatus.DEAD:
             chanceOfDeath = Utils.randomRange(1, 100)
             triangChance = (Utils.triangularNumber(person.age-1))
@@ -530,30 +701,30 @@ def deathFromNegligence(person):
 
 def deathChanceFromAge(person):
 
-    chanceOfDeath = Utils.randomRange(1, 100)
+    chanceOfDeath = Utils.randomRange(1, 10000)
     dead = False
 
-    age = person.age
+    age = person.getAge()
     modifiedLifespan = person.modifiedLifespan
 
-    if age == 1:
-        if chanceOfDeath <= 20:
+    if age == 0:
+        if chanceOfDeath <= 5:
             dead = True
             person.causeOfDeath = CauseOfDeath.SICKNESS
+    elif age == 1:
+        if chanceOfDeath <= 4:
+            person.causeOfDeath = CauseOfDeath.SICKNESS
+            dead = True
     elif age == 2:
-        if chanceOfDeath <= 15:
+        if chanceOfDeath <= 3:
             person.causeOfDeath = CauseOfDeath.SICKNESS
             dead = True
     elif age == 3:
-        if chanceOfDeath <= 10:
+        if chanceOfDeath <= 2:
             person.causeOfDeath = CauseOfDeath.SICKNESS
             dead = True
     elif age == 4:
-        if chanceOfDeath <= 5:
-            person.causeOfDeath = CauseOfDeath.SICKNESS
-            dead = True
-    elif age == 5:
-        if chanceOfDeath <= 3:
+        if chanceOfDeath <= 1:
             person.causeOfDeath = CauseOfDeath.SICKNESS
             dead = True
     elif modifiedLifespan-age <= 5:

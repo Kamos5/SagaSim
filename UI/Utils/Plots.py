@@ -2,6 +2,7 @@ import matplotlib.pyplot
 import pygame
 import matplotlib.backends.backend_agg as agg
 import pylab
+from matplotlib.ticker import LinearLocator
 
 
 class Plots:
@@ -23,6 +24,8 @@ class Plots:
             i += 1
         ax.yaxis.set_label_position("right")
         ax.yaxis.tick_right()
+        # ax.set_xticklabels(xAxisData, rotation=45)
+        ax.get_xaxis().set_major_locator(LinearLocator(numticks=15))
         matplotlib.pyplot.xlabel(xLabel)
         matplotlib.pyplot.ylabel(yLabel)
         matplotlib.pyplot.title(title)
