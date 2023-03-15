@@ -1,8 +1,6 @@
 import pygame
 import matplotlib
-from PIL import ImageFont
 
-import Enums
 import Parameters
 import Utils
 from UI.Utils.Button import Button

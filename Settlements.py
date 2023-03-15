@@ -126,13 +126,13 @@ class Settlements:
 
     def adjustFertilityModifier(self):
         if self.getFreeFood() < self.getPopulation() * 1:
-            self.setFertilityModifier(0.33) #0.33
+            self.setFertilityModifier(Parameters.settlementLowFoodFertilityModifier)
             return
         if self.getFreeFood() > self.getPopulation() * 3:
-            self.setFertilityModifier(1.2) #1.2
+            self.setFertilityModifier(Parameters.settlementHighFoodFertilityModifier)
             return
         else:
-            self.setFertilityModifier(1.0) #1
+            self.setFertilityModifier(Parameters.settlementNormalFoodFertilityModifier)
             return
 
     def changeSettlementName(self, newName):

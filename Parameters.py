@@ -13,7 +13,11 @@ chancePerYearToUpgradeVillageToTown = 80
 chanceForMigration = 50
 
 #growthAccelerationForKidsUpToAdulthood
-growthSpeed = 1
+growthSpeed = 15
+
+settlementHighFoodFertilityModifier = 1.2   #default 1.2
+settlementNormalFoodFertilityModifier = 1.0 #default 1.0
+settlementLowFoodFertilityModifier = 0.33   #default 0.33
 
 # aka how many village per town there must be
 villageToTownMultiplier = 3
