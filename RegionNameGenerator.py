@@ -7,7 +7,7 @@ englishRegionNames = [
     'Englaland',
     'Britannia',
     'Albion',
-    'Blighty'
+    'Blighty',
 
 ]
 
