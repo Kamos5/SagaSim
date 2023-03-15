@@ -17,7 +17,7 @@ from Person import Person
 from World import World as World
 
 world = World()
-
+timeTesterFlag = False
 
 def initFamilies():
 
@@ -38,6 +38,8 @@ def initPeople(families):
 
 def running(world, manualOverride):
 
+    timeTable = []
+
     dayOfWeekFlag = 1
     start = time.perf_counter()
     print(str(world.getDay()) + "/" + str(world.getMonth()) + "/" + str(world.getYear()))
@@ -56,14 +58,15 @@ def running(world, manualOverride):
     incAgeTime = Utils.timeFunction(timers, Events.increaseAge, world)
     loveMakingTime = Utils.timeFunction(timers, Events.loveMaking, world)
     birthtime = Utils.timeFunction(timers, Events.birthPeopleNew, world)
-    spouseMMTime = Utils.timeFunction(timers, FF.spouseMatchmaking, world)
+    spouseMMTime = Utils.timeFunction(timers, FF.spouseMatchmaking, [world, timeTable])
     divorcesTime = Utils.timeFunction(timers, FF.divorces, world)
     breakSettlementsPopTime = Utils.timeFunction(timers, Events.settlementsPopulationManagement, world)     #ONCE PER YEAR (CHANCE 100% - PARAM)
     workersManagementTime = Utils.timeFunction(timers, Events.settlementWorkersManagement, world)           #DONE ! MAYBE OPTIMIZE IT SOMEHOW LATER ON
     crimeTime = Utils.timeFunction(timers, Events.crime, world)
     settlementGoodsProdTime = Utils.timeFunction(timers, Events.settlementGoodsProduction, world)           #ONCE PER WEEK (ALWAYS ON MONDAYS)
-    accommodationMenagmentTime = Utils.timeFunction(timers, Events.accommodationManagment, world)           #ONCE PER WEEK (ALWAYS ON MONDAYS)
+    accommodationManagmentTime = Utils.timeFunction(timers, Events.accommodationManagment, world)           #ONCE PER WEEK (ALWAYS ON MONDAYS)
     updateAliveTime = Utils.timeFunction(timers, world.updateAlive)
+    associateManagementTime = Utils.timeFunction(False, Events.associateManagement, world)
 
     makeHistoryTime = Utils.timeFunction(timers, world.makeHistory)
 
@@ -81,10 +84,13 @@ def running(world, manualOverride):
         print("WorkersManagementTime: " + str(workersManagementTime) + " %: " + str(round(workersManagementTime / fullTime, 2)))
         print("Crime: " + str(crimeTime) + " %: " + str(round(crimeTime / fullTime, 2)))
         print("SettlementGoodsProdTime: " + str(settlementGoodsProdTime) + " %: " + str(round(settlementGoodsProdTime / fullTime, 2)))
-        print("AccomodationTime: " + str(accommodationMenagmentTime) + " %: " + str(round(accommodationMenagmentTime / fullTime, 2)))
+        print("AccomodationTime: " + str(accommodationManagmentTime) + " %: " + str(round(accommodationManagmentTime / fullTime, 2)))
         print("UpdateAliveTime: " + str(updateAliveTime) + " %: " + str(round(updateAliveTime / fullTime, 2)))
+        print("AssociateMngTime: " + str(associateManagementTime) + " %: " + str(round(associateManagementTime / fullTime, 2)))
         print("MakeHistoryTime: " + str(makeHistoryTime) + " %: " + str(round(makeHistoryTime / fullTime, 2)))
         print(fullTime)
+
+    timeTable.extend([worldtime, weatherChangeTime, incAgeTime, loveMakingTime, birthtime, spouseMMTime, divorcesTime, breakSettlementsPopTime, workersManagementTime, crimeTime, settlementGoodsProdTime, accommodationManagmentTime, updateAliveTime, associateManagementTime, makeHistoryTime, fullTime])
 
     for family in world.getFamilies():
         isAlive += family.getAliveMemberNumber()
@@ -100,7 +106,11 @@ def running(world, manualOverride):
     print("Female population: " + str(femalePop))
     print("Births: " + str(world.getBirthsPerYearTemp()))
 
-def main():
+    return (timeTable)
+
+def main(popBreakLimit=None):
+
+    world.reset()
 
     world.generateRegions(Parameters.startingNumberOfRegions)
     world.generateSettlements()
@@ -149,7 +159,7 @@ def main():
         #GameLogic
         tickCurrentTime = time.time() * 1000.0
         if tickCurrentTime - tickStartTime >= pTime:
-            running(world, manualOverride)
+            timeTable = running(world, manualOverride)
             tickStartTime = time.time() * 1000.0
 
 
@@ -177,6 +187,10 @@ def main():
         #     temp = world.getPeople()[0].generateDownFamilyTree(BinaryTreeNode(world.getPeople()[0]))
         #     Utils.printDownFamilyTree(temp)
         #     return
+
+        if popBreakLimit is not None and len(world.getAlivePeople()) > popBreakLimit:
+            return timeTable
+
         if world.getYear() == 1200:
 
             return
@@ -412,5 +426,8 @@ def pygameEvents(event, canvas, pausedPressed):
 
     return pausedPressed
 
+if not timeTesterFlag:
+    timeTable = main()
 
-main()
+def callMain (popBreakLimit):
+    return main(popBreakLimit)

@@ -48,6 +48,9 @@ class Person:
         self.likeAtributes = []
         self.dislikeAtributes = []
         self.lovers = []
+        self.knownAssociates = []
+        self.friends = []
+        self.rivals = []
         self.spouse = None
         self.spouseRelation = 0
         self.spouseNumberOfLikedTraits = 0
@@ -280,6 +283,24 @@ class Person:
     def getLovers(self):
         return self.lovers
 
+    def getKnownAssociates(self):
+        return self.knownAssociates
+
+    def addKnownAssociates(self, newAssociate, standing):
+        self.knownAssociates.append([newAssociate, standing])
+
+    def getFriends(self):
+        return self.friends
+
+    def addFriends(self, newFriend, standing):
+        self.friends.append([newFriend, standing])
+
+    def getRivals(self):
+        return self.rivals
+
+    def addRivals(self, newRivals, standing):
+        self.rivals.append([newRivals, standing])
+
     def getImpregnationMonth(self):
         return self.impregnationMonth
 
@@ -489,8 +510,8 @@ class Person:
         if ancestorsFamiles is None:
             ancestorsFamiles = []
 
-        father = ''
-        mother = ''
+        father = None
+        mother = None
         if fatherSide:
             father = tree.getRoot().getFather()
         if motherSide:

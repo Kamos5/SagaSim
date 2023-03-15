@@ -23,8 +23,8 @@ class World:
         self.month = Enums.Months.DECEMBER
         self.year = self.initYear
         self.regions = []
-        self.gameSpeed = 50
-        self.gameSpeedCounter = 4
+        self.gameSpeed = 3000    #50
+        self.gameSpeedCounter = 8  #5
         self.divorcesNumber = 0
         self.families = []
         self.people = []
@@ -81,6 +81,71 @@ class World:
         self.hairColorWhiteHistory = []
         self.hairColorGrayHistory = []
 
+    def reset(self, startYear=initYear):
+
+        self.initYear = startYear
+        self.day = 31
+        self.dayOfWeekFlag = Utils.randomRange(1, 7)
+        self.month = Enums.Months.DECEMBER
+        self.year = self.initYear
+        self.regions = []
+        self.gameSpeed = 3000    #50
+        self.gameSpeedCounter = 8  #5
+        self.divorcesNumber = 0
+        self.families = []
+        self.people = []
+        self.alivePeople = []
+        self.birthsPerYear = []
+        self.birthsPerYearTemp = 0
+        self.crimesPerYear = []
+        self.crimesPerYearReduced = []
+        self.avarageLifeSpamHistory = []
+        self.averageHeightHistory = []
+        self.averageHeightMHistory = []
+        self.averageHeightFHistory = []
+
+        self.crimeHomicidePerYear = []
+        self.crimeAssaultPerYear = []
+        self.crimeBurglaryPerYear = []
+        self.crimeTheftPerYear = []
+        self.crimeFailedPerYear = []
+
+        self.crimeHomicidePerYearReduced = []
+        self.crimeAssaultPerYearReduced = []
+        self.crimeBurglaryPerYearReduced = []
+        self.crimeTheftPerYearReduced = []
+        self.crimeFailedPerYearReduced = []
+
+        self.sexualityHomoHistory = []
+        self.sexualityHeteroHistory = []
+
+        self.sexualityHomoPctHistory = []
+        self.sexualityHeteroPctHistory = []
+
+        self.worldHistory = []
+        self.worldHistoryReduced = []
+        self.peopleNumberHistory = []
+        self.alivePeopleNumberHistory = []
+        self.alivePeopleNumberHistoryReduced = []
+        self.birthsPerYearNumberHistory = []
+        self.crimesPerYearNumberHistory = []
+        self.familiesMembersNumberHistory = []
+        self.peopleAliveHistory = []
+
+        self.eyeColorBlackHistory = []
+        self.eyeColorBrownHistory = []
+        self.eyeColorAmberHistory = []
+        self.eyeColorHazelHistory = []
+        self.eyeColorGreenHistory = []
+        self.eyeColorBlueHistory = []
+        self.eyeColorGrayHistory = []
+
+        self.hairColorBlackHistory = []
+        self.hairColorBrownHistory = []
+        self.hairColorYellowHistory = []
+        self.hairColorRedHistory = []
+        self.hairColorWhiteHistory = []
+        self.hairColorGrayHistory = []
 
     def getPeople(self):
         return self.people

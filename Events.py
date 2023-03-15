@@ -16,7 +16,7 @@ import SettlementFeatures as SFeat
 def increaseAge (world):
 
     for person in world.getAlivePeople():
-        if person.lifeStatus != LifeStatus.DEAD:
+        if person.lifeStatus != LifeStatus.DEAD:  #must be sometimes people die in between years and getAlive is not updated yet
 
             if person.getDayOfBirth() == world.getDay() and person.getMonthOfBirth() == world.getMonth():
                 person.increaseAge()
@@ -438,6 +438,23 @@ def accommodationManagment(world):
                             HouseFunctions.downgradeHouse(house)
 
                     HouseFunctions.payForUpgrade(house)
+
+
+def associateManagement(world):
+
+    for region in world.getRegions():
+
+        for settlement in region.getSettlements():
+
+            for employee in settlement.getEmployedResidentsList():
+
+                for employeeSecond in settlement.getEmployedResidentsList():
+
+                    if employeeSecond not in employee.getKnownAssociates() or employee != employeeSecond:
+
+                        employee.addKnownAssociates(employeeSecond, 0)
+                        employeeSecond.addKnownAssociates(employee, 0)
+
 
 
 def settlementWorkersManagement(world):

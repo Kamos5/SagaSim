@@ -11,10 +11,12 @@ def FindAvailableSpouses (families, person):
     availableSpouses = []
     for family in families:
         if family.familyName != person.familyName and (family.getOriginRegion() == person.familyObjRef.getOriginRegion() or False): #temp flag
-            if person.sex == Sexes.MALE:
+            if person.getSex() == Sexes.MALE:
+                # availableSpouses.extend(family.getUnmarriedFemalesList())
                 for eachFreeMember in family.getUnmarriedFemalesList():
                     availableSpouses.append(eachFreeMember)
-            if person.sex == Sexes.FEMALE:
+            else:
+                # availableSpouses.extend(family.getUnmarriedMalesList())
                 for eachFreeMember in family.getUnmarriedMalesList():
                     availableSpouses.append(eachFreeMember)
 
@@ -100,11 +102,15 @@ def divorces (world):
                 #HouseFunctions.addNewOwner(person, newHouse)
 
 
-def spouseMatchmaking (world):
+def spouseMatchmaking (params):
+
+    world = params[0]
+    timeTable = params[1]
 
     #CANT USE PERSON IN UNMARIED LIST BECAUSE OF STRANGE ERRORS CONNECTED WITH PREVIOUS SPOUS DYING IN THE SAME YEAR AND LOOP family.getUnmarried list NOT RECOGNIZING IT!!!
 
     times = 0
+
     for person in world.getAlivePeople():
 
          if person.lifeStatus == Enums.LifeStatus.ALIVE and person.age >= 15 and person.spouse is None and (person.maritalStatus == Enums.MaritalStatus.SINGLE or person.maritalStatus == Enums.MaritalStatus.WIDOW or person.maritalStatus == Enums.MaritalStatus.WIDOWER or person.maritalStatus == Enums.MaritalStatus.DIVORCED):
@@ -155,6 +161,7 @@ def spouseMatchmaking (world):
                 # newHouse.addHouseResident(person)
                 # newHouse.addHouseResident(person.getSpouse())
 
+    timeTable.extend([times])
     print("SposesSumTime: " + str(times))
 
 def checkLDTraitsNumber(person):
