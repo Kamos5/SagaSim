@@ -58,7 +58,8 @@ def getRegionNameList():
 
     regionsName = [
         englishRegionName,
-        norseRegionName
+        norseRegionName,
+        slavicRegionName
     ]
 
     return regionsName
@@ -75,12 +76,12 @@ def randomEnglishRegionName ():
 
 def randomSlavicRegionName ():
 
-    if len(englishRegionNames) > 0:
-        listToChooseFrom = englishRegionNames
+    if len(slavicRegionNames) > 0:
+        listToChooseFrom = slavicRegionNames
         choice = randomChoice(listToChooseFrom)
         activeNames.append(choice)
     else:
-        choice = 'Generic Region Name'
+        choice = 'Generic Slavic Region Name'
     return choice
 
 def randomMusslimRegionName():

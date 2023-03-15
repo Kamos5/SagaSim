@@ -112,7 +112,7 @@ def main(popBreakLimit=None):
 
     world.reset()
 
-    world.generateRegions(Parameters.startingNumberOfRegions)
+    world.generateRegionsNames(Parameters.startingNumberOfRegions)
     world.generateSettlements()
     world.setFamilies(initFamilies())
     world.setPeople(initPeople(world.getFamilies()))
@@ -426,8 +426,7 @@ def pygameEvents(event, canvas, pausedPressed):
 
     return pausedPressed
 
-if not timeTesterFlag:
-    timeTable = main()
-
 def callMain (popBreakLimit):
     return main(popBreakLimit)
+
+main()

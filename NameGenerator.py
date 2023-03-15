@@ -1,6 +1,6 @@
 from random import choice
 
-from RegionNameGenerator import englishRegionNames, norseRegionNames
+from RegionNameGenerator import englishRegionNames, norseRegionNames, slavicRegionNames
 
 maleEnglishNameList = [
     'Adam',
@@ -122,23 +122,100 @@ femaleNorseNameList = [
 
 ]
 
+maleSlavicNameList = [
+
+    'Aleksandru',
+    'Athanasi',
+    'Berislav',
+    'Blazh',
+    'Bogdan',
+    'Bogumir',
+    'Boleslav',
+    'Borislav',
+    'Borivoi',
+    'Bozhidar',
+    'Bozho',
+    'Bratomil',
+    'Bratoslav',
+    'Bronislav',
+    'Chedomir',
+    'Chestibor',
+    'Chestimir',
+    'Chestislav',
+    'Dalibor',
+    'Desislav',
+    'Dmitrei',
+    'Dobrogost',
+    'Dobromil',
+    'Dobroslav',
+    'Dragomir',
+    'Dragoslav',
+    'Drazhan',
+    'Gostislav',
+    'Grigorii',
+    'Kazimir',
+    'Kresimir',
+    'Kyrilu',
+    'Ludovit',
+    'Lyudmil',
+    'Mieczysław',
+    'Miloš',
+    'Miloslav',
+    'Miroslav',
+    'Mstislav',
+    'Premislav',
+    'Radomil',
+    'Radoslav',
+    'Sławomir',
+    'Stanislav',
+    'Tomislav',
+    'Vlad',
+    'Yaroslav',
+    'Zbigniew'
+]
+
+
+femaleSlavicNameList = [
+
+    'Bogdana',
+    'Bozhena',
+    'Desislava',
+    'Dragoslava',
+    'Elena',
+    'Lyudmila',
+    'Miloslava',
+    'Miroslava',
+    'Olga',
+    'Radoslava',
+    'Inga',
+    'Stanislava',
+    'Tomislava',
+    'Yaroslava'
+
+]
+
+
 def getRandomMNameForRegion(region):
 
-    try:
-        if region.getRegionName() in englishRegionNames:
-            return randomEnglishMName()
-        if region.getRegionName() in norseRegionNames:
-            return randomNorseMName()
-    except:
-        print("Aaaa")
+    if region.getRegionName() in englishRegionNames:
+        return randomEnglishMName()
+    elif region.getRegionName() in norseRegionNames:
+        return randomNorseMName()
+    elif region.getRegionName() in slavicRegionNames:
+        return randomSlavicMName()
+    else:
+        return randomEnglishMName()
 
 def getRandomFNameForRegion(region):
 
     if region.getRegionName() in englishRegionNames:
         return randomEnglishFName()
-    if region.getRegionName() in norseRegionNames:
+    elif region.getRegionName() in norseRegionNames:
         return randomNorseFName()
-
+    elif region.getRegionName() in slavicRegionNames:
+        return randomSlavicFName()
+    else:
+        return randomEnglishMName()
 def randomEnglishMName():
 
     return choice(maleEnglishNameList)
@@ -151,5 +228,12 @@ def randomNorseMName():
 
 def randomNorseFName():
     return choice(femaleNorseNameList)
+
+def randomSlavicMName():
+    return choice(maleSlavicNameList)
+
+def randomSlavicFName():
+    return choice(femaleSlavicNameList)
+
 
 #def nameFromFamilyHistory (family, people)

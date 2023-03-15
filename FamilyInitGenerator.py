@@ -17,7 +17,7 @@ def Init(world):
     #var = familie number
     for region in range(Parameters.startingNumberOfRegions):
         for familyNumber in range(Parameters.startingNumberOfFamiliesPerRegion):
-            familyName = FamilyNameGenerator.getInitEnglishName()
+            familyName = FamilyNameGenerator.getNewLastNameBasedOnRegion(world.getRegionFromIndex(region))
             family = Family(familyName)
             family.setFoundingYear(world.getYear())
             family.setOriginRegion(world.getRegionFromIndex(region))

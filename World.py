@@ -293,10 +293,14 @@ class World:
     def getVillageSize(self):
         return Parameters.baseVillageSize
 
-    def generateRegions(self, regionsNumber = 5):
+    def generateRegionsNames(self, regionsNumber = 5):
 
-        self.regions.append(Region(RNG.randomEnglishRegionName()))
-        self.regions.append(Region(RNG.randomNorseRegionName()))
+        if regionsNumber >= 1:
+            self.regions.append(Region(RNG.randomEnglishRegionName()))
+        if regionsNumber >= 2:
+            self.regions.append(Region(RNG.randomNorseRegionName()))
+        if regionsNumber >= 3:
+            self.regions.append(Region(RNG.randomSlavicRegionName()))
 
     def generateSettlements(self):
 

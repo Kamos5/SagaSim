@@ -1,10 +1,10 @@
 import Enums
 import SettlementNameGenerator as SNG
+import RegionNameGenerator as RNG
 import Parameters
 import Utils
 import SettlementFeatures as SF
 import FoundationTypes as FoundationTypes
-from Enums import LifeStatus
 
 def takeFeatureNumber(elem):
     return elem.getFeatureNumber()
@@ -14,12 +14,12 @@ class Settlements:
     def __init__(self, region, year=Parameters.startingYear, rebuildFlag = False):
         self.settlementType = Enums.Settlements.VILLAGE
 
-        if region == "Region 0":
+        if region in RNG.englishRegionNames:
             self.name = SNG.randomEnglishSettlementsName(rebuildFlag)
-        elif region == "Region 1":
-            self.name = SNG.randomEnglishSettlementsName(rebuildFlag)
-        elif region == "Region 2":
-            self.name = SNG.randomEnglishSettlementsName(rebuildFlag)
+        elif region in RNG.norseRegionNames:
+            self.name = SNG.randomNorseSettlementsName(rebuildFlag)
+        elif region in RNG.slavicRegionNames:
+            self.name = SNG.randomSlavicSettlementsName(rebuildFlag)
         elif region == "Region 3":
             self.name = SNG.randomEnglishSettlementsName(rebuildFlag)
         elif region == "Region 4":

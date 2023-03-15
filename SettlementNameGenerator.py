@@ -25,17 +25,95 @@ englishSettlementsNames = [
 
 ]
 
+norseSettlementsNames = [
+
+    'Aebeltoft',
+    'Kalbaek',
+    'Breiðhatóftir',
+    'Laugarbrekka',
+    'Búðir',
+    'Ravndal',
+    'Djúpidalur',
+    'Essetofte',
+    'Fulby',
+    'Aeblegården',
+    'Hulgade',
+    'Højtoft',
+    'Innrihólmur',
+    'Holbaek',
+    'Stenhus',
+    'Kallekot',
+    'Kirkeby',
+    'Klibo',
+    'Langatóftir',
+    'Lund',
+    'Akranes',
+    'Sandvik',
+    'Stenhus',
+    'Haraldssun',
+    'Thornby',
+    'Torp',
+    'Bregentved',
+    'Tóftir',
+    'Ebeltoft',
+    'Kvívi'
+
+]
+
+slavicSettlementsNames = [
+
+    'Kalisz',
+    'Stobi',
+    'Zadar',
+    'Plovdiv',
+    'Ptuj',
+    'Kerch',
+    'Beograd',
+    'Nitra',
+    'Plzeň',
+    'Praha',
+    'Polotsk',
+    'Budva',
+    'Tomislavgrad',
+    'Derbent',
+    'Kraków',
+    'Ohrid',
+    'Vis',
+    'Sozopol',
+    'Kiev',
+    'Trenčin',
+    'Vitebsk',
+    'Kotor',
+    'Stolac',
+    'Novgorod'
+
+]
 activeNames = []
 abandonedSettlements = []
 
 def randomEnglishSettlementsName (rebuildOldSettlement = False):
 
-    if len(englishSettlementsNames) > 0:
-        listToChooseFrom = englishSettlementsNames
+    copyList = englishSettlementsNames.copy()
+    if len(copyList) > 0:
+        listToChooseFrom = copyList
         if rebuildOldSettlement:
             listToChooseFrom = abandonedSettlements
         choice = randomChoice(listToChooseFrom)
-        englishSettlementsNames.remove(choice)
+        copyList.remove(choice)
+        activeNames.append(choice)
+    else:
+        choice = 'Generic Village Name'
+    return choice
+
+def randomNorseSettlementsName (rebuildOldSettlement = False):
+
+    copyList = norseSettlementsNames.copy()
+    if len(copyList) > 0:
+        listToChooseFrom = copyList
+        if rebuildOldSettlement:
+            listToChooseFrom = abandonedSettlements
+        choice = randomChoice(listToChooseFrom)
+        copyList.remove(choice)
         activeNames.append(choice)
     else:
         choice = 'Generic Village Name'
@@ -43,12 +121,13 @@ def randomEnglishSettlementsName (rebuildOldSettlement = False):
 
 def randomSlavicSettlementsName (rebuildOldSettlement = False):
 
-    if len(englishSettlementsNames) > 0:
-        listToChooseFrom = englishSettlementsNames
+    copyList = slavicSettlementsNames.copy()
+    if len(copyList) > 0:
+        listToChooseFrom = copyList
         if rebuildOldSettlement:
             listToChooseFrom = abandonedSettlements
         choice = randomChoice(listToChooseFrom)
-        englishSettlementsNames.remove(choice)
+        copyList.remove(choice)
         activeNames.append(choice)
     else:
         choice = 'Generic Village Name'
@@ -56,12 +135,13 @@ def randomSlavicSettlementsName (rebuildOldSettlement = False):
 
 def randomMusslimSettlementsName(rebuildOldSettlement = False):
 
-    if len(englishSettlementsNames) > 0:
-        listToChooseFrom = englishSettlementsNames
+    copyList = englishSettlementsNames.copy()
+    if len(copyList) > 0:
+        listToChooseFrom = copyList
         if rebuildOldSettlement:
             listToChooseFrom = abandonedSettlements
         choice = randomChoice(listToChooseFrom)
-        englishSettlementsNames.remove(choice)
+        copyList.remove(choice)
         activeNames.append(choice)
     else:
         choice = 'Generic Village Name'
@@ -69,12 +149,13 @@ def randomMusslimSettlementsName(rebuildOldSettlement = False):
 
 def randomRomanSettlementsName(rebuildOldSettlement = False):
 
-    if len(englishSettlementsNames) > 0:
-        listToChooseFrom = englishSettlementsNames
+    copyList = englishSettlementsNames.copy()
+    if len(copyList) > 0:
+        listToChooseFrom = copyList
         if rebuildOldSettlement:
             listToChooseFrom = abandonedSettlements
         choice = randomChoice(listToChooseFrom)
-        englishSettlementsNames.remove(choice)
+        copyList.remove(choice)
         activeNames.append(choice)
     else:
         choice = 'Generic Village Name'
@@ -82,12 +163,13 @@ def randomRomanSettlementsName(rebuildOldSettlement = False):
 
 def randomAfricanSettlementsName(rebuildOldSettlement = False):
 
-    if len(englishSettlementsNames) > 0:
-        listToChooseFrom = englishSettlementsNames
+    copyList = englishSettlementsNames.copy()
+    if len(copyList) > 0:
+        listToChooseFrom = copyList
         if rebuildOldSettlement:
             listToChooseFrom = abandonedSettlements
         choice = randomChoice(listToChooseFrom)
-        englishSettlementsNames.remove(choice)
+        copyList.remove(choice)
         activeNames.append(choice)
     else:
         choice = 'Generic Village Name'
