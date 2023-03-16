@@ -550,22 +550,22 @@ def settlementWorkersManagement(world):
                             if len(unemployedWorkerList) == 0:
                                 break
                             randomJobSite = Utils.randomRange(1, weightedAdminJobs + weightedFoodJobs + weightedProdJobs)
-                            if randomJobSite <= weightedAdminJobs:
+                            if len(adminFreeWorkplacesSpots) > 0 and randomJobSite <= weightedAdminJobs:
                                 newWorker = Utils.randomFromCollection(unemployedWorkerList)
-                                randomJob = Utils.randomRange(1, len(adminFreeWorkplacesSpots))
-                                hireEmployee(newWorker, adminFreeWorkplacesSpots[randomJob-1][0], world)
+                                randomJob = Utils.randomRange(0, len(adminFreeWorkplacesSpots)-1)
+                                hireEmployee(newWorker, adminFreeWorkplacesSpots[randomJob][0], world)
                                 unemployedWorkerList.remove(newWorker)
                                 del adminFreeWorkplacesSpots[randomJob-1]
-                            elif randomJobSite <= weightedAdminJobs + weightedFoodJobs:
+                            elif len(foodFreeWorkplacesSpots) > 0 and randomJobSite <= weightedAdminJobs + weightedFoodJobs:
                                 newWorker = Utils.randomFromCollection(unemployedWorkerList)
-                                randomJob = Utils.randomRange(1, len(foodFreeWorkplacesSpots))
-                                hireEmployee(newWorker, foodFreeWorkplacesSpots[randomJob-1][0], world)
+                                randomJob = Utils.randomRange(0, len(foodFreeWorkplacesSpots)-1)
+                                hireEmployee(newWorker, foodFreeWorkplacesSpots[randomJob][0], world)
                                 unemployedWorkerList.remove(newWorker)
                                 del foodFreeWorkplacesSpots[randomJob-1]
-                            elif randomJobSite <= weightedAdminJobs + weightedFoodJobs + weightedProdJobs:
+                            elif len(prodFreeWorkplacesSpots) > 0 and randomJobSite <= weightedAdminJobs + weightedFoodJobs + weightedProdJobs:
                                 newWorker = Utils.randomFromCollection(unemployedWorkerList)
-                                randomJob = Utils.randomRange(1, len(prodFreeWorkplacesSpots))
-                                hireEmployee(newWorker, prodFreeWorkplacesSpots[randomJob-1][0], world)
+                                randomJob = Utils.randomRange(0, len(prodFreeWorkplacesSpots)-1)
+                                hireEmployee(newWorker, prodFreeWorkplacesSpots[randomJob][0], world)
                                 unemployedWorkerList.remove(newWorker)
                                 del prodFreeWorkplacesSpots[randomJob-1]
                         if settlement.getFreeWealth() <= 0:
