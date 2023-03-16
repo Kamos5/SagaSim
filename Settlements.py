@@ -48,6 +48,7 @@ class Settlements:
         self.residents = []
         self.foodFeatures = []
         self.prodFeatures = []
+        self.adminFeatures = []
         self.unemployedRes = []
         self.employedRes = []
         self.providesTo = None
@@ -55,7 +56,7 @@ class Settlements:
         self.maxPopulation = 0
         self.uiExpand = False
         self.freeWealth = 0
-        self.localIncomeTax = Utils.randomRange(0, 20)
+        self.localIncomeTax = Utils.randomRange(1, 20)
         self.avarageResidentsWealth = 0
         self.housings = []
         self.createStartingVillageFeatures()
@@ -108,6 +109,16 @@ class Settlements:
 
     def addFoodFeature(self, feature):
         self.foodFeatures.append(feature)
+
+    def getAdminFeatures(self):
+        return self.adminFeatures
+
+    def addAdminFeature(self, feature):
+        self.adminFeatures.append(feature)
+
+    def removeAdminFeature(self, feature):
+        self.adminFeatures.remove(feature)
+
 
     def getProdFeatures(self):
         return self.prodFeatures
@@ -299,6 +310,10 @@ class Settlements:
 
     def createStartingVillageFeatures(self):
 
+        adminFeature = SF.createAdminZones()[0]
+        adminFeature.setFoundationType(Utils.randomFromEnumCollectionWithWeights(FoundationTypes.FoundationEnums))
+        self.addAdminFeature(adminFeature)
+
         for i in range(7):
             randomBasicFeature = Utils.randomRange(0, 4)
             feature = SF.createZones()[randomBasicFeature]
@@ -307,7 +322,7 @@ class Settlements:
             self.addFoodFeature(feature)
         randomBasicFeature = Utils.randomRange(5, 6)
         feature = SF.createZones()[randomBasicFeature]
-        feature.setFoundationType(Utils.randomFromEnumCollectionWithWeights(FoundationTypes.FoundationEnums))
+        feature.setFoundationType(FoundationTypes.FoundationEnums.MEDIUM)
         feature.setFeatureNumber(7)
         self.addProdFeature(feature)
 
@@ -324,6 +339,7 @@ class Settlements:
             feature.setFoundationType(Utils.randomFromEnumCollectionWithWeights(FoundationTypes.FoundationEnums))
             feature.setFeatureNumber(9+i)
             self.addProdFeature(feature)
+
 
     def upgradeTile(self, oldFeature, newFeature):
 

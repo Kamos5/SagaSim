@@ -187,5 +187,5 @@ class normalIllnesses(Enum):
 class geneticIllnesses(Enum):
     # name, description, [source genes], [affected object?], [effect in %]
     WHITEDEATH = 'White death', 'Being too white is a terminal sin.', [EyeColor.GRAY, HairColor.WHITE], ['lifespan', 'fertility'], [50, 25]
-    BLACKDEATH = 'Black death', 'Black live does not matter', [EyeColor.GRAY, HairColor.WHITE], ['lifespan', 'fertility'], [25, 50]
+    BLACKDEATH = 'Black death', 'Black live does not matter', [EyeColor.BLACK, HairColor.BLACK], ['lifespan', 'fertility'], [25, 50]
 

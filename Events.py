@@ -46,8 +46,8 @@ def increaseAge (world):
                 continue
 
             if person.getSettlement().getFreeFood() <= 0:
-                chanceForStarvation = Utils.randomRange(1, 1000)
-                if chanceForStarvation <= 5:
+                chanceForStarvation = Utils.randomRange(1, 100)
+                if chanceForStarvation <= 2:
                     person.causeOfDeath = CauseOfDeath.STARVATION
                     PF.deathProcedures(person, world)
                     continue
@@ -161,7 +161,7 @@ def birthPeopleNew (world):
                     childObj.changeMaritalStatus(MS.CHILD)
                     person.getAccommodation().addHouseResident(childObj)
 
-                    childObj.setSettlement(childObj.getFather().getSettlement())
+                    childObj.setSettlement(childObj.getTrueMother().getSettlement())
                     childObj.getSettlement().increasePopulation()
                     childObj.getSettlement().addResident(childObj)
 
@@ -331,11 +331,38 @@ def settlementGoodsProduction(world):
 
             for settlement in region.getSettlements():
 
+                mayorModifier = 1
+
+
+                ## ADMIN PROD
+                if len(settlement.getAdminFeatures()[0].getWorkerList()) > 0:
+
+                    mayor = settlement.getAdminFeatures()[0].getWorkerList()[0]
+
+                    if Traits.LAZY in mayor.getTraits():
+                        mayorModifier = 0.8
+                    if Traits.DILIGENT in mayor.getTraits():
+                        mayorModifier = 1.2
+                    if Traits.GREEDY in mayor.getTraits():
+                        mayorModifier = 0.9
+                    if Traits.GREGARIOUS in mayor.getTraits():
+                        mayorModifier = 1.1
+                    if Traits.IMPATIENT in mayor.getTraits():
+                        mayorModifier = 0.9
+                    if Traits.PATIENT in mayor.getTraits():
+                        mayorModifier = 1.1
+
+                    flatRate = 3
+                    if settlement.getAdminFeatures()[0].getName() == SFeat.getTownHall().getName():
+                        flatRate = 5
+                    mayor.changeFreeWealth(flatRate)
+                    settlement.changeFreeWealth(-flatRate)
+
                 ##  FOOD PRODUCTION
                 foodProd0 = settlement.getSettlementFoodProduced()
                 for foodTile in settlement.getFoodFeatures():
 
-                    foodProd = foodTile.prodYield * foodTile.foundationType.value.yieldModifier / 100 * foodTile.getWorkersNumber()
+                    foodProd = foodTile.prodYield * foodTile.foundationType.value.yieldModifier * mayorModifier / 100 * foodTile.getWorkersNumber()
 
                     if settlement.getProvision() is not None:
                         settlement.getProvision().increaseSettlementFoodProduced(foodProd*Parameters.socage)
@@ -472,6 +499,23 @@ def settlementWorkersManagement(world):
         for settlement in region.getSettlements():
 
                 unemployedWorkerList = settlement.getUnemployedResidentsList()
+
+                for adminTile in settlement.getAdminFeatures():
+                    for occupations in range(adminTile.getFreeWorkersSlots()):
+                        if len(unemployedWorkerList) > 0 and settlement.getFreeWealth() > 0:
+                            newWorker = Utils.randomFromCollection(unemployedWorkerList)
+                            unemployedWorkerList.remove(newWorker)
+                            adminTile.addWorker(newWorker)
+                            newWorker.setOccupation(adminTile)
+                            newWorker.setOccupationName(adminTile.getOccupationName())
+                            PLEH.foundEmpoyment(newWorker, world)
+
+                    if settlement.getFreeWealth() <= 0:
+                        for worker in adminTile.getWorkerList():
+                            worker.getOccupation().removeWorker(worker)
+                            worker.setOccupation(None)
+                            PLEH.lostEmpoyment(worker, world)
+
 
             #if settlement.getSettlementFoodProducedLastYear() - settlement.getSettlementFoodConsumedLastYear() < int(round(len(settlement.getResidents())/2)):
                 for foodTile in settlement.getFoodFeatures():

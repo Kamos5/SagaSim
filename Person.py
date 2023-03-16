@@ -369,6 +369,9 @@ class Person:
     def setPregnancyTrueFather(self, trueFather):
         self.pregnancyTrueFather = trueFather
 
+    def getTrueMother(self):
+        return self.trueMother
+
     def getSettlement(self):
         return self.settlement
 

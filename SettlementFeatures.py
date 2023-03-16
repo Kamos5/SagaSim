@@ -15,6 +15,7 @@ class FeatureTypes(Enum):
 
     FOODTYPE = FeatureType("Food type", "produces food resource")
     PRODTYPE = FeatureType("Production type", "produces production resource")
+    ADMINTYPE = FeatureType("Administrative type", "administering stuff")
 
     # POORSOIL = FundationType("Poor Soil", "Soil here is very poor.", 80)
     # GOODSOIL = FundationType("Good Soil", "Soil here is quite good.", 100)
@@ -213,6 +214,11 @@ def getNewSilverMine():
     return Feature(FeatureTypes.PRODTYPE, 5, 15, 'Silver mine', 'Shiny white rocks', 'Silver miner', 250, 'Rocky Terrain', 25)
 def getNewGoldMine():
     return Feature(FeatureTypes.PRODTYPE, 6, 15, 'Gold mine', 'Shiny rocks', 'Gold miner', 250, 'Rocky Terrain', 10)
+def getVillageHall():
+    return Feature(FeatureTypes.ADMINTYPE, 1, 1, 'Village hall', 'Place of meeting for village people', 'Village Mayor')
+def getTownHall():
+    return Feature(FeatureTypes.ADMINTYPE, 1, 1, 'City hall', 'Place of meeting for town people', 'Mayor')
+
 
 def createZones():
 
@@ -236,6 +242,15 @@ def createZones():
     zones.append(getNewCoalMine())
     zones.append(getNewIronMine())
     zones.append(getNewSilverMine())
+
+    return zones
+
+def createAdminZones():
+
+    zones = []
+
+    zones.append(getVillageHall())
+    zones.append(getTownHall())
 
     return zones
 
