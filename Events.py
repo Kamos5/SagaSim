@@ -337,6 +337,8 @@ def settlementGoodsProduction(world):
                 ## ADMIN PROD
                 if len(settlement.getAdminFeatures()[0].getWorkerList()) > 0:
 
+                    # flat bonus 5% if mayor
+                    mayorModifier = 1.05
                     mayor = settlement.getAdminFeatures()[0].getWorkerList()[0]
 
                     if Traits.LAZY in mayor.getTraits():
@@ -407,7 +409,7 @@ def settlementGoodsProduction(world):
 
                 for prodTile in settlement.getProdFeatures():
 
-                    prodProd = prodTile.prodYield * prodTile.foundationType.value.yieldModifier / 100 * prodTile.getWorkersNumber()
+                    prodProd = prodTile.prodYield * prodTile.foundationType.value.yieldModifier * mayorModifier / 100 * prodTile.getWorkersNumber()
 
                     if settlement.getProvision() is not None:
                         settlement.getProvision().increaseSettlementProdProduced(prodProd*Parameters.socage)
