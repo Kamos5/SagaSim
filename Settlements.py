@@ -311,7 +311,7 @@ class Settlements:
     def createStartingVillageFeatures(self):
 
         adminFeature = SF.createAdminZones()[0]
-        adminFeature.setFoundationType(Utils.randomFromEnumCollectionWithWeights(FoundationTypes.FoundationEnums))
+        adminFeature.setFoundationType(FoundationTypes.FoundationEnums.MEDIUM)
         self.addAdminFeature(adminFeature)
 
         for i in range(7):
