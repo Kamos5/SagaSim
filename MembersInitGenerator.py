@@ -12,7 +12,7 @@ def Init(families, world):
     seed(SystemRandom().random())
 
     for family in families:
-        randomNumber = Utils.randomRange(4, 4)
+        randomNumber = Utils.randomRange(4, 6)
 
         for number in range(randomNumber):
             member = PersonObj()
