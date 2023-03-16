@@ -149,7 +149,7 @@ class InspectorScreen:
         label = Label("Free food: " + str(object.getFreeFood()), 500, self.lineHeight, self.textFont)
         self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding, self.lineHeight * self.writeLine + self.scroll_y))
         self.writeLine += 1
-        label = Label("Production produced last week: " + str(object.getSettlementProodProducedLastYear()), 500, self.lineHeight, self.textFont)
+        label = Label("Production produced last week: " + str(object.getSettlementProdProducedLastYear()), 500, self.lineHeight, self.textFont)
         self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding, self.lineHeight * self.writeLine + self.scroll_y))
         self.writeLine += 1
         label = Label("All-time food prod: " + str(object.getSettlementFoodProduced()), 500, self.lineHeight, self.textFont)

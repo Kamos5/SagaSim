@@ -172,7 +172,7 @@ class Settlements:
         self.prodProduced += value
         self.prodProduced = round(self.prodProduced, 2)
 
-    def getSettlementProodProducedLastYear(self):
+    def getSettlementProdProducedLastYear(self):
         return round(self.prodProducedLastYear, 2)
 
     def setSettlementProdProducedLastYear(self, value):

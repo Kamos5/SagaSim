@@ -110,8 +110,13 @@ def loveMaking (world):
 def birthPeopleNew (world):
 
     for person in world.getAlivePeople():
+
         #TIME for labour aka 9m pregnancy
         if person.sex == Sexes.FEMALE and person.isPregnant and person.getLifeStatus() != LifeStatus.DEAD:
+
+            if person.getSpouse() is not None:
+                # change spouseRelation based on liked/disliked traits
+                changeRelationToFromSpouse(person)
 
             chanceForMiscarriage = Utils.randomRange(1, 10000)
 
@@ -500,49 +505,92 @@ def settlementWorkersManagement(world):
 
         for settlement in region.getSettlements():
 
+                basicAdminJobWeight = 3
+                basicFoodJobWeight = 1
+                basicProdJobWeight = 1
+
                 unemployedWorkerList = settlement.getUnemployedResidentsList()
+                if len(unemployedWorkerList) > 0:
+                    if settlement.getSettlementFoodProducedLastYear() <= 0:
 
-                for adminTile in settlement.getAdminFeatures():
-                    for occupations in range(adminTile.getFreeWorkersSlots()):
-                        if len(unemployedWorkerList) > 0 and settlement.getFreeWealth() > 0:
-                            newWorker = Utils.randomFromCollection(unemployedWorkerList)
-                            unemployedWorkerList.remove(newWorker)
-                            adminTile.addWorker(newWorker)
-                            newWorker.setOccupation(adminTile)
-                            newWorker.setOccupationName(adminTile.getOccupationName())
-                            PLEH.foundEmpoyment(newWorker, world)
+                        basicFoodJobWeight *= 10
 
-                    if settlement.getFreeWealth() <= 0:
-                        for worker in adminTile.getWorkerList():
-                            worker.getOccupation().removeWorker(worker)
-                            worker.setOccupation(None)
-                            PLEH.lostEmpoyment(worker, world)
+                    if settlement.getSettlementProdProducedLastYear() == 0:
+                        basicProdJobWeight *= 2
+
+                    adminFreeWorkplacesSpots = []
+                    for adminTile in settlement.getAdminFeatures():
+                        for occupations in range(adminTile.getFreeWorkersSlots()):
+                            adminFreeWorkplacesSpots.append([adminTile, occupations])
+
+                    foodFreeWorkplacesSpots = []
+                    for foodTile in settlement.getFoodFeatures():
+                        for occupations in range(foodTile.getFreeWorkersSlots()):
+                            foodFreeWorkplacesSpots.append([foodTile, occupations])
+
+                    prodFreeWorkplacesSpots = []
+                    for prodTile in settlement.getProdFeatures():
+                        for occupations in range(prodTile.getFreeWorkersSlots()):
+                            prodFreeWorkplacesSpots.append([prodTile, occupations])
+
+                    numberOfFreeWorkplaces = len(adminFreeWorkplacesSpots) + len(foodFreeWorkplacesSpots) + len(prodFreeWorkplacesSpots)
+                    if len(adminFreeWorkplacesSpots) == 0 or settlement.getFreeWealth() < 0:
+                        basicAdminJobWeight = 0
+                    if len(foodFreeWorkplacesSpots) == 0:
+                        basicFoodJobWeight = 0
+                    if len(prodFreeWorkplacesSpots) == 0:
+                        basicProdJobWeight = 0
+
+                    weightedAdminJobs = len(adminFreeWorkplacesSpots) * basicAdminJobWeight
+                    weightedFoodJobs = len(foodFreeWorkplacesSpots) * basicFoodJobWeight
+                    weightedProdJobs = len(prodFreeWorkplacesSpots) * basicProdJobWeight
+                    if basicAdminJobWeight + basicFoodJobWeight + basicProdJobWeight > 0:
+
+                        for freeWorkPlace in range(numberOfFreeWorkplaces):
+                            if len(unemployedWorkerList) == 0:
+                                break
+                            randomJobSite = Utils.randomRange(1, weightedAdminJobs + weightedFoodJobs + weightedProdJobs)
+                            if randomJobSite <= weightedAdminJobs:
+                                newWorker = Utils.randomFromCollection(unemployedWorkerList)
+                                randomJob = Utils.randomRange(1, len(adminFreeWorkplacesSpots))
+                                hireEmployee(newWorker, adminFreeWorkplacesSpots[randomJob-1][0], world)
+                                unemployedWorkerList.remove(newWorker)
+                                del adminFreeWorkplacesSpots[randomJob-1]
+                            elif randomJobSite <= weightedAdminJobs + weightedFoodJobs:
+                                newWorker = Utils.randomFromCollection(unemployedWorkerList)
+                                randomJob = Utils.randomRange(1, len(foodFreeWorkplacesSpots))
+                                hireEmployee(newWorker, foodFreeWorkplacesSpots[randomJob-1][0], world)
+                                unemployedWorkerList.remove(newWorker)
+                                del foodFreeWorkplacesSpots[randomJob-1]
+                            elif randomJobSite <= weightedAdminJobs + weightedFoodJobs + weightedProdJobs:
+                                newWorker = Utils.randomFromCollection(unemployedWorkerList)
+                                randomJob = Utils.randomRange(1, len(prodFreeWorkplacesSpots))
+                                hireEmployee(newWorker, prodFreeWorkplacesSpots[randomJob-1][0], world)
+                                unemployedWorkerList.remove(newWorker)
+                                del prodFreeWorkplacesSpots[randomJob-1]
+                        if settlement.getFreeWealth() <= 0:
+                            fireAllEmployees(settlement.getAdminFeatures()[0], world)
+                            if len(foodFreeWorkplacesSpots) > 0:
+                                fireAllEmployees(settlement.getProdFeatures()[0], world)
 
 
-            #if settlement.getSettlementFoodProducedLastYear() - settlement.getSettlementFoodConsumedLastYear() < int(round(len(settlement.getResidents())/2)):
-                for foodTile in settlement.getFoodFeatures():
+def hireEmployee(employee, tile, world):
 
-                    for occupations in range(foodTile.getFreeWorkersSlots()):
-                        if len(unemployedWorkerList) > 0:
-                            newWorker = Utils.randomFromCollection(unemployedWorkerList)
-                            unemployedWorkerList.remove(newWorker)
-                            foodTile.addWorker(newWorker)
-                            newWorker.setOccupation(foodTile)
-                            newWorker.setOccupationName(foodTile.getOccupationName())
-                            PLEH.foundEmpoyment(newWorker, world)
-            #else:
-                for prodTile in settlement.getProdFeatures():
+    tile.addWorker(employee)
+    employee.setOccupation(tile)
+    employee.setOccupationName(tile.getOccupationName())
+    PLEH.foundEmpoyment(employee, world)
 
-                    for occupations in range(prodTile.getFreeWorkersSlots()):
+    return
 
-                        if len(unemployedWorkerList) > 0:
-                            newWorker = Utils.randomFromCollection(unemployedWorkerList)
-                            unemployedWorkerList.remove(newWorker)
-                            prodTile.addWorker(newWorker)
-                            newWorker.setOccupation(prodTile)
-                            newWorker.setOccupationName(prodTile.getOccupationName())
-                            PLEH.foundEmpoyment(newWorker, world)
+def fireAllEmployees(tile, world):
 
+    for worker in tile.getWorkerList():
+        worker.getOccupation().removeWorker(worker)
+        worker.setOccupation(None)
+        PLEH.lostEmpoyment(worker, world)
+
+    return
 
 def prepareMigration(settlement, newTargetSettlement, world):
 
