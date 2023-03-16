@@ -682,6 +682,7 @@ def splitFamiliesInMigration(world, region, newTargetSettlement, complexRandomMi
                     family.setFoundedBy(person)
                     #HouseFunctions.addNewOwner(person, newHouse)
                 family.addNewMember(person)
+                PLEH.changedLastName(person, world, person.getFamilyName())
 
 def crime(world):
 

@@ -58,7 +58,7 @@ def beenBorn(person, world):
     else:
         motherString = 'unknown mother'
 
-    person.lifeEvents.append(str(person.firstName) + " had been born into " + str(person.familyName) + " family on the" + str(world.getDay()) + '/' + str(world.getMonth().value[1]) + '/' + str(world.getYear()) + " to " + str(fatherString) + " and " + str(motherString) + " in the " + str(person.settlement.getSettlementType().value) + " of " + str(person.settlement.getSettlementName()))
+    person.lifeEvents.append(str(person.firstName) + " had been born into " + str(person.familyName) + " family on the " + str(world.getDay()) + '/' + str(world.getMonth().value[1]) + '/' + str(world.getYear()) + " to " + str(fatherString) + " and " + str(motherString) + " in the " + str(person.settlement.getSettlementType().value) + " of " + str(person.settlement.getSettlementName()))
     hadKid(person.mother, person, world)
 
 def died(person, world):

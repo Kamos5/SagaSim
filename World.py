@@ -472,6 +472,12 @@ class World:
                 else:
                     heightFTemp += person.getHeight()
                     liveAdultsFTemp += 1
+
+            if person.eyeColorGen1[1] == 1 and person.eyeColorGen2[1] == 1:
+                print("Ślepy")
+            if person.hairColorGen1[1] == 1 and person.hairColorGen2[1] == 1:
+                print("Łysy")
+
         if liveAdultsTemp > 0:
             self.averageHeightHistory.append((heightTemp / liveAdultsTemp))
         else:
@@ -492,6 +498,7 @@ class World:
         # print('Sick')
         # print(SICKTEMP)
         # print(SICKTEMP2)
+
 
     def getAlivePeopleNumberHistoryReduced(self):
 

@@ -315,6 +315,13 @@ def geneticHairColor(trueParent1, trueParent2):
     mutationChance = randomRange(1, 1000)
     mutationGene = randomRange(1, 2)
 
+    damagedGene = 0
+
+    damagedGeneChange = randomRange(1, 100)
+
+    if damagedGeneChange < 5:
+        damagedGene = 1
+
     personParent1HairColorGen1 = trueParent1.hairColorGen1
     personParent1HairColorGen2 = trueParent1.hairColorGen2
     personParent2HairColorGen1 = trueParent2.hairColorGen1
@@ -343,10 +350,10 @@ def geneticHairColor(trueParent1, trueParent2):
         childHairColorGen2 = personParent2HairColorGen2
 
     if mutationGene == 1 and mutationChance <= 5:
-        childHairColorGen1 = [randomFromEnumCollection(Enums.HairColor), 0]
+        childHairColorGen1 = [randomFromEnumCollection(Enums.HairColor), damagedGene]
 
     if mutationGene == 2 and mutationChance <= 5:
-        childHairColorGen2 = [randomFromEnumCollection(Enums.HairColor), 0]
+        childHairColorGen2 = [randomFromEnumCollection(Enums.HairColor), damagedGene]
 
     childHairColor = hairColorMap(childHairColorGen1, childHairColorGen2)[0]
 
@@ -357,6 +364,13 @@ def geneticEyeColor(trueParent1, trueParent2):
 
     mutationChance = randomRange(1, 1000)
     mutationGene = randomRange(1, 2)
+
+    damagedGene = 0
+
+    damagedGeneChange = randomRange(1, 100)
+
+    if damagedGeneChange < 5:
+        damagedGene = 1
 
     personParent1EyeColorGen1 = trueParent1.eyeColorGen1
     personParent1EyeColorGen2 = trueParent1.eyeColorGen2
@@ -386,10 +400,10 @@ def geneticEyeColor(trueParent1, trueParent2):
         childEyeColorGen2 = personParent2EyeColorGen2
 
     if mutationGene == 1 and mutationChance <= 5:
-        childEyeColorGen1 = [randomFromEnumCollection(Enums.EyeColor), 0]
+        childEyeColorGen1 = [randomFromEnumCollection(Enums.EyeColor), damagedGene]
 
     if mutationGene == 2 and mutationChance <= 5:
-        childEyeColorGen2 = [randomFromEnumCollection(Enums.EyeColor), 0]
+        childEyeColorGen2 = [randomFromEnumCollection(Enums.EyeColor), damagedGene]
 
     childEyeColor = eyeColorMap(childEyeColorGen1, childEyeColorGen2)[0]
 
