@@ -161,6 +161,10 @@ def birthPeopleNew (world):
                     childObj.changeMaritalStatus(MS.CHILD)
                     person.getAccommodation().addHouseResident(childObj)
 
+                    childObj.setSettlement(childObj.getFather().getSettlement())
+                    childObj.getSettlement().increasePopulation()
+                    childObj.getSettlement().addResident(childObj)
+
                     world.increaseBirthsPerYearTemp()
 
                     # change of dying from childbirth (mother and child)
@@ -220,6 +224,10 @@ def birthPeople (world):
                     person.getSpouse().appendAliveChildrenList(childObj)
                     childObj.changeMaritalStatus(MS.CHILD)
                     person.getAccommodation().addHouseResident(childObj)
+
+                    childObj.setSettlement(childObj.getFather().getSettlement())
+                    childObj.getSettlement().increasePopulation()
+                    childObj.getSettlement().addResident(childObj)
 
                     # change of dying from childbirth (mother and child)
                     motherDeath, childdeath = deathChangeFromGivingBirth(person, childObj)

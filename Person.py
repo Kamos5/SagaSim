@@ -131,6 +131,8 @@ class Person:
         self.region = self.homeRegion
         self.homeSettlement = familyObj.getOriginSettlement()
         self.settlement = self.homeSettlement
+        self.settlement.increasePopulation()
+        self.settlement.addResident(self)
         self.personalSexualityModifier = 1
         self.accommodation = House()
 

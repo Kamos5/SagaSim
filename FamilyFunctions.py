@@ -139,10 +139,20 @@ def spouseMatchmaking (params):
                     spouseObj.getAccommodation().removeHouseResident(spouseObj)
                     spouseObj.setAccommodation(person.getAccommodation())
                     spouseObj.getAccommodation().addHouseResident(spouseObj)
+                    spouseObj.getSettlement().decreasePopulation()
+                    spouseObj.getSettlement().removeResident(spouseObj)
+                    spouseObj.setSettlement(person.getSettlement())
+                    spouseObj.getSettlement().increasePopulation()
+                    spouseObj.getSettlement().addResident(spouseObj)
                 else:
                     person.getAccommodation().removeHouseResident(person)
                     person.setAccommodation(spouseObj.getAccommodation())
                     person.getAccommodation().addHouseResident(person)
+                    person.getSettlement().decreasePopulation()
+                    person.getSettlement().removeResident(person)
+                    person.setSettlement(spouseObj.getSettlement())
+                    person.getSettlement().increasePopulation()
+                    person.getSettlement().addResident(person)
 
                 #TODO FIX ISSUE WHEN ONLY 1 FEMALE IS IN FAMILY
                 RemoveFromUnmarriedList(person, spouseObj)

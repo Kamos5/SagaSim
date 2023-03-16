@@ -113,6 +113,9 @@ def deathProcedures(person, world):
 
     person.setFreeWealth(0)
 
+    person.getSettlement().decreasePopulation()
+    person.getSettlement().removeResident(person)
+
     person.getAccommodation().removeHouseResident(person)
     person.setAccommodation(None)
 

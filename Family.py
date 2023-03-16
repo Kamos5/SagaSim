@@ -132,15 +132,11 @@ class Family:
         self.increaseFemaleNumber()
         self.aliveMembersList.append(person)
         self.increaseAliveMemberNumber()
-        person.getSettlement().increasePopulation()
-        person.getSettlement().addResident(person)
     def removeFromFemalesList(self, person):
         self.femalesList.remove(person)
         self.decreaseFemaleNumber()
         self.aliveMembersList.remove(person)
         self.decreaseAliveMemberNumber()
-        person.getSettlement().decreasePopulation()
-        person.getSettlement().removeResident(person)
     def setFemalesList(self, list):
         self.femalesList = list
 
@@ -151,15 +147,11 @@ class Family:
         self.increaseMaleNumber()
         self.aliveMembersList.append(person)
         self.increaseAliveMemberNumber()
-        person.getSettlement().increasePopulation()
-        person.getSettlement().addResident(person)
     def removeFromMalesList(self, person):
         self.malesList.remove(person)
         self.decreaseMaleNumber()
         self.aliveMembersList.remove(person)
         self.decreaseAliveMemberNumber()
-        person.getSettlement().decreasePopulation()
-        person.getSettlement().removeResident(person)
     def setMalesList(self, list):
         self.malesList = list
 
