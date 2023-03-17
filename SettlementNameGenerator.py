@@ -91,15 +91,21 @@ slavicSettlementsNames = [
 activeNames = []
 abandonedSettlements = []
 
+copyEnglishList = englishSettlementsNames.copy()
+copyNorseList = norseSettlementsNames.copy()
+copySlavicList = slavicSettlementsNames.copy()
+copyMusslimList = englishSettlementsNames.copy()
+copyRomanList = englishSettlementsNames.copy()
+copyAfricanList = englishSettlementsNames.copy()
+
 def randomEnglishSettlementsName (rebuildOldSettlement = False):
 
-    copyList = englishSettlementsNames.copy()
-    if len(copyList) > 0:
-        listToChooseFrom = copyList
+    if len(copyEnglishList) > 0:
+        listToChooseFrom = copyEnglishList
         if rebuildOldSettlement:
             listToChooseFrom = abandonedSettlements
         choice = randomChoice(listToChooseFrom)
-        copyList.remove(choice)
+        copyEnglishList.remove(choice)
         activeNames.append(choice)
     else:
         choice = 'Generic Village Name'
@@ -107,13 +113,12 @@ def randomEnglishSettlementsName (rebuildOldSettlement = False):
 
 def randomNorseSettlementsName (rebuildOldSettlement = False):
 
-    copyList = norseSettlementsNames.copy()
-    if len(copyList) > 0:
-        listToChooseFrom = copyList
+    if len(copyNorseList) > 0:
+        listToChooseFrom = copyNorseList
         if rebuildOldSettlement:
             listToChooseFrom = abandonedSettlements
         choice = randomChoice(listToChooseFrom)
-        copyList.remove(choice)
+        copyNorseList.remove(choice)
         activeNames.append(choice)
     else:
         choice = 'Generic Village Name'
@@ -121,13 +126,12 @@ def randomNorseSettlementsName (rebuildOldSettlement = False):
 
 def randomSlavicSettlementsName (rebuildOldSettlement = False):
 
-    copyList = slavicSettlementsNames.copy()
-    if len(copyList) > 0:
-        listToChooseFrom = copyList
+    if len(copySlavicList) > 0:
+        listToChooseFrom = copySlavicList
         if rebuildOldSettlement:
             listToChooseFrom = abandonedSettlements
         choice = randomChoice(listToChooseFrom)
-        copyList.remove(choice)
+        copySlavicList.remove(choice)
         activeNames.append(choice)
     else:
         choice = 'Generic Village Name'
@@ -135,13 +139,12 @@ def randomSlavicSettlementsName (rebuildOldSettlement = False):
 
 def randomMusslimSettlementsName(rebuildOldSettlement = False):
 
-    copyList = englishSettlementsNames.copy()
-    if len(copyList) > 0:
-        listToChooseFrom = copyList
+    if len(copyMusslimList) > 0:
+        listToChooseFrom = copyMusslimList
         if rebuildOldSettlement:
             listToChooseFrom = abandonedSettlements
         choice = randomChoice(listToChooseFrom)
-        copyList.remove(choice)
+        copyMusslimList.remove(choice)
         activeNames.append(choice)
     else:
         choice = 'Generic Village Name'
@@ -149,13 +152,12 @@ def randomMusslimSettlementsName(rebuildOldSettlement = False):
 
 def randomRomanSettlementsName(rebuildOldSettlement = False):
 
-    copyList = englishSettlementsNames.copy()
-    if len(copyList) > 0:
-        listToChooseFrom = copyList
+    if len(copyRomanList) > 0:
+        listToChooseFrom = copyRomanList
         if rebuildOldSettlement:
             listToChooseFrom = abandonedSettlements
         choice = randomChoice(listToChooseFrom)
-        copyList.remove(choice)
+        copyRomanList.remove(choice)
         activeNames.append(choice)
     else:
         choice = 'Generic Village Name'
@@ -163,13 +165,12 @@ def randomRomanSettlementsName(rebuildOldSettlement = False):
 
 def randomAfricanSettlementsName(rebuildOldSettlement = False):
 
-    copyList = englishSettlementsNames.copy()
-    if len(copyList) > 0:
-        listToChooseFrom = copyList
+    if len(copyAfricanList) > 0:
+        listToChooseFrom = copyAfricanList
         if rebuildOldSettlement:
             listToChooseFrom = abandonedSettlements
         choice = randomChoice(listToChooseFrom)
-        copyList.remove(choice)
+        copyAfricanList.remove(choice)
         activeNames.append(choice)
     else:
         choice = 'Generic Village Name'
