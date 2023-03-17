@@ -42,7 +42,6 @@ def running(world, manualOverride):
 
     dayOfWeekFlag = 1
     start = time.perf_counter()
-    print(str(world.getDay()) + "/" + str(world.getMonth()) + "/" + str(world.getYear()))
     timers = True
 
     isAlive = 0
@@ -54,6 +53,9 @@ def running(world, manualOverride):
         input()
 
     worldtime = Utils.timeFunction(timers, world.increaseDay)
+
+    print(str(world.getDay()) + "/" + str(world.getMonth()) + "/" + str(world.getYear()))
+
     weatherChangeTime = Utils.timeFunction(timers, world.weatherChange)
     incAgeTime = Utils.timeFunction(timers, Events.increaseAge, world)
     loveMakingTime = Utils.timeFunction(timers, Events.loveMaking, world)

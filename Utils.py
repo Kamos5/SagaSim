@@ -1,3 +1,4 @@
+import math
 import time
 from random import randint, choice
 
@@ -308,7 +309,6 @@ def eyeColorMap (eyeColorGen1, eyeColorGen2):
         else:
             return eyeColorGen1
 
-
 def geneticHairColor(trueParent1, trueParent2):
 
 
@@ -453,3 +453,34 @@ def printUpFamilyTree(tree, level=0, prefix=""):
 
     if tree.getRoot().getMother() != "":
         printUpFamilyTree(tree.getMother(), level + 1, prefix + " ")
+
+
+def getTemperatureBasedOnDay(day):
+
+    daysInYear = 365
+
+    offSetForStartingDay = 112
+
+    basicMinTemperature = -10
+    basicMaxTemperature = 30
+
+    noiseLevel = 3
+
+    dayInRads = (day-offSetForStartingDay) * 360 / daysInYear
+
+    rawResult = math.sin(math.radians(dayInRads))  # <-1;1>
+
+    rawResultNormalized = (rawResult + 1) / 2  # <0;1>
+    basicMaxTemperatureNormalized = basicMaxTemperature - basicMinTemperature  # <40>
+
+    properTemperatureNormalized = rawResultNormalized * basicMaxTemperatureNormalized   # <0;40>
+
+    idealTemperature = properTemperatureNormalized + basicMinTemperature  # <-10;30>
+
+    noiseOffset = randomRange(-noiseLevel, noiseLevel)  # <-3;3>
+
+    endTemperature = round(idealTemperature + noiseOffset)  # <-13;33>
+
+    return endTemperature
+
+

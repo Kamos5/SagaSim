@@ -16,6 +16,8 @@ class Region():
         self.daysSinceLastWeatherChange = 0
         self.events = []
         self.weatherHistory = []
+        self.currentTemperature = 0
+        self.temperatureHistory = []
 
     def getUIExpand(self):
         return self.uiExpand
@@ -130,3 +132,16 @@ class Region():
 
     def getEvent(self):
         return self.events
+
+    def getCurrentTemperature(self):
+        return self.currentTemperature
+
+    def setCurrentTemperature(self, newTemp):
+        self.currentTemperature = newTemp
+        self.addendTemperatureHistory(newTemp)
+
+    def getTemperatureHistory(self):
+        return self.temperatureHistory
+
+    def addendTemperatureHistory(self, temp):
+        self.temperatureHistory.append(temp)

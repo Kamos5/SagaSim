@@ -68,9 +68,9 @@ class ListScreen:
     def addRegion(self, region, focusObj):
 
         if focusObj == region:
-            label = Label(str(region.getRegionName()), 200, self.lineHeight, self.textFont, True, True)
+            label = Label(str(region.getRegionName() + " (" + str(region.getCurrentTemperature()) + "°C)"), 200, self.lineHeight, self.textFont, True, True)
         else:
-            label = Label(str(region.getRegionName()), 200, self.lineHeight, self.textFont, True)
+            label = Label(str(region.getRegionName() + " (" + str(region.getCurrentTemperature()) + "° C)"), 200, self.lineHeight, self.textFont, True)
 
         self.listScreenSurfaceObjsRect.append([self.listScreenSurface.blit(label.localSurface, (self.width * 0.10, self.lineHeight * self.writeLine + self.scroll_y)), region])
         self.writeLine += 1

@@ -20,6 +20,7 @@ class World:
         self.initYear = startYear
         self.day = 31
         self.dayOfWeekFlag = Utils.randomRange(1, 7)
+        self.dayOfTheYear = 0
         self.month = Enums.Months.DECEMBER
         self.year = self.initYear
         self.regions = []
@@ -224,6 +225,15 @@ class World:
     def increaseYear(self):
         self.year += 1
 
+    def getDayOfTheYear(self):
+        return self.dayOfTheYear
+
+    def resetDayOfTheYear(self):
+        self.dayOfTheYear = 0
+
+    def increaseDayOfTheYear(self):
+        self.dayOfTheYear += 1
+
     def getDay(self):
         return self.day
 
@@ -281,9 +291,12 @@ class World:
                 self.increaseYear()
                 self.appendBirthsPerYear(self.birthsPerYearTemp)
                 self.birthsPerYearTemp = 0
+                self.resetDayOfTheYear()
+
             self.resetDay()
         else:
             self.setNextDay()
+        self.increaseDayOfTheYear()
 
         self.increaseDayOfWeekFlag()
 
@@ -395,6 +408,7 @@ class World:
         seasonWeathers = Enums.weatherStatus.NORMAL
         for region in self.getRegions():
 
+            region.setCurrentTemperature(Utils.getTemperatureBasedOnDay(self.getDayOfTheYear()))
             region.increaseDaysSinceWeatherChangeCounter()
 
             if (self.getMonth() == Enums.Months.DECEMBER) | (self.getMonth() == Enums.Months.JANUARY) | (self.getMonth() == Enums.Months.FEBRUARY):
