@@ -419,7 +419,7 @@ def triangularNumber(n):
 
 def printDownFamilyTree(tree, level=0, prefix=""):
 
-    if tree.getRoot().getFather() != "" and tree.getRoot().getMother() != "":
+    if tree.getRoot().getFather() is not None and tree.getRoot().getMother() is not None:
         print(prefix + "-" + tree.getRoot().getFirstName() + tree.getRoot().getLastName() + " (" + str(tree.getRoot().getYearOfBirth()) + "-" + str(tree.getRoot().getYearOfDeath()) + ")" + " <" + tree.getRoot().getFather().getFirstName() + " " + tree.getRoot().getFather().getLastName() + " + " + tree.getRoot().getMother().getFirstName() + " " + tree.getRoot().getMother().getFamilyName() + ">")
 
     else:
@@ -448,10 +448,10 @@ def printUpFamilyTree(tree, level=0, prefix=""):
             siblingString += " (" + sibling.getFirstName() + " " + sibling.getLastName() + ")"
 
     print(rootString + siblingString)
-    if tree.getRoot().getFather() != "":
+    if tree.getRoot().getFather() is not None:
         printUpFamilyTree(tree.getFather(), level + 1, prefix + " ")
 
-    if tree.getRoot().getMother() != "":
+    if tree.getRoot().getMother() is not None:
         printUpFamilyTree(tree.getMother(), level + 1, prefix + " ")
 
 

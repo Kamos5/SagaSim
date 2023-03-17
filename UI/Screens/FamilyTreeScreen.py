@@ -78,7 +78,7 @@ class FamilyTreeScreen:
                 labelString = (prefix + "" + tree.getRoot().getFirstName() + " " + lifeSymbol + " " + tree.getRoot().getLastName() + " (" + str(tree.getRoot().getYearOfBirth()) + "-" + str(tree.getRoot().getYearOfDeath()) + ")")
         else:
 
-            if tree.getRoot().getFather() != "" and tree.getRoot().getMother() != "":
+            if tree.getRoot().getFather() is not None and tree.getRoot().getMother() is not None:
 
                 labelString = (prefix + "" + tree.getRoot().getFirstName() + " " + lifeSymbol + " " + tree.getRoot().getLastName() + " (" + str(tree.getRoot().getYearOfBirth()) + "-" + str(tree.getRoot().getYearOfDeath()) + ")" + " <" + tree.getRoot().getFather().getFirstName() + " " + tree.getRoot().getFather().getLastName() + " + " + tree.getRoot().getMother().getFirstName() + " " + tree.getRoot().getMother().getFamilyName() + ">")
 
@@ -131,8 +131,8 @@ class FamilyTreeScreen:
                 self.familyTreeScreenSurface.blit(label.localSurface, (self.leftPadding, self.lineHeight * self.writeLine + self.scroll_y))
                 self.writeLine += 1
 
-                if tree.getRoot().getFather() != "":
+                if tree.getRoot().getFather() is not None:
                     self.printUpFamilyTree(tree.getFather(), level + 1, prefix + " ")
 
-                if tree.getRoot().getMother() != "":
+                if tree.getRoot().getMother() is not None:
                     self.printUpFamilyTree(tree.getMother(), level + 1, prefix + " ")

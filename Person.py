@@ -36,8 +36,8 @@ class Person:
         self.impregnationMonth = None
         self.laborDay = 1
         self.laborMonth = None
-        self.pregnancyFather = ''
-        self.pregnancyTrueFather = ''
+        self.pregnancyFather = None
+        self.pregnancyTrueFather = None
         self.lastBirthMonth = Enums.Months.JANUARY
         self.mother = None
         self.father = None
