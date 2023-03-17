@@ -102,3 +102,7 @@ def lostEmpoyment(person, world):
 def retired(person, world):
 
     person.lifeEvents.append(str(person.getFirstName()) + ' retired from working as ' + str(person.getOccupationName()) + ' on the ' + str(world.getDay()) + '/' + str(world.getMonth().value[1]) + '/' + str(world.getYear()))
+
+def gotPromotion(person, world):
+
+    person.lifeEvents.append(str(person.getFirstName()) + ' got promotion workings to ' + str(person.getOccupationName()) + ' in the town of ' + str(person.getSettlement().getSettlementName()) + ' on the ' + str(world.getDay()) + '/' + str(world.getMonth().value[1]) + '/' + str(world.getYear()))

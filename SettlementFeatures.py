@@ -1,3 +1,4 @@
+import uuid
 from enum import Enum
 
 import Utils

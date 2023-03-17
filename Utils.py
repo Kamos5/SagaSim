@@ -171,6 +171,7 @@ def timeFunction(timerFlag, function, params=None):
 #        function() TODO TEMP
         return 0
 
+
 def randomTrait (person):
 
     notClear = True

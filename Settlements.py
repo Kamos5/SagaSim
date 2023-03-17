@@ -5,6 +5,7 @@ import Parameters
 import Utils
 import SettlementFeatures as SF
 import FoundationTypes as FoundationTypes
+import PersonLifeEventsHistory as PLEH
 
 def takeFeatureNumber(elem):
     return elem.getFeatureNumber()
@@ -344,7 +345,7 @@ class Settlements:
             self.addProdFeature(feature)
 
 
-    def upgradeTile(self, oldFeature, newFeature):
+    def upgradeTile(self, oldFeature, newFeature, world):
 
         if oldFeature.getFeatureType() == SF.FeatureTypes.FOODTYPE:
             self.removeFoodFeature(oldFeature)
@@ -362,6 +363,7 @@ class Settlements:
             newFeature.addWorker(worker)
             worker.setOccupation(newFeature)
             worker.setOccupationName(newFeature.getOccupationName())
+            PLEH.gotPromotion(worker, world)
 
     def getFreeWealth(self):
         return self.freeWealth

@@ -1,6 +1,7 @@
 import time
 
 import Enums
+import FamilyFunctions as FF
 import HouseFunctions
 from Enums import LifeStatus, MaritalStatus, CauseOfDeath, Sexes, Settlements, Traits
 import Utils
@@ -452,7 +453,7 @@ def settlementGoodsProduction(world):
                                 if float(settlement.getFreeProd()) >= float(upgradable.value.getUpgradeCost()):
                                     settlement.changeFreeProd(-upgradable.value.getUpgradeCost())
                                     newFeature = SFeat.createZones()[SFeat.getFeatureIndexFromName(upgradable.value.getName())]
-                                    settlement.upgradeTile(tile, newFeature)
+                                    settlement.upgradeTile(tile, newFeature, world)
                                     return
 
                         for tile in settlement.getProdFeatures():
@@ -462,7 +463,7 @@ def settlementGoodsProduction(world):
                                 if float(settlement.getFreeProd()) >= float(upgradable.value.getUpgradeCost()):
                                     settlement.changeFreeProd(-upgradable.value.getUpgradeCost())
                                     newFeature = SFeat.createZones()[SFeat.getFeatureIndexFromName(upgradable.value.getName())]
-                                    settlement.upgradeTile(tile, newFeature)
+                                    settlement.upgradeTile(tile, newFeature, world)
                                     return
 
 
@@ -576,6 +577,7 @@ def settlementWorkersManagement(world):
                                 numberOfFreeWorkplaces -= 1
                                 unemployedWorkerList.remove(newWorker)
                                 del prodFreeWorkplacesSpots[randomJob-1]
+
                         if settlement.getFreeWealth() <= 0:
                             fireAllEmployees(settlement.getAdminFeatures()[0], world)
                             if len(foodFreeWorkplacesSpots) > 0:
@@ -769,6 +771,7 @@ def iniciateMigration(complexMigrantList, settlementTarget, world):
             migrant.setSettlement(settlementTarget)
             settlementTarget.increasePopulation()
             settlementTarget.addResident(migrant)
+            FF.fireSingleEmployee(migrant, world)
 
 
 def getRandomMigrantListForSingleRandomPerson(person, parent, randomMigrantsList, settlement, world):

@@ -170,7 +170,7 @@ class InspectorScreen:
         self.writeLine += 1
 
         for feature in object.getAdminFeatures():
-            label = Label("Admin feature: " + str(feature.getName()) + " <" + str(feature.getFoundationType().value.name) + " (" + str(feature.getWorkerListNumber()) + "/" + str(feature.getMaxWorkersNumber()) + ")>", 500, self.lineHeight, self.textFont, True)
+            label = Label("Admin feature: " + str(feature.getName()) + " <" + str(feature.getFoundationType().value.name) + " (" + str(feature.getWorkerListNumber()) + "/" + str(feature.getMaxWorkersNumber()) + ")> ", 500, self.lineHeight, self.textFont, True)
             self.inspectorScreenSurfaceObjsRect.append([self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding*2, self.lineHeight * self.writeLine + self.scroll_y)), feature])
             self.writeLine += 1
             if feature.getUIExpand():
@@ -188,6 +188,7 @@ class InspectorScreen:
                     label = Label(str(worker.getFirstName() + " " + str(worker.getLastName())), 500, self.lineHeight, self.textFont, True)
                     self.inspectorScreenSurfaceObjsRect.append([self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding*3, self.lineHeight * self.writeLine + self.scroll_y)), worker])
                     self.writeLine += 1
+
         for feature in object.getProdFeatures():
             label = Label("Prod feature: " + str(feature.getName()) + " <" + str(feature.getFoundationType().value.name) + " (" + str(feature.getWorkerListNumber()) + "/" + str(feature.getMaxWorkersNumber()) + ")>", 500, self.lineHeight, self.textFont, True)
             self.inspectorScreenSurfaceObjsRect.append([self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding*2, self.lineHeight * self.writeLine + self.scroll_y)), feature])
@@ -343,6 +344,10 @@ class InspectorScreen:
         label = Label("Occupation: " + str(object.getOccupationName()), 500, self.lineHeight, self.textFont)
         self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding, self.lineHeight * self.writeLine + self.scroll_y))
         self.writeLine += 1
+        if object.getOccupation() is not None:
+            label = Label("Workplace: " + str(object.getOccupation().getName()), 500, self.lineHeight, self.textFont)
+            self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding, self.lineHeight * self.writeLine + self.scroll_y))
+            self.writeLine += 1
         label = Label("Height: " + str(object.getHeight()), 500, self.lineHeight, self.textFont)
         self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding, self.lineHeight * self.writeLine + self.scroll_y))
         self.writeLine += 1

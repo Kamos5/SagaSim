@@ -146,6 +146,8 @@ def spouseMatchmaking (params):
                     spouseObj.setSettlement(person.getSettlement())
                     spouseObj.getSettlement().increasePopulation()
                     spouseObj.getSettlement().addResident(spouseObj)
+                    fireSingleEmployee(spouseObj, world)
+
                 else:
                     person.getAccommodation().removeHouseResident(person)
                     person.setAccommodation(spouseObj.getAccommodation())
@@ -155,6 +157,7 @@ def spouseMatchmaking (params):
                     person.setSettlement(spouseObj.getSettlement())
                     person.getSettlement().increasePopulation()
                     person.getSettlement().addResident(person)
+                    fireSingleEmployee(person, world)
 
                 #TODO FIX ISSUE WHEN ONLY 1 FEMALE IS IN FAMILY
                 RemoveFromUnmarriedList(person, spouseObj)
@@ -197,3 +200,11 @@ def checkLDTraitsNumber(person):
 def FindNextHeir (families, people):
 
     return
+
+def fireSingleEmployee(person, world):
+
+    if person.getOccupation() is not None:
+        person.getOccupation().removeWorker(person)
+        person.setOccupation(None)
+        PLEH.lostEmpoyment(person, world)
+
