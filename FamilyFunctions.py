@@ -178,6 +178,11 @@ def spouseMatchmaking (params):
 
 def checkLDTraitsNumber(person):
 
+    person.setSpouseNumberOfLikedTraits(0)
+    person.setSpouseNumberOfDislikedTraits(0)
+    person.getSpouse().setSpouseNumberOfLikedTraits(0)
+    person.getSpouse().setSpouseNumberOfDislikedTraits(0)
+
     for trait in person.getTraits():
         if trait in person.getSpouse().getLikedTraits():
             person.getSpouse().changeSpouseNumberOfLikedTraits(1)
