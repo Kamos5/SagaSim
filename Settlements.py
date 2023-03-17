@@ -287,8 +287,11 @@ class Settlements:
                 self.unemployedRes.append(res)
         return self.unemployedRes
 
+
+    # TODO BUG MOGA BYC EMPLOYED ALE POPULATION = 0 - MAYBE FIX???
     def getEmployedResidentsList(self):
 
+        self.employedRes = []
         for res in self.residents:
             if res.getOccupation() is not None and res not in self.employedRes:
                 self.employedRes.append(res)
