@@ -408,7 +408,6 @@ class World:
         seasonWeathers = Enums.weatherStatus.NORMAL
         for region in self.getRegions():
 
-            region.setCurrentTemperature(Utils.getTemperatureBasedOnDay(self.getDayOfTheYear()))
             region.increaseDaysSinceWeatherChangeCounter()
 
             if (self.getMonth() == Enums.Months.DECEMBER) | (self.getMonth() == Enums.Months.JANUARY) | (self.getMonth() == Enums.Months.FEBRUARY):
@@ -422,17 +421,17 @@ class World:
 
             if region.getDaysSinceWeatherChange() >= region.getWeather().value[3]:
                 weatherPattern = Utils.randomRange(0, 10000)
-                if weatherPattern <= 9900:
+                if weatherPattern <= 9950:
                     region.setWeather(Enums.weatherStatus.NORMAL)
-                elif 9980 >= weatherPattern > 9900:
+                elif 9980 >= weatherPattern > 9950:
                     region.setWeather(seasonWeathers.MILD)
                     region.resetDaysSinceWeatherChange()
                     weatherEvent(region, self)
-                elif 9990 >= weatherPattern > 9980:
+                elif 9995 >= weatherPattern > 9980:
                     region.setWeather(seasonWeathers.MEDIUM)
                     region.resetDaysSinceWeatherChange()
                     weatherEvent(region, self)
-                elif 9998 >= weatherPattern > 9990:
+                elif 9998 >= weatherPattern > 9995:
                     region.setWeather(seasonWeathers.STRONG)
                     region.resetDaysSinceWeatherChange()
                     weatherEvent(region, self)
@@ -440,6 +439,8 @@ class World:
                     region.setWeather(seasonWeathers.EXTREME)
                     region.resetDaysSinceWeatherChange()
                     weatherEvent(region, self)
+
+            region.setCurrentTemperature(Utils.getTemperatureBasedOnDay(self.getDayOfTheYear()) + region.getWeather().value[4])
 
     def makeHistory(self):
 

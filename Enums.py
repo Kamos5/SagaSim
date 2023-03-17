@@ -114,38 +114,38 @@ class Settlements(Enum):
 
 class weatherStatus(Enum):
 
-            #weater, intensity, effect, duration(days)
-    NORMAL = 'Normal', 'normal weather', 0, 0
+            #weater, intensity, effect, duration(days), tempChange
+    NORMAL = 'Normal', 'normal weather', 0, 0, 0
 
 class weatherFloods(Enum): #MAR/APR/MAY
-    MILD = 'Mild flood', 'mild cataclysm', 15, 7
-    MEDIUM = 'Medium flood', 'medium cataclysm', 30, 14
-    STRONG = 'Strong flood', 'strong cataclysm', 45, 21
-    EXTREME = 'Extreme flood', 'extreme cataclysm', 60, 28
+    MILD = 'Mild flood', 'mild cataclysm', 15, 7, -5
+    MEDIUM = 'Medium flood', 'medium cataclysm', 30, 14, -6
+    STRONG = 'Strong flood', 'strong cataclysm', 45, 21, -7
+    EXTREME = 'Extreme flood', 'extreme cataclysm', 60, 28, -8
 
 class weatherDroughts(Enum): #JUN/JUL/AUG
-    MILD = 'Mild drought', 'mild cataclysm', 15, 14
-    MEDIUM = 'Medium drought', 'medium cataclysm', 30, 28
-    STRONG = 'Strong drought', 'strong cataclysm', 45, 42
-    EXTREME = 'Extreme drought', 'extreme cataclysm', 60, 56
+    MILD = 'Mild drought', 'mild cataclysm', 15, 14, 5
+    MEDIUM = 'Medium drought', 'medium cataclysm', 30, 28, 6
+    STRONG = 'Strong drought', 'strong cataclysm', 45, 42, 7
+    EXTREME = 'Extreme drought', 'extreme cataclysm', 60, 56, 8
 
 class weatherWildFire(Enum): #SEP/OCT/NOV
-    MILD = 'Mild wildfire', 'mild cataclysm', 15, 7
-    MEDIUM = 'Medium wildfire', 'medium cataclysm', 30, 14
-    STRONG = 'Strong wildfire', 'strong cataclysm', 45, 21
-    EXTREME = 'Extreme wildfire', 'extreme cataclysm', 60, 28
+    MILD = 'Mild wildfire', 'mild cataclysm', 15, 7, 7
+    MEDIUM = 'Medium wildfire', 'medium cataclysm', 30, 14, 8
+    STRONG = 'Strong wildfire', 'strong cataclysm', 45, 21, 9
+    EXTREME = 'Extreme wildfire', 'extreme cataclysm', 60, 28, 10
 
 class weatherBlizzard(Enum):  #DEC/JAN/FEB
-    MILD = 'Mild blizzard', 'mild cataclysm', 15, 7
-    MEDIUM = 'Medium blizzard', 'medium cataclysm', 30, 14
-    STRONG = 'Strong blizzard', 'strong cataclysm', 45, 21
-    EXTREME = 'Extreme blizzard', 'extreme cataclysm', 60, 28
+    MILD = 'Mild blizzard', 'mild cataclysm', 15, 7, -7
+    MEDIUM = 'Medium blizzard', 'medium cataclysm', 30, 14, -8
+    STRONG = 'Strong blizzard', 'strong cataclysm', 45, 21, -9
+    EXTREME = 'Extreme blizzard', 'extreme cataclysm', 60, 28, -10
 
 class weatherEarthQuake(Enum):
-    MILD = 'Mild earth quake', 'mild cataclysm', 15, 2
-    MEDIUM = 'Medium wildfire', 'medium cataclysm', 30, 3
-    STRONG = 'Strong wildfire', 'strong cataclysm', 45, 5
-    EXTREME = 'Extreme wildfire', 'extreme cataclysm', 60, 7
+    MILD = 'Mild earth quake', 'mild cataclysm', 15, 2, 0
+    MEDIUM = 'Medium wildfire', 'medium cataclysm', 30, 3, 0
+    STRONG = 'Strong wildfire', 'strong cataclysm', 45, 5, 0
+    EXTREME = 'Extreme wildfire', 'extreme cataclysm', 60, 7, 0
 
 
 
