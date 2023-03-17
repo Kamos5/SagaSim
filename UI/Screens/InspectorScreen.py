@@ -385,9 +385,9 @@ class InspectorScreen:
             self.writeLine += 1
             for children in object.getDeadChildrens():
                 if children.getSex().value[1] == 'M':
-                    label = Label("Son: " + children.getFirstName(), 500, self.lineHeight, self.textFont, True)
+                    label = Label("Son: " + children.getFirstName() + " (" + str(children.getAge()) + ")", 500, self.lineHeight, self.textFont, True)
                 else:
-                    label = Label("Daughter: " + children.getFirstName(), 500, self.lineHeight, self.textFont, True)
+                    label = Label("Daughter: " + children.getFirstName() + " (" + str(children.getAge()) + ")", 500, self.lineHeight, self.textFont, True)
                 self.inspectorScreenSurfaceObjsRect.append([self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding*2, self.lineHeight * self.writeLine + self.scroll_y)), children])
                 self.writeLine += 1
 
