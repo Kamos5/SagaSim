@@ -7,6 +7,7 @@ maleEnglishNameList = [
     'Alvin',
     'Balthazar',
     'Berkeley',
+    'Brandon',
     'Chriss',
     'Colton',
     'Dorian',
