@@ -253,6 +253,11 @@ def birthPeople (world):
 
 def changeRelationToFromSpouse(person):
 
+    if person.sexuality == 'homo':
+        person.setSpouseRelation(-5)
+    if person.getSpouse().sexuality == 'homo':
+        person.getSpouse().setSpouseRelation(-5)
+
     person.changeSpouseRelation(person.getSpouseNumberOfLikedTraits()*5)
     person.changeSpouseRelation(-person.getSpouseNumberOfDislikedTraits() * 5)
     person.getSpouse().changeSpouseRelation(person.getSpouse().getSpouseNumberOfLikedTraits() * 5)
