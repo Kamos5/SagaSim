@@ -78,6 +78,8 @@ def divorces (world):
                 person.spouse.changeMaritalStatus(Enums.MaritalStatus.DIVORCED)
                 PLEH.divorced(person, world)
                 PLEH.divorced(person.getSpouse(), world)
+                person.addExSpouse(person.getSpouse())
+                person.getSpouse().addExSpouse(person)
                 person.setSpouseRelation(0)
                 person.changeSpouseNumberOfLikedTraits(0)
                 person.changeSpouseNumberOfDislikedTraits(0)

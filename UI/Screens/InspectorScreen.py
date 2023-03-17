@@ -322,6 +322,15 @@ class InspectorScreen:
             self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding, self.lineHeight * self.writeLine + self.scroll_y))
             self.writeLine += 1
 
+        if len(object.getExSpouses()) > 0:
+            label = Label("Ex spouses: ", 500, self.lineHeight, self.textFont)
+            self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding, self.lineHeight * self.writeLine + self.scroll_y))
+            self.writeLine += 1
+            for ex in object.getExSpouses():
+                label = Label(str(ex.getFirstName()) + " " + str(ex.getLastName()), 500, self.lineHeight, self.textFont, True)
+                self.inspectorScreenSurfaceObjsRect.append([self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding*2, self.lineHeight * self.writeLine + self.scroll_y)), object.getSpouse()])
+                self.writeLine += 1
+
         label = Label("Occupation: " + str(object.getOccupationName()), 500, self.lineHeight, self.textFont)
         self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding, self.lineHeight * self.writeLine + self.scroll_y))
         self.writeLine += 1

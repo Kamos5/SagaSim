@@ -57,6 +57,7 @@ class Person:
         self.spouseNumberOfDislikedTraits = 0
         self.maritalStatus = MaritalStatus.SINGLE
         self.deadSpouses = []
+        self.exSpouses = []
         self.lifeStatus = LifeStatus.ALIVE
         self.causeOfDeath = CauseOfDeath.NULL
         self.hairColor = HairColor.GRAY
@@ -281,6 +282,12 @@ class Person:
 
     def setRegion(self, newRegion):
         self.region = newRegion
+
+    def getExSpouses(self):
+        return self.exSpouses
+
+    def addExSpouse(self, ex):
+        self.exSpouses.append(ex)
 
     def getLovers(self):
         return self.lovers
