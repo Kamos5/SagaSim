@@ -283,6 +283,12 @@ class Person:
     def setRegion(self, newRegion):
         self.region = newRegion
 
+    def getDeadSpouses(self):
+        return self.deadSpouses
+
+    def addDeadSpouse(self, deadSpouse):
+        self.deadSpouses.append(deadSpouse)
+
     def getExSpouses(self):
         return self.exSpouses
 

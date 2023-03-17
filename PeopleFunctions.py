@@ -59,7 +59,7 @@ def birthChild(world, parent1, parent2=None, trueParent1=None, trueParent2=None)
 def deathProcedures(person, world):
 
     if person.spouse is not None:
-        person.spouse.deadSpouses.append(person)
+        person.spouse.addDeadSpouse(person)
         person.getSpouse().setSpouseRelation(0)
         person.getSpouse().changeSpouseNumberOfLikedTraits(-person.getSpouse().getSpouseNumberOfLikedTraits())
         person.getSpouse().changeSpouseNumberOfDislikedTraits(-person.getSpouse().getSpouseNumberOfDislikedTraits())

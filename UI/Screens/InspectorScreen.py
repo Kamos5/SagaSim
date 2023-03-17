@@ -331,6 +331,15 @@ class InspectorScreen:
                 self.inspectorScreenSurfaceObjsRect.append([self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding*2, self.lineHeight * self.writeLine + self.scroll_y)), ex])
                 self.writeLine += 1
 
+        if len(object.getDeadSpouses()) > 0:
+            label = Label("Deceased spouses: ", 500, self.lineHeight, self.textFont)
+            self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding, self.lineHeight * self.writeLine + self.scroll_y))
+            self.writeLine += 1
+            for deceased in object.getDeadSpouses():
+                label = Label(str(deceased.getFirstName()) + " " + str(deceased.getLastName()), 500, self.lineHeight, self.textFont, True)
+                self.inspectorScreenSurfaceObjsRect.append([self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding*2, self.lineHeight * self.writeLine + self.scroll_y)), ex])
+                self.writeLine += 1
+
         label = Label("Occupation: " + str(object.getOccupationName()), 500, self.lineHeight, self.textFont)
         self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding, self.lineHeight * self.writeLine + self.scroll_y))
         self.writeLine += 1
