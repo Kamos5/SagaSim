@@ -32,6 +32,11 @@ regionSizeMax = 8
 # socage -> % production to homeTown TODO _ FIXFIXFIX
 socage = 0
 
+#spouse relations modifiers
+spouseLikedTraitsMod = 1
+spouseDislikedTraitsMod = -1
+spouseHomoSexualityMod = -1
+
 # Graph data
 globalPopulation = ['Global Population', '#eeaaaa']
 globalPopulationArray = [globalPopulation]

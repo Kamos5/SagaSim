@@ -254,14 +254,14 @@ def birthPeople (world):
 def changeRelationToFromSpouse(person):
 
     if person.sexuality == 'homo':
-        person.setSpouseRelation(-1)
+        person.setSpouseRelation(Parameters.spouseHomoSexualityMod)
     if person.getSpouse().sexuality == 'homo':
-        person.getSpouse().setSpouseRelation(-1)
+        person.getSpouse().setSpouseRelation(Parameters.spouseHomoSexualityMod)
 
-    person.changeSpouseRelation(person.getSpouseNumberOfLikedTraits()*1)
-    person.changeSpouseRelation(-person.getSpouseNumberOfDislikedTraits() * 1)
-    person.getSpouse().changeSpouseRelation(person.getSpouse().getSpouseNumberOfLikedTraits() * 1)
-    person.getSpouse().changeSpouseRelation(-person.getSpouse().getSpouseNumberOfDislikedTraits() * 1)
+    person.changeSpouseRelation(person.getSpouseNumberOfLikedTraits() * Parameters.spouseLikedTraitsMod)
+    person.changeSpouseRelation(-person.getSpouseNumberOfDislikedTraits() * Parameters.spouseDislikedTraitsMod)
+    person.getSpouse().changeSpouseRelation(person.getSpouse().getSpouseNumberOfLikedTraits() * Parameters.spouseLikedTraitsMod)
+    person.getSpouse().changeSpouseRelation(-person.getSpouse().getSpouseNumberOfDislikedTraits() * Parameters.spouseDislikedTraitsMod)
 
 def changeRelationFromLovemaking(person, lover):
 
