@@ -2,7 +2,7 @@ import Enums
 import Utils
 import NameGenerator
 from FamilyTreeNode import BinaryTreeNode
-from Enums import LifeStatus, MaritalStatus, HairColor, CauseOfDeath, Sexes, EyeColor
+from Enums import LifeStatus, MaritalStatus, HairColor, CauseOfDeath, Sexes, EyeColor, GeneralHealth
 from House import House
 
 
@@ -59,6 +59,8 @@ class Person:
         self.deadSpouses = []
         self.exSpouses = []
         self.lifeStatus = LifeStatus.ALIVE
+        self.generalHealth = GeneralHealth.HEALTHY
+        self.healthFromAge = GeneralHealth.HEALTHY
         self.causeOfDeath = CauseOfDeath.NULL
         self.hairColor = HairColor.GRAY
         self.heightGen = 0
@@ -88,6 +90,8 @@ class Person:
         self.iqGen = 0
         self.iq = 0
         self.immunityTo = []
+        self.currentDiseases = []
+        self.infections = []
         pass
 
     def setInitValues(self, familyName, yearOfBirth, age, randomLifespan, sex, hairColor, hairColorGen1, hairColorGen2, eyeColor, eyeColorGen1, eyeColorGen2, familyObj):
@@ -137,7 +141,7 @@ class Person:
         self.personalSexualityModifier = 1
         self.accommodation = House()
 
-    def birthNewPerson(self, firstName, lastName, familyName, dayOfBirth, monthOfBirth, yearOfBirth, lifespan, sex, sexGen1, sexGen2, sexuality, fertility, height, hairColor, hairColorGen1, hairColorGen2, eyeColor, eyeColorGen1, eyeColorGen2, mother, father, trueMother, trueFather, familyObj):
+    def birthNewPerson(self, firstName, lastName, familyName, dayOfBirth, monthOfBirth, yearOfBirth, lifespan, sex, sexGen1, sexGen2, sexuality, fertility, height, hairColor, hairColorGen1, hairColorGen2, eyeColor, eyeColorGen1, eyeColorGen2, mother, father, trueMother, trueFather, familyObj, immunities):
 
         self.firstName = firstName
         self.lastName = lastName
@@ -174,7 +178,7 @@ class Person:
         self.region = self.homeRegion
         self.settlement = self.homeSettlement
         self.setAccommodation(trueMother.getAccommodation())
-
+        self.immunityTo = immunities
 
 
     def getFirstName(self):
@@ -215,6 +219,19 @@ class Person:
 
     def getLifeStatus(self):
         return self.lifeStatus
+
+    def getGeneralHealth(self):
+        return self.generalHealth
+
+    def setGeneralHelth(self, newHealth):
+        self.generalHealth = newHealth
+
+    def getHealthFromAge(self):
+        return self.healthFromAge
+
+    def setHealthFromAge(self, newHealth):
+        self.healthFromAge = newHealth
+
 
     def increaseAge(self):
         self.age += 1
@@ -472,6 +489,36 @@ class Person:
 
     def changeHappiness(self, newValue):
         self.happiness = newValue
+
+    def getImmunityTo(self):
+        return self.immunityTo
+
+    def addImmunityTo(self, disease):
+        self.immunityTo.append(disease)
+
+    def getCurrentDiseases(self):
+        return self.currentDiseases
+
+    def addCurrentDiseases(self, newDisease):
+        self.currentDiseases.append(newDisease)
+
+    def setCurrentDiseases(self, diseases):
+        self.currentDiseases = diseases
+
+    def removeCurrentDiseases(self, disease):
+        self.currentDiseases.remove(disease)
+
+    def getInfections(self):
+        return self.infections
+
+    def addInfection(self, infection):
+        self.infections.append(infection)
+
+    def removeInfection(self, infection):
+        self.infections.remove(infection)
+
+    def setInfections(self, infections):
+        self.infections = infections
 
     def getAccommodation(self):
         return self.accommodation

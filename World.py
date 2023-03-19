@@ -14,7 +14,6 @@ class World:
     regions = []
     settlementsInitNumber = Parameters.startingSettlementsPerRegion
 
-
     def __init__(self, startYear=initYear):
 
         self.initYear = startYear

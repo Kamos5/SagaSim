@@ -1,0 +1,159 @@
+{
+  "measles":
+    {
+      "name": "Measles",
+      "namePL": "Odra",
+      "description": "Measles is a highly contagious infectious disease caused by measles virus.",
+      "incubation": 7,
+      "contagious": true,
+      "contagionChange": 5,
+      "effectOnHealth": 2,
+      "difficulty": 1,
+      "daysToCure": 20
+    },
+    "pneumonia":
+    {
+      "name": "Pneumonia",
+      "namePL": "Zapalenie płuc",
+      "description": "Pneumonia is an infection that inflames the air sacs in one or both lungs.",
+      "incubation": 2,
+      "contagious": true,
+      "contagionChange": 1,
+      "effectOnHealth": 1,
+      "difficulty": 1,
+      "daysToCure": 30
+    },
+      "tuberculosis":
+    {
+      "name": "Tuberculosis",
+      "namePL": "Gruźlica",
+      "description": "Tuberculosis is a disease caused by germs that are spread from person to person through the air.",
+      "incubation": 42,
+      "contagious": true,
+      "contagionChange": 2,
+      "effectOnHealth": 1,
+      "difficulty": 1,
+      "daysToCure": 180
+    },
+      "leprosy":
+    {
+      "name": "Leprosy",
+      "namePL": "Trąd",
+      "description": "It is a chronic infectious disease which is caused by a type of bacteria called Mycobacterium leprae.",
+      "incubation": 1825,
+      "contagious": true,
+      "contagionChange": 0.01,
+      "effectOnHealth": 1,
+      "difficulty": 1,
+      "daysToCure": 10000000000
+    },
+      "dysentry":
+    {
+      "name": "Dysentry",
+      "namePL": "Czerwonka",
+      "description": "Dysentery is an infection of the intestines that causes diarrhoea containing blood or mucus.",
+      "incubation": 3,
+      "contagious": false,
+      "contagionChange": 0,
+      "effectOnHealth": 2,
+      "difficulty": 1,
+      "daysToCure": 5
+    },
+      "malaria":
+    {
+      "name": "Malaria",
+      "namePL": "Malaria",
+      "description": "Malaria is a life-threatening disease caused by parasites that are transmitted to people through the bites of infected female Anopheles mosquitoes.",
+      "incubation": 15,
+      "contagious": false,
+      "contagionChange": 0,
+      "effectOnHealth": 1,
+      "difficulty": 1,
+      "daysToCure": 10000000000
+    },
+      "diphtheria":
+    {
+      "name": "Diphtheria",
+      "namePL": "Błonica",
+      "description": "Diphtheria is a serious infection caused by strains of bacteria called Corynebacterium diphtheriae that make toxin.",
+      "incubation": 5,
+      "contagious": true,
+      "contagionChange": 2,
+      "effectOnHealth": 2,
+      "difficulty": 1,
+      "daysToCure": 21
+    },
+      "flu":
+    {
+      "name": "Flu",
+      "namePL": "Grypa",
+      "description": "Flu (influenza) is an infection of the nose, throat and lungs, which are part of the respiratory system.",
+      "incubation": 3,
+      "contagious": true,
+      "contagionChange": 4,
+      "effectOnHealth": 1,
+      "difficulty": 1,
+      "daysToCure": 7
+    },
+      "Typhoid":
+    {
+      "name": "Typhpid",
+      "namePL": "Tyfus",
+      "description": "Typhoid fever is a bacterial infection that can spread throughout the body, affecting many organs.",
+      "incubation": 21,
+      "contagious": false,
+      "contagionChange": 0,
+      "effectOnHealth": 2,
+      "difficulty": 1,
+      "daysToCure": 60
+    },
+      "smallpox":
+    {
+      "name": "Smallpox",
+      "namePL": "Ospa",
+      "description": "Smallpox was an infectious disease caused by variola virus (often called smallpox virus) which belongs to the genus Orthopoxvirus.",
+      "incubation": 14,
+      "contagious": true,
+      "contagionChange": 1,
+      "effectOnHealth": 2,
+      "difficulty": 1,
+      "daysToCure": 10000000
+    },
+      "cholera":
+    {
+      "name": "Cholera",
+      "namePL": "Cholera",
+      "description": "Cholera is an acute diarrheal illness caused by infection of the intestine with Vibrio cholerae bacteria.",
+      "incubation": 2,
+      "contagious": true,
+      "contagionChange": 2,
+      "effectOnHealth": 2,
+      "difficulty": 1,
+      "daysToCure": 10000000
+    },
+      "anthrax":
+    {
+      "name": "Anthrax",
+      "namePL": "Wąglik",
+      "description": "Anthrax is a serious infectious disease caused by gram-positive, rod-shaped bacteria known as Bacillus anthracis.",
+      "incubation": 6,
+      "contagious": false,
+      "contagionChange": 0,
+      "effectOnHealth": 3,
+      "difficulty": 1,
+      "daysToCure": 60
+    },
+      "commonCold":
+    {
+      "name": "Common cold",
+      "namePL": "Przeziębienie",
+      "description": "The common cold is a viral infection of nose and throat (upper respiratory tract).",
+      "incubation": 2,
+      "contagious": true,
+      "contagionChange": 1,
+      "effectOnHealth": 1,
+      "difficulty": 1,
+      "daysToCure": 7
+    }
+
+}

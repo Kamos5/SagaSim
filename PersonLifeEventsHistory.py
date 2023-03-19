@@ -106,3 +106,18 @@ def retired(person, world):
 def gotPromotion(person, world):
 
     person.lifeEvents.append(str(person.getFirstName()) + ' got promotion workings to ' + str(person.getOccupationName()) + ' in the town of ' + str(person.getSettlement().getSettlementName()) + ' on the ' + str(world.getDay()) + '/' + str(world.getMonth().value[1]) + '/' + str(world.getYear()))
+
+def gotInfectedWithDisease(person, disease, world, carrier=None):
+
+    infectedByString = ''
+    if carrier is not None:
+        infectedByString = ' by ' + str(person.getFirstName()) + ' ' + str(person.getLastName())
+    person.lifeEvents.append(str(person.getFirstName()) + ' got infected with ' + str(disease['name']) + ' on the ' + str(world.getDay()) + '/' + str(world.getMonth().value[1]) + '/' + str(world.getYear()) + infectedByString)
+
+def showingSymptomsOf(person, disease, world):
+
+    person.lifeEvents.append(str(person.getFirstName()) + ' started to show symptoms of ' + str(disease['name']) + ' on the ' + str(world.getDay()) + '/' + str(world.getMonth().value[1]) + '/' + str(world.getYear()))
+
+def gotImmunityTo(person, disease, world):
+
+    person.lifeEvents.append(str(person.getFirstName()) + ' got healed and got immunity from ' + str(disease['name']) + ' on the ' + str(world.getDay()) + '/' + str(world.getMonth().value[1]) + '/' + str(world.getYear()))

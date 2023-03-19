@@ -46,10 +46,16 @@ def birthChild(world, parent1, parent2=None, trueParent1=None, trueParent2=None)
 
     person = PersonObj()
 
+    immunities = []
+    for immunity in parent1.getImmunityTo():
+        chanceToInheritImmunity = Utils.randomRange(1,2)
+        if chanceToInheritImmunity == 1:
+            immunities.append(immunity)
+
     #Child goes to father's family
     person.birthNewPerson(firstName, secondParent.familyName, secondParent.familyName, world.getDay(), world.getMonth(), world.getYear(), lifespan, sex,
                           sexGen1, sexGen2, sexuality, fertility, offspringHeight, hairColor, hairColorGen1, hairColorGen2, eyeColor, eyeColorGen1, eyeColorGen2,
-                          parent1, parent2, trueParent1, trueParent2, secondParent.familyObjRef)
+                          parent1, parent2, trueParent1, trueParent2, secondParent.familyObjRef, immunities)
 
     Utils.inheretTraits(person, parent1, secondParent, trueParent1, trueParent2)
 

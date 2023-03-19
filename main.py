@@ -3,6 +3,7 @@ import time
 import Events
 import FamilyFunctions as FF
 import FamilyInitGenerator as FIG
+import IOtools
 import MembersInitGenerator as MIG
 import Parameters
 import pygame
@@ -58,6 +59,8 @@ def running(world, manualOverride):
 
     weatherChangeTime = Utils.timeFunction(timers, world.weatherChange)
     incAgeTime = Utils.timeFunction(timers, Events.increaseAge, world)
+    infectionsTime = Utils.timeFunction(timers, Events.infectionsSpread, world)
+    diseasesTime = Utils.timeFunction(timers, Events.diseasesProgress, world)
     loveMakingTime = Utils.timeFunction(timers, Events.loveMaking, world)
     birthtime = Utils.timeFunction(timers, Events.birthPeopleNew, world)
     spouseMMTime = Utils.timeFunction(timers, FF.spouseMatchmaking, [world, timeTable])
@@ -78,6 +81,9 @@ def running(world, manualOverride):
         print("WorldTime: " + str(worldtime) + " %: " + str(round(worldtime/fullTime, 2)))
         print("WeaterTime: " + str(weatherChangeTime) + " %: " + str(round(weatherChangeTime / fullTime, 2)))
         print("IncAgeTime: " + str(incAgeTime) + " %: " + str(round(incAgeTime/fullTime, 2)))
+
+        print("InfectionsTime: " + str(infectionsTime) + " %: " + str(round(infectionsTime/fullTime, 2)))
+        print("DiseasesTime: " + str(diseasesTime) + " %: " + str(round(diseasesTime/fullTime, 2)))
         print("LovemakingTime: " + str(loveMakingTime) + " %: " + str(round(loveMakingTime / fullTime, 2)))
         print("BirthTime: " + str(birthtime) + " %: " + str(round(birthtime/fullTime, 2)))
         print("SpouseMMTime: " + str(spouseMMTime) + " %: " + str(round(spouseMMTime/fullTime, 2)))
@@ -118,6 +124,8 @@ def main(popBreakLimit=None):
     world.generateSettlements()
     world.setFamilies(initFamilies())
     world.setPeople(initPeople(world.getFamilies()))
+
+    world.diseases = IOtools.loadFiles()
 
     windowWidth = 1024
     windowHeight = 768

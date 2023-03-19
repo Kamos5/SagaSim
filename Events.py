@@ -42,6 +42,9 @@ def increaseAge (world):
                 if person.age > 50:
                     PF.retirement(person, world)
 
+                if person.getHealthFromAge() == Enums.GeneralHealth.HEALTHY and person.modifiedLifespan - person.getAge() <= 5:
+                    person.setHealthFromAge(Enums.GeneralHealth.WEAKEN)
+
             if deathChanceFromAge(person) or person.age >= person.modifiedLifespan:
                 PF.deathProcedures(person, world)
                 continue
@@ -384,14 +387,17 @@ def settlementGoodsProduction(world):
                         settlement.increaseSettlementFoodProduced(foodProd)
 
                     for worker in foodTile.getWorkerList():
-                        workerModifier = 0
-                        if Traits.LAZY in worker.getTraits():
-                            workerModifier = -10
-                        if Traits.DILIGENT in worker.getTraits():
-                            workerModifier = 10
-                        goodProduced = foodTile.prodYield * (foodTile.foundationType.value.yieldModifier + workerModifier) / 100
-                        worker.changeFreeWealth(goodProduced * (100 - settlement.getLocalIncomeTax()) / 100)
-                        settlement.changeFreeWealth(goodProduced * (settlement.getLocalIncomeTax()) / 100)
+                        if worker.getGeneralHealth().value[0] <= 1:  # Only Healthy or weaken can work
+                            workerModifier = 0
+                            if Traits.LAZY in worker.getTraits():
+                                workerModifier = -10
+                            if Traits.DILIGENT in worker.getTraits():
+                                workerModifier = 10
+                            if worker.getGeneralHealth().value[1] == 1:  # weaken workers work less
+                                workerModifier = round(workerModifier / 2)
+                            goodProduced = foodTile.prodYield * (foodTile.foundationType.value.yieldModifier + workerModifier) / 100
+                            worker.changeFreeWealth(goodProduced * (100 - settlement.getLocalIncomeTax()) / 100)
+                            settlement.changeFreeWealth(goodProduced * (settlement.getLocalIncomeTax()) / 100)
 
                 foodProd1 = settlement.getSettlementFoodProduced()
                 settlement.setSettlementFoodProducedLastYear(foodProd1-foodProd0)
@@ -428,14 +434,17 @@ def settlementGoodsProduction(world):
                     else:
                         settlement.increaseSettlementProdProduced(prodProd)
                     for worker in prodTile.getWorkerList():
-                        workerModifier = 0
-                        if Traits.LAZY in worker.getTraits():
-                            workerModifier = -10
-                        if Traits.DILIGENT in worker.getTraits():
-                            workerModifier = 10
-                        goodProduced = prodTile.prodYield * (prodTile.foundationType.value.yieldModifier + workerModifier) / 100
-                        worker.changeFreeWealth(goodProduced * (100-settlement.getLocalIncomeTax())/100)
-                        settlement.changeFreeWealth(goodProduced * (settlement.getLocalIncomeTax())/100)
+                        if worker.getGeneralHealth().value[0] <= 1:
+                            workerModifier = 0
+                            if Traits.LAZY in worker.getTraits():
+                                workerModifier = -10
+                            if Traits.DILIGENT in worker.getTraits():
+                                workerModifier = 10
+                            if worker.getGeneralHealth().value[1] == 1:  # weaken workers work less
+                                workerModifier = round(workerModifier / 2)
+                            goodProduced = prodTile.prodYield * (prodTile.foundationType.value.yieldModifier + workerModifier) / 100
+                            worker.changeFreeWealth(goodProduced * (100-settlement.getLocalIncomeTax())/100)
+                            settlement.changeFreeWealth(goodProduced * (settlement.getLocalIncomeTax())/100)
 
                 prodProd1 = settlement.getSettlementProdProduced()
                 settlement.changeFreeProd(prodProd1 - prodProd0)
@@ -841,22 +850,14 @@ def deathChanceFromAge(person):
     if age == 0:
         if chanceOfDeath <= 5:
             dead = True
-            person.causeOfDeath = CauseOfDeath.SICKNESS
+            person.causeOfDeath = CauseOfDeath.CHILDSICKNESS
     elif age == 1:
         if chanceOfDeath <= 4:
-            person.causeOfDeath = CauseOfDeath.SICKNESS
+            person.causeOfDeath = CauseOfDeath.CHILDSICKNESS
             dead = True
     elif age == 2:
         if chanceOfDeath <= 3:
-            person.causeOfDeath = CauseOfDeath.SICKNESS
-            dead = True
-    elif age == 3:
-        if chanceOfDeath <= 2:
-            person.causeOfDeath = CauseOfDeath.SICKNESS
-            dead = True
-    elif age == 4:
-        if chanceOfDeath <= 1:
-            person.causeOfDeath = CauseOfDeath.SICKNESS
+            person.causeOfDeath = CauseOfDeath.CHILDSICKNESS
             dead = True
     elif modifiedLifespan-age <= 5:
         if chanceOfDeath <= 100 - (modifiedLifespan-age) * 4:

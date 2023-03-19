@@ -20,6 +20,17 @@ class LifeStatus(Enum):
     DEAD = 'dead'
     COMATOSE = 'comatose'
 
+class GeneralHealth(Enum): #Index, status,
+    HEALTHY = 0, 'Healthy'
+    WEAKEN = 1, 'Weaken'
+    POOR = 2, 'Poor'
+    CRIPPLING = 3, 'Crippling'
+    TERMINAL = 4, 'Terminal'
+    DEATH = 5, 'Death'
+
+def getGeneralHealthArray():
+    return [GeneralHealth.HEALTHY, GeneralHealth.WEAKEN, GeneralHealth.POOR, GeneralHealth.CRIPPLING, GeneralHealth.TERMINAL, GeneralHealth.DEATH]
+
 class MaritalStatus(Enum):
     CHILD = 'child'
     SINGLE = 'single'
@@ -34,6 +45,7 @@ class CauseOfDeath(Enum):
     CHILDBIRTH = 'childbirth'
     NEGLIGENCE = 'negligence'
     KILLED = 'killed'
+    CHILDSICKNESS = 'child sickness'
     SICKNESS = 'sickness'
     STARVATION = 'starvation'
     UNKNOWN = 'unknown'
