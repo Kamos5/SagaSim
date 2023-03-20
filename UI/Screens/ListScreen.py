@@ -170,3 +170,26 @@ class ListScreen:
                 self.listScreenSurfaceObjsRect.append([self.listScreenSurface.blit(label.localSurface, (self.width * 0.15, self.lineHeight * self.writeLine + self.scroll_y)), person])
 
                 self.writeLine += 1
+
+    def addFavorites(self):
+        label = Label("Favorites: ", 300, self.lineHeight, self.textFont)
+        self.listScreenSurface.blit(label.localSurface, (self.width * 0.05, self.lineHeight * self.writeLine + self.scroll_y))
+
+        self.writeLine += 1
+
+    def addFavorite(self, object, lastFocusedObj):
+
+        firstName = str(object.getFirstName())
+        lastName = str(object.getLastName())
+        text = ''.join([firstName, " ", lastName])
+
+        if lastFocusedObj == object:
+            label = Label(text, 400, self.lineHeight, self.textFont, True, True)
+
+        else:
+            label = Label(text, 400, self.lineHeight, self.textFont, True)
+
+        self.listScreenSurfaceObjsRect.append([self.listScreenSurface.blit(label.localSurface, (self.width * 0.10, self.lineHeight * self.writeLine + self.scroll_y)), object])
+
+        self.writeLine += 1
+

@@ -6,6 +6,7 @@ import HouseFunctions
 from Enums import LifeStatus, MaritalStatus, CauseOfDeath, Sexes, Settlements, Traits
 import Utils
 from Family import Family as Family
+import InfectionsFunctions
 import Parameters
 import FamilyNameGenerator as FNG
 import PeopleFunctions as PF
@@ -55,6 +56,103 @@ def increaseAge (world):
                     person.causeOfDeath = CauseOfDeath.STARVATION
                     PF.deathProcedures(person, world)
                     continue
+
+def infectionsSpread (world):
+
+    infectionsPerDay = 0
+    # 1) infect with new diseases
+    # 2) infect others (in house and workplace)
+    # 2) move infection to sick phase
+    # 3) process infection
+    for person in world.getPeople():
+        if person.lifeStatus == LifeStatus.ALIVE:
+
+            # 1)
+            chanceForContractDisease = Utils.randomRange(1, 1_000_000)  # 1 in 1.000.000 / per day
+            contractDiseaseThreshold = 1
+
+            contractDiseaseThreshold = (contractDiseaseThreshold * person.getGeneralHealth().value[0]) + 2
+
+            if chanceForContractDisease <= contractDiseaseThreshold:
+                randomInfection = Utils.randomFromCollection(list(world.diseases.items()))[1]
+                if len(person.getImmunityTo()) > 0:
+                    for immunityTo in person.getImmunityTo():
+                        if not randomInfection == immunityTo[0][0]:
+                            if InfectionsFunctions.checkIfInfected(person, randomInfection):
+                                infectionsPerDay = InfectionsFunctions.addInfectionToPerson(person, randomInfection, world)
+                                break
+                else:
+                    if InfectionsFunctions.checkIfInfected(person, randomInfection):
+                        infectionsPerDay = InfectionsFunctions.addInfectionToPerson(person, randomInfection, world)
+
+            if len(person.getInfections()) > 0:
+                for infection in person.getInfections()[0]:
+                    if type(infection) is dict and infection['contagious']:
+
+                        # 2a)
+                        infectionsPerDay = InfectionsFunctions.tryToInfectPeopleFromList(person, person.getAccommodation().getHouseResidents(), infection, world)
+
+                        # 2b)
+                        if person.getOccupation() is not None and len(person.getCurrentDiseases()) > 0:  # ONLY IF NOT SICK AKA CURRENT DISEASES > 0
+                            infectionsPerDay = InfectionsFunctions.tryToInfectPeopleFromList(person, person.getOccupation().getWorkerList(), infection, world)
+
+            # 3)
+            if len(person.getInfections()) > 0:
+                infections, infDate = zip(*person.getInfections())
+                for (infection, infDate) in zip(infections, infDate):
+                    if infDate + infection['incubation'] <= world.getDayOfTheYear():
+                        if len(person.getCurrentDiseases()) > 0:
+                            diseases, disDates, disImmunity = zip(*person.getCurrentDiseases())
+                            if infection not in diseases:
+                                person.addCurrentDiseases([infection, world.getDayOfTheYear(), 0])
+                                PLEH.showingSymptomsOf(person, infection, world)
+                                offsetHealth = person.getGeneralHealth().value[0] + infection['effectOnHealth'] + person.getHealthFromAge().value[0]
+                                if offsetHealth >= len(Enums.getGeneralHealthArray()):
+                                    offsetHealth = len(Enums.getGeneralHealthArray()) - 1
+                                person.setGeneralHelth(Enums.getGeneralHealthArray()[offsetHealth])
+                                if person.getGeneralHealth() == Enums.GeneralHealth.DEATH:
+                                    person.causeOfDeath = CauseOfDeath.SICKNESS
+                                    PF.deathProcedures(person, world)
+                                    break
+                        else:
+                            person.addCurrentDiseases([infection, world.getDayOfTheYear(), 0])
+                            PLEH.showingSymptomsOf(person, infection, world)
+                            offsetHealth = person.getGeneralHealth().value[0] + infection['effectOnHealth'] + person.getHealthFromAge().value[0]
+                            if offsetHealth > len(Enums.getGeneralHealthArray()):
+                                offsetHealth = len(Enums.getGeneralHealthArray()) - 1
+                            person.setGeneralHelth(Enums.getGeneralHealthArray()[offsetHealth])
+                            if person.getGeneralHealth() == Enums.GeneralHealth.DEATH:
+                                person.causeOfDeath = CauseOfDeath.SICKNESS
+                                PF.deathProcedures(person, world)
+                                break
+
+    infectionsPerPop = round(infectionsPerDay / len(world.getAlivePeople()), 2)
+    print("Infections Per Day:" + str(infectionsPerDay))
+    print("Infections Per Pop:" + str(infectionsPerPop))
+
+def diseasesProgress(world):
+
+    for person in world.getPeople():
+        if person.getLifeStatus() == Enums.LifeStatus.ALIVE:
+            person.setCurrentDiseases([disease for disease in person.getCurrentDiseases() if not toRemoveDisease(person, disease, world)])
+            if person.getGeneralHealth().value[0] > 1:
+                chanceToDieFromPoorHealth = Utils.randomRange(1, 100)
+                if chanceToDieFromPoorHealth < 2 * 2 ** (person.getGeneralHealth().value[0]-2):
+                    person.causeOfDeath = CauseOfDeath.SICKNESS
+                    PF.deathProcedures(person, world)
+
+def toRemoveDisease(person, disease, world):
+
+    if disease[2] < 100:
+        disease[2] += round(100 / disease[0]["daysToCure"])
+        if disease[2] >= 100:
+            disease[2] = 100  ######TO COS JEST NIE TAK -> rozkminic te tablice
+            person.setInfections([infection for infection in person.getInfections() if not infection[0] == disease[0]])
+            person.setGeneralHelth(Enums.getGeneralHealthArray()[person.getGeneralHealth().value[0] - disease[0]['effectOnHealth'] + person.getHealthFromAge().value[0]])
+            person.addImmunityTo([disease, world.getDayOfTheYear()])
+            PLEH.gotImmunityTo(person, disease[0], world)
+            return disease
+
 
 def loveMaking (world):
 

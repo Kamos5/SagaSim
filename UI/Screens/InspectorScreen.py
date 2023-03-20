@@ -253,6 +253,8 @@ class InspectorScreen:
 
         label = Label("Name: " + str(object.getFirstName()), 500, self.lineHeight, self.textFont)
         self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding, self.lineHeight * self.writeLine + self.scroll_y))
+        label = Label("FAVORITE?", 95, self.lineHeight, self.textFont, True)
+        self.inspectorScreenSurfaceObjsRect.append([self.inspectorScreenSurface.blit(label.localSurface, (self.width-400, self.lineHeight * self.writeLine + self.scroll_y)), 'Favorite', object])
         self.writeLine += 1
         label = Label("Last name: " + str(object.getLastName()), 500, self.lineHeight, self.textFont)
         self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding, self.lineHeight * self.writeLine + self.scroll_y))
@@ -277,6 +279,33 @@ class InspectorScreen:
         label = Label("Life Status: " + str(object.getLifeStatus().value), 500, self.lineHeight, self.textFont)
         self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding, self.lineHeight * self.writeLine + self.scroll_y))
         self.writeLine += 1
+        label = Label("General Health Status: " + str(object.getGeneralHealth().value[1]), 500, self.lineHeight, self.textFont)
+        self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding, self.lineHeight * self.writeLine + self.scroll_y))
+        self.writeLine += 1
+        if len(object.getInfections()) > 0:
+            label = Label("Get infected by:", 500, self.lineHeight, self.textFont)
+            self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding, self.lineHeight * self.writeLine + self.scroll_y))
+            self.writeLine += 1
+            for infection in object.getInfections():
+                label = Label(str(infection[0]['name']), 500, self.lineHeight, self.textFont)
+                self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding*2, self.lineHeight * self.writeLine + self.scroll_y))
+                self.writeLine += 1
+        if len(object.getCurrentDiseases()) > 0:
+            label = Label("Suffer from diseases:", 500, self.lineHeight, self.textFont)
+            self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding, self.lineHeight * self.writeLine + self.scroll_y))
+            self.writeLine += 1
+            for disease in object.getCurrentDiseases():
+                label = Label(str(disease[0]['name'] + " immunity gained: " + str(disease[2]) + "%"), 500, self.lineHeight, self.textFont)
+                self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding*2, self.lineHeight * self.writeLine + self.scroll_y))
+                self.writeLine += 1
+        if len(object.getImmunityTo()) > 0:
+            label = Label("Immunities to diseases:", 500, self.lineHeight, self.textFont)
+            self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding, self.lineHeight * self.writeLine + self.scroll_y))
+            self.writeLine += 1
+            for immunityTo in object.getImmunityTo():
+                label = Label(str(immunityTo[0][0]['name']), 500, self.lineHeight, self.textFont)
+                self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding*2, self.lineHeight * self.writeLine + self.scroll_y))
+                self.writeLine += 1
         label = Label("Sex: " + str(object.getSex().value[1]), 500, self.lineHeight, self.textFont)
         self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding, self.lineHeight * self.writeLine + self.scroll_y))
         self.writeLine += 1
@@ -412,7 +441,7 @@ class InspectorScreen:
         # self.writeLine += 1
         for liveEvent in object.getLifeEvent():
 
-            self.writeLine = MultiLineSurface(str(liveEvent), 500, self.lineHeight, self.textFont, self.leftPadding*2, self.lineHeight * self.writeLine + self.scroll_y, self.inspectorScreenSurface, self.writeLine)
+            self.writeLine = MultiLineSurface(str(liveEvent), 750, self.lineHeight, self.textFont, self.leftPadding*2, self.lineHeight * self.writeLine + self.scroll_y, self.inspectorScreenSurface, self.writeLine)
             # label = Label(str(liveEvent), 700, self.lineHeight, self.textFont)
             # self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding*2, self.lineHeight * self.writeLine + self.scroll_y))
             # self.writeLine += 1

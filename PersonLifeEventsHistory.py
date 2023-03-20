@@ -111,7 +111,7 @@ def gotInfectedWithDisease(person, disease, world, carrier=None):
 
     infectedByString = ''
     if carrier is not None:
-        infectedByString = ' by ' + str(person.getFirstName()) + ' ' + str(person.getLastName())
+        infectedByString = ' by ' + str(carrier.getFirstName()) + ' ' + str(carrier.getLastName())
     person.lifeEvents.append(str(person.getFirstName()) + ' got infected with ' + str(disease['name']) + ' on the ' + str(world.getDay()) + '/' + str(world.getMonth().value[1]) + '/' + str(world.getYear()) + infectedByString)
 
 def showingSymptomsOf(person, disease, world):

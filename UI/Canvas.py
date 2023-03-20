@@ -88,6 +88,7 @@ class Canvas:
         self.dateTimerObj = None
         self.focusObj = []
         self.lastFocusObj = None
+        self.favorites = []
 
         self.showHelp = False
         self.showPlots = False
@@ -148,6 +149,12 @@ class Canvas:
                 for person in family.getAliveMembersList():
                     self.listScreen.addPerson(person, self.lastFocusObj)
 
+        self.listScreen.addFavorites()
+
+        for favorite in self.favorites:
+            self.listScreen.addFavorite(favorite, self.lastFocusObj)
+
+
         #Sequence of drawing
         self.navBarScreenObj = self.screen.blit(self.navBarScreenSurface, (self.navBarPosX, self.navBarPosY))
         self.listScreenObj = self.screen.blit(self.listScreenSurface, (self.listScreenPosX, self.listScreenPosY))
@@ -204,6 +211,13 @@ class Canvas:
                         itemObj[1].deactivate()
                     #To offset position on main screen
                     if itemObj[0].collidepoint([mouseX-itemObjRectScreen.screenPosX, mouseY-itemObjRectScreen.screenPosY]):
+
+                        if itemObj[1] == 'Favorite' and itemObj[2] not in self.favorites:
+                            self.favorites.append(itemObj[2])
+                            return True, pausedPressed
+                        if itemObj[1] == 'Favorite' and itemObj[2] in self.favorites:
+                            self.favorites.remove(itemObj[2])
+                            return True, pausedPressed
                         if itemObj[1] == 'FamilyTree':
                             if not pausedPressed:
                                 pausedPressed = True
