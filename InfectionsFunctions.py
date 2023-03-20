@@ -16,7 +16,6 @@ def checkIfInfected(infected, infection):
 def addInfectionToPerson(infected, infection, world, carrier=None):
 
     infectionsPerDay = 0
-    temp = infected.getImmunityTo()
     infected.addInfection([infection, world.getDayOfTheYear()])
     PLEH.gotInfectedWithDisease(infected, infection, world, carrier)
     infectionsPerDay += 1
@@ -28,7 +27,6 @@ def checkIfWillInfect(potentiallyInfected, infection):
         return True
     else:
         spreadingChance = Utils.randomRange(1, 100)
-        temp = potentiallyInfected.getInfections()
         infections, infDate = zip(*potentiallyInfected.getInfections())
         if spreadingChance < infection['contagionChange'] and infection not in infections:
             return True
@@ -41,11 +39,15 @@ def tryToInfectPeopleFromList(carrier, list, infection, world):
     for memberOfList in list:
         if memberOfList is not carrier:
             if len(memberOfList.getImmunityTo()) > 0:
+                isImmune = False
                 for immunityTo in memberOfList.getImmunityTo():
-                    if not infection == immunityTo[0][0]:
-                        if checkIfWillInfect(memberOfList, infection):
-                            infectionsPerDay += addInfectionToPerson(memberOfList, infection, world, carrier)
-                            break
+                    if infection == immunityTo[0][0]:
+                        isImmune = True
+                        break
+                if not isImmune:
+                    if checkIfWillInfect(memberOfList, infection):
+                        infectionsPerDay += addInfectionToPerson(memberOfList, infection, world, carrier)
+                        break
             else:
                 if checkIfWillInfect(memberOfList, infection):
                     infectionsPerDay += addInfectionToPerson(memberOfList, infection, world, carrier)
