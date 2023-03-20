@@ -137,27 +137,31 @@ def spouseMatchmaking (params):
                 person.changeSpouseRelation(50)
                 spouseObj.changeSpouseRelation(50)
 
-                if person.getSex() == Sexes.MALE:
-                    spouseObj.getAccommodation().removeHouseResident(spouseObj)
-                    spouseObj.setAccommodation(person.getAccommodation())
-                    spouseObj.getAccommodation().addHouseResident(spouseObj)
-                    spouseObj.getSettlement().decreasePopulation()
-                    spouseObj.getSettlement().removeResident(spouseObj)
-                    spouseObj.setSettlement(person.getSettlement())
-                    spouseObj.getSettlement().increasePopulation()
-                    spouseObj.getSettlement().addResident(spouseObj)
-                    fireSingleEmployee(spouseObj, world)
+                newHouse = HouseFunctions.getNewHouse()
+                movingMarriedCoupleToNewHouse(person, newHouse, world)
+                movingMarriedCoupleToNewHouse(spouseObj, newHouse, world)
 
-                else:
-                    person.getAccommodation().removeHouseResident(person)
-                    person.setAccommodation(spouseObj.getAccommodation())
-                    person.getAccommodation().addHouseResident(person)
-                    person.getSettlement().decreasePopulation()
-                    person.getSettlement().removeResident(person)
-                    person.setSettlement(spouseObj.getSettlement())
-                    person.getSettlement().increasePopulation()
-                    person.getSettlement().addResident(person)
-                    fireSingleEmployee(person, world)
+                # if person.getSex() == Sexes.MALE:
+                #     spouseObj.getAccommodation().removeHouseResident(spouseObj)
+                #     spouseObj.setAccommodation(person.getAccommodation())
+                #     spouseObj.getAccommodation().addHouseResident(spouseObj)
+                #     spouseObj.getSettlement().decreasePopulation()
+                #     spouseObj.getSettlement().removeResident(spouseObj)
+                #     spouseObj.setSettlement(person.getSettlement())
+                #     spouseObj.getSettlement().increasePopulation()
+                #     spouseObj.getSettlement().addResident(spouseObj)
+                #     fireSingleEmployee(spouseObj, world)
+                #
+                # else:
+                #     person.getAccommodation().removeHouseResident(person)
+                #     person.setAccommodation(spouseObj.getAccommodation())
+                #     person.getAccommodation().addHouseResident(person)
+                #     person.getSettlement().decreasePopulation()
+                #     person.getSettlement().removeResident(person)
+                #     person.setSettlement(spouseObj.getSettlement())
+                #     person.getSettlement().increasePopulation()
+                #     person.getSettlement().addResident(person)
+                #     fireSingleEmployee(person, world)
 
                 #TODO FIX ISSUE WHEN ONLY 1 FEMALE IS IN FAMILY
                 RemoveFromUnmarriedList(person, spouseObj)
@@ -178,6 +182,25 @@ def spouseMatchmaking (params):
 
     timeTable.extend([times])
     print("SposesSumTime: " + str(times))
+
+def movingMarriedCoupleToNewHouse(person, newHouse, world):
+
+    person.getAccommodation().removeHouseResident(person)
+    person.setAccommodation(newHouse)
+    person.getAccommodation().addHouseResident(person)
+
+    if person.getSex() == Sexes.FEMALE:
+
+        if person.getSettlement() != person.getSpouse().getSettlement():
+            person.getSettlement().decreasePopulation()
+            person.getSettlement().removeResident(person)
+            person.setSettlement(person.spouse.getSettlement())
+            person.getSettlement().increasePopulation()
+            person.getSettlement().addResident(person)
+            person.getSpouse().getSettlement().buildNewHouse(newHouse)
+            fireSingleEmployee(person, world)
+
+
 
 def checkLDTraitsNumber(person):
 
