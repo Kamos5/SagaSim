@@ -2,7 +2,7 @@ from Enums import Sexes
 
 def adulthoodReached(person, world):
 
-    person.lifeEvents.append(str(person.firstName) + " reached adulthood at the age of " + str(person.age) + " on the " + str(world.getDay()) + '/' + str(world.getMonth().value[1]) + '/' + str(world.getYear()))
+    person.lifeEvents.append(f'{person.firstName} reached adulthood at the age of {person.age} on the {world.getDay()}/{world.getMonth().value[1]}/{world.getYear()}')
 
 
 def hadKid(person, child, world):
@@ -11,17 +11,17 @@ def hadKid(person, child, world):
         sex = 'girl'
     else:
         sex = 'boy'
-    person.lifeEvents.append(str(person.firstName) + ' mothered a ' + str(sex) + ' named ' + str(child.firstName) + ' on the year ' + str(world.getDay()) + '/' + str(world.getMonth().value[1]) + '/' + str(world.getYear()))
+    person.lifeEvents.append(f'{person.firstName} mothered a {sex} named {child.firstName} on the year {world.getDay()}/{world.getMonth().value[1]}/{world.getYear()}')
     if person.spouse != None:
-        person.spouse.lifeEvents.append(str(person.spouse.firstName) + ' fathered a ' + str(sex) + ' named ' + str(child.firstName) + ' on the year ' + str(world.getDay()) + '/' + str(world.getMonth().value[1]) + '/' + str(world.getYear()))
+        person.spouse.lifeEvents.append(f'{person.spouse.firstName} fathered a {sex} named {child.firstName} on the year {world.getDay()}/{world.getMonth().value[1]}/{world.getYear()}')
 
 def miscarriage(person, world):
 
-    person.lifeEvents.append(str(person.firstName) + ' had lost a child on the ' + str(world.getDay()) + '/' + str(world.getMonth().value[1]) + '/' + str(world.getYear()) + ' due to miscarriage')
+    person.lifeEvents.append(f'{person.firstName} had lost a child on the {world.getDay()}/{world.getMonth().value[1]}/{world.getYear()} due to miscarriage')
 
 def stillborn(person, world):
 
-    person.lifeEvents.append(str(person.firstName) + ' had given birth to a stillborn child on the ' + str(world.getDay()) + '/' + str(world.getMonth().value[1]) + '/' + str(world.getYear()))
+    person.lifeEvents.append(f'{person.firstName} had given birth to a stillborn child on the {world.getDay()}/{world.getMonth().value[1]}/{world.getYear()}')
 
 def lostChild(person, child, world):
 
@@ -29,7 +29,7 @@ def lostChild(person, child, world):
         sex = 'girl'
     else:
         sex = 'boy'
-    person.lifeEvents.append(str(person.firstName) + ' had lost a ' + str(sex) + ' named ' + str(child.firstName) + ' on the ' + str(world.getDay()) + '/' + str(world.getMonth().value[1]) + '/' + str(world.getYear()) + ' due to ' + str(child.causeOfDeath.value))
+    person.lifeEvents.append(f'{person.firstName} had lost a {sex} named {child.firstName} on the {world.getDay()}/{world.getMonth().value[1]}/{world.getYear()} due to {child.causeOfDeath.value}')
 
 
 def killedByDuringCrime(victim, offender, world):
@@ -41,11 +41,11 @@ def killedByDuringCrime(victim, offender, world):
     else:
         offenderString = offender.getFirstName() + " " + offender.getLastName()
 
-    victim.lifeEvents.append(str(victim.firstName) + " was killed by" + offenderString + " during crime " + ' on the year ' + str(world.getDay()) + '/' + str(world.getMonth().value[1]) + '/' + str(world.getYear()))
+    victim.lifeEvents.append(f'{victim.firstName} was killed by {offenderString} + " during crime {world.getDay()}/{world.getMonth().value[1]}/{world.getYear()}')
 
 def killedSMBDuringCrime(offender, victim, world):
 
-    offender.lifeEvents.append(str(offender.firstName) + " killed " + victim.getFirstName() + " " + victim.getLastName() + " while committing crime on the year " + str(world.getDay()) + '/' + str(world.getMonth().value[1]) + '/' + str(world.getYear()))
+    offender.lifeEvents.append(f'{offender.firstName} killed {victim.getFirstName()} {victim.getLastName()} while committing crime on the year {world.getDay()}/{world.getMonth().value[1]}/{world.getYear()}')
 
 def beenBorn(person, world):
 
@@ -58,11 +58,11 @@ def beenBorn(person, world):
     else:
         motherString = 'unknown mother'
 
-    person.lifeEvents.append(str(person.firstName) + " had been born into " + str(person.familyName) + " family on the " + str(world.getDay()) + '/' + str(world.getMonth().value[1]) + '/' + str(world.getYear()) + " to " + str(fatherString) + " and " + str(motherString) + " in the " + str(person.settlement.getSettlementType().value) + " of " + str(person.settlement.getSettlementName()))
+    person.lifeEvents.append(f'{person.firstName} had been born into {person.familyName} family on the {world.getDay()}/{world.getMonth().value[1]}/{world.getYear()} to {fatherString} and {motherString} in the {person.settlement.getSettlementType().value} of {person.settlement.getSettlementName()}')
     hadKid(person.mother, person, world)
 
 def died(person, world):
-    person.lifeEvents.append(str(person.firstName) + " died at the age of " + str(person.age) + " from " + str(person.causeOfDeath.value) + ' on the ' + str(world.getDay()) + '/' + str(world.getMonth().value[1]) + '/' + str(world.getYear()))
+    person.lifeEvents.append(f'{person.firstName} died at the age of {person.age} from {person.causeOfDeath.value} on the {world.getDay()}/{world.getMonth().value[1]}/{world.getYear()}')
 
 def movedHome(person, movedFrom, movedTo, world):
 
@@ -70,18 +70,18 @@ def movedHome(person, movedFrom, movedTo, world):
         preverb = 'hers'
     else:
         preverb = 'his'
-    person.lifeEvents.append(str(person.firstName) + " moved with " + str(preverb) + " family from " + str(movedFrom.getSettlementName()) + " to " + str(movedTo.getSettlementName()) + ' on the ' + str(world.getDay()) + '/' + str(world.getMonth().value[1]) + '/' + str(world.getYear()))
+    person.lifeEvents.append(f'{person.firstName} moved with {preverb} family from {movedFrom.getSettlementName()} to {movedTo.getSettlementName()} on the {world.getDay()}/{world.getMonth().value[1]}/{world.getYear()}')
 
 def married(person, world):
 
-    person.lifeEvents.append(str(person.firstName) + " married " + str(person.spouse.firstName) + " " + str(person.spouse.lastName) + " on the " + str(world.getDay()) + '/' + str(world.getMonth().value[1]) + '/' + str(world.getYear()))
+    person.lifeEvents.append(f'{person.firstName} married {person.spouse.firstName} {person.spouse.lastName} on the {world.getDay()}/{world.getMonth().value[1]}/{world.getYear()}')
 
 def divorced(person, world):
 
-    person.lifeEvents.append(str(person.firstName) + " divorced " + str(person.spouse.firstName) + " " + str(person.spouse.familyName) + " on the " + str(world.getDay()) + '/' + str(world.getMonth().value[1]) + '/' + str(world.getYear()))
+    person.lifeEvents.append(f'{person.firstName} divorced {person.spouse.firstName} {person.spouse.familyName} on the {world.getDay()}/{world.getMonth().value[1]}/{world.getYear()}')
 
 def changedLastName(person, world, newFamilyName):
-    person.lifeEvents.append(str(person.firstName) + " " + str(person.lastName) + " changed family name to " + str(newFamilyName) + " on the " + str(world.getDay()) + '/' + str(world.getMonth().value[1]) + '/' + str(world.getYear()))
+    person.lifeEvents.append(f'{person.firstName} {person.lastName} changed family name to {newFamilyName} on the {world.getDay()}/{world.getMonth().value[1]}/{world.getYear()}')
 
 def lostSpouse(person, world):
 
@@ -89,35 +89,35 @@ def lostSpouse(person, world):
         sex = 'husband'
     else:
         sex = 'wife'
-    person.lifeEvents.append(str(person.firstName) + ' had lost a ' + str(sex) + ' named ' + str(person.spouse.firstName) + ' due to ' + str(person.spouse.causeOfDeath.value) + ' on the ' + str(world.getDay()) + '/' + str(world.getMonth().value[1]) + '/' + str(world.getYear()))
+    person.lifeEvents.append(f'{person.firstName} had lost a {sex} named {person.spouse.firstName} due to {person.spouse.causeOfDeath.value} on the {world.getDay()}/{world.getMonth().value[1]}/{world.getYear()}')
 
 def foundEmpoyment(person, world):
 
-    person.lifeEvents.append(str(person.getFirstName()) + ' starts workings as ' + str(person.getOccupationName()) + ' in the town of ' + str(person.getSettlement().getSettlementName()) + ' on the ' + str(world.getDay()) + '/' + str(world.getMonth().value[1]) + '/' + str(world.getYear()))
+    person.lifeEvents.append(f'{person.getFirstName()} starts workings as {person.getOccupationName()} in the town of {person.getSettlement().getSettlementName()} on the {world.getDay()}/{world.getMonth().value[1]}/{world.getYear()}')
 
 def lostEmpoyment(person, world):
 
-    person.lifeEvents.append(str(person.getFirstName()) + ' lost job as ' + str(person.getOccupationName()) + ' in the town of ' + str(person.getSettlement().getSettlementName()) + ' on the ' + str(world.getDay()) + '/' + str(world.getMonth().value[1]) + '/' + str(world.getYear()))
+    person.lifeEvents.append(f'{person.getFirstName()} lost job as {person.getOccupationName()} in the town of {person.getSettlement().getSettlementName()} on the {world.getDay()}/{world.getMonth().value[1]}/{world.getYear()}')
 
 def retired(person, world):
 
-    person.lifeEvents.append(str(person.getFirstName()) + ' retired from working as ' + str(person.getOccupationName()) + ' on the ' + str(world.getDay()) + '/' + str(world.getMonth().value[1]) + '/' + str(world.getYear()))
+    person.lifeEvents.append(f'{person.getFirstName()} retired from working as {person.getOccupationName()} on the {world.getDay()}/{world.getMonth().value[1]}/{world.getYear()}')
 
 def gotPromotion(person, world):
 
-    person.lifeEvents.append(str(person.getFirstName()) + ' got promotion workings to ' + str(person.getOccupationName()) + ' in the town of ' + str(person.getSettlement().getSettlementName()) + ' on the ' + str(world.getDay()) + '/' + str(world.getMonth().value[1]) + '/' + str(world.getYear()))
+    person.lifeEvents.append(f'{person.getFirstName()} got promotion workings to {person.getOccupationName()} in the town of {person.getSettlement().getSettlementName()} on the {world.getDay()}/{world.getMonth().value[1]}/{world.getYear()}')
 
 def gotInfectedWithDisease(person, disease, world, carrier=None):
 
     infectedByString = ''
     if carrier is not None:
-        infectedByString = ' by ' + str(carrier.getFirstName()) + ' ' + str(carrier.getLastName())
-    person.lifeEvents.append(str(person.getFirstName()) + ' got infected with ' + str(disease['name']) + ' on the ' + str(world.getDay()) + '/' + str(world.getMonth().value[1]) + '/' + str(world.getYear()) + infectedByString)
+        infectedByString = f' by {carrier.getFirstName()} {carrier.getLastName()}'
+    person.lifeEvents.append(f'{person.getFirstName()} got infected with {disease["name"]} on the {world.getDay()}/{world.getMonth().value[1]}/{world.getYear()}{infectedByString}')
 
 def showingSymptomsOf(person, disease, world):
 
-    person.lifeEvents.append(str(person.getFirstName()) + ' started to show symptoms of ' + str(disease['name']) + ' on the ' + str(world.getDay()) + '/' + str(world.getMonth().value[1]) + '/' + str(world.getYear()))
+    person.lifeEvents.append(f'{person.getFirstName()} started to show symptoms of {disease["name"]} on the {world.getDay()}/{world.getMonth().value[1]}/{world.getYear()}')
 
 def gotImmunityTo(person, disease, world):
 
-    person.lifeEvents.append(str(person.getFirstName()) + ' got healed and got immunity from ' + str(disease['name']) + ' on the ' + str(world.getDay()) + '/' + str(world.getMonth().value[1]) + '/' + str(world.getYear()))
+    person.lifeEvents.append(f'{person.getFirstName()} got healed and got immunity from {disease["name"]} on the {world.getDay()}/{world.getMonth().value[1]}/{world.getYear()}')

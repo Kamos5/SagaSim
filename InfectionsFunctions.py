@@ -55,3 +55,4 @@ def tryToInfectPeopleFromList(carrier, list, infection, world):
             continue
 
     return infectionsPerDay
+

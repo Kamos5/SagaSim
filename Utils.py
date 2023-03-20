@@ -2,8 +2,6 @@ import math
 import time
 from random import randint, choice
 
-import numpy
-
 import Enums
 
 def randomRange(min, max):

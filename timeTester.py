@@ -1,7 +1,7 @@
 import main
 
 howManyLoops = 10
-population = 5000
+population = 2000
 
 f = open("times.txt", "a")
 f.write('Population:' + str(population))

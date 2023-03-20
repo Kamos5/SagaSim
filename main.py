@@ -72,7 +72,6 @@ def running(world, manualOverride):
     accommodationManagmentTime = Utils.timeFunction(timers, Events.accommodationManagment, world)           #ONCE PER WEEK (ALWAYS ON MONDAYS)
     updateAliveTime = Utils.timeFunction(timers, world.updateAlive)
     associateManagementTime = Utils.timeFunction(False, Events.associateManagement, world)
-
     makeHistoryTime = Utils.timeFunction(timers, world.makeHistory)
 
     end = time.perf_counter()
@@ -98,7 +97,7 @@ def running(world, manualOverride):
         print("MakeHistoryTime: " + str(makeHistoryTime) + " %: " + str(round(makeHistoryTime / fullTime, 2)))
         print(fullTime)
 
-    timeTable.extend([worldtime, weatherChangeTime, incAgeTime, loveMakingTime, birthtime, spouseMMTime, divorcesTime, breakSettlementsPopTime, workersManagementTime, crimeTime, settlementGoodsProdTime, accommodationManagmentTime, updateAliveTime, associateManagementTime, makeHistoryTime, fullTime])
+    timeTable.extend([worldtime, weatherChangeTime, incAgeTime, infectionsTime, diseasesTime, loveMakingTime, birthtime, spouseMMTime, divorcesTime, breakSettlementsPopTime, workersManagementTime, crimeTime, settlementGoodsProdTime, accommodationManagmentTime, updateAliveTime, associateManagementTime, makeHistoryTime, fullTime])
 
     for family in world.getFamilies():
         isAlive += family.getAliveMemberNumber()
