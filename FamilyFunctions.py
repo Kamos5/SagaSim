@@ -138,6 +138,7 @@ def spouseMatchmaking (params):
                 spouseObj.changeSpouseRelation(50)
 
                 newHouse = HouseFunctions.getNewHouse()
+                HouseFunctions.setHouseDurability(newHouse, Utils.randomRange(60, 90))
                 movingMarriedCoupleToNewHouse(person, newHouse, world)
                 movingMarriedCoupleToNewHouse(spouseObj, newHouse, world)
 
