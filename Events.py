@@ -76,11 +76,15 @@ def infectionsSpread (world):
             if chanceForContractDisease <= contractDiseaseThreshold:
                 randomInfection = Utils.randomFromCollection(list(world.diseases.items()))[1]
                 if len(person.getImmunityTo()) > 0:
+                    isImmune = False
                     for immunityTo in person.getImmunityTo():
                         if not randomInfection == immunityTo[0][0]:
-                            if InfectionsFunctions.checkIfInfected(person, randomInfection):
-                                infectionsPerDay = InfectionsFunctions.addInfectionToPerson(person, randomInfection, world)
-                                break
+                            isImmune = True
+                            break
+                    if not isImmune:
+                        if InfectionsFunctions.checkIfInfected(person, randomInfection):
+                            infectionsPerDay = InfectionsFunctions.addInfectionToPerson(person, randomInfection, world)
+                            break
                 else:
                     if InfectionsFunctions.checkIfInfected(person, randomInfection):
                         infectionsPerDay = InfectionsFunctions.addInfectionToPerson(person, randomInfection, world)
