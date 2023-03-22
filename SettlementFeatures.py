@@ -180,41 +180,41 @@ def get0ProdZone():
 
 #foundation type, productionValue, workersNumber, name, descr, workerName, upgrCost, upgrFrom, weightUpgrValue
 def getNewFallow():
-    return Feature(FeatureTypes.FOODTYPE, 2, 10, 'Fallow', 'fallow land', 'Fallow farmer')
+    return Feature(FeatureTypes.FOODTYPE, 2, 5, 'Fallow', 'fallow land', 'Fallow farmer')
 def getNewWildrness():
-    return Feature(FeatureTypes.FOODTYPE, 2, 10, 'Wilderness', 'unpassable terrain', 'Primitive gatherer')
+    return Feature(FeatureTypes.FOODTYPE, 2, 5, 'Wilderness', 'unpassable terrain', 'Primitive gatherer')
 def getNewRiver():
-    return Feature(FeatureTypes.FOODTYPE, 3, 10, 'River', 'running volume of not sparkling water', 'River fisher')
+    return Feature(FeatureTypes.FOODTYPE, 3, 5, 'River', 'running volume of not sparkling water', 'River fisher')
 def getNewSeaSide():
-    return Feature(FeatureTypes.FOODTYPE, 3, 10, 'Sea side', 'running volume of not sparkling salt water', 'Sea fisher')
+    return Feature(FeatureTypes.FOODTYPE, 3, 5, 'Sea side', 'running volume of not sparkling salt water', 'Sea fisher')
 def getNewWildlife():
-    return Feature(FeatureTypes.FOODTYPE, 4, 5, 'Wild animals', 'Packs of wild animals are roaming around', 'Primitive hunter')
+    return Feature(FeatureTypes.FOODTYPE, 4, 3, 'Wild animals', 'Packs of wild animals are roaming around', 'Primitive hunter')
 def getNewRockyTerrain():
-    return Feature(FeatureTypes.PRODTYPE, 2, 10, 'Rocky Terrain', 'Piece of terrain that has high concentration of rock within.', 'Rock gatherer')
+    return Feature(FeatureTypes.PRODTYPE, 2, 5, 'Rocky Terrain', 'Piece of terrain that has high concentration of rock within.', 'Rock gatherer')
 def getNewFallenLogs():
-    return Feature(FeatureTypes.PRODTYPE, 3, 5, 'Fallen Logs', 'Trees that took a bit to long nap', 'Wood howler')
+    return Feature(FeatureTypes.PRODTYPE, 3, 3, 'Fallen Logs', 'Trees that took a bit to long nap', 'Wood howler')
 def getNewSimplefarm():
-    return Feature(FeatureTypes.FOODTYPE, 3, 12, 'Simple farm', 'simple farm', 'Farmer', 200, 'Fallow', 100)
+    return Feature(FeatureTypes.FOODTYPE, 3, 7, 'Simple farm', 'simple farm', 'Farmer', 200, 'Fallow', 100)
 def getNewOrchard():
-    return Feature(FeatureTypes.FOODTYPE, 3, 12, 'Orchard', 'fruit tree paradise', 'Fruit grower', 200, 'Fallow', 100)
+    return Feature(FeatureTypes.FOODTYPE, 3, 7, 'Orchard', 'fruit tree paradise', 'Fruit grower', 200, 'Fallow', 100)
 def getNewForest():
-    return Feature(FeatureTypes.FOODTYPE, 3, 12, 'Forest', 'forest with wild life and forage supply', 'Gatherer', 200, 'Wilderness')
+    return Feature(FeatureTypes.FOODTYPE, 3, 7, 'Forest', 'forest with wild life and forage supply', 'Gatherer', 200, 'Wilderness')
 def getNewMill():
-    return Feature(FeatureTypes.FOODTYPE, 4, 12, 'Mill', 'running volume of not sparkling water', 'Miller', 200, 'River')
+    return Feature(FeatureTypes.FOODTYPE, 4, 7, 'Mill', 'running volume of not sparkling water', 'Miller', 200, 'River')
 def getNewBigGame():
-    return Feature(FeatureTypes.FOODTYPE, 5, 8, 'Big Game', 'there are signs of big hunter game in the area', 'Hunter', 200, 'Wild animals')
+    return Feature(FeatureTypes.FOODTYPE, 5, 5, 'Big Game', 'there are signs of big hunter game in the area', 'Hunter', 200, 'Wild animals')
 def getNewLumberMill():
-    return Feature(FeatureTypes.PRODTYPE, 5, 8, 'Lumber mill', 'Mill that produces lumber', 'Logger', 200, 'Fallen Logs')
+    return Feature(FeatureTypes.PRODTYPE, 5, 5, 'Lumber mill', 'Mill that produces lumber', 'Logger', 200, 'Fallen Logs')
 def getNewQuarry():
-    return Feature(FeatureTypes.PRODTYPE, 3, 15, 'Quarry', 'Man made rock farm', 'Miner', 250, 'Rocky Terrain', 100)
+    return Feature(FeatureTypes.PRODTYPE, 3, 7, 'Quarry', 'Man made rock farm', 'Miner', 250, 'Rocky Terrain', 100)
 def getNewCoalMine():
-    return Feature(FeatureTypes.PRODTYPE, 4, 15, 'Coal mine', 'Dirty rocks', 'Coal miner', 250, 'Rocky Terrain', 80)
+    return Feature(FeatureTypes.PRODTYPE, 4, 7, 'Coal mine', 'Dirty rocks', 'Coal miner', 250, 'Rocky Terrain', 80)
 def getNewIronMine():
-    return Feature(FeatureTypes.PRODTYPE, 5, 15, 'Iron mine', 'Hard rocks', 'Iron miner', 250, 'Rocky Terrain', 50)
+    return Feature(FeatureTypes.PRODTYPE, 5, 7, 'Iron mine', 'Hard rocks', 'Iron miner', 250, 'Rocky Terrain', 50)
 def getNewSilverMine():
-    return Feature(FeatureTypes.PRODTYPE, 5, 15, 'Silver mine', 'Shiny white rocks', 'Silver miner', 250, 'Rocky Terrain', 25)
+    return Feature(FeatureTypes.PRODTYPE, 5, 7, 'Silver mine', 'Shiny white rocks', 'Silver miner', 250, 'Rocky Terrain', 25)
 def getNewGoldMine():
-    return Feature(FeatureTypes.PRODTYPE, 6, 15, 'Gold mine', 'Shiny rocks', 'Gold miner', 250, 'Rocky Terrain', 10)
+    return Feature(FeatureTypes.PRODTYPE, 6, 7, 'Gold mine', 'Shiny rocks', 'Gold miner', 250, 'Rocky Terrain', 10)
 def getVillageHall():
     return Feature(FeatureTypes.ADMINTYPE, 1, 1, 'Village hall', 'Place of meeting for village people', 'Village Mayor')
 def getTownHall():

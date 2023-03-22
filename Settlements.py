@@ -280,6 +280,16 @@ class Settlements:
     def removeResident(self, person):
         self.residents.remove(person)
 
+    def getCivilianWorkplaces(self):
+        workplaces = 0
+        for workplace in self.getAdminFeatures():
+            workplaces += workplace.getMaxWorkersNumber()
+        for workplace in self.getFoodFeatures():
+            workplaces += workplace.getMaxWorkersNumber()
+        for workplace in self.getProdFeatures():
+            workplaces += workplace.getMaxWorkersNumber()
+        return workplaces
+
     def getUnemployedResidentsList(self):
 
         self.unemployedRes = []

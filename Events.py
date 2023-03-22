@@ -1,4 +1,5 @@
 import time
+from statistics import mean
 
 import Enums
 import FamilyFunctions as FF
@@ -68,7 +69,7 @@ def infectionsSpread (world):
         if person.lifeStatus == LifeStatus.ALIVE:
 
             # 1)
-            chanceForContractDisease = Utils.randomRange(1, 1_000_000)  # 1 in 1.000.000 / per day
+            chanceForContractDisease = Utils.randomRange(1, 10_000_000)  # 1 in 1.000.000 / per day
             contractDiseaseThreshold = 1
 
             contractDiseaseThreshold = (contractDiseaseThreshold * person.getGeneralHealth().value[0]) + 2
@@ -136,7 +137,7 @@ def infectionsSpread (world):
 
 def diseasesProgress(world):
 
-    for person in world.getPeople():
+    for person in world.getAlivePeople():
         if person.getLifeStatus() == Enums.LifeStatus.ALIVE:
             person.setCurrentDiseases([disease for disease in person.getCurrentDiseases() if not toRemoveDisease(person, disease, world)])
             if person.getGeneralHealth().value[0] > 1:
@@ -389,7 +390,7 @@ def settlementsPopulationManagement (world):
                 townList = SF.getCities(region.getSettlements())
 
                 #Treshhold to create migration wave
-                if (len(settlement.getEmployedResidentsList()) + len(settlement.getUnemployedResidentsList())) > 0 and round(len(settlement.getUnemployedResidentsList()) / (len(settlement.getEmployedResidentsList()) + len(settlement.getUnemployedResidentsList())) * 100) > 15 and world.getYear() > 510:
+                if (len(settlement.getEmployedResidentsList()) + len(settlement.getUnemployedResidentsList())) > 0 and round(len(settlement.getUnemployedResidentsList()) / (len(settlement.getEmployedResidentsList()) + len(settlement.getUnemployedResidentsList())) * 100) > 15:
                 # if settlement.getPopulation() >= int(settlement.getMaxPopulation() * Parameters.percentagePopulationThresholdForMigration):
                     chanceOfMigration = Utils.randomRange(1, 100)
                     #Chance of migration happening
@@ -622,7 +623,7 @@ def settlementWorkersManagement(world):
 
         for settlement in region.getSettlements():
 
-                basicAdminJobWeight = 3
+                basicAdminJobWeight = 5
                 basicFoodJobWeight = 1
                 basicProdJobWeight = 1
 
@@ -630,7 +631,7 @@ def settlementWorkersManagement(world):
                 if len(unemployedWorkerList) > 0:
                     if settlement.getSettlementFoodProducedLastYear() <= 0:
 
-                        basicFoodJobWeight *= 10
+                        basicFoodJobWeight *= 20
 
                     if settlement.getSettlementProdProducedLastYear() == 0:
                         basicProdJobWeight *= 2
@@ -689,10 +690,9 @@ def settlementWorkersManagement(world):
                                 unemployedWorkerList.remove(newWorker)
                                 del prodFreeWorkplacesSpots[randomJob-1]
 
-                        if settlement.getFreeWealth() <= 0:
-                            fireAllEmployees(settlement.getAdminFeatures()[0], world)
-                            if len(foodFreeWorkplacesSpots) > 0:
-                                fireAllEmployees(settlement.getProdFeatures()[0], world)
+                if settlement.getSettlementFoodProducedLastYear() <= 0:
+                    fireAllEmployees(settlement.getAdminFeatures()[0], world)
+                    fireAllEmployees(settlement.getProdFeatures()[0], world)
 
 
 def hireEmployee(employee, tile, world):
