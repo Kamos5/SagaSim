@@ -129,3 +129,9 @@ def gotFriend(person, friend, world):
 def gotRival(person, rival, world):
     person.lifeEvents.append(f'{person.getFirstName()} found a rival {rival.getFirstName()} {rival.getLastName()} on the {world.getDay()}/{world.getMonth().value[1]}/{world.getYear()}')
 
+def lostFriend(person, friend, world):
+
+    person.lifeEvents.append(f'{person.getFirstName()} lost a friend {friend.getFirstName()} {friend.getLastName()} on the {world.getDay()}/{world.getMonth().value[1]}/{world.getYear()}')
+
+def lostRival(person, rival, world):
+    person.lifeEvents.append(f'{person.getFirstName()} lost a rival {rival.getFirstName()} {rival.getLastName()} on the {world.getDay()}/{world.getMonth().value[1]}/{world.getYear()}')

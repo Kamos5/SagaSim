@@ -327,11 +327,17 @@ class Person:
     def addFriends(self, newFriend, standing=0):
         self.friends.append(newFriend)
 
+    def removeFriend(self, friend):
+        self.friends.remove(friend)
+
     def getRivals(self):
         return self.rivals
 
     def addRivals(self, newRivals, standing=0):
         self.rivals.append(newRivals)
+
+    def removeRival(self, rival):
+        self.rivals.remove(rival)
 
     def getImpregnationMonth(self):
         return self.impregnationMonth

@@ -125,6 +125,17 @@ def deathProcedures(person, world):
     person.getAccommodation().removeHouseResident(person)
     person.setAccommodation(None)
 
+
+    for friend in person.getFriends():
+        friend.removeFriend(person)
+        PLEH.lostFriend(friend, person, world)
+        person.removeFriend(friend)
+
+    for rival in person.getFriends():
+        rival.removeRival(person)
+        PLEH.lostRival(rival, person, world)
+        person.removeRival(rival)
+
     # adding dead kids to the list od dead children
     # not needed. all kids that have Status.DEAD in child list is what we need
 
