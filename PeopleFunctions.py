@@ -131,7 +131,7 @@ def deathProcedures(person, world):
         PLEH.lostFriend(friend, person, world)
         person.removeFriend(friend)
 
-    for rival in person.getFriends():
+    for rival in person.getRivals():
         rival.removeRival(person)
         PLEH.lostRival(rival, person, world)
         person.removeRival(rival)
