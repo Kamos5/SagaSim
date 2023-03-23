@@ -373,6 +373,24 @@ class InspectorScreen:
                 self.inspectorScreenSurfaceObjsRect.append([self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding*2, self.lineHeight * self.writeLine + self.scroll_y)), deceased])
                 self.writeLine += 1
 
+        if len(object.getFriends()) > 0:
+            label = Label("Friends: ", 500, self.lineHeight, self.textFont)
+            self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding, self.lineHeight * self.writeLine + self.scroll_y))
+            self.writeLine += 1
+            for friend in object.getFriends():
+                label = Label(f'{friend.getFirstName()} {friend.getLastName()}', 500, self.lineHeight, self.textFont, True)
+                self.inspectorScreenSurfaceObjsRect.append([self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding*2, self.lineHeight * self.writeLine + self.scroll_y)), friend])
+                self.writeLine += 1
+
+        if len(object.getRivals()) > 0:
+            label = Label("Rivals: ", 500, self.lineHeight, self.textFont)
+            self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding, self.lineHeight * self.writeLine + self.scroll_y))
+            self.writeLine += 1
+            for rival in object.getRivals():
+                label = Label(f'{rival.getFirstName()} {rival.getLastName()}', 500, self.lineHeight, self.textFont, True)
+                self.inspectorScreenSurfaceObjsRect.append([self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding*2, self.lineHeight * self.writeLine + self.scroll_y)), rival])
+                self.writeLine += 1
+
         label = Label("Occupation: " + str(object.getOccupationName()), 500, self.lineHeight, self.textFont)
         self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding, self.lineHeight * self.writeLine + self.scroll_y))
         self.writeLine += 1

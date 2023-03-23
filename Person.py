@@ -318,20 +318,20 @@ class Person:
     def getKnownAssociates(self):
         return self.knownAssociates
 
-    def addKnownAssociates(self, newAssociate, standing):
-        self.knownAssociates.append([newAssociate, standing])
+    def addKnownAssociates(self, newAssociate, standing=0):
+        self.knownAssociates.append(newAssociate)
 
     def getFriends(self):
         return self.friends
 
-    def addFriends(self, newFriend, standing):
-        self.friends.append([newFriend, standing])
+    def addFriends(self, newFriend, standing=0):
+        self.friends.append(newFriend)
 
     def getRivals(self):
         return self.rivals
 
-    def addRivals(self, newRivals, standing):
-        self.rivals.append([newRivals, standing])
+    def addRivals(self, newRivals, standing=0):
+        self.rivals.append(newRivals)
 
     def getImpregnationMonth(self):
         return self.impregnationMonth

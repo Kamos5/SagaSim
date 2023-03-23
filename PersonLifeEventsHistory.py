@@ -121,3 +121,11 @@ def showingSymptomsOf(person, disease, world):
 def gotImmunityTo(person, disease, world):
 
     person.lifeEvents.append(f'{person.getFirstName()} got healed and got immunity from {disease["name"]} on the {world.getDay()}/{world.getMonth().value[1]}/{world.getYear()}')
+
+def gotFriend(person, friend, world):
+
+    person.lifeEvents.append(f'{person.getFirstName()} found a friend {friend.getFirstName()} {friend.getLastName()} on the {world.getDay()}/{world.getMonth().value[1]}/{world.getYear()}')
+
+def gotRival(person, rival, world):
+    person.lifeEvents.append(f'{person.getFirstName()} found a rival {rival.getFirstName()} {rival.getLastName()} on the {world.getDay()}/{world.getMonth().value[1]}/{world.getYear()}')
+

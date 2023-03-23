@@ -1,0 +1,65 @@
+{
+  "barren":{
+    "name": "Barren",
+    "namePL": "Jałowa",
+    "description": "Foundation here is barren.",
+    "yieldModifier": 20,
+    "chanceWeightModifier": 2
+  },
+  "extremelyPoor":{
+    "name": "Extremely poor",
+    "namePL": "Nadzwyczaj uboga",
+    "description": "Foundation here is extremely poor.",
+    "yieldModifier": 40,
+    "chanceWeightModifier": 5
+  },
+  "veryPoor": {
+    "name": "Very poor",
+    "namePL": "Bardzo uboga",
+    "description": "Foundation here is very poor.",
+    "yieldModifier": 60,
+    "chanceWeightModifier": 15
+  },
+  "poor": {
+    "name": "Poor",
+    "namePL": "Uboga",
+    "description": "Foundation here is poor.",
+    "yieldModifier": 80,
+    "chanceWeightModifier": 35
+  },
+  "medium": {
+    "name": "Medium",
+    "namePL": "Średnia",
+    "description": "Foundation here is medium.",
+    "yieldModifier": 80,
+    "chanceWeightModifier": 35
+  },
+  "good": {
+    "name": "Good",
+    "namePL": "Dobra",
+    "description": "Foundation here is good.",
+    "yieldModifier": 120,
+    "chanceWeightModifier": 85
+  },
+  "veryGood": {
+    "name": "Very good",
+    "namePL": "Bardzo dobra",
+    "description": "Foundation here is very good.",
+    "yieldModifier": 140,
+    "chanceWeightModifier": 95
+  },
+  "extremelyGood": {
+    "name": "Extremely Good",
+    "namePL": "Nadzwyczaj dobra",
+    "description": "Foundation here is extremely good.",
+    "yieldModifier": 160,
+    "chanceWeightModifier": 98
+  },
+  "fecund": {
+    "name": "Fecund",
+    "namePL": "Urodzajna",
+    "description": "Foundation here is extremely fertile.",
+    "yieldModifier": 180,
+    "chanceWeightModifier": 100
+  }
+}

@@ -1001,3 +1001,35 @@ def deathChangeFromGivingBirth(person, child, modifier=0):
 
     return motherDeath, childDeath
 
+def assosiatesFriendsAndFoes(world):
+
+    for region in world.getRegions():
+        for settlement in region.getSettlements():
+            for person in settlement.getEmployedResidentsList():
+                for fellowEmployee in person.getOccupation().getWorkerList():
+                    if fellowEmployee != person and fellowEmployee not in person.getKnownAssociates():
+                        person.addKnownAssociates(fellowEmployee)
+                        fellowEmployee.addKnownAssociates(person)
+                        person1LikenessIndicatorForPerson2 = Utils.checkForLikedTraisInPerson2(person, fellowEmployee)
+                        person2LikenessIndicatorForPerson1 = Utils.checkForLikedTraisInPerson2(fellowEmployee, person)
+                        if person1LikenessIndicatorForPerson2 > 0 and person2LikenessIndicatorForPerson1 > 0:
+                            if fellowEmployee not in person.getFriends():
+                                person.addFriends(fellowEmployee)
+                                PLEH.gotFriend(person, fellowEmployee, world)
+                            if person not in fellowEmployee.getFriends():
+                                fellowEmployee.addFriends(person)
+                                PLEH.gotFriend(fellowEmployee, person, world)
+
+                        person1DislikenessIndicatorForPerson2 = Utils.checkForDislikedTraisInPerson2(person, fellowEmployee)
+                        person2DislikenessIndicatorForPerson1 = Utils.checkForDislikedTraisInPerson2(fellowEmployee, person)
+                        if person1DislikenessIndicatorForPerson2 > 0 and person2DislikenessIndicatorForPerson1 > 0:
+                            if fellowEmployee not in person.getFriends():
+                                person.addRivals(fellowEmployee)
+                                PLEH.gotRival(person, fellowEmployee, world)
+                            if person not in fellowEmployee.getFriends():
+                                fellowEmployee.addRivals(person)
+                                PLEH.gotRival(fellowEmployee, person, world)
+
+
+
+

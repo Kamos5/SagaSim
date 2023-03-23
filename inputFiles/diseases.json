@@ -11,7 +11,7 @@
       "difficulty": 1,
       "daysToCure": 20
     },
-    "pneumonia":
+  "pneumonia":
     {
       "name": "Pneumonia",
       "namePL": "Zapalenie płuc",
@@ -23,7 +23,7 @@
       "difficulty": 1,
       "daysToCure": 30
     },
-      "tuberculosis":
+  "tuberculosis":
     {
       "name": "Tuberculosis",
       "namePL": "Gruźlica",
@@ -35,7 +35,7 @@
       "difficulty": 1,
       "daysToCure": 180
     },
-      "leprosy":
+  "leprosy":
     {
       "name": "Leprosy",
       "namePL": "Trąd",
@@ -47,7 +47,7 @@
       "difficulty": 1,
       "daysToCure": 10000000000
     },
-      "dysentry":
+  "dysentry":
     {
       "name": "Dysentry",
       "namePL": "Czerwonka",
@@ -59,7 +59,7 @@
       "difficulty": 1,
       "daysToCure": 5
     },
-      "malaria":
+  "malaria":
     {
       "name": "Malaria",
       "namePL": "Malaria",
@@ -71,7 +71,7 @@
       "difficulty": 1,
       "daysToCure": 10000000000
     },
-      "diphtheria":
+  "diphtheria":
     {
       "name": "Diphtheria",
       "namePL": "Błonica",
@@ -83,7 +83,7 @@
       "difficulty": 1,
       "daysToCure": 21
     },
-      "flu":
+  "flu":
     {
       "name": "Flu",
       "namePL": "Grypa",
@@ -95,7 +95,7 @@
       "difficulty": 1,
       "daysToCure": 7
     },
-      "Typhoid":
+  "typhoid":
     {
       "name": "Typhpid",
       "namePL": "Tyfus",
@@ -107,7 +107,7 @@
       "difficulty": 1,
       "daysToCure": 60
     },
-      "smallpox":
+  "smallpox":
     {
       "name": "Smallpox",
       "namePL": "Ospa",
@@ -131,7 +131,7 @@
       "difficulty": 1,
       "daysToCure": 10000000
     },
-      "anthrax":
+  "anthrax":
     {
       "name": "Anthrax",
       "namePL": "Wąglik",
@@ -143,7 +143,7 @@
       "difficulty": 1,
       "daysToCure": 60
     },
-      "commonCold":
+  "commonCold":
     {
       "name": "Common cold",
       "namePL": "Przeziębienie",

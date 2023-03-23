@@ -453,6 +453,23 @@ def printUpFamilyTree(tree, level=0, prefix=""):
     if tree.getRoot().getMother() is not None:
         printUpFamilyTree(tree.getMother(), level + 1, prefix + " ")
 
+def checkForLikedTraisInPerson2(person, person2):
+
+    likedTraites = 0
+    for trait in person2.getTraits():
+        if trait in person.getLikedTraits():
+            likedTraites += 1
+
+    return likedTraites
+
+def checkForDislikedTraisInPerson2(person, person2):
+
+    dislikedTraites = 0
+    for trait in person2.getTraits():
+        if trait in person.getDislikedTraits():
+            dislikedTraites += 1
+
+    return dislikedTraites
 
 def getTemperatureBasedOnDay(day):
 

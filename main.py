@@ -71,7 +71,7 @@ def running(world, manualOverride):
     settlementGoodsProdTime = Utils.timeFunction(timers, Events.settlementGoodsProduction, world)           #ONCE PER WEEK (ALWAYS ON MONDAYS)
     accommodationManagmentTime = Utils.timeFunction(timers, Events.accommodationManagment, world)           #ONCE PER WEEK (ALWAYS ON MONDAYS)
     updateAliveTime = Utils.timeFunction(timers, world.updateAlive)
-    associateManagementTime = Utils.timeFunction(False, Events.associateManagement, world)
+    associateManagementTime = Utils.timeFunction(True, Events.assosiatesFriendsAndFoes, world)
     makeHistoryTime = Utils.timeFunction(timers, world.makeHistory)
 
     end = time.perf_counter()
@@ -124,7 +124,8 @@ def main(popBreakLimit=None):
     world.setFamilies(initFamilies())
     world.setPeople(initPeople(world.getFamilies()))
 
-    world.diseases = IOtools.loadFiles()
+    world.diseases = IOtools.loadFiles('diseases')
+    world.foundations = IOtools.loadFiles('foundations')
 
     windowWidth = 1024
     windowHeight = 768
