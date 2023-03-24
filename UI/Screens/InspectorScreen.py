@@ -346,7 +346,11 @@ class InspectorScreen:
             self.inspectorScreenSurfaceObjsRect.append([self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding, self.lineHeight * self.writeLine + self.scroll_y)), object.getMother()])
             self.writeLine += 1
         if object.getSpouse() is not None:
-            label = Label("Spouse: " + str(object.getSpouse().getFirstName()) + " " + str(object.getSpouse().getLastName()), 500, self.lineHeight, self.textFont, True)
+            if object.getSpouse().getSex() == Enums.Sexes.FEMALE:
+                familyName = f' ({object.getSpouse().getFamilyName()})'
+            else:
+                familyName = f''
+            label = Label(f'Spouse: {object.getSpouse().getFirstName()} {object.getSpouse().getLastName()}{familyName}', 500, self.lineHeight, self.textFont, True)
             self.inspectorScreenSurfaceObjsRect.append([self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding, self.lineHeight * self.writeLine + self.scroll_y)), object.getSpouse()])
             self.writeLine += 1
             label = Label("Spouse relation: " + str(object.getSpouseRelation()), 500, self.lineHeight, self.textFont)
