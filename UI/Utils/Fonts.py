@@ -5,12 +5,13 @@ class Fonts:
 
     def __init__(self):
 
-        self.lineHeight = 20
-        self.generalFont = "calibri"
+        self.lineHeight = 22
+        self.fontSize = 16
+        self.generalFont = "segoeuisymbol"
         self.helpLineHeight = 25
         self.plotsLineHeight = 25
-        self.font1 = pygame.font.SysFont(self.generalFont, self.lineHeight)
-        self.font2 = pygame.font.SysFont(self.generalFont, self.lineHeight)
+        self.font1 = pygame.font.SysFont(self.generalFont, self.fontSize)
+        self.font2 = pygame.font.SysFont(self.generalFont, self.fontSize)
         self.helpFont = pygame.font.SysFont(self.generalFont, 25)
         self.plotsFont = pygame.font.SysFont(self.generalFont, 25)
 

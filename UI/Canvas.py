@@ -24,7 +24,7 @@ class Canvas:
     def redrawScreen(self):
 
         self.navbarWidth = self.windowWidth
-        self.navBarHeight = 26
+        self.navBarHeight = 28
         self.navBarWidthOffSet = 0
         self.navBarHeightOffSet = 0
         self.navBarPosX = 0
@@ -214,9 +214,11 @@ class Canvas:
 
                         if itemObj[1] == 'Favorite' and itemObj[2] not in self.favorites:
                             self.favorites.append(itemObj[2])
+                            itemObj[2].isInFavorite = True
                             return True, pausedPressed
                         if itemObj[1] == 'Favorite' and itemObj[2] in self.favorites:
                             self.favorites.remove(itemObj[2])
+                            itemObj[2].isInFavorite = False
                             return True, pausedPressed
                         if itemObj[1] == 'FamilyTree':
                             if not pausedPressed:
