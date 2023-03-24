@@ -201,6 +201,14 @@ def movingMarriedCoupleToNewHouse(person, newHouse, world):
             person.getSpouse().getSettlement().buildNewHouse(newHouse)
             fireSingleEmployee(person, world)
 
+        # parentChildrensList = person.getAliveChildrenList()
+        # for parentChild in parentChildrensList:
+        #     if parentChild.age < 15:
+        #         parentChild.getSettlement().decreasePopulation()
+        #         parentChild.getSettlement().removeResident(person)
+        #         parentChild.setSettlement(person.spouse.getSettlement())
+        #         parentChild.getSettlement().increasePopulation()
+        #         parentChild.getSettlement().addResident(person)
 
 
 def checkLDTraitsNumber(person):
