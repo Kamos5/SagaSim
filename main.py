@@ -71,7 +71,7 @@ def running(world, manualOverride):
     settlementGoodsProdTime = Utils.timeFunction(timers, Events.settlementGoodsProduction, world)           #ONCE PER WEEK (ALWAYS ON MONDAYS)
     accommodationManagmentTime = Utils.timeFunction(timers, Events.accommodationManagment, world)           #ONCE PER WEEK (ALWAYS ON MONDAYS)
     updateAliveTime = Utils.timeFunction(timers, world.updateAlive)
-    associateManagementTime = Utils.timeFunction(True, Events.assosiatesFriendsAndFoes, world)
+    associateManagementTime = Utils.timeFunction(timers, Events.assosiatesFriendsAndFoes, world)
     makeHistoryTime = Utils.timeFunction(timers, world.makeHistory)
 
     end = time.perf_counter()

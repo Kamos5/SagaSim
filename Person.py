@@ -322,6 +322,15 @@ class Person:
     def addKnownAssociates(self, newAssociate):
         self.knownAssociates.append(newAssociate)
 
+    def getLovers(self):
+        return self.lovers
+
+    def addLovers(self, lover):
+        self.lovers.append(lover)
+
+    def removeLover(self, lover):
+        self.lovers.remove(lover)
+
     def getFriends(self):
         return self.friends
 
