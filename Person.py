@@ -92,6 +92,7 @@ class Person:
         self.immunityTo = []
         self.currentDiseases = []
         self.infections = []
+        self.isInFavorite = False
         pass
 
     def setInitValues(self, familyName, yearOfBirth, age, randomLifespan, sex, hairColor, hairColorGen1, hairColorGen2, eyeColor, eyeColorGen1, eyeColorGen2, familyObj):
@@ -318,13 +319,13 @@ class Person:
     def getKnownAssociates(self):
         return self.knownAssociates
 
-    def addKnownAssociates(self, newAssociate, standing=0):
+    def addKnownAssociates(self, newAssociate):
         self.knownAssociates.append(newAssociate)
 
     def getFriends(self):
         return self.friends
 
-    def addFriends(self, newFriend, standing=0):
+    def addFriends(self, newFriend):
         self.friends.append(newFriend)
 
     def removeFriend(self, friend):
@@ -333,7 +334,7 @@ class Person:
     def getRivals(self):
         return self.rivals
 
-    def addRivals(self, newRivals, standing=0):
+    def addRivals(self, newRivals):
         self.rivals.append(newRivals)
 
     def removeRival(self, rival):
