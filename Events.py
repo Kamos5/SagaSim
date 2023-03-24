@@ -60,14 +60,20 @@ def increaseAge (world):
 
 def infectionsSpread (world):
 
+    timeAllPeopleArray = []
+    time1Array = []
+    time2Array = []
+    time3Array = []
     infectionsPerDay = 0
     # 1) infect with new diseases
     # 2) infect others (in house and workplace)
     # 2) move infection to sick phase
     # 3) process infection
-    for person in world.getPeople():
+    start0 = time.perf_counter()
+    for person in world.getAlivePeople():
         if person.lifeStatus == LifeStatus.ALIVE:
 
+            start1 = time.perf_counter()
             # 1)
             chanceForContractDisease = Utils.randomRange(1, 10_000_000)  # 1 in 1.000.000 / per day
             contractDiseaseThreshold = 1
@@ -89,7 +95,8 @@ def infectionsSpread (world):
                 else:
                     if InfectionsFunctions.checkIfInfected(person, randomInfection):
                         infectionsPerDay = InfectionsFunctions.addInfectionToPerson(person, randomInfection, world)
-
+            end1 = time.perf_counter()
+            start2 = time.perf_counter()
             if len(person.getInfections()) > 0:
                 for infection in person.getInfections()[0]:
                     if type(infection) is dict and infection['contagious']:
@@ -100,7 +107,8 @@ def infectionsSpread (world):
                         # 2b)
                         if person.getOccupation() is not None and len(person.getCurrentDiseases()) > 0:  # ONLY IF NOT SICK AKA CURRENT DISEASES > 0
                             infectionsPerDay = InfectionsFunctions.tryToInfectPeopleFromList(person, person.getOccupation().getWorkerList(), infection, world)
-
+            end2 = time.perf_counter()
+            start3 = time.perf_counter()
             # 3)
             if len(person.getInfections()) > 0:
                 infections, infDate = zip(*person.getInfections())
@@ -131,6 +139,16 @@ def infectionsSpread (world):
                                 PF.deathProcedures(person, world)
                                 break
 
+            end3 = time.perf_counter()
+
+            time1Array.append(end1-start1)
+            time2Array.append(end2-start2)
+            time3Array.append(end3-start3)
+    end0 = time.perf_counter()
+    print("Time0:" + str(end0-start0))
+    print("Time1:" + str(mean(time1Array)))
+    print("Time2:" + str(mean(time2Array)))
+    print("Time3:" + str(mean(time3Array)))
     infectionsPerPop = round(infectionsPerDay / len(world.getAlivePeople()), 2)
     print("Infections Per Day:" + str(infectionsPerDay))
     print("Infections Per Pop:" + str(infectionsPerPop))
@@ -812,7 +830,7 @@ def crime(world):
     crimeFailedTemp = 0
 
     for person in world.getAlivePeople():
-        randomChanceForCrime = Utils.randomRange(1, 10000)
+        randomChanceForCrime = Utils.randomRange(1, 1000)
         if randomChanceForCrime < 3 and (Traits.VENGEFUL in person.getTraits() or Traits.GREEDY in person.getTraits() or Traits.DECEITFUL in person.getTraits() and person.getOccupation() is None) and person.getAge() > 15 and person.getLifeStatus() == LifeStatus.ALIVE and person.getFreeWealth() < person.getSettlement().getAvarageResidentsWealth():
             randomPerson = Utils.randomFromCollection(person.getSettlement().getResidents())
             if randomPerson != person and randomPerson != person.spouse and randomPerson not in person.getAliveChildrenList():
