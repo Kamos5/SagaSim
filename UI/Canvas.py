@@ -97,6 +97,8 @@ class Canvas:
         self.showUpTree = False
         self.showDownTree = False
 
+        self.showFamilies = False
+
     def changeCanvasSize(self):
 
         self.windowHeight = self.windowHeight*2
@@ -141,13 +143,14 @@ class Canvas:
                         for person in settlement.getResidents():
                             self.listScreen.addSettler(person, self.lastFocusObj)
 
-        self.listScreen.addFamilies()
+        self.listScreen.addFamilies(world.getFamilies())
 
-        for family in world.getFamilies():
-            self.listScreen.addFamily(family, self.lastFocusObj)
-            if family.getUIExpand():
-                for person in family.getAliveMembersList():
-                    self.listScreen.addPerson(person, self.lastFocusObj)
+        if self.showFamilies:
+            for family in world.getFamilies():
+                self.listScreen.addFamily(family, self.lastFocusObj)
+                if family.getUIExpand():
+                    for person in family.getAliveMembersList():
+                        self.listScreen.addPerson(person, self.lastFocusObj)
 
         self.listScreen.addFavorites()
 
@@ -220,6 +223,8 @@ class Canvas:
                             self.favorites.remove(itemObj[2])
                             itemObj[2].isInFavorite = False
                             return True, pausedPressed
+                        if itemObj[1] == 'showFamilies':
+                            self.showFamilies = not self.showFamilies
                         if itemObj[1] == 'FamilyTree':
                             if not pausedPressed:
                                 pausedPressed = True

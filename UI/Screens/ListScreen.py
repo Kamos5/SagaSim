@@ -90,10 +90,10 @@ class ListScreen:
         self.writeLine += 1
 
 
-    def addFamilies(self):
+    def addFamilies(self, families):
 
-        label = Label("Families: ", 300, self.lineHeight, self.textFont)
-        self.listScreenSurface.blit(label.localSurface, (self.width * 0.05, self.lineHeight * self.writeLine + self.scroll_y))
+        label = Label(f'Families: ({len(families)})', 300, self.lineHeight, self.textFont, True)
+        self.listScreenSurfaceObjsRect.append([self.listScreenSurface.blit(label.localSurface, (self.width * 0.05, self.lineHeight * self.writeLine + self.scroll_y)), 'showFamilies'])
 
         self.writeLine += 1
 
