@@ -64,7 +64,7 @@ class PlotsScreen:
         else:
             self.plotsLabel = Label2("Population", self.textFont, True)
 
-        self.plotsScreenSurfaceObjsRect.append([self.plotsScreenSurface.blit(self.plotsLabel.localSurface, (self.width * 0.05, self.getVerticalPositioning())), Button('globalPopulation'),])
+        self.plotsScreenSurfaceObjsRect.append([self.plotsScreenSurface.blit(self.plotsLabel.localSurface, (self.width * 0.05, self.getVerticalPositioning())), Button('globalPopulation')])
 
         if isinstance(lastFocusObj, Button) and lastFocusObj.getButtonName() == 'eyes':
             self.plotsLabel = Label2("Eye Colour", self.textFont, True, lastFocusObj.getButtonFlag())

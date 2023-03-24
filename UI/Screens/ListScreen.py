@@ -1,7 +1,9 @@
 import pygame
 
+from UI.Utils.Button import Button
 from UI.Utils.Fonts import Fonts
 from UI.Utils.Label import Label
+from UI.Utils.Label2 import Label2
 from UI.Utils.TextField import TextField
 
 
@@ -26,6 +28,12 @@ class ListScreen:
         self.listScreenSurface = pygame.Surface([self.width, self.height - self.heightOffSet])
         self.listScreenSurfaceObjsRect = []
 
+        self.showFamilyAll = True
+        self.showFamilyAdults = False
+        self.showFamilyKids = False
+        self.showEmployed = False
+        self.showUnemployed = False
+
     def getScroll_y(self):
 
         return self.scroll_y
@@ -43,18 +51,42 @@ class ListScreen:
         self.listScreenSurface.fill(self.screenColor, (0, 0, self.width, self.height))
         self.listScreenSurfaceObjsRect = []
 
+    def setAllButtonsFalse(self):
+
+        self.showFamilyAll = False
+        self.showFamilyAdults = False
+        self.showFamilyKids = False
+        self.showEmployed = False
+        self.showUnemployed = False
+
+    def changeFamilyButtons(self, buttonClicked):
+
+        if buttonClicked == 'allFamilySettlers':
+            self.setAllButtonsFalse()
+            self.showFamilyAll = True
+        elif buttonClicked == 'familyAdults':
+            self.showFamilyAll = False
+            self.showFamilyAdults = not self.showFamilyAdults
+        elif buttonClicked == 'familyKids':
+            self.showFamilyAll = False
+            self.showFamilyKids = not self.showFamilyKids
+        elif buttonClicked == 'employed':
+            self.showFamilyAll = False
+            self.showEmployed = not self.showEmployed
+        elif buttonClicked == 'unemployed':
+            self.showFamilyAll = False
+            self.showUnemployed = not self.showUnemployed
+
+
     def getInspectorScreenSurface(self):
         return self.listScreenSurface
 
-    def addRegions(self, world, focusObj):
-
-        label = Label(f'Regions: ({(len(world.getAlivePeople()))})', 200, self.lineHeight, self.textFont)
-        self.listScreenSurface.blit(label.localSurface, (self.width * 0.05, self.lineHeight * self.writeLine + self.scroll_y))
+    def addSearch(self):
 
         label = Label("Search: ", 80, self.lineHeight, self.textFont)
         self.listScreenSurface.blit(label.localSurface, (self.width * 0.55, self.lineHeight * self.writeLine + self.scroll_y))
 
-        #Search field
+        # Search field
         if self.textSearchField is None:
             textField = TextField(180, self.lineHeight, self.textFont)
         else:
@@ -65,6 +97,18 @@ class ListScreen:
         self.textSearchField = textField
         self.writeLine += 1
 
+    def addRegions(self, world, focusObj):
+
+        label = Label(f'Regions: ({(len(world.getAlivePeople()))})', 200, self.lineHeight, self.textFont)
+        self.listScreenSurface.blit(label.localSurface, (self.width * 0.05, self.lineHeight * self.writeLine + self.scroll_y))
+        self.showAllSettlers()
+        self.showOnlyAdults()
+        self.showOnlyKids()
+        self.showEmployedPeople()
+        self.showUnemployedPeople()
+
+        self.writeLine += 1
+
     def addRegion(self, region, focusObj):
 
         if focusObj == region:
@@ -73,6 +117,7 @@ class ListScreen:
             label = Label(f'{region.getRegionName()} ({(region.getCurrentTemperature())} °C)', 200, self.lineHeight, self.textFont, True)
 
         self.listScreenSurfaceObjsRect.append([self.listScreenSurface.blit(label.localSurface, (self.width * 0.10, self.lineHeight * self.writeLine + self.scroll_y)), region])
+
         self.writeLine += 1
 
 
@@ -89,6 +134,35 @@ class ListScreen:
 
         self.writeLine += 1
 
+    def showAllSettlers(self):
+
+        label = Label(f'All', 25, self.lineHeight, self.textFont, True)
+        label.changeColorBasedOnFlag(self.showFamilyAll)
+        self.listScreenSurfaceObjsRect.append([self.listScreenSurface.blit(label.localSurface, ((self.width * 0.15)+400, self.lineHeight * self.writeLine + self.scroll_y)), Button('allFamilySettlers')])
+
+    def showOnlyAdults(self):
+
+        label = Label(f'Adults', 50, self.lineHeight, self.textFont, True)
+        label.changeColorBasedOnFlag(self.showFamilyAdults)
+        self.listScreenSurfaceObjsRect.append([self.listScreenSurface.blit(label.localSurface, ((self.width * 0.15)+425, self.lineHeight * self.writeLine + self.scroll_y)), Button('familyAdults')])
+
+    def showOnlyKids(self):
+
+        label = Label(f'Kids', 35, self.lineHeight, self.textFont, True)
+        label.changeColorBasedOnFlag(self.showFamilyKids)
+        self.listScreenSurfaceObjsRect.append([self.listScreenSurface.blit(label.localSurface, ((self.width * 0.15)+475, self.lineHeight * self.writeLine + self.scroll_y)), Button('familyKids')])
+
+    def showEmployedPeople(self):
+
+        label = Label(f'Employed', 75, self.lineHeight, self.textFont, True)
+        label.changeColorBasedOnFlag(self.showEmployed)
+        self.listScreenSurfaceObjsRect.append([self.listScreenSurface.blit(label.localSurface, ((self.width * 0.15)+510, self.lineHeight * self.writeLine + self.scroll_y)), Button('employed')])
+
+    def showUnemployedPeople(self):
+
+        label = Label(f'Unemployed', 95, self.lineHeight, self.textFont, True)
+        label.changeColorBasedOnFlag(self.showUnemployed)
+        self.listScreenSurfaceObjsRect.append([self.listScreenSurface.blit(label.localSurface, ((self.width * 0.15)+585, self.lineHeight * self.writeLine + self.scroll_y)), Button('unemployed')])
 
     def addFamilies(self, families):
 

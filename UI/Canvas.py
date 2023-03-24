@@ -125,6 +125,7 @@ class Canvas:
             self.lastFocusObj = self.focusObj[len(self.focusObj)-1]
 
         self.listScreen.resetWriteLine()
+        self.listScreen.addSearch()
         self.listScreen.addRegions(world, self.lastFocusObj)
         self.helpScreen.resetWriteLine()
         self.plotsScreen.resetWriteLine()
@@ -141,7 +142,16 @@ class Canvas:
                     self.listScreen.addSettlement(settlement, self.lastFocusObj)
                     if settlement.getUIExpand():
                         for person in settlement.getResidents():
-                            self.listScreen.addSettler(person, self.lastFocusObj)
+                            if self.listScreen.showFamilyAll:
+                                self.listScreen.addSettler(person, self.lastFocusObj)
+                            if person.getAge() >= 15 and self.listScreen.showFamilyAdults:
+                                self.listScreen.addSettler(person, self.lastFocusObj)
+                            if person.getAge() < 15 and self.listScreen.showFamilyKids:
+                                self.listScreen.addSettler(person, self.lastFocusObj)
+                            if person.getOccupation() is not None and self.listScreen.showEmployed:
+                                self.listScreen.addSettler(person, self.lastFocusObj)
+                            if person.getOccupation() is None and self.listScreen.showUnemployed:
+                                self.listScreen.addSettler(person, self.lastFocusObj)
 
         self.listScreen.addFamilies(world.getFamilies())
 
@@ -150,7 +160,16 @@ class Canvas:
                 self.listScreen.addFamily(family, self.lastFocusObj)
                 if family.getUIExpand():
                     for person in family.getAliveMembersList():
-                        self.listScreen.addPerson(person, self.lastFocusObj)
+                        if self.listScreen.showFamilyAll:
+                            self.listScreen.addPerson(person, self.lastFocusObj)
+                        if person.getAge() >= 15 and self.listScreen.showFamilyAdults:
+                            self.listScreen.addPerson(person, self.lastFocusObj)
+                        if person.getAge() < 15 and self.listScreen.showFamilyKids:
+                            self.listScreen.addPerson(person, self.lastFocusObj)
+                        if person.getOccupation() is not None and self.listScreen.showEmployed:
+                            self.listScreen.addPerson(person, self.lastFocusObj)
+                        if person.getOccupation() is None and self.listScreen.showUnemployed:
+                            self.listScreen.addPerson(person, self.lastFocusObj)
 
         self.listScreen.addFavorites()
 
@@ -212,8 +231,12 @@ class Canvas:
                 for itemObj in itemsObj:
                     if isinstance(itemObj[1], TextField):
                         itemObj[1].deactivate()
+
                     #To offset position on main screen
                     if itemObj[0].collidepoint([mouseX-itemObjRectScreen.screenPosX, mouseY-itemObjRectScreen.screenPosY]):
+
+                        if isinstance(itemObj[1], Button):
+                            self.listScreen.changeFamilyButtons(itemObj[1].getButtonName())
 
                         if itemObj[1] == 'Favorite' and itemObj[2] not in self.favorites:
                             self.favorites.append(itemObj[2])
