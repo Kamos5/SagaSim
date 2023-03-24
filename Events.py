@@ -75,7 +75,7 @@ def infectionsSpread (world):
 
             start1 = time.perf_counter()
             # 1)
-            chanceForContractDisease = Utils.randomRange(1, 10_000_000)  # 1 in 1.000.000 / per day
+            chanceForContractDisease = Utils.randomRange(1, 100_000)  # 1 in 1.000.000 / per day
             contractDiseaseThreshold = 1
 
             contractDiseaseThreshold = (contractDiseaseThreshold * person.getGeneralHealth().value[0]) + 2
@@ -384,9 +384,9 @@ def changeRelationToFromSpouse(person):
         person.getSpouse().setSpouseRelation(Parameters.spouseHomoSexualityMod)
 
     person.changeSpouseRelation(person.getSpouseNumberOfLikedTraits() * Parameters.spouseLikedTraitsMod)
-    person.changeSpouseRelation(-person.getSpouseNumberOfDislikedTraits() * Parameters.spouseDislikedTraitsMod)
+    person.changeSpouseRelation(person.getSpouseNumberOfDislikedTraits() * Parameters.spouseDislikedTraitsMod)
     person.getSpouse().changeSpouseRelation(person.getSpouse().getSpouseNumberOfLikedTraits() * Parameters.spouseLikedTraitsMod)
-    person.getSpouse().changeSpouseRelation(-person.getSpouse().getSpouseNumberOfDislikedTraits() * Parameters.spouseDislikedTraitsMod)
+    person.getSpouse().changeSpouseRelation(person.getSpouse().getSpouseNumberOfDislikedTraits() * Parameters.spouseDislikedTraitsMod)
 
 def changeRelationFromLovemaking(person, lover):
 

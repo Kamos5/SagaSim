@@ -23,15 +23,17 @@ def addInfectionToPerson(infected, infection, world, carrier=None):
 
 def checkIfWillInfect(potentiallyInfected, infection):
 
-    if len(potentiallyInfected.getInfections()) == 0:
-        return True
-    else:
-        spreadingChance = Utils.randomRange(1, 100)
-        infections, infDate = zip(*potentiallyInfected.getInfections())
-        if spreadingChance < infection['contagionChange'] and infection not in infections:
+    spreadingChance = Utils.randomRange(1, 500)
+    if spreadingChance < infection['contagionChange']:
+        if len(potentiallyInfected.getInfections()) == 0:
             return True
         else:
-            return False
+            infections, infDate = zip(*potentiallyInfected.getInfections())
+            if infection not in infections:
+                return True
+            else:
+                return False
+
 
 def tryToInfectPeopleFromList(carrier, list, infection, world):
 

@@ -33,6 +33,7 @@ class ListScreen:
         self.showFamilyKids = False
         self.showEmployed = False
         self.showUnemployed = False
+        self.showSick = False
 
     def getScroll_y(self):
 
@@ -57,6 +58,7 @@ class ListScreen:
         self.showFamilyAdults = False
         self.showFamilyKids = False
         self.showEmployed = False
+        self.showSick = False
         self.showUnemployed = False
 
     def changeFamilyButtons(self, buttonClicked):
@@ -76,7 +78,9 @@ class ListScreen:
         elif buttonClicked == 'unemployed':
             self.showFamilyAll = False
             self.showUnemployed = not self.showUnemployed
-
+        elif buttonClicked == 'sick':
+            self.showFamilyAll = False
+            self.showSick = not self.showSick
 
     def getInspectorScreenSurface(self):
         return self.listScreenSurface
@@ -106,6 +110,7 @@ class ListScreen:
         self.showOnlyKids()
         self.showEmployedPeople()
         self.showUnemployedPeople()
+        self.showSickPeople()
 
         self.writeLine += 1
 
@@ -163,6 +168,12 @@ class ListScreen:
         label = Label(f'Unemployed', 95, self.lineHeight, self.textFont, True)
         label.changeColorBasedOnFlag(self.showUnemployed)
         self.listScreenSurfaceObjsRect.append([self.listScreenSurface.blit(label.localSurface, ((self.width * 0.15)+585, self.lineHeight * self.writeLine + self.scroll_y)), Button('unemployed')])
+
+    def showSickPeople(self):
+
+        label = Label(f'Sick', 35, self.lineHeight, self.textFont, True)
+        label.changeColorBasedOnFlag(self.showSick)
+        self.listScreenSurfaceObjsRect.append([self.listScreenSurface.blit(label.localSurface, ((self.width * 0.15)+680, self.lineHeight * self.writeLine + self.scroll_y)), Button('sick')])
 
     def addFamilies(self, families):
 

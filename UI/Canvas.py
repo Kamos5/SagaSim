@@ -141,17 +141,7 @@ class Canvas:
                 for settlement in region.getSettlements():
                     self.listScreen.addSettlement(settlement, self.lastFocusObj)
                     if settlement.getUIExpand():
-                        for person in settlement.getResidents():
-                            if self.listScreen.showFamilyAll:
-                                self.listScreen.addSettler(person, self.lastFocusObj)
-                            if person.getAge() >= 15 and self.listScreen.showFamilyAdults:
-                                self.listScreen.addSettler(person, self.lastFocusObj)
-                            if person.getAge() < 15 and self.listScreen.showFamilyKids:
-                                self.listScreen.addSettler(person, self.lastFocusObj)
-                            if person.getOccupation() is not None and self.listScreen.showEmployed:
-                                self.listScreen.addSettler(person, self.lastFocusObj)
-                            if person.getOccupation() is None and self.listScreen.showUnemployed:
-                                self.listScreen.addSettler(person, self.lastFocusObj)
+                        self.filterBasedOnParamSettler(settlement.getResidents(), self.listScreen)
 
         self.listScreen.addFamilies(world.getFamilies())
 
@@ -159,17 +149,7 @@ class Canvas:
             for family in world.getFamilies():
                 self.listScreen.addFamily(family, self.lastFocusObj)
                 if family.getUIExpand():
-                    for person in family.getAliveMembersList():
-                        if self.listScreen.showFamilyAll:
-                            self.listScreen.addPerson(person, self.lastFocusObj)
-                        if person.getAge() >= 15 and self.listScreen.showFamilyAdults:
-                            self.listScreen.addPerson(person, self.lastFocusObj)
-                        if person.getAge() < 15 and self.listScreen.showFamilyKids:
-                            self.listScreen.addPerson(person, self.lastFocusObj)
-                        if person.getOccupation() is not None and self.listScreen.showEmployed:
-                            self.listScreen.addPerson(person, self.lastFocusObj)
-                        if person.getOccupation() is None and self.listScreen.showUnemployed:
-                            self.listScreen.addPerson(person, self.lastFocusObj)
+                    self.filterBasedOnParamPerson(family.getAliveMembersList(), self.listScreen)
 
         self.listScreen.addFavorites()
 
@@ -328,3 +308,47 @@ class Canvas:
 
 
         return pausedPressed
+
+    def filterBasedOnParamSettler(self, collection, screenList):
+
+        for person in collection:
+            if screenList.showFamilyAll:
+                screenList.addSettler(person, self.lastFocusObj)
+                continue
+            if person.getAge() >= 15 and screenList.showFamilyAdults:
+                screenList.addSettler(person, self.lastFocusObj)
+                continue
+            if person.getAge() < 15 and screenList.showFamilyKids:
+                screenList.addSettler(person, self.lastFocusObj)
+                continue
+            if person.getOccupation() is not None and screenList.showEmployed:
+                screenList.addSettler(person, self.lastFocusObj)
+                continue
+            if person.getOccupation() is None and screenList.showUnemployed:
+                screenList.addSettler(person, self.lastFocusObj)
+                continue
+            if len(person.getCurrentDiseases()) > 0 and screenList.showSick:
+                screenList.addSettler(person, self.lastFocusObj)
+                continue
+
+    def filterBasedOnParamPerson(self, collection, screenList):
+
+        for person in collection:
+            if screenList.showFamilyAll:
+                screenList.addPerson(person, self.lastFocusObj)
+                continue
+            if person.getAge() >= 15 and screenList.showFamilyAdults:
+                screenList.addPerson(person, self.lastFocusObj)
+                continue
+            if person.getAge() < 15 and screenList.showFamilyKids:
+                screenList.addPerson(person, self.lastFocusObj)
+                continue
+            if person.getOccupation() is not None and screenList.showEmployed:
+                screenList.addPerson(person, self.lastFocusObj)
+                continue
+            if person.getOccupation() is None and screenList.showUnemployed:
+                screenList.addPerson(person, self.lastFocusObj)
+                continue
+            if len(person.getCurrentDiseases()) > 0 and screenList.showSick:
+                screenList.addPerson(person, self.lastFocusObj)
+                continue
