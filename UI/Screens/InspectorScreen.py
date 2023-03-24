@@ -24,6 +24,7 @@ class InspectorScreen:
         self.heightOffSet = heightOffSet
         self.font = Fonts()
         self.textFont = self.font.getFont2()
+        self.symbolFont = self.font.getSymbolFont()
         self.lineHeight = self.font.getLineHeight()
         self.scroll_y = 0
         self.screenPosX = screenPosX
@@ -256,11 +257,12 @@ class InspectorScreen:
 
         label = Label("Name: " + str(object.getFirstName()), 500, self.lineHeight, self.textFont)
         self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding, self.lineHeight * self.writeLine + self.scroll_y))
-        label = Label("☆Favorite☆", 95, self.lineHeight, self.textFont, True)
-        label.changeColorBasedOnFlag(object.isInFavorite)
 
+        label = Label("☆☆☆", 50, self.lineHeight, self.symbolFont, True)
+        label.changeColorBasedOnFlag(object.isInFavorite)
         self.inspectorScreenSurfaceObjsRect.append([self.inspectorScreenSurface.blit(label.localSurface, (self.width-400, self.lineHeight * self.writeLine + self.scroll_y)), 'Favorite', object])
         self.writeLine += 1
+
         label = Label("Last name: " + str(object.getLastName()), 500, self.lineHeight, self.textFont)
         self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding, self.lineHeight * self.writeLine + self.scroll_y))
         self.writeLine += 1

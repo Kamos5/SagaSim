@@ -137,7 +137,7 @@ slavicFamilyNames = [
     'Poroshenko',
     'Řezník',
     'Rosya',
-    'Růžička',
+    'Ružička',
     'Ryba',
     'Skála',
     'Slavík',
