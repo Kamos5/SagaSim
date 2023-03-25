@@ -182,6 +182,8 @@ def main(popBreakLimit=None):
                 for event in pygame.event.get():
                     pausedPressed = pygameEvents(event, canvas, pausedPressed)
 
+                    # print(time.perf_counter()) #TODO OGARNAC
+
 
 
         pygame.display.update()  # Call this only once per loop

@@ -135,3 +135,11 @@ def lostFriend(person, friend, world):
 
 def lostRival(person, rival, world):
     person.lifeEvents.append(f'{person.getFirstName()} lost a rival {rival.getFirstName()} {rival.getLastName()} on the {world.getDay()}/{world.getMonth().value[1]}/{world.getYear()}')
+
+def gotLover(person, lover, world):
+
+    person.lifeEvents.append(f'{person.getFirstName()} found a lover {lover.getFirstName()} {lover.getLastName()} on the {world.getDay()}/{world.getMonth().value[1]}/{world.getYear()}')
+
+def lostLover(person, lover, world):
+
+    person.lifeEvents.append(f'{person.getFirstName()} lost a lover {lover.getFirstName()} {lover.getLastName()} on the {world.getDay()}/{world.getMonth().value[1]}/{world.getYear()}')

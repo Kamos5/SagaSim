@@ -88,6 +88,9 @@ slavicSettlementsNames = [
     'Novgorod'
 
 ]
+
+
+
 activeNames = []
 abandonedSettlements = []
 

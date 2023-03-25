@@ -1,3 +1,4 @@
+import Enums
 from Person import Person as PersonObj
 import Utils
 import NameGenerator
@@ -136,6 +137,11 @@ def deathProcedures(person, world):
         PLEH.lostRival(rival, person, world)
         person.removeRival(rival)
 
+    for lover in person.getLovers():
+        PLEH.gotLover(lover, person, world)
+        lover.removeLover(person)
+        person.removeLover(lover)
+
     # adding dead kids to the list od dead children
     # not needed. all kids that have Status.DEAD in child list is what we need
 
@@ -148,3 +154,63 @@ def retirement(person,world):
         person.setOccupation(None)
         person.setOccupationName("Retired")
         PLEH.retired(person, world)
+
+def canBeLover(person1, person2):
+
+    if person1.getSexuality() == 'homo' and person2.getSexuality() == person1.getSexuality() and person2.getSex() == person1.getSex():
+        return True
+
+    if person1.getSexuality() == 'hetero' and person2.getSexuality() == person2.getSexuality() and person1.getSex() != person2.getSex():
+        if toBeLoverCounter(person1) > 0 and toBeLoverCounter(person2) > 0:
+            return True
+        else:
+            return False
+
+def toBeLoverCounter(person):
+
+    loverCounter = 0
+    if Enums.Traits.LUSTFUL in person.getTraits():
+        loverCounter += 3
+
+    if Enums.Traits.CHASTE in person.getTraits():
+        loverCounter -= 3
+
+    if Enums.Traits.DECEITFUL in person.getTraits():
+        loverCounter += 2
+
+    if Enums.Traits.HONEST in person.getTraits():
+        loverCounter += 2
+
+    if Enums.Traits.AMBITIOUS in person.getTraits():
+        loverCounter += 1
+
+    if Enums.Traits.CONTENT in person.getTraits():
+        loverCounter -= 1
+
+    if Enums.Traits.GLUTTONOUS in person.getTraits():
+        loverCounter += 1
+
+    if Enums.Traits.TEMPERATE in person.getTraits():
+        loverCounter -= 1
+
+    if Enums.Traits.TRUSTING in person.getTraits():
+        loverCounter += 1
+
+    if Enums.Traits.PARANOID in person.getTraits():
+        loverCounter -= 1
+
+    if Enums.Traits.CYNICAL in person.getTraits():
+        loverCounter += 2
+
+    if Enums.Traits.ZEALOUS in person.getTraits():
+        loverCounter -= 2
+
+    return loverCounter
+
+def checkAndAddPersonToLovers(person, lover, world):
+    if lover not in person.getLovers():
+        person.addLover(lover)
+        PLEH.gotLover(person, lover, world)
+    if person not in lover.getLovers():
+        lover.addLover(person)
+        PLEH.gotLover(lover, person, world)

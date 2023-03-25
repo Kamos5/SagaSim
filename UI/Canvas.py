@@ -210,7 +210,7 @@ class Canvas:
                 mouseX, mouseY = pygame.mouse.get_pos()
                 for itemObj in itemsObj:
                     if isinstance(itemObj[1], TextField):
-                        itemObj[1].deactivate()
+                          itemObj[1].deactivate()
 
                     #To offset position on main screen
                     if itemObj[0].collidepoint([mouseX-itemObjRectScreen.screenPosX, mouseY-itemObjRectScreen.screenPosY]):
@@ -312,43 +312,49 @@ class Canvas:
     def filterBasedOnParamSettler(self, collection, screenList):
 
         for person in collection:
-            if screenList.showFamilyAll:
+            if screenList.showFamilyAllFlag:
                 screenList.addSettler(person, self.lastFocusObj)
                 continue
-            if person.getAge() >= 15 and screenList.showFamilyAdults:
+            if person.getAge() >= 15 and screenList.showFamilyAdultsFlag:
                 screenList.addSettler(person, self.lastFocusObj)
                 continue
-            if person.getAge() < 15 and screenList.showFamilyKids:
+            if person.getAge() < 15 and screenList.showFamilyKidsFlag:
                 screenList.addSettler(person, self.lastFocusObj)
                 continue
-            if person.getOccupation() is not None and screenList.showEmployed:
+            if person.getOccupation() is not None and screenList.showEmployedFlag:
                 screenList.addSettler(person, self.lastFocusObj)
                 continue
-            if person.getOccupation() is None and screenList.showUnemployed:
+            if person.getOccupation() is None and screenList.showUnemployedFlag:
                 screenList.addSettler(person, self.lastFocusObj)
                 continue
-            if len(person.getCurrentDiseases()) > 0 and screenList.showSick:
+            if len(person.getCurrentDiseases()) > 0 and screenList.showSickFlag:
+                screenList.addSettler(person, self.lastFocusObj)
+                continue
+            if len(person.getLovers()) > 0 and screenList.showWithLoversFlag:
                 screenList.addSettler(person, self.lastFocusObj)
                 continue
 
     def filterBasedOnParamPerson(self, collection, screenList):
 
         for person in collection:
-            if screenList.showFamilyAll:
+            if screenList.showFamilyAllFlag:
                 screenList.addPerson(person, self.lastFocusObj)
                 continue
-            if person.getAge() >= 15 and screenList.showFamilyAdults:
+            if person.getAge() >= 15 and screenList.showFamilyAdultsFlag:
                 screenList.addPerson(person, self.lastFocusObj)
                 continue
-            if person.getAge() < 15 and screenList.showFamilyKids:
+            if person.getAge() < 15 and screenList.showFamilyKidsFlag:
                 screenList.addPerson(person, self.lastFocusObj)
                 continue
-            if person.getOccupation() is not None and screenList.showEmployed:
+            if person.getOccupation() is not None and screenList.showEmployedFlag:
                 screenList.addPerson(person, self.lastFocusObj)
                 continue
-            if person.getOccupation() is None and screenList.showUnemployed:
+            if person.getOccupation() is None and screenList.showUnemployedFlag:
                 screenList.addPerson(person, self.lastFocusObj)
                 continue
-            if len(person.getCurrentDiseases()) > 0 and screenList.showSick:
+            if len(person.getCurrentDiseases()) > 0 and screenList.showSickFlag:
+                screenList.addPerson(person, self.lastFocusObj)
+                continue
+            if len(person.getLovers()) > 0 and screenList.showWithLoversFlag:
                 screenList.addPerson(person, self.lastFocusObj)
                 continue

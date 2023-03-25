@@ -69,21 +69,21 @@ class FamilyTreeScreen:
         screenYPosition = self.lineHeight * self.writeLine + self.scroll_y
         lifeSymbol = ""
         if tree.getRoot().getLifeStatus() == Enums.LifeStatus.DEAD:
-            lifeSymbol = "†"
+            lifeSymbol = "† "
 
         if level == 0:
             if tree.getRoot().getSpouse() != None:
-                labelString = (prefix + "" + tree.getRoot().getFirstName() + " " + lifeSymbol + " " + tree.getRoot().getLastName() + " (" + str(tree.getRoot().getYearOfBirth()) + "-" + str(tree.getRoot().getYearOfDeath()) + ")" + " Spouse:" + tree.getRoot().getSpouse().getFirstName() + " " + tree.getRoot().getSpouse().getFamilyName() + " (" + str(tree.getRoot().getSpouse().getYearOfBirth()) + "-" + str(tree.getRoot().getSpouse().getYearOfDeath()) + ")")
+                labelString = (prefix + "" + tree.getRoot().getFirstName() + " " + lifeSymbol + "" + tree.getRoot().getLastName() + " (" + str(tree.getRoot().getYearOfBirth()) + "-" + str(tree.getRoot().getYearOfDeath()) + ")" + " Spouse:" + tree.getRoot().getSpouse().getFirstName() + " " + tree.getRoot().getSpouse().getFamilyName() + " (" + str(tree.getRoot().getSpouse().getYearOfBirth()) + "-" + str(tree.getRoot().getSpouse().getYearOfDeath()) + ")")
             else:
-                labelString = (prefix + "" + tree.getRoot().getFirstName() + " " + lifeSymbol + " " + tree.getRoot().getLastName() + " (" + str(tree.getRoot().getYearOfBirth()) + "-" + str(tree.getRoot().getYearOfDeath()) + ")")
+                labelString = (prefix + "" + tree.getRoot().getFirstName() + " " + lifeSymbol + "" + tree.getRoot().getLastName() + " (" + str(tree.getRoot().getYearOfBirth()) + "-" + str(tree.getRoot().getYearOfDeath()) + ")")
         else:
 
             if tree.getRoot().getFather() is not None and tree.getRoot().getMother() is not None:
 
-                labelString = (prefix + "" + tree.getRoot().getFirstName() + " " + lifeSymbol + " " + tree.getRoot().getLastName() + " (" + str(tree.getRoot().getYearOfBirth()) + "-" + str(tree.getRoot().getYearOfDeath()) + ")" + " <" + tree.getRoot().getFather().getFirstName() + " " + tree.getRoot().getFather().getLastName() + " + " + tree.getRoot().getMother().getFirstName() + " " + tree.getRoot().getMother().getFamilyName() + ">")
+                labelString = (prefix + "" + tree.getRoot().getFirstName() + " " + lifeSymbol + "" + tree.getRoot().getLastName() + " (" + str(tree.getRoot().getYearOfBirth()) + "-" + str(tree.getRoot().getYearOfDeath()) + ")" + " <" + tree.getRoot().getFather().getFirstName() + " " + tree.getRoot().getFather().getLastName() + " + " + tree.getRoot().getMother().getFirstName() + " " + tree.getRoot().getMother().getFamilyName() + ">")
 
             else:
-                labelString = (prefix + "" + tree.getRoot().getFirstName() + " " + lifeSymbol + " " + tree.getRoot().getLastName() + " (" + str(tree.getRoot().getYearOfBirth()) + "-" + str(tree.getRoot().getYearOfDeath()) + ")")
+                labelString = (prefix + "" + tree.getRoot().getFirstName() + " " + lifeSymbol + "" + tree.getRoot().getLastName() + " (" + str(tree.getRoot().getYearOfBirth()) + "-" + str(tree.getRoot().getYearOfDeath()) + ")")
 
 
         if self.height >= screenYPosition:
@@ -105,7 +105,7 @@ class FamilyTreeScreen:
         lifeSymbol = ""
         if tree is not None:
             if tree.getRoot().getLifeStatus() == Enums.LifeStatus.DEAD:
-                lifeSymbol = "†"
+                lifeSymbol = "† "
 
             if len(tree.getRoot().getAllChildren()) > 0:
                 if tree.getRoot().getSex() == Enums.Sexes.MALE:
@@ -116,7 +116,7 @@ class FamilyTreeScreen:
             if level == 0:
                 sexPrefix = ""
 
-            rootString = prefix + sexPrefix + tree.getRoot().getFirstName() + " " + lifeSymbol + " " + tree.getRoot().getLastName() + " (" + str(tree.getRoot().getYearOfBirth()) + "-" + str(tree.getRoot().getYearOfDeath()) + ")"
+            rootString = prefix + sexPrefix + tree.getRoot().getFirstName() + " " + lifeSymbol + tree.getRoot().getLastName() + " (" + str(tree.getRoot().getYearOfBirth()) + "-" + str(tree.getRoot().getYearOfDeath()) + ")"
             siblingString = ""
 
             if len(tree.getSiblings()) > 0:

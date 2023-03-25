@@ -141,14 +141,14 @@ def infectionsSpread (world):
 
             end3 = time.perf_counter()
 
-            time1Array.append(end1-start1)
-            time2Array.append(end2-start2)
-            time3Array.append(end3-start3)
-    end0 = time.perf_counter()
-    print("Time0:" + str(end0-start0))
-    print("Time1:" + str(mean(time1Array)))
-    print("Time2:" + str(mean(time2Array)))
-    print("Time3:" + str(mean(time3Array)))
+    #         time1Array.append(end1-start1)
+    #         time2Array.append(end2-start2)
+    #         time3Array.append(end3-start3)
+    # end0 = time.perf_counter()
+    # print("Time0:" + str(end0-start0))
+    # print("Time1:" + str(mean(time1Array)))
+    # print("Time2:" + str(mean(time2Array)))
+    # print("Time3:" + str(mean(time3Array)))
     infectionsPerPop = round(infectionsPerDay / len(world.getAlivePeople()), 2)
     print("Infections Per Day:" + str(infectionsPerDay))
     print("Infections Per Pop:" + str(infectionsPerPop))
@@ -182,8 +182,8 @@ def loveMaking (world):
     for person in world.getAlivePeople():
         if person.sex == Sexes.FEMALE and 15 <= person.age and (person.spouse is not None or len(person.getLovers()) > 0) and person.lifeStatus == LifeStatus.ALIVE and not person.isPregnant:
 
-            lovemakingWithSpouse = 99
-            lovemakingWithLovers = 1
+            lovemakingWithSpouse = 90       #90
+            lovemakingWithLovers = 10     #10
 
             if (Traits.LUSTFUL in person.getTraits() or Traits.DECEITFUL in person.getTraits() or Traits.CYNICAL in person.getTraits()) and len(person.getLovers()) > 0:
                 lovemakingWithSpouse = 25
@@ -204,6 +204,11 @@ def loveMaking (world):
             if Traits.CHASTE in person.getTraits():
                 lovemakingWithSpouse = 10
                 lovemakingWithLovers = 10
+
+            if len(person.getLovers()) == 0:
+                lovemakingWithSpouse = 100
+                lovemakingWithLovers = 0
+
 
             changeForLovemaking = Utils.randomRange(1, 100)
 
@@ -266,7 +271,7 @@ def birthPeopleNew (world):
                     if person.getSpouse() is not None:
                         person.changeSpouseRelation(25)
                         person.getSpouse().changeSpouseRelation(25)
-                    childObj = PF.birthChild(world, person, person.getSpouse(), person, person.getPregnancyFather())
+                    childObj = PF.birthChild(world, person, person.getSpouse(), person, person.getPregnancyTrueFather())
                     # add child to proper family
                     childObj.familyObjRef.addNewMember(childObj)
                     world.addPerson(childObj)
@@ -1049,5 +1054,13 @@ def assosiatesFriendsAndFoes(world):
                                 PLEH.gotRival(fellowEmployee, person, world)
 
 
+    for person in world.getAlivePeople():
+        if len(person.getFriends()) > 0:
+            for friend in person.getFriends():
+                if PF.canBeLover(person, friend):
+                    PF.checkAndAddPersonToLovers(person, friend, world)
+                if friend.getSpouse() is not None:
+                    if PF.canBeLover(person, friend.getSpouse()):
+                        PF.checkAndAddPersonToLovers(person, friend.getSpouse(), world)
 
 

@@ -28,12 +28,13 @@ class ListScreen:
         self.listScreenSurface = pygame.Surface([self.width, self.height - self.heightOffSet])
         self.listScreenSurfaceObjsRect = []
 
-        self.showFamilyAll = True
-        self.showFamilyAdults = False
-        self.showFamilyKids = False
-        self.showEmployed = False
-        self.showUnemployed = False
-        self.showSick = False
+        self.showFamilyAllFlag = True
+        self.showFamilyAdultsFlag = False
+        self.showFamilyKidsFlag = False
+        self.showEmployedFlag = False
+        self.showUnemployedFlag = False
+        self.showSickFlag = False
+        self.showWithLoversFlag = False
 
     def getScroll_y(self):
 
@@ -54,33 +55,37 @@ class ListScreen:
 
     def setAllButtonsFalse(self):
 
-        self.showFamilyAll = False
-        self.showFamilyAdults = False
-        self.showFamilyKids = False
-        self.showEmployed = False
-        self.showSick = False
-        self.showUnemployed = False
+        self.showFamilyAllFlag = False
+        self.showFamilyAdultsFlag = False
+        self.showFamilyKidsFlag = False
+        self.showEmployedFlag = False
+        self.showSickFlag = False
+        self.showUnemployedFlag = False
+        self.showWithLoversFlag = False
 
     def changeFamilyButtons(self, buttonClicked):
 
         if buttonClicked == 'allFamilySettlers':
             self.setAllButtonsFalse()
-            self.showFamilyAll = True
+            self.showFamilyAllFlag = True
         elif buttonClicked == 'familyAdults':
-            self.showFamilyAll = False
-            self.showFamilyAdults = not self.showFamilyAdults
+            self.showFamilyAllFlag = False
+            self.showFamilyAdultsFlag = not self.showFamilyAdultsFlag
         elif buttonClicked == 'familyKids':
-            self.showFamilyAll = False
-            self.showFamilyKids = not self.showFamilyKids
+            self.showFamilyAllFlag = False
+            self.showFamilyKidsFlag = not self.showFamilyKidsFlag
         elif buttonClicked == 'employed':
-            self.showFamilyAll = False
-            self.showEmployed = not self.showEmployed
+            self.showFamilyAllFlag = False
+            self.showEmployedFlag = not self.showEmployedFlag
         elif buttonClicked == 'unemployed':
-            self.showFamilyAll = False
-            self.showUnemployed = not self.showUnemployed
+            self.showFamilyAllFlag = False
+            self.showUnemployedFlag = not self.showUnemployedFlag
         elif buttonClicked == 'sick':
-            self.showFamilyAll = False
-            self.showSick = not self.showSick
+            self.showFamilyAllFlag = False
+            self.showSickFlag = not self.showSickFlag
+        elif buttonClicked == 'withLovers':
+            self.showFamilyAllFlag = False
+            self.showWithLoversFlag = not self.showWithLoversFlag
 
     def getInspectorScreenSurface(self):
         return self.listScreenSurface
@@ -105,12 +110,13 @@ class ListScreen:
 
         label = Label(f'Regions: ({(len(world.getAlivePeople()))})', 200, self.lineHeight, self.textFont)
         self.listScreenSurface.blit(label.localSurface, (self.width * 0.05, self.lineHeight * self.writeLine + self.scroll_y))
-        self.showAllSettlers()
-        self.showOnlyAdults()
-        self.showOnlyKids()
-        self.showEmployedPeople()
-        self.showUnemployedPeople()
-        self.showSickPeople()
+        self.showButtonAllSettlers()
+        self.showButtonOnlyAdults()
+        self.showButtonOnlyKids()
+        self.showButtonEmployedPeople()
+        self.showButtonUnemployedPeople()
+        self.showButtonSickPeople()
+        self.showButtonWithLovers()
 
         self.writeLine += 1
 
@@ -139,41 +145,47 @@ class ListScreen:
 
         self.writeLine += 1
 
-    def showAllSettlers(self):
+    def showButtonAllSettlers(self):
 
         label = Label(f'All', 25, self.lineHeight, self.textFont, True)
-        label.changeColorBasedOnFlag(self.showFamilyAll)
-        self.listScreenSurfaceObjsRect.append([self.listScreenSurface.blit(label.localSurface, ((self.width * 0.15)+400, self.lineHeight * self.writeLine + self.scroll_y)), Button('allFamilySettlers')])
+        label.changeColorBasedOnFlag(self.showFamilyAllFlag)
+        self.listScreenSurfaceObjsRect.append([self.listScreenSurface.blit(label.localSurface, ((self.width * 0.10)+400, self.lineHeight * self.writeLine + self.scroll_y)), Button('allFamilySettlers')])
 
-    def showOnlyAdults(self):
+    def showButtonOnlyAdults(self):
 
         label = Label(f'Adults', 50, self.lineHeight, self.textFont, True)
-        label.changeColorBasedOnFlag(self.showFamilyAdults)
-        self.listScreenSurfaceObjsRect.append([self.listScreenSurface.blit(label.localSurface, ((self.width * 0.15)+425, self.lineHeight * self.writeLine + self.scroll_y)), Button('familyAdults')])
+        label.changeColorBasedOnFlag(self.showFamilyAdultsFlag)
+        self.listScreenSurfaceObjsRect.append([self.listScreenSurface.blit(label.localSurface, ((self.width * 0.10)+425, self.lineHeight * self.writeLine + self.scroll_y)), Button('familyAdults')])
 
-    def showOnlyKids(self):
+    def showButtonOnlyKids(self):
 
         label = Label(f'Kids', 35, self.lineHeight, self.textFont, True)
-        label.changeColorBasedOnFlag(self.showFamilyKids)
-        self.listScreenSurfaceObjsRect.append([self.listScreenSurface.blit(label.localSurface, ((self.width * 0.15)+475, self.lineHeight * self.writeLine + self.scroll_y)), Button('familyKids')])
+        label.changeColorBasedOnFlag(self.showFamilyKidsFlag)
+        self.listScreenSurfaceObjsRect.append([self.listScreenSurface.blit(label.localSurface, ((self.width * 0.10)+475, self.lineHeight * self.writeLine + self.scroll_y)), Button('familyKids')])
 
-    def showEmployedPeople(self):
+    def showButtonEmployedPeople(self):
 
         label = Label(f'Employed', 75, self.lineHeight, self.textFont, True)
-        label.changeColorBasedOnFlag(self.showEmployed)
-        self.listScreenSurfaceObjsRect.append([self.listScreenSurface.blit(label.localSurface, ((self.width * 0.15)+510, self.lineHeight * self.writeLine + self.scroll_y)), Button('employed')])
+        label.changeColorBasedOnFlag(self.showEmployedFlag)
+        self.listScreenSurfaceObjsRect.append([self.listScreenSurface.blit(label.localSurface, ((self.width * 0.10)+510, self.lineHeight * self.writeLine + self.scroll_y)), Button('employed')])
 
-    def showUnemployedPeople(self):
+    def showButtonUnemployedPeople(self):
 
         label = Label(f'Unemployed', 95, self.lineHeight, self.textFont, True)
-        label.changeColorBasedOnFlag(self.showUnemployed)
-        self.listScreenSurfaceObjsRect.append([self.listScreenSurface.blit(label.localSurface, ((self.width * 0.15)+585, self.lineHeight * self.writeLine + self.scroll_y)), Button('unemployed')])
+        label.changeColorBasedOnFlag(self.showUnemployedFlag)
+        self.listScreenSurfaceObjsRect.append([self.listScreenSurface.blit(label.localSurface, ((self.width * 0.10)+585, self.lineHeight * self.writeLine + self.scroll_y)), Button('unemployed')])
 
-    def showSickPeople(self):
+    def showButtonSickPeople(self):
 
         label = Label(f'Sick', 35, self.lineHeight, self.textFont, True)
-        label.changeColorBasedOnFlag(self.showSick)
-        self.listScreenSurfaceObjsRect.append([self.listScreenSurface.blit(label.localSurface, ((self.width * 0.15)+680, self.lineHeight * self.writeLine + self.scroll_y)), Button('sick')])
+        label.changeColorBasedOnFlag(self.showSickFlag)
+        self.listScreenSurfaceObjsRect.append([self.listScreenSurface.blit(label.localSurface, ((self.width * 0.10)+680, self.lineHeight * self.writeLine + self.scroll_y)), Button('sick')])
+
+    def showButtonWithLovers(self):
+
+        label = Label(f'With lovers', 95, self.lineHeight, self.textFont, True)
+        label.changeColorBasedOnFlag(self.showWithLoversFlag)
+        self.listScreenSurfaceObjsRect.append([self.listScreenSurface.blit(label.localSurface, ((self.width * 0.10)+715, self.lineHeight * self.writeLine + self.scroll_y)), Button('withLovers')])
 
     def addFamilies(self, families):
 

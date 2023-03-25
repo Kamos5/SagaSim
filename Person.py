@@ -325,7 +325,7 @@ class Person:
     def getLovers(self):
         return self.lovers
 
-    def addLovers(self, lover):
+    def addLover(self, lover):
         self.lovers.append(lover)
 
     def removeLover(self, lover):
