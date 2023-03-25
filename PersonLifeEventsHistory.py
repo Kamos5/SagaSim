@@ -143,3 +143,12 @@ def gotLover(person, lover, world):
 def lostLover(person, lover, world):
 
     person.lifeEvents.append(f'{person.getFirstName()} lost a lover {lover.getFirstName()} {lover.getLastName()} on the {world.getDay()}/{world.getMonth().value[1]}/{world.getYear()}')
+
+def celebratedBirthsday(person, world):
+
+    string = f''
+    for friend in person.getFriends():
+        string += f'{friend.getFirstName()} {friend.getLastName()} '
+
+    person.lifeEvents.append(f'{person.getFirstName()} celebrated his birthsday with following friends: {string}on the {world.getDay()}/{world.getMonth().value[1]}/{world.getYear()}')
+

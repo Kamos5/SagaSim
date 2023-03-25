@@ -183,7 +183,7 @@ class ListScreen:
 
     def showButtonWithLovers(self):
 
-        label = Label(f'With lovers', 95, self.lineHeight, self.textFont, True)
+        label = Label(f'With lovers', 85, self.lineHeight, self.textFont, True)
         label.changeColorBasedOnFlag(self.showWithLoversFlag)
         self.listScreenSurfaceObjsRect.append([self.listScreenSurface.blit(label.localSurface, ((self.width * 0.10)+715, self.lineHeight * self.writeLine + self.scroll_y)), Button('withLovers')])
 

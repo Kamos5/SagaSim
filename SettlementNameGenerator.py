@@ -89,7 +89,86 @@ slavicSettlementsNames = [
 
 ]
 
+egyptianSettlementsNames = [
+    'Men-nefer',
+    'Khem',
+    'Yamu',
+    'Raqote',
+    'Khito',
+    'Ptkheka',
+    'Zau',
+    'Per-Wadjet',
+    'Khasut',
+    'Timinhor',
+    'Piemro',
+    'Thonis',
+    'Menouthis',
+    'Pikuat',
+    'Per-Atum',
+    'Djedu',
+    'Hut-hery-ib',
+    'Taremu',
+    'Abdju',
+    'Abu',
+    'Akhetaten',
+    'Behdet',
+    'Berenice',
+    'Buhen',
+    'Chenem-Waset',
+    'Djanet',
+    'Djedet',
+    'Djerty',
+    'Gebtu',
+    'Gesy',
+    'Hebenu',
+    'Henen-nesut',
+    'Herwer',
+    'Hut-Repyt',
+    'Hut-waret',
+    'Iken',
+    'Ipu',
+    'Iunet',
+    'Iunu',
+    'Iuny',
+    'Iushenshen',
+    'Khemenu',
+    'Madu',
+    'Nekheb',
+    'Nekhen',
+    'Nubt',
+    'Nubt',
+    'Pachnamu´nis',
+    'Per-Amun',
+    'Per-Bast',
+    'Per-Hathor',
+    'Per-Imen-mat-khent',
+    'Per-Medjed',
+    'Per-Nemty',
+    'Per-Ramessu',
+    'Per-Sopdu',
+    'Qis',
+    'Saka',
+    'Semabehdet',
+    'Seshesh',
+    'Šetennu',
+    'Shashotep',
+    'Shedet',
+    'Sumenu',
+    'Swenett',
+    'Tamiat',
+    'Tao',
+    'Ta-senet',
+    'Tayu-djayet',
+    'Tepihu',
+    'Tjaru',
+    'Tjebnutjer',
+    'Tjebu',
+    'Tjenu',
+    'Waset',
+    'Weprehwy',
+    'Zawty'
 
+]
 
 activeNames = []
 abandonedSettlements = []
@@ -100,6 +179,7 @@ copySlavicList = slavicSettlementsNames.copy()
 copyMusslimList = englishSettlementsNames.copy()
 copyRomanList = englishSettlementsNames.copy()
 copyAfricanList = englishSettlementsNames.copy()
+copyEgyptianList = egyptianSettlementsNames.copy()
 
 def randomEnglishSettlementsName (rebuildOldSettlement = False):
 
@@ -138,6 +218,19 @@ def randomSlavicSettlementsName (rebuildOldSettlement = False):
         activeNames.append(choice)
     else:
         choice = 'Generic Village Name'
+    return choice
+
+def randomEgyptSettlementsName(rebuildOldSettlement = False):
+
+    if len(copyEgyptianList) > 0:
+        listToChooseFrom = copyEgyptianList
+        if rebuildOldSettlement:
+            listToChooseFrom = abandonedSettlements
+        choice = randomChoice(listToChooseFrom)
+        copyEgyptianList.remove(choice)
+        activeNames.append(choice)
+    else:
+        choice = 'Generic Egyptian Village Name'
     return choice
 
 def randomMusslimSettlementsName(rebuildOldSettlement = False):

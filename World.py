@@ -313,6 +313,8 @@ class World:
             self.regions.append(Region(RNG.randomNorseRegionName()))
         if regionsNumber >= 3:
             self.regions.append(Region(RNG.randomSlavicRegionName()))
+        if regionsNumber >= 4:
+            self.regions.append(Region(RNG.randomEgyptRegionName()))
 
     def generateSettlements(self):
 

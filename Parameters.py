@@ -1,6 +1,6 @@
 startingSettlementsPerRegion = 2
 startingNumberOfFamiliesPerRegion = 10
-startingNumberOfRegions = 3
+startingNumberOfRegions = 4
 startingYear = 499
 baseCitySize = 1000
 baseVillageSize = 300

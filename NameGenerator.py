@@ -1,6 +1,6 @@
 from random import choice
 
-from RegionNameGenerator import englishRegionNames, norseRegionNames, slavicRegionNames
+from RegionNameGenerator import englishRegionNames, norseRegionNames, slavicRegionNames, egyptRegionNames
 
 maleEnglishNameList = [
     'Adam',
@@ -195,7 +195,110 @@ femaleSlavicNameList = [
 
 ]
 
+malesEgyptianNameList = [
 
+    'Asim',
+    'Chisisi',
+    'Gyasi',
+    'Khons',
+    'Omari',
+    'Sadiki',
+    'Ur',
+    'Abanoub',
+    'Abasi',
+    'Abayomi',
+    'Abdelrahman',
+    'Abrax',
+    'Abraxas',
+    'Abubakar',
+    'Bassel',
+    'Bast',
+    'Bes',
+    'Bithiah',
+    'Braheem',
+    'Shabaka',
+    'Shakir',
+    'Taafeef',
+    'Thutmose',
+    'Ur-Atum',
+    'Uthman',
+    'Waaiz',
+    'Yahya',
+    'Zahur',
+    'Zosar',
+    'Zuberi',
+    'Moishe',
+    'Moisis',
+    'Moke',
+    'Montu',
+    'Mosiah',
+    'Mostafa',
+    'Moswen',
+    'Masud',
+    'Masuda',
+    'Masudah',
+    'Masudi',
+    'Menefer',
+    'Menes',
+    'Mido'
+
+]
+
+femaleEgyptianNameList = [
+
+    'Akila',
+    'Bahiti',
+    'Dalila',
+    'Ife',
+    'Khepri',
+    'Masika',
+    'Naunet',
+    'Amunet',
+    'Auset',
+    'Bastet',
+    'Bennu',
+    'Berenike',
+    'Chione',
+    'Cliupatra',
+    'Dendera',
+    'Ebony',
+    'Edrice',
+    'Eshe',
+    'Farida',
+    'Feme',
+    'Femi',
+    'Fukayna',
+    'Gamila',
+    'Habibah',
+    'Hafsah',
+    'Isis',
+    'Jomana',
+    'Keket',
+    'Kissa',
+    'Kleopatra',
+    'Lapis',
+    'Anat',
+    'Anippe',
+    'Asenath',
+    'Ebonee',
+    'Eboney',
+    'Eboni',
+    'Hathor',
+    'Heba',
+    'Heqet',
+    'Masika',
+    'Massika',
+    'Maye',
+    'Midge',
+    'Moswen',
+    'Nailah',
+    'Lateefah',
+    'Lotus',
+    'Maibe',
+    'Mandisa',
+    'Mariam'
+
+]
 def getRandomMNameForRegion(region):
 
     if region.getRegionName() in englishRegionNames:
@@ -204,6 +307,8 @@ def getRandomMNameForRegion(region):
         return randomNorseMName()
     elif region.getRegionName() in slavicRegionNames:
         return randomSlavicMName()
+    elif region.getRegionName() in egyptRegionNames:
+        return randomEgyptianMName()
     else:
         return randomEnglishMName()
 
@@ -215,6 +320,8 @@ def getRandomFNameForRegion(region):
         return randomNorseFName()
     elif region.getRegionName() in slavicRegionNames:
         return randomSlavicFName()
+    elif region.getRegionName() in egyptRegionNames:
+        return randomEgyptianFName()
     else:
         return randomEnglishMName()
 def randomEnglishMName():
@@ -236,5 +343,9 @@ def randomSlavicMName():
 def randomSlavicFName():
     return choice(femaleSlavicNameList)
 
+def randomEgyptianMName():
+    return choice(malesEgyptianNameList)
 
+def randomEgyptianFName():
+    return choice(femaleEgyptianNameList)
 #def nameFromFamilyHistory (family, people)

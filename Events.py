@@ -24,6 +24,9 @@ def increaseAge (world):
             if person.getDayOfBirth() == world.getDay() and person.getMonthOfBirth() == world.getMonth():
                 person.increaseAge()
 
+                if len(person.getFriends()) > 0:
+                    PLEH.celebratedBirthsday(person, world)
+
                 if person.age < 15:
                     person.increaseHeight()
 

@@ -185,9 +185,42 @@ initialFamilyNames = [
 
 ]
 
+egyptianFamilyNames = [
+
+    'Adom',
+    'Akhenaton',
+    'Akhethetep',
+    'Akhom',
+    'Akil',
+    'Amenemhat',
+    'Amenemope',
+    'Anen',
+    'Anum',
+    'Aper-el',
+    'Badru',
+    'Baketmut',
+    'Beketaten',
+    'Chisisi',
+    'Darwish',
+    'Hamidi',
+    'Hanbal',
+    'Kamuzu',
+    'Khaldun',
+    'Khnumhotep',
+    'Manu',
+    'Nakhtmin',
+    'Nebamun',
+    'Nizam',
+    'Nuru',
+    'Rahotep',
+    'Ramose'
+
+]
+
 copyEngList = englishFamilyNames.copy()
 copyNorseList = norseFamilyNames.copy()
 copySlavList = slavicFamilyNames.copy()
+copyEgyptList = egyptianFamilyNames.copy()
 namesPicked = 0
 
 class FamilyNamesBasedOnProfessions(Enum):
@@ -214,6 +247,8 @@ def getNewLastNameBasedOnRegion(region):
         lastName = getInitNorseName()
     elif region.getRegionName() in RNG.slavicRegionNames:
         lastName = getInitSlavicName()
+    elif region.getRegionName() in RNG.egyptRegionNames:
+        lastName = getInitEgyptName()
     else:
         lastName = getInitEnglishName()
 
@@ -261,6 +296,16 @@ def getInitSlavicName():
         choice = 'Generic Family Slavic Name' + str(namesPicked)
     return choice
 
+def getInitEgyptName():
+    global namesPicked
+    namesPicked += 1
+    if len(copyEgyptList) > 0:
+        choice = random.choice(copyEgyptList)
+        copyEgyptList.remove(choice)
+        namesPicked +=1
+    else:
+        choice = 'Generic Family Egyptian Name' + str(namesPicked)
+    return choice
 
 def getInitFamilyName():
     global namesPicked

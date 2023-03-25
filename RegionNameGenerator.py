@@ -38,8 +38,12 @@ norseRegionNames = [
     'Saami'
 ]
 
-egiptRegionNames = [
-
+egyptRegionNames = [
+    'Nubia',
+    'Kemet',
+    'Deshret',
+    'Tawy',
+    'Kush'
 ]
 
 
@@ -55,11 +59,13 @@ def getRegionNameList():
     englishRegionName = randomEnglishRegionName()
     norseRegionName = randomNorseRegionName()
     slavicRegionName = randomSlavicRegionName()
+    egyptRegionName = randomEgyptRegionName()
 
     regionsName = [
         englishRegionName,
         norseRegionName,
-        slavicRegionName
+        slavicRegionName,
+        egyptRegionName
     ]
 
     return regionsName
@@ -122,4 +128,14 @@ def randomNorseRegionName():
         activeNames.append(choice)
     else:
         choice = 'Generic Region Name'
+    return choice
+
+def randomEgyptRegionName():
+
+    if len(egyptRegionNames) > 0:
+        listToChooseFrom = egyptRegionNames
+        choice = randomChoice(listToChooseFrom)
+        activeNames.append(choice)
+    else:
+        choice = 'Generic Egypt Region Name'
     return choice

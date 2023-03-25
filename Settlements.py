@@ -21,8 +21,8 @@ class Settlements:
             self.name = SNG.randomNorseSettlementsName(rebuildFlag)
         elif region in RNG.slavicRegionNames:
             self.name = SNG.randomSlavicSettlementsName(rebuildFlag)
-        elif region == "Region 3":
-            self.name = SNG.randomEnglishSettlementsName(rebuildFlag)
+        elif region in RNG.egyptRegionNames:
+            self.name = SNG.randomEgyptSettlementsName(rebuildFlag)
         elif region == "Region 4":
             self.name = SNG.randomEnglishSettlementsName(rebuildFlag)
         else:
