@@ -70,85 +70,89 @@ def infectionsSpread (world):
     # 2) move infection to sick phase
     # 3) process infection
     start0 = time.perf_counter()
-    for person in world.getAlivePeople():
-        if person.lifeStatus == LifeStatus.ALIVE:
 
-            start1 = time.perf_counter()
-            # 1)
-            chanceForContractDisease = Utils.randomRange(1, 100_000)  # 1 in 1.000.000 / per day
-            contractDiseaseThreshold = 1
+    for region in world.getRegions():
+        if -5 <= region.getCurrentTemperature() <= 15:
+            for settlement in region.getSettlements():
+                for person in settlement.getResidents():
+                    if person.lifeStatus == LifeStatus.ALIVE:
 
-            contractDiseaseThreshold = (contractDiseaseThreshold * person.getGeneralHealth().value[0]) + 2
+                        start1 = time.perf_counter()
+                        # 1)
+                        chanceForContractDisease = Utils.randomRange(1, 100_000)  # 1 in 1.000.000 / per day
+                        contractDiseaseThreshold = 1
 
-            if chanceForContractDisease <= contractDiseaseThreshold:
-                randomInfection = Utils.randomFromCollection(list(world.diseases.items()))[1]
-                if len(person.getImmunityTo()) > 0:
-                    isImmune = False
-                    for immunityTo in person.getImmunityTo():
-                        if not randomInfection == immunityTo[0][0]:
-                            isImmune = True
-                            break
-                    if not isImmune:
-                        if InfectionsFunctions.checkIfInfected(person, randomInfection):
-                            infectionsPerDay = InfectionsFunctions.addInfectionToPerson(person, randomInfection, world)
-                            break
-                else:
-                    if InfectionsFunctions.checkIfInfected(person, randomInfection):
-                        infectionsPerDay = InfectionsFunctions.addInfectionToPerson(person, randomInfection, world)
-            end1 = time.perf_counter()
-            start2 = time.perf_counter()
-            if len(person.getInfections()) > 0:
-                for infection in person.getInfections()[0]:
-                    if type(infection) is dict and infection['contagious']:
+                        contractDiseaseThreshold = (contractDiseaseThreshold * person.getGeneralHealth().value[0]) + 2
 
-                        # 2a)
-                        infectionsPerDay = InfectionsFunctions.tryToInfectPeopleFromList(person, person.getAccommodation().getHouseResidents(), infection, world)
+                        if chanceForContractDisease <= contractDiseaseThreshold:
+                            randomInfection = Utils.randomFromCollection(list(world.diseases.items()))[1]
+                            if len(person.getImmunityTo()) > 0:
+                                isImmune = False
+                                for immunityTo in person.getImmunityTo():
+                                    if not randomInfection == immunityTo[0][0]:
+                                        isImmune = True
+                                        break
+                                if not isImmune:
+                                    if InfectionsFunctions.checkIfInfected(person, randomInfection):
+                                        infectionsPerDay = InfectionsFunctions.addInfectionToPerson(person, randomInfection, world)
+                                        break
+                            else:
+                                if InfectionsFunctions.checkIfInfected(person, randomInfection):
+                                    infectionsPerDay = InfectionsFunctions.addInfectionToPerson(person, randomInfection, world)
+                        end1 = time.perf_counter()
+                        start2 = time.perf_counter()
+                        if len(person.getInfections()) > 0:
+                            for infection in person.getInfections()[0]:
+                                if type(infection) is dict and infection['contagious']:
 
-                        # 2b)
-                        if person.getOccupation() is not None and len(person.getCurrentDiseases()) > 0:  # ONLY IF NOT SICK AKA CURRENT DISEASES > 0
-                            infectionsPerDay = InfectionsFunctions.tryToInfectPeopleFromList(person, person.getOccupation().getWorkerList(), infection, world)
-            end2 = time.perf_counter()
-            start3 = time.perf_counter()
-            # 3)
-            if len(person.getInfections()) > 0:
-                infections, infDate = zip(*person.getInfections())
-                for (infection, infDate) in zip(infections, infDate):
-                    if infDate + infection['incubation'] <= world.getDayOfTheYear():
-                        if len(person.getCurrentDiseases()) > 0:
-                            diseases, disDates, disImmunity = zip(*person.getCurrentDiseases())
-                            if infection not in diseases:
-                                person.addCurrentDiseases([infection, world.getDayOfTheYear(), 0])
-                                PLEH.showingSymptomsOf(person, infection, world)
-                                offsetHealth = person.getGeneralHealth().value[0] + infection['effectOnHealth'] + person.getHealthFromAge().value[0]
-                                if offsetHealth >= len(Enums.getGeneralHealthArray()):
-                                    offsetHealth = len(Enums.getGeneralHealthArray()) - 1
-                                person.setGeneralHelth(Enums.getGeneralHealthArray()[offsetHealth])
-                                if person.getGeneralHealth() == Enums.GeneralHealth.DEATH:
-                                    person.causeOfDeath = CauseOfDeath.SICKNESS
-                                    PF.deathProcedures(person, world)
-                                    break
-                        else:
-                            person.addCurrentDiseases([infection, world.getDayOfTheYear(), 0])
-                            PLEH.showingSymptomsOf(person, infection, world)
-                            offsetHealth = person.getGeneralHealth().value[0] + infection['effectOnHealth'] + person.getHealthFromAge().value[0]
-                            if offsetHealth > len(Enums.getGeneralHealthArray()):
-                                offsetHealth = len(Enums.getGeneralHealthArray()) - 1
-                            person.setGeneralHelth(Enums.getGeneralHealthArray()[offsetHealth])
-                            if person.getGeneralHealth() == Enums.GeneralHealth.DEATH:
-                                person.causeOfDeath = CauseOfDeath.SICKNESS
-                                PF.deathProcedures(person, world)
-                                break
+                                    # 2a)
+                                    infectionsPerDay = InfectionsFunctions.tryToInfectPeopleFromList(person, person.getAccommodation().getHouseResidents(), infection, world)
 
-            end3 = time.perf_counter()
+                                    # 2b)
+                                    if person.getOccupation() is not None and len(person.getCurrentDiseases()) > 0:  # ONLY IF NOT SICK AKA CURRENT DISEASES > 0
+                                        infectionsPerDay = InfectionsFunctions.tryToInfectPeopleFromList(person, person.getOccupation().getWorkerList(), infection, world)
+                        end2 = time.perf_counter()
+                        start3 = time.perf_counter()
+                        # 3)
+                        if len(person.getInfections()) > 0:
+                            infections, infDate = zip(*person.getInfections())
+                            for (infection, infDate) in zip(infections, infDate):
+                                if infDate + infection['incubation'] <= world.getDayOfTheYear():
+                                    if len(person.getCurrentDiseases()) > 0:
+                                        diseases, disDates, disImmunity = zip(*person.getCurrentDiseases())
+                                        if infection not in diseases:
+                                            person.addCurrentDiseases([infection, world.getDayOfTheYear(), 0])
+                                            PLEH.showingSymptomsOf(person, infection, world)
+                                            offsetHealth = person.getGeneralHealth().value[0] + infection['effectOnHealth'] + person.getHealthFromAge().value[0]
+                                            if offsetHealth >= len(Enums.getGeneralHealthArray()):
+                                                offsetHealth = len(Enums.getGeneralHealthArray()) - 1
+                                            person.setGeneralHelth(Enums.getGeneralHealthArray()[offsetHealth])
+                                            if person.getGeneralHealth() == Enums.GeneralHealth.DEATH:
+                                                person.causeOfDeath = CauseOfDeath.SICKNESS
+                                                PF.deathProcedures(person, world)
+                                                break
+                                    else:
+                                        person.addCurrentDiseases([infection, world.getDayOfTheYear(), 0])
+                                        PLEH.showingSymptomsOf(person, infection, world)
+                                        offsetHealth = person.getGeneralHealth().value[0] + infection['effectOnHealth'] + person.getHealthFromAge().value[0]
+                                        if offsetHealth > len(Enums.getGeneralHealthArray()):
+                                            offsetHealth = len(Enums.getGeneralHealthArray()) - 1
+                                        person.setGeneralHelth(Enums.getGeneralHealthArray()[offsetHealth])
+                                        if person.getGeneralHealth() == Enums.GeneralHealth.DEATH:
+                                            person.causeOfDeath = CauseOfDeath.SICKNESS
+                                            PF.deathProcedures(person, world)
+                                            break
 
-    #         time1Array.append(end1-start1)
-    #         time2Array.append(end2-start2)
-    #         time3Array.append(end3-start3)
-    # end0 = time.perf_counter()
-    # print("Time0:" + str(end0-start0))
-    # print("Time1:" + str(mean(time1Array)))
-    # print("Time2:" + str(mean(time2Array)))
-    # print("Time3:" + str(mean(time3Array)))
+                        end3 = time.perf_counter()
+
+                #         time1Array.append(end1-start1)
+                #         time2Array.append(end2-start2)
+                #         time3Array.append(end3-start3)
+                # end0 = time.perf_counter()
+                # print("Time0:" + str(end0-start0))
+                # print("Time1:" + str(mean(time1Array)))
+                # print("Time2:" + str(mean(time2Array)))
+                # print("Time3:" + str(mean(time3Array)))
     infectionsPerPop = round(infectionsPerDay / len(world.getAlivePeople()), 2)
     print("Infections Per Day:" + str(infectionsPerDay))
     print("Infections Per Pop:" + str(infectionsPerPop))
@@ -319,67 +323,6 @@ def birthPeopleNew (world):
                     PLEH.stillborn(person, world)
                     continue
 
-
-def birthPeople (world):
-
-    births = 0
-    for person in world.getAlivePeople():
-
-        # person here is MOTHER
-        # only Females can give birth between 15 and 45y old + must be alive and have spouse
-        if person.sex == Sexes.FEMALE and 15 <= person.age <= 45 and person.spouse is not None and person.lifeStatus == LifeStatus.ALIVE:
-
-            # change spouseRelation based on liked/disliked traits
-            changeRelationToFromSpouse(person)
-            # is spouse alive
-            if person.getSpouse().lifeStatus == LifeStatus.ALIVE:
-                chanceOfBirth = Utils.randomRange(1, 100)
-
-                if person.sexuality == 'homo':
-                    person.setSpouseRelation(-5)
-                if person.getSpouse().sexuality == 'homo':
-                    person.getSpouse().setSpouseRelation(-5)
-
-                if (chanceOfBirth <= min(person.fertility, person.getSpouse().fertility) * person.getSpouse().getSettlement().getBaseFertility() * person.getSpouse().getSettlement().getFertilityModifier() * person.getPersonalSexualModifier() * person.getSpouse().getPersonalSexualModifier()) and person.getSpouseRelation() > 0:
-                    # CHILD object
-                    person.changeSpouseRelation(25)
-                    person.getSpouse().changeSpouseRelation(25)
-                    childObj = PF.birthChild(world, person, person.getSpouse())
-                    # add child to proper family
-                    childObj.familyObjRef.addNewMember(childObj)
-                    world.addPerson(childObj)
-                    world.addAlivePerson(childObj)
-                    PLEH.beenBorn(childObj, world)
-                    person.numberOfChildren += 1
-                    person.getSpouse().numberOfChildren += 1
-                    if person.modifiedLifespan-person.age > 1:
-                        if Utils.randomRange(1, 2) == 1:
-                            person.modifiedLifespan -= 1
-                    person.appendAliveChildrenList(childObj)
-                    person.getSpouse().appendAliveChildrenList(childObj)
-                    childObj.changeMaritalStatus(MS.CHILD)
-                    person.getAccommodation().addHouseResident(childObj)
-
-                    childObj.setSettlement(childObj.getFather().getSettlement())
-                    childObj.getSettlement().increasePopulation()
-                    childObj.getSettlement().addResident(childObj)
-
-                    # change of dying from childbirth (mother and child)
-                    motherDeath, childdeath = deathChangeFromGivingBirth(person, childObj)
-
-                    if motherDeath:
-                        PF.deathProcedures(person, world)
-
-                    if childdeath:
-                        #parameters: child
-                        PF.deathProcedures(childObj, world)
-
-                    births += 1
-
-    world.appendBirthsPerYear(births)
-
-
-    return
 
 def changeRelationToFromSpouse(person):
 
