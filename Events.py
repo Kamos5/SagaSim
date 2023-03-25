@@ -998,8 +998,8 @@ def assosiatesFriendsAndFoes(world):
 
 
     for person in world.getAlivePeople():
-        if len(person.getKnownAssociates()) > 0:
-            for friend in person.getKnownAssociates():
+        if len(person.getFriends()) > 0:
+            for friend in person.getFriends():
                 if PF.canBeLover(person, friend):
                     PF.checkAndAddPersonToLovers(person, friend, world)
                 if friend.getSpouse() is not None:
