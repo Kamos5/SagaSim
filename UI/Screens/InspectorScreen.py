@@ -284,17 +284,18 @@ class InspectorScreen:
         label = Label("Age: " + str(object.getAge()), 500, self.lineHeight, self.textFont)
         self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding, self.lineHeight * self.writeLine + self.scroll_y))
         self.writeLine += 1
-        label = Label("Life Status: " + str(object.getLifeStatus().value), 500, self.lineHeight, self.textFont)
+        label = Label(f'Life Status: {object.getLifeStatus().value}', 500, self.lineHeight, self.textFont)
         self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding, self.lineHeight * self.writeLine + self.scroll_y))
+        label = Label("♥", 25, self.lineHeight, self.symbolFont, textColor=Colors.getColorBasedOnParam(object.getLifeStatus()))
+        self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding+500, self.lineHeight * self.writeLine + self.scroll_y))
         self.writeLine += 1
 
         label = Label(f'General Health Status: {object.getGeneralHealth().value[1]}', 500, self.lineHeight, self.textFont)
         self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding, self.lineHeight * self.writeLine + self.scroll_y))
-
-        label = Label("♥", 25, self.lineHeight, self.symbolFont, textColor=Colors.getColorBasedOnParam(object.getGeneralHealth()))
+        label = Label("✚", 25, self.lineHeight, self.symbolFont, textColor=Colors.getColorBasedOnParam(object.getGeneralHealth()))
         self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding+500, self.lineHeight * self.writeLine + self.scroll_y))
-
         self.writeLine += 1
+
         if len(object.getInfections()) > 0:
             label = Label("Get infected by:", 500, self.lineHeight, self.textFont)
             self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding, self.lineHeight * self.writeLine + self.scroll_y))
@@ -319,8 +320,16 @@ class InspectorScreen:
                 label = Label(str(immunityTo[0][0]['name']), 500, self.lineHeight, self.textFont)
                 self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding*2, self.lineHeight * self.writeLine + self.scroll_y))
                 self.writeLine += 1
-        label = Label("Sex: " + str(object.getSex().value[1]), 500, self.lineHeight, self.textFont)
+
+        label = Label(f'Sex: {object.getSex().value[1]}', 500, self.lineHeight, self.textFont)
         self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding, self.lineHeight * self.writeLine + self.scroll_y))
+        if object.getSex() == Enums.Sexes.FEMALE:
+            stringText = '♀'
+        else:
+            stringText = '♂'
+        label = Label(stringText, 25, self.lineHeight, self.symbolFont, textColor=Colors.getColorBasedOnParam(object.getSex()))
+        self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding + 500, self.lineHeight * self.writeLine + self.scroll_y))
+
         self.writeLine += 1
         if object.getSex() == Enums.Sexes.FEMALE and object.getAge() >= 15:
             label = Label("Is pregnant: " + str(object.getIsPregnant()), 500, self.lineHeight, self.textFont)
