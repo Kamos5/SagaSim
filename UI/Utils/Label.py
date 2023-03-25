@@ -4,7 +4,7 @@ from PIL import ImageFont
 
 class Label:
 
-    def __init__(self, text, w, h, font, clickable=False, focused=False, borderSize=1):
+    def __init__(self, text, w, h, font, clickable=False, focused=False, borderSize=1, textColor = (220, 220, 220)):
 
         self.localSurface = pygame.Surface([w, h])
         self.x = 0
@@ -16,7 +16,7 @@ class Label:
         self.activeRectColor = 100, 0, 0
         self.activeRectColorAlt = 10, 70, 10
         self.rectColor = self.inactiveRectColor
-        self.textColor = 220, 220, 220
+        self.textColor = textColor
         self.inactiveBorderColor = 200, 200, 200
         self.activeBorderColor = 75, 150, 150
         self.borderColor = self.inactiveBorderColor

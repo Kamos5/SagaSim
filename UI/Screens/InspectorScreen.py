@@ -6,6 +6,7 @@ from House import House
 from Person import Person
 from Region import Region
 from Settlements import Settlements
+from UI.Utils import Colors
 from UI.Utils.Fonts import Fonts
 from UI.Utils.Label import Label
 from UI.Utils.MultiLineSurface import MultiLineSurface
@@ -286,8 +287,13 @@ class InspectorScreen:
         label = Label("Life Status: " + str(object.getLifeStatus().value), 500, self.lineHeight, self.textFont)
         self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding, self.lineHeight * self.writeLine + self.scroll_y))
         self.writeLine += 1
-        label = Label("General Health Status: " + str(object.getGeneralHealth().value[1]), 500, self.lineHeight, self.textFont)
+
+        label = Label(f'General Health Status: {object.getGeneralHealth().value[1]}', 500, self.lineHeight, self.textFont)
         self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding, self.lineHeight * self.writeLine + self.scroll_y))
+
+        label = Label("♥", 25, self.lineHeight, self.symbolFont, textColor=Colors.getColorBasedOnParam(object.getGeneralHealth()))
+        self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding+500, self.lineHeight * self.writeLine + self.scroll_y))
+
         self.writeLine += 1
         if len(object.getInfections()) > 0:
             label = Label("Get infected by:", 500, self.lineHeight, self.textFont)
