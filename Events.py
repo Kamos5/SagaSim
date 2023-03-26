@@ -358,8 +358,11 @@ def settlementsPopulationManagement (world):
                 villagesList = SF.getVillages(region.getSettlements())
                 townList = SF.getCities(region.getSettlements())
 
+                unemployedList = settlement.getUnemployedResidentsList()
+                employedList = settlement.getEmployedResidentsList()
+
                 #Treshhold to create migration wave
-                if (len(settlement.getEmployedResidentsList()) + len(settlement.getUnemployedResidentsList())) > 0 and round(len(settlement.getUnemployedResidentsList()) / (len(settlement.getEmployedResidentsList()) + len(settlement.getUnemployedResidentsList())) * 100) > 15:
+                if (len(employedList) + len(unemployedList)) > 0 and round(len(unemployedList) / (len(employedList) + len(unemployedList)) * 100) > 15:
                 # if settlement.getPopulation() >= int(settlement.getMaxPopulation() * Parameters.percentagePopulationThresholdForMigration):
                     chanceOfMigration = Utils.randomRange(1, 100)
                     #Chance of migration happening
@@ -421,6 +424,7 @@ def settlementGoodsProduction(world):
 
 
                 ## ADMIN PROD
+                #village center
                 if len(settlement.getAdminFeatures()[0].getWorkerList()) > 0:
 
                     # flat bonus 5% if mayor
@@ -446,11 +450,18 @@ def settlementGoodsProduction(world):
                     mayor.changeFreeWealth(flatRate)
                     settlement.changeFreeWealth(-flatRate)
 
+                #shrine
+                if len(settlement.getAdminFeatures()[1].getWorkerList()) > 0:
+                    flatRate = 3
+                    priest = settlement.getAdminFeatures()[1].getWorkerList()[0]
+                    priest.changeFreeWealth(flatRate)
+                    settlement.changeFreeWealth(-flatRate)
+
                 ##  FOOD PRODUCTION
                 foodProd0 = settlement.getSettlementFoodProduced()
                 for foodTile in settlement.getFoodFeatures():
 
-                    foodProd = foodTile.prodYield * foodTile.foundationType.value.yieldModifier * mayorModifier / 100 * foodTile.getWorkersNumber()
+                    foodProd = foodTile.prodYield * foodTile.foundationType['yieldModifier'] * mayorModifier / 100 * foodTile.getWorkersNumber()
 
                     if settlement.getProvision() is not None:
                         settlement.getProvision().increaseSettlementFoodProduced(foodProd*Parameters.socage)
@@ -467,7 +478,7 @@ def settlementGoodsProduction(world):
                                 workerModifier = 10
                             if worker.getGeneralHealth().value[1] == 1:  # weaken workers work less
                                 workerModifier = round(workerModifier / 2)
-                            goodProduced = foodTile.prodYield * (foodTile.foundationType.value.yieldModifier + workerModifier) / 100
+                            goodProduced = foodTile.prodYield * (foodTile.foundationType['yieldModifier'] + workerModifier) / 100
                             worker.changeFreeWealth(goodProduced * (100 - settlement.getLocalIncomeTax()) / 100)
                             settlement.changeFreeWealth(goodProduced * (settlement.getLocalIncomeTax()) / 100)
 
@@ -498,7 +509,7 @@ def settlementGoodsProduction(world):
 
                 for prodTile in settlement.getProdFeatures():
 
-                    prodProd = prodTile.prodYield * prodTile.foundationType.value.yieldModifier * mayorModifier / 100 * prodTile.getWorkersNumber()
+                    prodProd = prodTile.prodYield * prodTile.foundationType['yieldModifier'] * mayorModifier / 100 * prodTile.getWorkersNumber()
 
                     if settlement.getProvision() is not None:
                         settlement.getProvision().increaseSettlementProdProduced(prodProd*Parameters.socage)
@@ -514,7 +525,7 @@ def settlementGoodsProduction(world):
                                 workerModifier = 10
                             if worker.getGeneralHealth().value[1] == 1:  # weaken workers work less
                                 workerModifier = round(workerModifier / 2)
-                            goodProduced = prodTile.prodYield * (prodTile.foundationType.value.yieldModifier + workerModifier) / 100
+                            goodProduced = prodTile.prodYield * (prodTile.foundationType['yieldModifier'] + workerModifier) / 100
                             worker.changeFreeWealth(goodProduced * (100-settlement.getLocalIncomeTax())/100)
                             settlement.changeFreeWealth(goodProduced * (settlement.getLocalIncomeTax())/100)
 
@@ -592,11 +603,13 @@ def settlementWorkersManagement(world):
 
         for settlement in region.getSettlements():
 
-                basicAdminJobWeight = 5
+                loopBreaker = 0
+                basicAdminJobWeight = 10
                 basicFoodJobWeight = 1
                 basicProdJobWeight = 1
 
                 unemployedWorkerList = settlement.getUnemployedResidentsList()
+
                 if len(unemployedWorkerList) > 0:
                     if settlement.getSettlementFoodProducedLastYear() <= 0:
 
@@ -631,33 +644,44 @@ def settlementWorkersManagement(world):
                     weightedAdminJobs = len(adminFreeWorkplacesSpots) * basicAdminJobWeight
                     weightedFoodJobs = len(foodFreeWorkplacesSpots) * basicFoodJobWeight
                     weightedProdJobs = len(prodFreeWorkplacesSpots) * basicProdJobWeight
+
                     if basicAdminJobWeight + basicFoodJobWeight + basicProdJobWeight > 0:
 
                         for freeWorkPlace in range(numberOfFreeWorkplaces):
+                            if loopBreaker == 10:
+                                break
                             if len(unemployedWorkerList) == 0:
                                 break
+
                             randomJobSite = Utils.randomRange(1, weightedAdminJobs + weightedFoodJobs + weightedProdJobs)
+
                             if len(adminFreeWorkplacesSpots) > 0 and randomJobSite <= weightedAdminJobs:
                                 newWorker = Utils.randomFromCollection(unemployedWorkerList)
                                 randomJob = Utils.randomRange(0, len(adminFreeWorkplacesSpots)-1)
-                                hireEmployee(newWorker, adminFreeWorkplacesSpots[randomJob][0], world)
-                                numberOfFreeWorkplaces -=1
-                                unemployedWorkerList.remove(newWorker)
-                                del adminFreeWorkplacesSpots[randomJob-1]
+                                if adminFreeWorkplacesSpots[randomJob][0].getOccupationName() != 'Priest' or (adminFreeWorkplacesSpots[randomJob][0].getOccupationName() == 'Priest' and newWorker.getSex() == Sexes.MALE and newWorker.getSpouse() is None):
+                                    hireEmployee(newWorker, adminFreeWorkplacesSpots[randomJob][0], world)
+                                    unemployedWorkerList.remove(newWorker)
+                                    del adminFreeWorkplacesSpots[randomJob]
+                                    weightedAdminJobs -= basicAdminJobWeight
+                                else:
+                                    loopBreaker +=1
+                                    continue
+
                             elif len(foodFreeWorkplacesSpots) > 0 and randomJobSite <= weightedAdminJobs + weightedFoodJobs:
                                 newWorker = Utils.randomFromCollection(unemployedWorkerList)
                                 randomJob = Utils.randomRange(0, len(foodFreeWorkplacesSpots)-1)
                                 hireEmployee(newWorker, foodFreeWorkplacesSpots[randomJob][0], world)
-                                numberOfFreeWorkplaces -= 1
                                 unemployedWorkerList.remove(newWorker)
-                                del foodFreeWorkplacesSpots[randomJob-1]
+                                del foodFreeWorkplacesSpots[randomJob]
+                                weightedFoodJobs -= basicFoodJobWeight
+
                             elif len(prodFreeWorkplacesSpots) > 0 and randomJobSite <= weightedAdminJobs + weightedFoodJobs + weightedProdJobs:
                                 newWorker = Utils.randomFromCollection(unemployedWorkerList)
                                 randomJob = Utils.randomRange(0, len(prodFreeWorkplacesSpots)-1)
                                 hireEmployee(newWorker, prodFreeWorkplacesSpots[randomJob][0], world)
-                                numberOfFreeWorkplaces -= 1
                                 unemployedWorkerList.remove(newWorker)
-                                del prodFreeWorkplacesSpots[randomJob-1]
+                                del prodFreeWorkplacesSpots[randomJob]
+                                weightedProdJobs -= basicProdJobWeight
 
                 if settlement.getSettlementFoodProducedLastYear() <= 0:
                     fireAllEmployees(settlement.getAdminFeatures()[0], world)

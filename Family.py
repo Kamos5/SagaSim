@@ -25,7 +25,7 @@ class Family:
         self.adultMale = 0
 
         self.adultFemalesList = []
-        vadultMalesList = []
+        self.adultMalesList = []
 
         #only childens members
         self.childrenFemaleNumber = 0

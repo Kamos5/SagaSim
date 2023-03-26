@@ -294,7 +294,7 @@ class Settlements:
 
         self.unemployedRes = []
         for res in self.residents:
-            if res.getAge() >= 15 and res.getOccupation() is None and res not in self.unemployedRes and res.getAge() < 50:
+            if res.getAge() >= 15 and res.getOccupation() is None and res not in self.unemployedRes and res.getAge() < 50 and res.getSex() == Enums.Sexes.MALE:
                 self.unemployedRes.append(res)
         return self.unemployedRes
 
@@ -303,8 +303,8 @@ class Settlements:
     def getEmployedResidentsList(self):
 
         self.employedRes = []
-        for res in self.residents:
-            if res.getOccupation() is not None and res not in self.employedRes:
+        for res in self.getResidents():
+            if res.getOccupation() is not None:
                 self.employedRes.append(res)
         return self.employedRes
 
@@ -325,32 +325,38 @@ class Settlements:
     def createStartingVillageFeatures(self):
 
         adminFeature = SF.createAdminZones()[0]
-        adminFeature.setFoundationType(FoundationTypes.FoundationEnums.MEDIUM)
+        adminFeature.setFoundationType(FoundationTypes.foundations['medium'])#FoundationTypes.FoundationEnums.MEDIUM)
+        self.addAdminFeature(adminFeature)
+        adminFeature = SF.createAdminZones()[2]
+        adminFeature.setFoundationType(FoundationTypes.foundations['medium'])#FoundationTypes.FoundationEnums.MEDIUM)
         self.addAdminFeature(adminFeature)
 
         for i in range(7):
             randomBasicFeature = Utils.randomRange(0, 4)
             feature = SF.createZones()[randomBasicFeature]
-            feature.setFoundationType(Utils.randomFromEnumCollectionWithWeights(FoundationTypes.FoundationEnums))
+            feature.setFoundationType(Utils.randomFromFoundationDictionaryWithWeight(FoundationTypes.foundations))
+            #feature.setFoundationType(Utils.randomFromEnumCollectionWithWeights(FoundationTypes.FoundationEnums))
             feature.setFeatureNumber(i)
             self.addFoodFeature(feature)
         randomBasicFeature = Utils.randomRange(5, 6)
         feature = SF.createZones()[randomBasicFeature]
-        feature.setFoundationType(FoundationTypes.FoundationEnums.MEDIUM)
+        feature.setFoundationType(FoundationTypes.foundations['medium'])
         feature.setFeatureNumber(7)
         self.addProdFeature(feature)
 
     def createUpdateVillageFeaturesForTown(self):
 
         feature = SF.createZones()[4]
-        feature.setFoundationType(Utils.randomFromEnumCollectionWithWeights(FoundationTypes.FoundationEnums))
+        feature.setFoundationType(Utils.randomFromFoundationDictionaryWithWeight(FoundationTypes.foundations))
+        #feature.setFoundationType(Utils.randomFromEnumCollectionWithWeights(FoundationTypes.FoundationEnums))
         feature.setFeatureNumber(8)
         self.addFoodFeature(feature)
 
         for i in range(15):
             randomBasicFeature = Utils.randomRange(5, 6)
             feature = SF.createZones()[randomBasicFeature]
-            feature.setFoundationType(Utils.randomFromEnumCollectionWithWeights(FoundationTypes.FoundationEnums))
+            feature.setFoundationType(Utils.randomFromFoundationDictionaryWithWeight(FoundationTypes.foundations))
+            #feature.setFoundationType(Utils.randomFromEnumCollectionWithWeights(FoundationTypes.FoundationEnums))
             feature.setFeatureNumber(9+i)
             self.addProdFeature(feature)
 

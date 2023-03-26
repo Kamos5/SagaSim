@@ -54,11 +54,11 @@ class Feature:
     def setFoundationType(self, newType):
         self.foundationType = newType
 
-    def getFeatureType(self):
-        return self.featureType
-
     def getFoundationType(self):
         return self.foundationType
+
+    def getFeatureType(self):
+        return self.featureType
 
     def getUpgrFrom(self):
         return self.upgrFrom
@@ -219,7 +219,8 @@ def getVillageHall():
     return Feature(FeatureTypes.ADMINTYPE, 1, 1, 'Village hall', 'Place of meeting for village people', 'Village Mayor')
 def getTownHall():
     return Feature(FeatureTypes.ADMINTYPE, 1, 1, 'City hall', 'Place of meeting for town people', 'Mayor')
-
+def getShrine():
+    return Feature(FeatureTypes.ADMINTYPE, 1, 1, 'Shrine', 'Place of basic worship', 'Priest')
 
 def createZones():
 
@@ -252,6 +253,7 @@ def createAdminZones():
 
     zones.append(getVillageHall())
     zones.append(getTownHall())
+    zones.append(getShrine())
 
     return zones
 

@@ -175,7 +175,7 @@ class InspectorScreen:
         self.writeLine += 1
 
         for feature in object.getAdminFeatures():
-            label = Label("Admin feature: " + str(feature.getName()) + " <" + str(feature.getFoundationType().value.name) + " (" + str(feature.getWorkerListNumber()) + "/" + str(feature.getMaxWorkersNumber()) + ")> ", 500, self.lineHeight, self.textFont, True)
+            label = Label(f"Admin feature: {feature.getName()} < {feature.getFoundationType()['name']} ({feature.getWorkerListNumber()} / {feature.getMaxWorkersNumber()} )>", 500, self.lineHeight, self.textFont, True)
             self.inspectorScreenSurfaceObjsRect.append([self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding*2, self.lineHeight * self.writeLine + self.scroll_y)), feature])
             self.writeLine += 1
             if feature.getUIExpand():
@@ -185,7 +185,7 @@ class InspectorScreen:
                     self.writeLine += 1
 
         for feature in object.getFoodFeatures():
-            label = Label("Food feature: " + str(feature.getName()) + " <" + str(feature.getFoundationType().value.name) + " (" + str(feature.getWorkerListNumber()) + "/" + str(feature.getMaxWorkersNumber()) + ")>", 500, self.lineHeight, self.textFont, True)
+            label = Label(f"Food feature: {feature.getName()} < {feature.getFoundationType()['name']} ({feature.getWorkerListNumber()} / {feature.getMaxWorkersNumber()} )>", 500, self.lineHeight, self.textFont, True)
             self.inspectorScreenSurfaceObjsRect.append([self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding*2, self.lineHeight * self.writeLine + self.scroll_y)), feature])
             self.writeLine += 1
             if feature.getUIExpand():
@@ -195,7 +195,7 @@ class InspectorScreen:
                     self.writeLine += 1
 
         for feature in object.getProdFeatures():
-            label = Label("Prod feature: " + str(feature.getName()) + " <" + str(feature.getFoundationType().value.name) + " (" + str(feature.getWorkerListNumber()) + "/" + str(feature.getMaxWorkersNumber()) + ")>", 500, self.lineHeight, self.textFont, True)
+            label = Label(f"Prod feature: {feature.getName()} < {feature.getFoundationType()['name']} ({feature.getWorkerListNumber()} / {feature.getMaxWorkersNumber()} )>", 500, self.lineHeight, self.textFont, True)
             self.inspectorScreenSurfaceObjsRect.append([self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding*2, self.lineHeight * self.writeLine + self.scroll_y)), feature])
             self.writeLine += 1
             if feature.getUIExpand():

@@ -3,6 +3,7 @@ import time
 import Events
 import FamilyFunctions as FF
 import FamilyInitGenerator as FIG
+import FoundationTypes
 import IOtools
 import MembersInitGenerator as MIG
 import Parameters
@@ -125,7 +126,6 @@ def main(popBreakLimit=None):
     world.setPeople(initPeople(world.getFamilies()))
 
     world.diseases = IOtools.loadFiles('diseases')
-    world.foundations = IOtools.loadFiles('foundations')
 
     windowWidth = 1024
     windowHeight = 768

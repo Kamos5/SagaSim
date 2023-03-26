@@ -30,6 +30,22 @@ def randomFromCollectionWithWeight(collection):
 
     return element
 
+def randomFromFoundationDictionaryWithWeight(collection):
+
+    weightSum = 0
+
+    for key, value in collection.items():
+        weightSum += value['chanceWeightModifier']
+
+    randValue = randint(1, weightSum)
+
+    for key, value in collection.items():
+        if randValue <= value['chanceWeightModifier']:
+            return collection[key]
+        randValue -= value['chanceWeightModifier']
+
+    return None
+
 
 def randomFromEnumCollection(collection):
 

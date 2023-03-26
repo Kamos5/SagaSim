@@ -117,15 +117,20 @@ def spouseMatchmaking (params):
 
          if person.lifeStatus == Enums.LifeStatus.ALIVE and person.age >= 15 and person.spouse is None and (person.maritalStatus == Enums.MaritalStatus.SINGLE or person.maritalStatus == Enums.MaritalStatus.WIDOW or person.maritalStatus == Enums.MaritalStatus.WIDOWER or person.maritalStatus == Enums.MaritalStatus.DIVORCED):
 
+            if person.getOccupation() is not None and person.getOccupation().getOccupationName() == 'Priest':
+                continue
+
             changeForFindingSpouse = Utils.randomRange(1, 100)
 
             start = time.perf_counter()
             availableSpouesesList = FindAvailableSpouses(world.getFamilies(), person)
             end = time.perf_counter()
             findSpouseTime = end - start
-            times +=findSpouseTime
-            if len(availableSpouesesList) > 0 and changeForFindingSpouse < 10:
+            times += findSpouseTime
+            if len(availableSpouesesList) > 0 and changeForFindingSpouse < 5:
                 randomSpouse = Utils.randomFromCollection(availableSpouesesList)
+                if randomSpouse.getOccupation() is not None and randomSpouse.getOccupation().getOccupationName() == 'Priest':
+                    continue
                 person.spouse = randomSpouse
                 spouseObj = person.spouse
                 person.maritalStatus = Enums.MaritalStatus.MARRIED

@@ -32,7 +32,7 @@
     "namePL": "Średnia",
     "description": "Foundation here is medium.",
     "yieldModifier": 80,
-    "chanceWeightModifier": 35
+    "chanceWeightModifier": 65
   },
   "good": {
     "name": "Good",

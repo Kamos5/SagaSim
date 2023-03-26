@@ -53,3 +53,10 @@ for person in persons:
 
 print(persons)
 
+list2 = [["a",0],["b",2],["c",3],['d',4]]
+
+
+somelist = [x for x in list2 if not x[0]=='b']
+
+print(somelist)
+

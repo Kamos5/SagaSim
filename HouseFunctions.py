@@ -21,6 +21,10 @@ def payForUpkeep (house):
     upkeepWasPaid = False
     for resident in house.getHouseResidents():
         upkeep = house.getHouseType().value.getHouseUpkeep()
+        if house.getHouseDurability() == 100 and resident.getFreeWealth() >= upkeep/2:
+            resident.changeFreeWealth(-upkeep/2)
+            upkeepWasPaid = True
+            break
         if resident.getFreeWealth() >= upkeep:
             resident.changeFreeWealth(-upkeep)
             house.changeHouseDurability(round((100-house.getHouseDurability())/4)+1)
@@ -28,7 +32,7 @@ def payForUpkeep (house):
             break
 
     if not upkeepWasPaid:
-        house.changeHouseDurability(-25)
+        house.changeHouseDurability(-5)
 
 def payForUpgrade (house):
 
