@@ -112,7 +112,10 @@ def deathProcedures(person, world):
 
     #wealth inheretance (to children only)
     for child in person.getAliveChildrenList():
-        child.changeFreeWealth(person.getFreeWealth() / len(person.getAliveChildrenList()))
+        inheritance = person.getFreeWealth() / len(person.getAliveChildrenList())
+        if inheritance > 0:
+            child.changeFreeWealth(inheritance)
+            PLEH.inheritFromParent(child, person, inheritance, world)
 
     #If no alive children city takes it all
     if len(person.getAliveChildrenList()) == 0:

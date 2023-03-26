@@ -152,3 +152,11 @@ def celebratedBirthsday(person, world):
 
     person.lifeEvents.append(f'{person.getFirstName()} celebrated his birthsday with following friends: {string}on the {world.getDay()}/{world.getMonth().value[1]}/{world.getYear()}')
 
+def inheritFromParent(person, parent, ihneritance, world):
+
+    if person.getSex() == Sexes.FEMALE:
+        preverb = 'hers'
+    else:
+        preverb = 'his'
+    person.lifeEvents.append(f'{person.getFirstName()} ihnerited wealth worth {ihneritance} from {preverb} parent {parent.getFirstName()} {parent.getLastName()} on the {world.getDay()}/{world.getMonth().value[1]}/{world.getYear()}')
+

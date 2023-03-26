@@ -374,12 +374,15 @@ class Settlements:
             newFeature.setFeatureNumber(oldFeature.getFeatureNumber())
             self.addProdFeature(newFeature)
 
+        workersToRemove = []
         for worker in oldFeature.getWorkerList():
-            oldFeature.removeWorker(worker)
+            workersToRemove.append(worker)
             newFeature.addWorker(worker)
             worker.setOccupation(newFeature)
             worker.setOccupationName(newFeature.getOccupationName())
             PLEH.gotPromotion(worker, world)
+        for worker in workersToRemove:
+            oldFeature.removeWorker(worker)
 
     def getFreeWealth(self):
         return self.freeWealth
