@@ -239,7 +239,6 @@ def pygameEvents(event, canvas, pausedPressed):
                         scroll_y = 0
                     canvas.refreshScreen(world, canvas.listScreen.getScroll_y(), canvas.inspectorScreen.getScroll_y(), scroll_y)
 
-
     if event.type == pygame.KEYDOWN:
 
         pCount = world.getGameSpeed()
@@ -415,6 +414,7 @@ def pygameEvents(event, canvas, pausedPressed):
             canvas.refreshScreen(world, canvas.listScreen.getScroll_y(), canvas.inspectorScreen.getScroll_y(), canvas.familyTreeScreen.getScroll_y())
 
     collectionEvent, pausedPressed = canvas.handleClickOnCollection(event, pausedPressed)
+
     if collectionEvent:
         canvas.refreshScreen(world, canvas.listScreen.getScroll_y(), canvas.inspectorScreen.getScroll_y(), canvas.familyTreeScreen.getScroll_y())
 

@@ -288,6 +288,7 @@ class Canvas:
                             self.focusObj.append(itemObj[1])
                             if isinstance(itemObj[1], Button):
                                 itemObj[1].changeActiveStatus()
+                                return True, pausedPressed
 
         if self.showWorldMap is True:
             for itemObjRect, itemObjRectScreen in zip(itemsObjRectArray, itemsObjRectScreensArray):
@@ -297,6 +298,8 @@ class Canvas:
                     for itemObj in itemsObj:
                         if itemObj[0].collidepoint([mouseX - itemObjRectScreen.screenPosX, mouseY - itemObjRectScreen.screenPosY]):
                             itemObj[1].changeColorAfterClick(itemObj[0])
+                            return True, pausedPressed
+
         return False, pausedPressed
 
     def pauseHandle(self, event, pausedPressed):
