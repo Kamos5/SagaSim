@@ -3,6 +3,7 @@ import pygame
 from SettlementFeatures import Feature
 from UI.Screens.FamilyTreeScreen import FamilyTreeScreen
 from UI.Screens.HelpScreen import HelpScreen
+from UI.Screens.WorldMapScreen import WorldMapScreen
 from UI.Screens.InspectorScreen import InspectorScreen
 from UI.Screens.ListScreen import ListScreen
 from UI.Screens.NavBarScreen import NavBarScreen
@@ -15,7 +16,6 @@ class Canvas:
 
     windowWidth = 1920 # 1366
     windowHeight = 1080 # 768
-    temp = 0
 
     def __init__(self):
 
@@ -36,6 +36,13 @@ class Canvas:
         self.helpHeightOffSet = 0
         self.helpPosX = int(self.windowWidth/8)
         self.helpPosY = int(self.windowHeight/8)
+
+        self.worldMapWidth = int(self.windowWidth*7/8)
+        self.worldMapHeight = int(self.windowHeight*15/16)
+        self.worldMapWidthOffSet = 0
+        self.worldMapHeightOffSet = 0
+        self.worldMapPosX = int(self.windowWidth/16)
+        self.worldMapPosY = int(self.windowHeight/32)
 
         self.plotsWidth = int(self.windowWidth*7/8)
         self.plotsHeight = int(self.windowHeight*7/8)
@@ -70,6 +77,9 @@ class Canvas:
         self.helpScreen = HelpScreen(self.helpWidth, self.helpHeight, self.helpWidthOffSet, self.helpHeightOffSet, self.helpPosX, self.helpPosY)
         self.helpScreenSurface = self.helpScreen.getHelpScreenSurface()
 
+        self.worldMapScreen = WorldMapScreen(self.worldMapWidth, self.worldMapHeight, self.worldMapWidthOffSet, self.worldMapHeightOffSet, self.worldMapPosX, self.worldMapPosY)
+        self.worldMapScreenSurface = self.worldMapScreen.getWorldMapScreenSurface()
+
         self.plotsScreen = PlotsScreen(self.plotsWidth, self.plotsHeight, self.plotsWidthOffSet, self.plotsHeightOffSet, self.plotsPosX, self.plotsPosY)
         self.plotsScreenSurface = self.plotsScreen.getPlotsScreenSurface()
 
@@ -91,6 +101,7 @@ class Canvas:
         self.favorites = []
 
         self.showHelp = False
+        self.showWorldMap = False
         self.showPlots = False
         self.showFamilyScreen = False
         self.showFamilyObj = None
@@ -109,6 +120,7 @@ class Canvas:
 
         self.screen.fill((0, 0, 0), (0, 0, self.windowWidth, self.windowHeight))
         HelpScreen.cleanScreen(self.helpScreen)
+        WorldMapScreen.cleanScreen(self.worldMapScreen)
         PlotsScreen.cleanScreen(self.plotsScreen)
         NavBarScreen.cleanScreen(self.navBarScreen)
         ListScreen.cleanScreen(self.listScreen)
@@ -128,6 +140,7 @@ class Canvas:
         self.listScreen.addSearch()
         self.listScreen.addRegions(world, self.lastFocusObj)
         self.helpScreen.resetWriteLine()
+        self.worldMapScreen.resetWriteLine()
         self.plotsScreen.resetWriteLine()
         self.familyTreeScreen.resetWriteLine()
         self.inspectorScreen.resetWriteLine()
@@ -166,13 +179,17 @@ class Canvas:
             self.helpScreen.addHelp()
             self.helpScreenObj = self.screen.blit(self.helpScreenSurface, (self.helpPosX, self.helpPosY))
 
+        if self.showWorldMap:
+            self.worldMapScreen.addMap()
+            self.worldMapScreenObj = self.screen.blit(self.worldMapScreenSurface, (self.worldMapPosX, self.worldMapPosY))
+
         if self.showPlots:
             self.plotsScreen.addHeaderPlot(self.lastFocusObj, world)
             self.plotsScreenObj = self.screen.blit(self.plotsScreenSurface, (self.plotsPosX, self.plotsPosY))
 
         if self.showFamilyScreen:
             self.familyTreeScreen.addTree(self.showFamilyObj, self.showUpTree, self.showDownTree)
-            self.familyTreeScreenObj = self.screen.blit(self.familyTreeScreenSurface, (self.helpPosX, self.helpPosY))
+            self.familyTreeScreenObj = self.screen.blit(self.familyTreeScreenSurface, (self.familyTreePosX, self.familyTreePosY))
 
     def refreshScreen(self, world, listScroll_y, detailsScroll_y, familyTreeScroll_y):
 
@@ -182,10 +199,10 @@ class Canvas:
         self.clearCanvas()
         self.navBarScreen.addHelpButton()
         self.navBarScreen.addPlotsButton()
+        self.navBarScreen.addWorldMapButton()
         self.navBarScreen.addGameSpeedCounter(world)
         self.navBarScreen.addDateTimer(world)
         self.drawStuff(world)
-        self.temp += world.getYear()+1-world.getYear()
         pygame.display.update()
 
     def handleClickOnCollection(self, event, pausedPressed):
@@ -202,9 +219,13 @@ class Canvas:
             itemsObjRectArray = [self.plotsScreen.plotsScreenSurfaceObjsRect]
             itemsObjRectScreensArray = [self.plotsScreen]
 
+        if self.showWorldMap:
+            itemsObjRectArray = [self.worldMapScreen.worldMapScreenSurfaceObjsRect]
+            itemsObjRectScreensArray = [self.worldMapScreen]
+
         for itemObjRect, itemObjRectScreen in zip(itemsObjRectArray, itemsObjRectScreensArray):
             itemsObj = itemObjRect
-            if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1 and self.showPlots is False and self.showHelp is False and self.showFamilyScreen is False:
+            if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1 and self.showPlots is False and self.showHelp is False and self.showFamilyScreen is False and self.showWorldMap is False:
                 self.showDownTree = False
                 self.showUpTree = False
                 mouseX, mouseY = pygame.mouse.get_pos()
@@ -268,28 +289,41 @@ class Canvas:
                             if isinstance(itemObj[1], Button):
                                 itemObj[1].changeActiveStatus()
 
+        if self.showWorldMap is True:
+            for itemObjRect, itemObjRectScreen in zip(itemsObjRectArray, itemsObjRectScreensArray):
+                itemsObj = itemObjRect
+                if event.type == pygame.MOUSEBUTTONUP and event.button == 1:
+                    mouseX, mouseY = pygame.mouse.get_pos()
+                    for itemObj in itemsObj:
+                        if itemObj[0].collidepoint([mouseX - itemObjRectScreen.screenPosX, mouseY - itemObjRectScreen.screenPosY]):
+                            itemObj[1].changeColorAfterClick(itemObj[0])
         return False, pausedPressed
 
     def pauseHandle(self, event, pausedPressed):
 
         if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
             pos = pygame.mouse.get_pos()
-            if self.navBarScreen.navBarScreenSurfaceObjsRect[0][0].collidepoint(pos) and not self.showFamilyScreen and not self.showHelp:
+            if self.navBarScreen.navBarScreenSurfaceObjsRect[0][0].collidepoint(pos) and not self.showFamilyScreen and not self.showHelp and not self.showWorldMap:
                 if not pausedPressed:
                     pausedPressed = True
                 self.showHelp = True
 
-            if self.navBarScreen.navBarScreenSurfaceObjsRect[1][0].collidepoint(pos) and not self.showFamilyScreen and not self.showHelp:
+            if self.navBarScreen.navBarScreenSurfaceObjsRect[1][0].collidepoint(pos) and not self.showFamilyScreen and not self.showHelp and not self.showWorldMap:
                 if not pausedPressed:
                     pausedPressed = True
                 self.showPlots = True
 
+            if self.navBarScreen.navBarScreenSurfaceObjsRect[2][0].collidepoint(pos) and not self.showFamilyScreen and not self.showHelp and not self.showWorldMap:
+                if not pausedPressed:
+                    pausedPressed = True
+                self.showWorldMap = True
 
-            if self.navBarScreen.navBarScreenSurfaceObjsRect[2][0].collidepoint(pos) and not self.showFamilyScreen and not self.showHelp:
+            if self.navBarScreen.navBarScreenSurfaceObjsRect[3][0].collidepoint(pos) and not self.showFamilyScreen and not self.showHelp and not self.showWorldMap:
                 pausedPressed = not pausedPressed
             if pausedPressed == False:
                 self.showHelp = False
                 self.showPlots = False
+                self.showWorldMap = False
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_SPACE:
                 if not self.showFamilyScreen:
@@ -297,12 +331,14 @@ class Canvas:
             if event.key == pygame.K_ESCAPE:
                 self.showHelp = False
                 self.showPlots = False
+                self.showWorldMap = False
                 if self.showFamilyScreen:
                     self.showFamilyScreen = False
                     self.familyTreeScreen.setScroll_y(0)
             if pausedPressed == False:
                 self.showHelp = False
                 self.showPlots = False
+                self.showWorldMap = False
             if event.key == pygame.K_q:
                 exit()
 

@@ -55,6 +55,13 @@ class NavBarScreen:
         self.plotsLabel.setActiveBorderColor(100, 10, 10)
         self.navBarScreenSurfaceObjsRect.append([self.navBarScreenSurface.blit(self.plotsLabel.localSurface, (self.width * 0.05, 0)), 'Plots'])
 
+    def addWorldMapButton (self):
+
+        self.plotsLabel = Label2("World Map", self.textFont, True, borderSize=1)
+        self.plotsLabel.setActiveRectColor(10, 10, 70)
+        self.plotsLabel.setActiveBorderColor(100, 100, 100)
+        self.navBarScreenSurfaceObjsRect.append([self.navBarScreenSurface.blit(self.plotsLabel.localSurface, (self.width * 0.10, 0)), 'worldMap'])
+
 
     def addGameSpeedCounter(self, world):
 

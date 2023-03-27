@@ -131,7 +131,7 @@ def main(popBreakLimit=None):
     windowHeight = 768
     #pygame init stuff
     pygame.init()
-    fps = 6000
+    fps = 60
     clock = pygame.time.Clock()
 
     manualOverride = False
@@ -158,6 +158,7 @@ def main(popBreakLimit=None):
         canvas.clearCanvas()
         canvas.navBarScreen.addHelpButton()
         canvas.navBarScreen.addPlotsButton()
+        canvas.navBarScreen.addWorldMapButton()
         canvas.navBarScreen.addGameSpeedCounter(world)
         canvas.navBarScreen.addDateTimer(world)
         canvas.drawStuff(world)
@@ -188,17 +189,6 @@ def main(popBreakLimit=None):
 
         pygame.display.update()  # Call this only once per loop
         clock.tick(fps)
-
-        # FAMILY TREE UP (from child to parents)
-        # if world.getYear() == 600:
-        #     temp = world.getPeople()[len(world.getPeople())-1].generateUpFamilyTree(BinaryTreeNode(world.getPeople()[len(world.getPeople())-1]))
-        #     Utils.printUpFamilyTree(temp)
-        #     return
-        # FAMILY TREE DOWN (parents to child)
-        # if world.getYear() == 600:
-        #     temp = world.getPeople()[0].generateDownFamilyTree(BinaryTreeNode(world.getPeople()[0]))
-        #     Utils.printDownFamilyTree(temp)
-        #     return
 
         if popBreakLimit is not None and len(world.getAlivePeople()) > popBreakLimit:
             return timeTable
