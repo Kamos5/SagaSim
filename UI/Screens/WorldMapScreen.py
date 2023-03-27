@@ -114,15 +114,13 @@ class WorldMapScreen:
         print(f'AAA {rect}')
         offset = 0
         if self.brushSize % 2 == 1:
-            offset = self.brushSize//2 * 5
+            offset = self.brushSize//2 * 8
         else:
-            offset = (self.brushSize//2 - 1) * 5
+            offset = (self.brushSize//2 - 1) * 8
         xCutOff = (rect.left-40)//5
         for sizeX in range(self.brushSize):
             for sizeY in range(self.brushSize):
-                # print(xCutOff)
-                # print(self.mapXSize//5)
-                self.changedColorCordsArray.append((rect.left+sizeX*5-offset, rect.top+sizeY*5-offset, rect.width, rect.height))
+                self.changedColorCordsArray.append((rect.left+sizeX*8-offset, rect.top+sizeY*8-offset, rect.width, rect.height))
 
     def cleanScreen(self):
 
