@@ -68,6 +68,7 @@ class WorldMapScreen:
 
     def addDefaultMap(self):
 
+
         mapXSize = 1600
         mapYSize = 800
 
