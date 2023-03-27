@@ -145,9 +145,9 @@ class WorldMapScreen:
 
     def createMap(self):
 
-        w = 4
-        h = 4
+        w = 6
+        h = 6
         dziobakMap = [[100,1],[101,1],[102,1],[103,1],[104,1],[105,1],[104,2],[103,3],[102,4],[101,5],[100,6],[101,6],[102,6],[103,6],[104,6],[105,6]]
 
         for pair in dziobakMap:
-            self.changedColorCordsArray.append((pair[0]*(w+1)+40, pair[1]*(h+1) + (self.writeLine * self.lineHeight), w, h))
+            self.changedColorCordsArray.append((pair[0]*(w+2)+40+1, pair[1]*(h+2) + (self.writeLine * self.lineHeight)+1, w, h))
