@@ -49,6 +49,8 @@ class WorldMapScreen:
 
         self.changedColorCordsArray = []
 
+        self.brushSize = 1
+
     def addMap(self):
 
         self.writeLine += 1
@@ -68,30 +70,27 @@ class WorldMapScreen:
     def addDefaultMap(self):
 
 
-        mapXSize = 1600
-        mapYSize = 800
+        self.mapXSize = 1600
+        self.mapYSize = 800
 
-        chunkSizeXWithBorder = 5
-        chunkSizeYWithBorder = 5
+        chunkSizeXWithBorder = 8
+        chunkSizeYWithBorder = 8
         borderChunkSizeX = 1
         borderChunkSizeY = 1
-        chunkSizeX = chunkSizeXWithBorder - borderChunkSizeX
-        chunkSizeY = chunkSizeYWithBorder - borderChunkSizeY
+        chunkSizeX = chunkSizeXWithBorder - 2*borderChunkSizeX
+        chunkSizeY = chunkSizeYWithBorder - 2*borderChunkSizeY
         verticalPadding = 40
 
-        for y in range(0, mapYSize, chunkSizeXWithBorder):
-            for x in range(0, mapXSize, chunkSizeYWithBorder):
+        for y in range(0, self.mapYSize, chunkSizeXWithBorder):
+            for x in range(0, self.mapXSize, chunkSizeYWithBorder):
 
-                rect = pygame.draw.rect(self.worldMapScreenSurface, self.color, [x + verticalPadding, y + (self.writeLine * self.lineHeight), chunkSizeX, chunkSizeY])
-                self.worldMapScreenSurfaceObjsRect.append([rect, self])
+                rect = pygame.draw.rect(self.worldMapScreenSurface, self.BORDER_COLOR, [x + verticalPadding, y + (self.writeLine * self.lineHeight), chunkSizeXWithBorder, chunkSizeXWithBorder])
+                rectInner = pygame.draw.rect(self.worldMapScreenSurface, self.color, [x + verticalPadding+borderChunkSizeX, y + (self.writeLine * self.lineHeight)+borderChunkSizeY, chunkSizeX, chunkSizeY])
+                self.worldMapScreenSurfaceObjsRect.append([rect, rectInner])
                 if self.color == self.GRAY_1:
                     self.color = self.GRAY_2
                 else:
                     self.color = self.GRAY_1
-                if x < mapXSize-chunkSizeXWithBorder:
-                    pygame.draw.rect(self.worldMapScreenSurface, self.BORDER_COLOR, [x + verticalPadding+chunkSizeX, y + (self.writeLine * self.lineHeight), borderChunkSizeX, chunkSizeX])
-                if y < mapYSize-chunkSizeYWithBorder:
-                    pygame.draw.rect(self.worldMapScreenSurface, self.BORDER_COLOR, [x + verticalPadding, y + (self.writeLine * self.lineHeight)+chunkSizeY, chunkSizeY, borderChunkSizeY])
             if self.color == self.GRAY_1:
                 self.color = self.GRAY_2
             else:
@@ -103,7 +102,7 @@ class WorldMapScreen:
             self.color = (20, 220, 20)
             x, y, w, h = changeColor
             rect = pygame.draw.rect(self.worldMapScreenSurface, self.color, [x, y, w, h])
-            self.worldMapScreenSurfaceObjsRect.append([rect, self])
+            self.worldMapScreenSurfaceObjsRect.append([rect, rect])
         self.color = oldcolor
 
     def resetWriteLine(self):
@@ -112,7 +111,18 @@ class WorldMapScreen:
 
     def changeColorAfterClick(self, rect):
 
-        self.changedColorCordsArray.append((rect.left, rect.top, rect.width, rect.height))
+        print(f'AAA {rect}')
+        offset = 0
+        if self.brushSize % 2 == 1:
+            offset = self.brushSize//2 * 5
+        else:
+            offset = (self.brushSize//2 - 1) * 5
+        xCutOff = (rect.left-40)//5
+        for sizeX in range(self.brushSize):
+            for sizeY in range(self.brushSize):
+                # print(xCutOff)
+                # print(self.mapXSize//5)
+                self.changedColorCordsArray.append((rect.left+sizeX*5-offset, rect.top+sizeY*5-offset, rect.width, rect.height))
 
     def cleanScreen(self):
 
@@ -121,6 +131,17 @@ class WorldMapScreen:
 
     def getWorldMapScreenSurface(self):
         return self.worldMapScreenSurface
+
+    def makeBrushBigger(self):
+
+        self.brushSize += 1
+        if self.brushSize > 20:
+            self.brushSize = 20
+
+    def makeBrushSmaller(self):
+        self.brushSize -= 1
+        if self.brushSize < 1:
+            self.brushSize = 1
 
     def createMap(self):
 

@@ -1,3 +1,5 @@
+import time
+
 import pygame
 
 from SettlementFeatures import Feature
@@ -293,13 +295,19 @@ class Canvas:
         if self.showWorldMap is True:
             for itemObjRect, itemObjRectScreen in zip(itemsObjRectArray, itemsObjRectScreensArray):
                 itemsObj = itemObjRect
-                if event.type == pygame.MOUSEBUTTONUP and event.button == 1:
+                if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                     mouseX, mouseY = pygame.mouse.get_pos()
                     for itemObj in itemsObj:
                         if itemObj[0].collidepoint([mouseX - itemObjRectScreen.screenPosX, mouseY - itemObjRectScreen.screenPosY]):
-                            itemObj[1].changeColorAfterClick(itemObj[0])
+                            self.worldMapScreen.changeColorAfterClick(itemObj[1])
                             return True, pausedPressed
 
+                #burshSize
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_a:
+                        self.worldMapScreen.makeBrushBigger()
+                    if event.key == pygame.K_z:
+                        self.worldMapScreen.makeBrushSmaller()
         return False, pausedPressed
 
     def pauseHandle(self, event, pausedPressed):

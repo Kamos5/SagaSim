@@ -175,7 +175,7 @@ def main(popBreakLimit=None):
 
 
         pygame.display.update()
-
+        pygame.event.set_blocked(pygame.MOUSEMOTION)
         for event in pygame.event.get():
 
             pausedPressed = pygameEvents(event, canvas, pausedPressed)
@@ -183,7 +183,7 @@ def main(popBreakLimit=None):
                 for event in pygame.event.get():
                     pausedPressed = pygameEvents(event, canvas, pausedPressed)
 
-                    # print(time.perf_counter()) #TODO OGARNAC
+                # print(time.perf_counter()) #TODO OGARNAC
 
 
 
@@ -414,8 +414,10 @@ def pygameEvents(event, canvas, pausedPressed):
             canvas.refreshScreen(world, canvas.listScreen.getScroll_y(), canvas.inspectorScreen.getScroll_y(), canvas.familyTreeScreen.getScroll_y())
 
     collectionEvent, pausedPressed = canvas.handleClickOnCollection(event, pausedPressed)
+
     if collectionEvent:
         canvas.refreshScreen(world, canvas.listScreen.getScroll_y(), canvas.inspectorScreen.getScroll_y(), canvas.familyTreeScreen.getScroll_y())
+        return pausedPressed
 
     if event.type == pygame.QUIT:
         pygame.quit()
@@ -424,7 +426,6 @@ def pygameEvents(event, canvas, pausedPressed):
     # Pause from mousclick on Time
     pausedPressed = canvas.pauseHandle(event, pausedPressed)
     canvas.refreshScreen(world, canvas.listScreen.getScroll_y(), canvas.inspectorScreen.getScroll_y(), canvas.familyTreeScreen.getScroll_y())
-
     return pausedPressed
 
 def callMain (popBreakLimit):
