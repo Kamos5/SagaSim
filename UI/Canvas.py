@@ -182,7 +182,7 @@ class Canvas:
             self.helpScreenObj = self.screen.blit(self.helpScreenSurface, (self.helpPosX, self.helpPosY))
 
         if self.showWorldMap:
-            self.worldMapScreen.addMap()
+            self.worldMapScreen.addMap(self.lastFocusObj)
             self.worldMapScreenObj = self.screen.blit(self.worldMapScreenSurface, (self.worldMapPosX, self.worldMapPosY))
 
         if self.showPlots:
@@ -299,9 +299,12 @@ class Canvas:
                     mouseX, mouseY = pygame.mouse.get_pos()
                     for itemObj in itemsObj:
                         if itemObj[0].collidepoint([mouseX - itemObjRectScreen.screenPosX, mouseY - itemObjRectScreen.screenPosY]):
-                            self.worldMapScreen.changeColorAfterClick(itemObj[1])
-                            return True, pausedPressed
-
+                            if not isinstance(itemObj[1], Button):
+                                self.worldMapScreen.changeColorAfterClick(itemObj[1])
+                                return True, pausedPressed
+                            else:
+                                print("aaa")
+                                self.worldMapScreen.changeBrushColor()
                 #burshSize
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_a:

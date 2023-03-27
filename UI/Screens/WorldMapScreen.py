@@ -2,6 +2,7 @@ import time
 
 import pygame
 
+from UI.Utils.Button import Button
 from UI.Utils.Label2 import Label2
 
 
@@ -47,11 +48,13 @@ class WorldMapScreen:
 
         self.color = self.GRAY_1
 
+        self.brushColor = [(20, 220, 20),(20, 20, 220),(220, 20, 20)]
+        self.brushColorIndex = 0
         self.changedColorCordsArray = []
 
         self.brushSize = 1
 
-    def addMap(self):
+    def addMap(self, lastFocusObj):
 
         self.writeLine += 1
 
@@ -61,11 +64,29 @@ class WorldMapScreen:
 
         self.worldMapScreenSurface.blit(self.mapLabel.localSurface, (self.width * 0.10, self.writeLine*self.lineHeight))
 
-        self.writeLine += 5
+        self.writeLine += 1
+
+        if isinstance(lastFocusObj, Button) and lastFocusObj.getButtonName() == 'changeColor':
+            self.worldMapLabel = Label2("Brush color", self.textFont, True, lastFocusObj.getButtonFlag())
+        else:
+            self.worldMapLabel = Label2("Brush Color", self.textFont, True)
+
+        self.worldMapScreenSurfaceObjsRect.append([self.worldMapScreenSurface.blit(self.worldMapLabel.localSurface, (self.width * 0.05, self.getVerticalPositioning())), Button('changeColor')])
+
+        pygame.draw.rect(self.worldMapScreenSurface, self.BORDER_COLOR, [self.width * 0.05 + self.worldMapLabel.w, self.getVerticalPositioning(), self.worldMapLabel.h, self.worldMapLabel.h])
+        pygame.draw.rect(self.worldMapScreenSurface, self.brushColor[self.brushColorIndex], [self.width * 0.05 + self.worldMapLabel.w+1, self.getVerticalPositioning()+1, self.worldMapLabel.h-2, self.worldMapLabel.h-2])
+
+        self.writeLine += 4
 
         self.addDefaultMap()
         self.createMap()
         self.modMap()
+
+    def changeBrushColor(self):
+
+        self.brushColorIndex += 1
+        if self.brushColorIndex >= len(self.brushColor):
+            self.brushColorIndex = 0
 
     def addDefaultMap(self):
 
@@ -86,7 +107,7 @@ class WorldMapScreen:
 
                 rect = pygame.draw.rect(self.worldMapScreenSurface, self.BORDER_COLOR, [x + verticalPadding, y + (self.writeLine * self.lineHeight), chunkSizeXWithBorder, chunkSizeXWithBorder])
                 rectInner = pygame.draw.rect(self.worldMapScreenSurface, self.color, [x + verticalPadding+borderChunkSizeX, y + (self.writeLine * self.lineHeight)+borderChunkSizeY, chunkSizeX, chunkSizeY])
-                self.worldMapScreenSurfaceObjsRect.append([rect, rectInner])
+                self.worldMapScreenSurfaceObjsRect.append([rect, rectInner, self.color])
                 if self.color == self.GRAY_1:
                     self.color = self.GRAY_2
                 else:
@@ -98,12 +119,13 @@ class WorldMapScreen:
 
     def modMap(self):
         oldcolor = self.color
-        for changeColor in self.changedColorCordsArray:
-            self.color = (20, 220, 20)
+        for changeColor, color in self.changedColorCordsArray:
+            self.color = color
             x, y, w, h = changeColor
             rect = pygame.draw.rect(self.worldMapScreenSurface, self.color, [x, y, w, h])
-            self.worldMapScreenSurfaceObjsRect.append([rect, rect])
+            self.worldMapScreenSurfaceObjsRect.append([rect, rect, self.color])
         self.color = oldcolor
+
 
     def resetWriteLine(self):
 
@@ -111,16 +133,14 @@ class WorldMapScreen:
 
     def changeColorAfterClick(self, rect):
 
-        print(f'AAA {rect}')
-        offset = 0
+        color = self.brushColor[self.brushColorIndex]
         if self.brushSize % 2 == 1:
             offset = self.brushSize//2 * 8
         else:
             offset = (self.brushSize//2 - 1) * 8
-        xCutOff = (rect.left-40)//5
         for sizeX in range(self.brushSize):
             for sizeY in range(self.brushSize):
-                self.changedColorCordsArray.append((rect.left+sizeX*8-offset, rect.top+sizeY*8-offset, rect.width, rect.height))
+                self.changedColorCordsArray.append([(rect.left+sizeX*8-offset, rect.top+sizeY*8-offset, rect.width, rect.height), color])
 
     def cleanScreen(self):
 
@@ -148,4 +168,7 @@ class WorldMapScreen:
         dziobakMap = [[100,1],[101,1],[102,1],[103,1],[104,1],[105,1],[104,2],[103,3],[102,4],[101,5],[100,6],[101,6],[102,6],[103,6],[104,6],[105,6]]
 
         for pair in dziobakMap:
-            self.changedColorCordsArray.append((pair[0]*(w+2)+40+1, pair[1]*(h+2) + (self.writeLine * self.lineHeight)+1, w, h))
+            self.changedColorCordsArray.append([(pair[0]*(w+2)+40+1, pair[1]*(h+2) + (self.writeLine * self.lineHeight)+1, w, h), self.brushColor[0]])
+
+    def getVerticalPositioning(self):
+        return self.writeLine * (self.lineHeight + 2 * self.labelBoarderDefault + 2 * self.labelMarginVerticalDefault)
