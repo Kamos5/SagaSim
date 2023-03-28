@@ -61,6 +61,17 @@ class WorldMapScreen:
         self.brushFlag = True
         self.eraseFlag = False
 
+        self.mapXSize = 1600
+        self.mapYSize = 800
+
+        self.chunkSizeXWithBorder = 8
+        self.chunkSizeYWithBorder = 8
+        self.borderChunkSizeX = 1
+        self.borderChunkSizeY = 1
+        self.chunkSizeX = self.chunkSizeXWithBorder - 2*self.borderChunkSizeX
+        self.chunkSizeY = self.chunkSizeYWithBorder - 2*self.borderChunkSizeY
+        self.verticalPadding = 40
+
     def addMap(self, lastFocusObj):
 
         self.writeLine += 1
@@ -93,6 +104,10 @@ class WorldMapScreen:
         self.loadMapLabel = Label2("Load Map", self.textFont, True)
 
         self.worldMapScreenSurfaceObjsRect.append([self.worldMapScreenSurface.blit(self.loadMapLabel.localSurface, (self.width * 0.35, self.getVerticalPositioning())), Button('loadMap')])
+
+        self.cleanBoardLabel = Label2("Clean Board", self.textFont, True)
+
+        self.worldMapScreenSurfaceObjsRect.append([self.worldMapScreenSurface.blit(self.cleanBoardLabel.localSurface, (self.width * 0.75, self.getVerticalPositioning())), Button('cleanBoard')])
 
         self.writeLine += 1
 
@@ -129,6 +144,10 @@ class WorldMapScreen:
             self.saveMap()
         if button.getButtonName() == 'loadMap':
             self.loadMap()
+        if button.getButtonName() == 'cleanBoard':
+            self.isLoaded = False
+            self.changedColorCordsArray = []
+            self.cleanScreen()
 
     def changeBrushColor(self, eventButton):
 
@@ -154,24 +173,13 @@ class WorldMapScreen:
 
     def addDefaultMap(self):
 
-
-        self.mapXSize = 1600
-        self.mapYSize = 800
-
-        chunkSizeXWithBorder = 8
-        chunkSizeYWithBorder = 8
-        borderChunkSizeX = 1
-        borderChunkSizeY = 1
-        chunkSizeX = chunkSizeXWithBorder - 2*borderChunkSizeX
-        chunkSizeY = chunkSizeYWithBorder - 2*borderChunkSizeY
-        verticalPadding = 40
         self.map = []
 
-        for y in range(0, self.mapYSize, chunkSizeXWithBorder):
-            for x in range(0, self.mapXSize, chunkSizeYWithBorder):
+        for y in range(0, self.mapYSize, self.chunkSizeXWithBorder):
+            for x in range(0, self.mapXSize, self.chunkSizeYWithBorder):
 
-                rect = pygame.draw.rect(self.worldMapScreenSurface, self.BORDER_COLOR, [x + verticalPadding, y + (self.writeLine * self.lineHeight), chunkSizeXWithBorder, chunkSizeXWithBorder])
-                rectInner = pygame.draw.rect(self.worldMapScreenSurface, self.color, [x + verticalPadding+borderChunkSizeX, y + (self.writeLine * self.lineHeight)+borderChunkSizeY, chunkSizeX, chunkSizeY])
+                rect = pygame.draw.rect(self.worldMapScreenSurface, self.BORDER_COLOR, [x + self.verticalPadding, y + (self.writeLine * self.lineHeight), self.chunkSizeXWithBorder, self.chunkSizeXWithBorder])
+                rectInner = pygame.draw.rect(self.worldMapScreenSurface, self.color, [x + self.verticalPadding+self.borderChunkSizeX, y + (self.writeLine * self.lineHeight)+self.borderChunkSizeY, self.chunkSizeX, self.chunkSizeY])
                 self.worldMapScreenSurfaceObjsRect.append([rect, rectInner, self.color])
                 self.map.append([rect, rectInner, self.color])
                 if self.color == self.GRAY_1:
@@ -220,8 +228,15 @@ class WorldMapScreen:
                 offset = (self.brushSize//2 - 1) * 8
             for sizeX in range(self.brushSize):
                 for sizeY in range(self.brushSize):
+                    x, y, w, h = rectBord
+                    # LIMIT TO BORDER X
+                    if sizeX - offset//self.chunkSizeXWithBorder + (x-self.verticalPadding)//self.chunkSizeXWithBorder < 0 or sizeX - offset//self.chunkSizeXWithBorder + (x-self.verticalPadding)//self.chunkSizeXWithBorder > self.mapXSize//self.chunkSizeXWithBorder - 1:
+                        continue
+                    # LIMIT TO BORDER Y
+                    if sizeY - offset//self.chunkSizeYWithBorder + (y-self.writeLine * self.lineHeight)//self.chunkSizeYWithBorder < 0 or sizeY - offset//self.chunkSizeYWithBorder + (y-self.writeLine * self.lineHeight)//self.chunkSizeYWithBorder > self.mapYSize//self.chunkSizeYWithBorder - 1:
+                        continue
+
                     self.changedColorCordsArray.append([(rect.left+sizeX*8-offset, rect.top+sizeY*8-offset, rect.width, rect.height), color])
-                    #self.map.append([(rectBord.left+sizeX*8-offset, rectBord.top++sizeX*8-offset, rectBord.width, rectBord.height), (rect.left+sizeX*8-offset, rect.top+sizeY*8-offset, rect.width, rect.height), color])
 
     def cleanScreen(self):
 
@@ -248,7 +263,6 @@ class WorldMapScreen:
     def saveMap(self):
 
         f = open("worldMap.txt", "w")
-        print(len(self.map))
         for pixelBorder, pixel, color in self.map:
             f.write(f'{color[0]},{color[1]},{color[2]}.{pixelBorder.left},{pixelBorder.top},{pixelBorder.w},{pixelBorder.h}.{pixel.left},{pixel.top},{pixel.w},{pixel.h};')
 

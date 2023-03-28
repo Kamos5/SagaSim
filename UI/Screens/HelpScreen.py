@@ -138,6 +138,34 @@ class HelpScreen:
         self.helpScreenSurface.blit(self.helpLabel.localSurface, (self.width * 0.10, self.writeLine * self.lineHeight))
         self.writeLine += 1
 
+        self.helpLabel = Label("\"a\" - bigger brush size in World Map Screen", 500, self.lineHeight, self.miniTextFont, False, True, 1)
+        self.helpLabel.setActiveRectColor(self.screenColor[0], self.screenColor[1], self.screenColor[2])
+        self.helpLabel.setActiveBorderColor(self.screenColor[0], self.screenColor[1], self.screenColor[2])
+
+        self.helpScreenSurface.blit(self.helpLabel.localSurface, (self.width * 0.05, self.writeLine * self.lineHeight))
+        self.writeLine += 1
+
+        self.helpLabel = Label("\"z\" - smaller brush size in World Map Screen", 500, self.lineHeight, self.miniTextFont, False, True, 1)
+        self.helpLabel.setActiveRectColor(self.screenColor[0], self.screenColor[1], self.screenColor[2])
+        self.helpLabel.setActiveBorderColor(self.screenColor[0], self.screenColor[1], self.screenColor[2])
+
+        self.helpScreenSurface.blit(self.helpLabel.localSurface, (self.width * 0.05, self.writeLine * self.lineHeight))
+        self.writeLine += 1
+
+        self.helpLabel = Label("\"s\" - next brush color in World Map Screen", 500, self.lineHeight, self.miniTextFont, False, True, 1)
+        self.helpLabel.setActiveRectColor(self.screenColor[0], self.screenColor[1], self.screenColor[2])
+        self.helpLabel.setActiveBorderColor(self.screenColor[0], self.screenColor[1], self.screenColor[2])
+
+        self.helpScreenSurface.blit(self.helpLabel.localSurface, (self.width * 0.05, self.writeLine * self.lineHeight))
+        self.writeLine += 1
+
+        self.helpLabel = Label("\"x\" - previous brush color in World Map Screen", 500, self.lineHeight, self.miniTextFont, False, True, 1)
+        self.helpLabel.setActiveRectColor(self.screenColor[0], self.screenColor[1], self.screenColor[2])
+        self.helpLabel.setActiveBorderColor(self.screenColor[0], self.screenColor[1], self.screenColor[2])
+
+        self.helpScreenSurface.blit(self.helpLabel.localSurface, (self.width * 0.05, self.writeLine * self.lineHeight))
+        self.writeLine += 1
+
 
     def resetWriteLine(self):
 
