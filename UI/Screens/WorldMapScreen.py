@@ -116,7 +116,7 @@ class WorldMapScreen:
         self.brushFlag = False
         self.eraseFlag = False
 
-    def buttonHandling(self, button):
+    def buttonHandling(self, button, eventButton):
 
         if button.getButtonName() == 'erase':
             self.setAllButtonsFalse()
@@ -124,17 +124,22 @@ class WorldMapScreen:
         if button.getButtonName() == 'changeColor':
             self.setAllButtonsFalse()
             self.brushFlag = True
-            self.changeBrushColor()
+            self.changeBrushColor(eventButton)
         if button.getButtonName() == 'saveMap':
             self.saveMap()
         if button.getButtonName() == 'loadMap':
             self.loadMap()
 
-    def changeBrushColor(self):
+    def changeBrushColor(self, eventButton):
 
-        self.brushColorIndex += 1
-        if self.brushColorIndex >= len(self.brushColor):
-            self.brushColorIndex = 0
+        if eventButton == 1:  # left click
+            self.brushColorIndex += 1
+            if self.brushColorIndex >= len(self.brushColor):
+                self.brushColorIndex = 0
+        if eventButton == 3:  # right click
+            self.brushColorIndex -= 1
+            if self.brushColorIndex < 0:
+                self.brushColorIndex = len(self.brushColor)-1
 
     def addLoadedMap(self):
 

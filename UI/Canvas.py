@@ -293,7 +293,7 @@ class Canvas:
                                 return True, pausedPressed
 
         if self.showWorldMap is True:
-            if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+            if event.type == pygame.MOUSEBUTTONDOWN and (event.button == 1 or event.button == 3):
                 for itemObjRect, itemObjRectScreen in zip(itemsObjRectArray, itemsObjRectScreensArray):
                     itemsObj = itemObjRect
                     mouseX, mouseY = pygame.mouse.get_pos()
@@ -303,14 +303,18 @@ class Canvas:
                                 self.worldMapScreen.changeColorAfterClick(itemObj[0], itemObj[1])
                                 return True, pausedPressed
                             else:
-                                self.worldMapScreen.buttonHandling(itemObj[1])
+                                self.worldMapScreen.buttonHandling(itemObj[1], event.button)
                                 return True, pausedPressed
             #burshSize
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_a:
                     self.worldMapScreen.makeBrushBigger()
+                if event.key == pygame.K_s:
+                    self.worldMapScreen.changeBrushColor(1)
                 if event.key == pygame.K_z:
                     self.worldMapScreen.makeBrushSmaller()
+                if event.key == pygame.K_x:
+                    self.worldMapScreen.changeBrushColor(3)
         return False, pausedPressed
 
     def pauseHandle(self, event, pausedPressed):
