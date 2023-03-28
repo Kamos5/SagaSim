@@ -45,6 +45,8 @@ class WorldMapScreen:
         self.DEFAULT_GRAY_2 = (192, 192, 192)
         self.DEFAULT_BORDER_COLOR = (20, 20, 20)
 
+        self.ERASE_COLOR = self.DEFAULT_GRAY_1
+
         self.GRAY_1 = self.DEFAULT_GRAY_1
         self.GRAY_2 = self.DEFAULT_GRAY_2
         self.BORDER_COLOR = self.DEFAULT_BORDER_COLOR
@@ -216,10 +218,16 @@ class WorldMapScreen:
                 offset = (self.brushSize // 2 - 1) * 8
             for sizeX in range(self.brushSize):
                 for sizeY in range(self.brushSize):
-                    for changeColorRect, color in self.changedColorCordsArray:
-                        if changeColorRect == (rect.left + sizeX * 8 - offset, rect.top + sizeY * 8 - offset, rect.width, rect.height):
-                            self.changedColorCordsArray.remove([(rect.left + sizeX * 8 - offset, rect.top + sizeY * 8 - offset, rect.width, rect.height), color])
-
+                    for changeColorRectBorder, changeColorRect, color in self.map:
+                        if (changeColorRect.left, changeColorRect.top, changeColorRect.width, changeColorRect.height) == (rect.left + sizeX * 8 - offset, rect.top + sizeY * 8 - offset, rect.width, rect.height):
+                            if color != self.DEFAULT_GRAY_1 and color != self.DEFAULT_GRAY_2:
+                                #self.map.remove([changeColorRectBorder, changeColorRect, color])
+                                if [(rect.left + sizeX * 8 - offset, rect.top + sizeY * 8 - offset, rect.width, rect.height), color] in self.changedColorCordsArray:
+                                    self.changedColorCordsArray.remove([(rect.left + sizeX * 8 - offset, rect.top + sizeY * 8 - offset, rect.width, rect.height), color])
+                                    continue
+                                if [[changeColorRectBorder.left, changeColorRectBorder.top, changeColorRectBorder.width, changeColorRectBorder.height], [changeColorRect.left, changeColorRect.top, changeColorRect.width, changeColorRect.height], color] in self.loadedMap:
+                                    self.loadedMap.remove([[changeColorRectBorder.left, changeColorRectBorder.top, changeColorRectBorder.width, changeColorRectBorder.height], [changeColorRect.left, changeColorRect.top, changeColorRect.width, changeColorRect.height], color])
+                                    continue
         if self.brushFlag:
             color = self.brushColor[self.brushColorIndex]
             if self.brushSize % 2 == 1:
@@ -263,6 +271,7 @@ class WorldMapScreen:
     def saveMap(self):
 
         f = open("worldMap.txt", "w")
+        print(len(self.map))
         for pixelBorder, pixel, color in self.map:
             f.write(f'{color[0]},{color[1]},{color[2]}.{pixelBorder.left},{pixelBorder.top},{pixelBorder.w},{pixelBorder.h}.{pixel.left},{pixel.top},{pixel.w},{pixel.h};')
 
@@ -276,6 +285,7 @@ class WorldMapScreen:
             f = open('worldMap.txt', "r")
             pixels = f.readline().split(';')
             self.cleanScreen()
+            self.loadedMap = []
             for dataPack in pixels:
                 tempFlag = 0
                 splitedDataPack = dataPack.split('.')
