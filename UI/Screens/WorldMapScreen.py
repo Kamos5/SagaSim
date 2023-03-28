@@ -69,32 +69,40 @@ class WorldMapScreen:
         self.mapLabel.setActiveRectColor(20, 20, 20)
         self.mapLabel.setActiveBorderColor(100, 100, 100)
 
-        self.worldMapScreenSurface.blit(self.mapLabel.localSurface, (self.width * 0.10, self.writeLine*self.lineHeight))
+        self.worldMapScreenSurface.blit(self.mapLabel.localSurface, (self.width * 0.10, self.getVerticalPositioning()))
 
         self.writeLine += 1
 
-        self.worldMapLabel = Label2("Brush Color", self.textFont, True)
-        self.worldMapLabel.changeColorBasedOnFlag(self.brushFlag)
+        self.brushColorLabel = Label2("Brush Color", self.textFont, True)
+        self.brushColorLabel.changeColorBasedOnFlag(self.brushFlag)
 
-        self.worldMapScreenSurfaceObjsRect.append([self.worldMapScreenSurface.blit(self.worldMapLabel.localSurface, (self.width * 0.05, self.getVerticalPositioning())), Button('changeColor')])
+        self.worldMapScreenSurfaceObjsRect.append([self.worldMapScreenSurface.blit(self.brushColorLabel.localSurface, (self.width * 0.05, self.getVerticalPositioning())), Button('changeColor')])
 
-        pygame.draw.rect(self.worldMapScreenSurface, self.BORDER_COLOR, [self.width * 0.05 + self.worldMapLabel.w, self.getVerticalPositioning(), self.worldMapLabel.h, self.worldMapLabel.h])
-        pygame.draw.rect(self.worldMapScreenSurface, self.brushColor[self.brushColorIndex], [self.width * 0.05 + self.worldMapLabel.w+1, self.getVerticalPositioning()+1, self.worldMapLabel.h-2, self.worldMapLabel.h-2])
+        pygame.draw.rect(self.worldMapScreenSurface, self.BORDER_COLOR, [self.width * 0.05 + self.brushColorLabel.w, self.getVerticalPositioning(), self.brushColorLabel.h, self.brushColorLabel.h])
+        pygame.draw.rect(self.worldMapScreenSurface, self.brushColor[self.brushColorIndex], [self.width * 0.05 + self.brushColorLabel.w+1, self.getVerticalPositioning()+1, self.brushColorLabel.h-2, self.brushColorLabel.h-2])
 
-        self.worldMapLabel = Label2("Erase", self.textFont, True)
-        self.worldMapLabel.changeColorBasedOnFlag(self.eraseFlag)
+        self.eraseLabel = Label2("Erase", self.textFont, True)
+        self.eraseLabel.changeColorBasedOnFlag(self.eraseFlag)
 
-        self.worldMapScreenSurfaceObjsRect.append([self.worldMapScreenSurface.blit(self.worldMapLabel.localSurface, (self.width * 0.15, self.getVerticalPositioning())), Button('erase')])
+        self.worldMapScreenSurfaceObjsRect.append([self.worldMapScreenSurface.blit(self.eraseLabel.localSurface, (self.width * 0.15, self.getVerticalPositioning())), Button('erase')])
 
-        self.worldMapLabel = Label2("Save Map", self.textFont, True)
+        self.saveMapLabel = Label2("Save Map", self.textFont, True)
 
-        self.worldMapScreenSurfaceObjsRect.append([self.worldMapScreenSurface.blit(self.worldMapLabel.localSurface, (self.width * 0.25, self.getVerticalPositioning())), Button('saveMap')])
+        self.worldMapScreenSurfaceObjsRect.append([self.worldMapScreenSurface.blit(self.saveMapLabel.localSurface, (self.width * 0.25, self.getVerticalPositioning())), Button('saveMap')])
 
-        self.worldMapLabel = Label2("Load Map", self.textFont, True)
+        self.loadMapLabel = Label2("Load Map", self.textFont, True)
 
-        self.worldMapScreenSurfaceObjsRect.append([self.worldMapScreenSurface.blit(self.worldMapLabel.localSurface, (self.width * 0.35, self.getVerticalPositioning())), Button('loadMap')])
+        self.worldMapScreenSurfaceObjsRect.append([self.worldMapScreenSurface.blit(self.loadMapLabel.localSurface, (self.width * 0.35, self.getVerticalPositioning())), Button('loadMap')])
 
-        self.writeLine += 4
+        self.writeLine += 1
+
+        self.brushSizeLabel = Label2("Brush Size", self.textFont, False)
+        self.worldMapScreenSurface.blit(self.brushSizeLabel.localSurface, (self.width * 0.05, self.getVerticalPositioning()))
+
+        self.brushSizeDigitLabel = Label2(f'{self.brushSize}', self.textFont, False)
+        self.worldMapScreenSurface.blit(self.brushSizeDigitLabel.localSurface, (self.width * 0.05+ self.brushSizeLabel.w, self.getVerticalPositioning()))
+
+        self.writeLine += 3
         if not self.isLoaded:
             self.addDefaultMap()
 
@@ -229,17 +237,8 @@ class WorldMapScreen:
         if self.brushSize < 1:
             self.brushSize = 1
 
-    def createMap(self):
-
-        w = 6
-        h = 6
-        dziobakMap = [[100, 1], [101, 1], [102, 1], [103, 1], [104, 1], [105, 1], [104, 2], [103, 3], [102, 4], [101, 5], [100, 6], [101, 6], [102, 6], [103, 6], [104, 6], [105, 6]]
-
-        for pair in dziobakMap:
-            self.changedColorCordsArray.append([(pair[0]*(w+2)+40+1, pair[1]*(h+2) + (self.writeLine * self.lineHeight)+1, w, h), self.brushColor[0]])
-
     def getVerticalPositioning(self):
-        return self.writeLine * (self.lineHeight + 2 * self.labelBoarderDefault + 2 * self.labelMarginVerticalDefault)
+        return self.writeLine * (self.lineHeight + 4 * self.labelBoarderDefault + 4 * self.labelMarginVerticalDefault)
 
     def saveMap(self):
 

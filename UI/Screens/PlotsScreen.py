@@ -234,7 +234,7 @@ class PlotsScreen:
         return self.plotsScreenSurface
 
     def getVerticalPositioning(self):
-        return self.writeLine * (self.lineHeight + 2 * self.labelBoarderDefault + 2 * self.labelMarginVerticalDefault)
+        return self.writeLine * (self.lineHeight + 4 * self.labelBoarderDefault + 4 * self.labelMarginVerticalDefault)
 
     def getRegionsLabelArray(self, world):
 
