@@ -221,13 +221,12 @@ class WorldMapScreen:
                     for changeColorRectBorder, changeColorRect, color in self.map:
                         if (changeColorRect.left, changeColorRect.top, changeColorRect.width, changeColorRect.height) == (rect.left + sizeX * 8 - offset, rect.top + sizeY * 8 - offset, rect.width, rect.height):
                             if color != self.DEFAULT_GRAY_1 and color != self.DEFAULT_GRAY_2:
-                                #self.map.remove([changeColorRectBorder, changeColorRect, color])
                                 if [(rect.left + sizeX * 8 - offset, rect.top + sizeY * 8 - offset, rect.width, rect.height), color] in self.changedColorCordsArray:
                                     self.changedColorCordsArray.remove([(rect.left + sizeX * 8 - offset, rect.top + sizeY * 8 - offset, rect.width, rect.height), color])
-                                    continue
+
                                 if [[changeColorRectBorder.left, changeColorRectBorder.top, changeColorRectBorder.width, changeColorRectBorder.height], [changeColorRect.left, changeColorRect.top, changeColorRect.width, changeColorRect.height], color] in self.loadedMap:
                                     self.loadedMap.remove([[changeColorRectBorder.left, changeColorRectBorder.top, changeColorRectBorder.width, changeColorRectBorder.height], [changeColorRect.left, changeColorRect.top, changeColorRect.width, changeColorRect.height], color])
-                                    continue
+
         if self.brushFlag:
             color = self.brushColor[self.brushColorIndex]
             if self.brushSize % 2 == 1:
