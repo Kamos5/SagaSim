@@ -11,6 +11,7 @@ class Region():
         self.regionSize = Parameters.regionSizeMax
         self.activeSettlements = 0
         self.regionCulture = ''
+        self.regionColor = (200, 20, 20)
         self.uiExpand = True
         self.weather = Enums.weatherStatus.NORMAL
         self.daysSinceLastWeatherChange = 0
