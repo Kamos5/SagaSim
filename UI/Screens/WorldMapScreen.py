@@ -169,8 +169,8 @@ class WorldMapScreen:
             color = pixel[2]
             rect = pygame.draw.rect(self.worldMapScreenSurface, self.BORDER_COLOR, [pixel[0][0], pixel[0][1], pixel[0][2], pixel[0][3]])
             rectInner = pygame.draw.rect(self.worldMapScreenSurface, color, [pixel[1][0], pixel[1][1], pixel[1][2], pixel[1][3]])
-            self.worldMapScreenSurfaceObjsRect.append([rect, rectInner, color])
-            self.map.append([rect, rectInner, color])
+            self.worldMapScreenSurfaceObjsRect.append([rect, rectInner, color, self.BORDER_COLOR])
+            self.map.append([rect, rectInner, color, self.BORDER_COLOR])
 
 
     def addDefaultMap(self):
@@ -182,8 +182,8 @@ class WorldMapScreen:
 
                 rect = pygame.draw.rect(self.worldMapScreenSurface, self.BORDER_COLOR, [x + self.verticalPadding, y + (self.writeLine * self.lineHeight), self.chunkSizeXWithBorder, self.chunkSizeXWithBorder])
                 rectInner = pygame.draw.rect(self.worldMapScreenSurface, self.color, [x + self.verticalPadding+self.borderChunkSizeX, y + (self.writeLine * self.lineHeight)+self.borderChunkSizeY, self.chunkSizeX, self.chunkSizeY])
-                self.worldMapScreenSurfaceObjsRect.append([rect, rectInner, self.color])
-                self.map.append([rect, rectInner, self.color])
+                self.worldMapScreenSurfaceObjsRect.append([rect, rectInner, self.color, self.BORDER_COLOR])
+                self.map.append([rect, rectInner, self.color, self.BORDER_COLOR])
                 if self.color == self.GRAY_1:
                     self.color = self.GRAY_2
                 else:
@@ -195,13 +195,15 @@ class WorldMapScreen:
 
     def modMap(self):
         oldcolor = self.color
-        for changeColorRect, color in self.changedColorCordsArray:
+        for changeColorRectBorder, changeColorRect, color, borderColor in self.changedColorCordsArray:
             self.color = color
+            borderColor = borderColor
             x, y, w, h = changeColorRect
-            rect = pygame.draw.rect(self.worldMapScreenSurface, self.BORDER_COLOR, [x-1, y-1, w+2, w+2])
+            xB, yb, wb, hb = changeColorRectBorder
+            rect = pygame.draw.rect(self.worldMapScreenSurface, borderColor, [xB, yb, wb, hb])
             rectInner = pygame.draw.rect(self.worldMapScreenSurface, self.color, [x, y, w, h])
-            self.worldMapScreenSurfaceObjsRect.append([rect, rectInner, self.color])
-            self.map.append([rect, rectInner, self.color])
+            self.worldMapScreenSurfaceObjsRect.append([rect, rectInner, self.color, borderColor])
+            self.map.append([rect, rectInner, self.color, self.BORDER_COLOR])
         self.color = oldcolor
 
 
@@ -218,17 +220,19 @@ class WorldMapScreen:
                 offset = (self.brushSize // 2 - 1) * 8
             for sizeX in range(self.brushSize):
                 for sizeY in range(self.brushSize):
-                    for changeColorRectBorder, changeColorRect, color in self.map:
+                    for changeColorRectBorder, changeColorRect, color, borderColor in self.map:
                         if (changeColorRect.left, changeColorRect.top, changeColorRect.width, changeColorRect.height) == (rect.left + sizeX * 8 - offset, rect.top + sizeY * 8 - offset, rect.width, rect.height):
                             if color != self.DEFAULT_GRAY_1 and color != self.DEFAULT_GRAY_2:
-                                if [(rect.left + sizeX * 8 - offset, rect.top + sizeY * 8 - offset, rect.width, rect.height), color] in self.changedColorCordsArray:
-                                    self.changedColorCordsArray.remove([(rect.left + sizeX * 8 - offset, rect.top + sizeY * 8 - offset, rect.width, rect.height), color])
+                                print(self.changedColorCordsArray)
+                                if [(rectBord.left + sizeX * 8 - offset, rectBord.top + sizeY * 8 - offset, rectBord.width, rectBord.height), (rect.left + sizeX * 8 - offset, rect.top + sizeY * 8 - offset, rect.width, rect.height), color, borderColor] in self.changedColorCordsArray:
+                                    self.changedColorCordsArray.remove([(rectBord.left + sizeX * 8 - offset, rectBord.top + sizeY * 8 - offset, rectBord.width, rectBord.height),(rect.left + sizeX * 8 - offset, rect.top + sizeY * 8 - offset, rect.width, rect.height), color, borderColor ])
 
-                                if [[changeColorRectBorder.left, changeColorRectBorder.top, changeColorRectBorder.width, changeColorRectBorder.height], [changeColorRect.left, changeColorRect.top, changeColorRect.width, changeColorRect.height], color] in self.loadedMap:
-                                    self.loadedMap.remove([[changeColorRectBorder.left, changeColorRectBorder.top, changeColorRectBorder.width, changeColorRectBorder.height], [changeColorRect.left, changeColorRect.top, changeColorRect.width, changeColorRect.height], color])
+                                if [[changeColorRectBorder.left, changeColorRectBorder.top, changeColorRectBorder.width, changeColorRectBorder.height], [changeColorRect.left, changeColorRect.top, changeColorRect.width, changeColorRect.height], color, borderColor] in self.loadedMap:
+                                    self.loadedMap.remove([[changeColorRectBorder.left, changeColorRectBorder.top, changeColorRectBorder.width, changeColorRectBorder.height], [changeColorRect.left, changeColorRect.top, changeColorRect.width, changeColorRect.height], color, borderColor])
 
         if self.brushFlag:
             color = self.brushColor[self.brushColorIndex]
+            borderColor = self.BORDER_COLOR
             if self.brushSize % 2 == 1:
                 offset = self.brushSize//2 * 8
             else:
@@ -243,7 +247,7 @@ class WorldMapScreen:
                     if sizeY - offset//self.chunkSizeYWithBorder + (y-self.writeLine * self.lineHeight)//self.chunkSizeYWithBorder < 0 or sizeY - offset//self.chunkSizeYWithBorder + (y-self.writeLine * self.lineHeight)//self.chunkSizeYWithBorder > self.mapYSize//self.chunkSizeYWithBorder - 1:
                         continue
 
-                    self.changedColorCordsArray.append([(rect.left+sizeX*8-offset, rect.top+sizeY*8-offset, rect.width, rect.height), color])
+                    self.changedColorCordsArray.append([(rectBord.left+sizeX*8-offset, rectBord.top+sizeY*8-offset, rectBord.width, rectBord.height),(rect.left+sizeX*8-offset, rect.top+sizeY*8-offset, rect.width, rect.height), color,borderColor])
 
     def cleanScreen(self):
 
@@ -271,8 +275,8 @@ class WorldMapScreen:
 
         f = open("worldMap.txt", "w")
         print(len(self.map))
-        for pixelBorder, pixel, color in self.map:
-            f.write(f'{color[0]},{color[1]},{color[2]}.{pixelBorder.left},{pixelBorder.top},{pixelBorder.w},{pixelBorder.h}.{pixel.left},{pixel.top},{pixel.w},{pixel.h};')
+        for pixelBorder, pixel, color, borderColor in self.map:
+            f.write(f'{color[0]},{color[1]},{color[2]}.{borderColor[0]},{borderColor[1]},{borderColor[2]}.{pixelBorder.left},{pixelBorder.top},{pixelBorder.w},{pixelBorder.h}.{pixel.left},{pixel.top},{pixel.w},{pixel.h};')
 
         f.close()
 
@@ -299,11 +303,14 @@ class WorldMapScreen:
                         r, g, b = tuple(correctData)
                         color = (int(r), int(g), int(b))
                     if tempFlag == 1:
+                        rb, gb, bb = tuple(correctData)
+                        colorBorder = (int(rb), int(gb), int(bb))
+                    if tempFlag == 2:
                         rectData = [int(correctData[0]), int(correctData[1]), int(correctData[2]), int(correctData[3])]
-                    if tempFlag == 2:
+                    if tempFlag == 3:
                         rectInnerData = [int(correctData[0]), int(correctData[1]), int(correctData[2]), int(correctData[3])]
-                    if tempFlag == 2:
-                        self.loadedMap.append([rectData, rectInnerData, color])
+                    if tempFlag == 3:
+                        self.loadedMap.append([rectData, rectInnerData, color, colorBorder])
                     tempFlag += 1
 
             self.isLoaded = True
