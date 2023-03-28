@@ -281,9 +281,9 @@ class Canvas:
                             self.showDownTree = True
 
         if self.showPlots is True:
-            for itemObjRect, itemObjRectScreen in zip(itemsObjRectArray, itemsObjRectScreensArray):
-                itemsObj = itemObjRect
-                if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+            if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+                for itemObjRect, itemObjRectScreen in zip(itemsObjRectArray, itemsObjRectScreensArray):
+                    itemsObj = itemObjRect
                     mouseX, mouseY = pygame.mouse.get_pos()
                     for itemObj in itemsObj:
                         if itemObj[0].collidepoint([mouseX - itemObjRectScreen.screenPosX, mouseY - itemObjRectScreen.screenPosY]):
@@ -293,24 +293,29 @@ class Canvas:
                                 return True, pausedPressed
 
         if self.showWorldMap is True:
-            for itemObjRect, itemObjRectScreen in zip(itemsObjRectArray, itemsObjRectScreensArray):
-                itemsObj = itemObjRect
-                if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+            if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+                for itemObjRect, itemObjRectScreen in zip(itemsObjRectArray, itemsObjRectScreensArray):
+                    itemsObj = itemObjRect
                     mouseX, mouseY = pygame.mouse.get_pos()
                     for itemObj in itemsObj:
                         if itemObj[0].collidepoint([mouseX - itemObjRectScreen.screenPosX, mouseY - itemObjRectScreen.screenPosY]):
                             if not isinstance(itemObj[1], Button):
-                                self.worldMapScreen.changeColorAfterClick(itemObj[1])
+                                self.worldMapScreen.changeColorAfterClick(itemObj[0], itemObj[1])
                                 return True, pausedPressed
                             else:
-                                print("aaa")
-                                self.worldMapScreen.changeBrushColor()
-                #burshSize
-                if event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_a:
-                        self.worldMapScreen.makeBrushBigger()
-                    if event.key == pygame.K_z:
-                        self.worldMapScreen.makeBrushSmaller()
+                                if itemObj[1].getButtonName() == 'changeColor':
+                                    self.worldMapScreen.changeBrushColor()
+                                if itemObj[1].getButtonName() == 'saveMap':
+                                    self.worldMapScreen.saveMap()
+                                if itemObj[1].getButtonName() == 'loadMap':
+                                    self.worldMapScreen.loadMap()
+                                return True, pausedPressed
+            #burshSize
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_a:
+                    self.worldMapScreen.makeBrushBigger()
+                if event.key == pygame.K_z:
+                    self.worldMapScreen.makeBrushSmaller()
         return False, pausedPressed
 
     def pauseHandle(self, event, pausedPressed):
