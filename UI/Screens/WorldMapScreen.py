@@ -58,6 +58,9 @@ class WorldMapScreen:
         self.brushSize = 1
         self.isLoaded = False
 
+        self.brushFlag = True
+        self.eraseFlag = False
+
     def addMap(self, lastFocusObj):
 
         self.writeLine += 1
@@ -71,19 +74,25 @@ class WorldMapScreen:
         self.writeLine += 1
 
         self.worldMapLabel = Label2("Brush Color", self.textFont, True)
+        self.worldMapLabel.changeColorBasedOnFlag(self.brushFlag)
 
         self.worldMapScreenSurfaceObjsRect.append([self.worldMapScreenSurface.blit(self.worldMapLabel.localSurface, (self.width * 0.05, self.getVerticalPositioning())), Button('changeColor')])
 
         pygame.draw.rect(self.worldMapScreenSurface, self.BORDER_COLOR, [self.width * 0.05 + self.worldMapLabel.w, self.getVerticalPositioning(), self.worldMapLabel.h, self.worldMapLabel.h])
         pygame.draw.rect(self.worldMapScreenSurface, self.brushColor[self.brushColorIndex], [self.width * 0.05 + self.worldMapLabel.w+1, self.getVerticalPositioning()+1, self.worldMapLabel.h-2, self.worldMapLabel.h-2])
 
+        self.worldMapLabel = Label2("Erase", self.textFont, True)
+        self.worldMapLabel.changeColorBasedOnFlag(self.eraseFlag)
+
+        self.worldMapScreenSurfaceObjsRect.append([self.worldMapScreenSurface.blit(self.worldMapLabel.localSurface, (self.width * 0.15, self.getVerticalPositioning())), Button('erase')])
+
         self.worldMapLabel = Label2("Save Map", self.textFont, True)
 
-        self.worldMapScreenSurfaceObjsRect.append([self.worldMapScreenSurface.blit(self.worldMapLabel.localSurface, (self.width * 0.15, self.getVerticalPositioning())), Button('saveMap')])
+        self.worldMapScreenSurfaceObjsRect.append([self.worldMapScreenSurface.blit(self.worldMapLabel.localSurface, (self.width * 0.25, self.getVerticalPositioning())), Button('saveMap')])
 
         self.worldMapLabel = Label2("Load Map", self.textFont, True)
 
-        self.worldMapScreenSurfaceObjsRect.append([self.worldMapScreenSurface.blit(self.worldMapLabel.localSurface, (self.width * 0.25, self.getVerticalPositioning())), Button('loadMap')])
+        self.worldMapScreenSurfaceObjsRect.append([self.worldMapScreenSurface.blit(self.worldMapLabel.localSurface, (self.width * 0.35, self.getVerticalPositioning())), Button('loadMap')])
 
         self.writeLine += 4
         if not self.isLoaded:
@@ -93,6 +102,25 @@ class WorldMapScreen:
             self.addLoadedMap()
         #self.createMap()
         self.modMap()
+
+    def setAllButtonsFalse(self):
+
+        self.brushFlag = False
+        self.eraseFlag = False
+
+    def buttonHandling(self, button):
+
+        if button.getButtonName() == 'erase':
+            self.setAllButtonsFalse()
+            self.eraseFlag = True
+        if button.getButtonName() == 'changeColor':
+            self.setAllButtonsFalse()
+            self.brushFlag = True
+            self.changeBrushColor()
+        if button.getButtonName() == 'saveMap':
+            self.saveMap()
+        if button.getButtonName() == 'loadMap':
+            self.loadMap()
 
     def changeBrushColor(self):
 
@@ -160,15 +188,27 @@ class WorldMapScreen:
 
     def changeColorAfterClick(self, rectBord, rect):
 
-        color = self.brushColor[self.brushColorIndex]
-        if self.brushSize % 2 == 1:
-            offset = self.brushSize//2 * 8
-        else:
-            offset = (self.brushSize//2 - 1) * 8
-        for sizeX in range(self.brushSize):
-            for sizeY in range(self.brushSize):
-                self.changedColorCordsArray.append([(rect.left+sizeX*8-offset, rect.top+sizeY*8-offset, rect.width, rect.height), color])
-                #self.map.append([(rectBord.left+sizeX*8-offset, rectBord.top++sizeX*8-offset, rectBord.width, rectBord.height), (rect.left+sizeX*8-offset, rect.top+sizeY*8-offset, rect.width, rect.height), color])
+        if self.eraseFlag:
+            if self.brushSize % 2 == 1:
+                offset = self.brushSize // 2 * 8
+            else:
+                offset = (self.brushSize // 2 - 1) * 8
+            for sizeX in range(self.brushSize):
+                for sizeY in range(self.brushSize):
+                    for changeColorRect, color in self.changedColorCordsArray:
+                        if changeColorRect == (rect.left + sizeX * 8 - offset, rect.top + sizeY * 8 - offset, rect.width, rect.height):
+                            self.changedColorCordsArray.remove([(rect.left + sizeX * 8 - offset, rect.top + sizeY * 8 - offset, rect.width, rect.height), color])
+
+        if self.brushFlag:
+            color = self.brushColor[self.brushColorIndex]
+            if self.brushSize % 2 == 1:
+                offset = self.brushSize//2 * 8
+            else:
+                offset = (self.brushSize//2 - 1) * 8
+            for sizeX in range(self.brushSize):
+                for sizeY in range(self.brushSize):
+                    self.changedColorCordsArray.append([(rect.left+sizeX*8-offset, rect.top+sizeY*8-offset, rect.width, rect.height), color])
+                    #self.map.append([(rectBord.left+sizeX*8-offset, rectBord.top++sizeX*8-offset, rectBord.width, rectBord.height), (rect.left+sizeX*8-offset, rect.top+sizeY*8-offset, rect.width, rect.height), color])
 
     def cleanScreen(self):
 
@@ -204,6 +244,7 @@ class WorldMapScreen:
     def saveMap(self):
 
         f = open("worldMap.txt", "w")
+        print(len(self.map))
         for pixelBorder, pixel, color in self.map:
             f.write(f'{color[0]},{color[1]},{color[2]}.{pixelBorder.left},{pixelBorder.top},{pixelBorder.w},{pixelBorder.h}.{pixel.left},{pixel.top},{pixel.w},{pixel.h};')
 

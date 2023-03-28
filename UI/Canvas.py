@@ -303,12 +303,7 @@ class Canvas:
                                 self.worldMapScreen.changeColorAfterClick(itemObj[0], itemObj[1])
                                 return True, pausedPressed
                             else:
-                                if itemObj[1].getButtonName() == 'changeColor':
-                                    self.worldMapScreen.changeBrushColor()
-                                if itemObj[1].getButtonName() == 'saveMap':
-                                    self.worldMapScreen.saveMap()
-                                if itemObj[1].getButtonName() == 'loadMap':
-                                    self.worldMapScreen.loadMap()
+                                self.worldMapScreen.buttonHandling(itemObj[1])
                                 return True, pausedPressed
             #burshSize
             if event.type == pygame.KEYDOWN:

@@ -19,6 +19,7 @@ class Label2:
         self.font = font
         self.inactiveRectColor = 20, 20, 60
         self.activeRectColor = 100, 0, 0
+        self.activeRectColorAlt = 10, 70, 10
         self.rectColor = self.inactiveRectColor
         self.textColor = 220, 220, 220
         self.inactiveBorderColor = 200, 200, 200
@@ -76,3 +77,12 @@ class Label2:
         font = ImageFont.truetype(fontName, fontSize)
         size = font.getsize(text)
         return size
+
+    def changeColorBasedOnFlag(self, flag):
+        if flag:
+            r, g, b = self.activeRectColorAlt
+            self.textColor = 200, 200, 50
+        else:
+            r, g, b = self.inactiveRectColor
+            self.textColor = 220, 220, 220
+        self.setActiveRectColor(r, g, b)
