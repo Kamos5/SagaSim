@@ -20,7 +20,8 @@ class WorldMap:
 
         # xCord = len(self.worldMapObj) % self.width
         # yCord = len(self.worldMapObj) // self.width
-        self.worldMapObj.append([(x, y), (borderColor, color)])
+        if [(x, y), (borderColor, color)] not in self.getWorldMapObj():
+            self.worldMapObj.append([(x, y), (borderColor, color)])
 
     def resetWorldMapObj(self):
         self.worldMapObj = []

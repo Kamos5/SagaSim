@@ -313,26 +313,38 @@ class World:
 
     def generateRegionsNames(self, regionsNumber = 5):
 
+        startingSet = 1
+
+        if startingSet == 1:
+            startingSet1For4 = [(0, 0), (self.getWorldMap().getWidth()-1, 0), (0, self.getWorldMap().getHeight()-1), (self.getWorldMap().getWidth()-1, self.getWorldMap().getHeight()-1)]
+        else:
+            startingSet1For4 = [(50, 50),(50, 51),(51, 50),(51, 51)]
+
+
         if regionsNumber >= 1:
             region = Region(RNG.randomEnglishRegionName())
             region.setRegionColor((220, 20, 20))
-            region.addRegionTerritory((0, 0))
+            region.addRegionTerritory(startingSet1For4[0])
             self.regions.append(region)
         if regionsNumber >= 2:
             region = Region(RNG.randomNorseRegionName())
             region.setRegionColor((20, 20, 220))
-            region.addRegionTerritory((self.getWorldMap().getWidth()-1, 0))
+            region.addRegionTerritory(startingSet1For4[1])
             self.regions.append(region)
         if regionsNumber >= 3:
             region = Region(RNG.randomSlavicRegionName())
             region.setRegionColor((20, 220, 20))
-            region.addRegionTerritory((0, self.getWorldMap().getHeight()-1))
+            region.addRegionTerritory(startingSet1For4[2])
             self.regions.append(region)
         if regionsNumber >= 4:
             region = Region(RNG.randomEgyptRegionName())
             region.setRegionColor((220, 220, 20))
-            region.addRegionTerritory((self.getWorldMap().getWidth()-1, self.getWorldMap().getHeight()-1))
+            region.addRegionTerritory(startingSet1For4[3])
             self.regions.append(region)
+
+        for region in self.getRegions():
+            expandToX, expandToY = region.getRegionTerritories()[0]
+            self.getWorldMap().addField(region.getRegionColor(), x=expandToX, y=expandToY)
 
     def generateSettlements(self):
 

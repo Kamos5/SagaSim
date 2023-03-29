@@ -163,26 +163,34 @@ def infectionsSpread (world):
 
 def terrytoryManagement(world):
 
-    snakeLength = 1
-
     regionsTerritories = []
+
+    marginColor = (0, 0, 0)
 
     for region in world.getRegions():
         regionsTerritories.extend(region.getRegionTerritories())
+
     for region in world.getRegions():
-        expandToX, expandToY = region.getRegionTerritories()[0]
-        world.getWorldMap().addField(region.getRegionColor(), x=expandToX, y=expandToY)
 
+        regionColor = region.getRegionColor()
         possibleExpansion = WorldFunctions.caltulatePossibleTerritoryExpansions(region, world, regionsTerritories)
-        if snakeLength > 0:
-            for step in range(snakeLength):
 
-                expandToX, expandToY = Utils.randomFromCollection(possibleExpansion)
-                region.addRegionTerritory((expandToX, expandToY))
-                world.getWorldMap().addField(region.getRegionColor(), x=expandToX, y=expandToY)
-                possibleExpansion = WorldFunctions.caltulatePossibleTerritoryExpansions(region, world, regionsTerritories)
-        for pEX, PEY in possibleExpansion:
-            world.getWorldMap().addField(region.getRegionColor(), (0, 0, 0), x=pEX, y=PEY)
+        if len(possibleExpansion) > 0:
+
+
+            expandToX, expandToY = Utils.randomFromCollection(possibleExpansion)
+            region.addRegionTerritory((expandToX, expandToY))
+            regionsTerritories.append((expandToX, expandToY))
+            world.getWorldMap().addField(regionColor, x=expandToX, y=expandToY)
+            possibleExpansion.remove((expandToX, expandToY))    # TODO consequence: can't expand to bordering pixel that was not in possibleExpansion list if snakeLength > 1.
+            possibleExpansion.extend(WorldFunctions.caltulatePossibleTerritoryExpansionsForSinglePoint(region, world, regionsTerritories, (expandToX, expandToY)))
+
+            #possibleExpansion = WorldFunctions.caltulatePossibleTerritoryExpansions(region, world, regionsTerritories)
+
+        # for pEX, pEY in possibleExpansion:
+        #     world.getWorldMap().addField(regionColor, marginColor, x=pEX, y=pEY)
+
+    print(len(world.getWorldMap().getWorldMapObj()))
 
 def diseasesProgress(world):
 

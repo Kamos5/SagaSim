@@ -58,7 +58,7 @@ def running(world, manualOverride):
 
     print(str(world.getDay()) + "/" + str(world.getMonth()) + "/" + str(world.getYear()))
 
-    terrytoryTime = Utils.timeFunction(False, Events.terrytoryManagement, world)
+    terrytoryTime = Utils.timeFunction(timers, Events.terrytoryManagement, world)
     weatherChangeTime = Utils.timeFunction(timers, world.weatherChange)
     incAgeTime = Utils.timeFunction(timers, Events.increaseAge, world)
     infectionsTime = Utils.timeFunction(timers, Events.infectionsSpread, world)
@@ -100,7 +100,7 @@ def running(world, manualOverride):
         print("MakeHistoryTime: " + str(makeHistoryTime) + " %: " + str(round(makeHistoryTime / fullTime, 2)))
         print(fullTime)
 
-    timeTable.extend([worldtime, weatherChangeTime, incAgeTime, infectionsTime, diseasesTime, loveMakingTime, birthtime, spouseMMTime, divorcesTime, breakSettlementsPopTime, workersManagementTime, crimeTime, settlementGoodsProdTime, accommodationManagmentTime, updateAliveTime, associateManagementTime, makeHistoryTime, fullTime])
+    timeTable.extend([worldtime, terrytoryTime, weatherChangeTime, incAgeTime, infectionsTime, diseasesTime, loveMakingTime, birthtime, spouseMMTime, divorcesTime, breakSettlementsPopTime, workersManagementTime, crimeTime, settlementGoodsProdTime, accommodationManagmentTime, updateAliveTime, associateManagementTime, makeHistoryTime, fullTime])
 
     for family in world.getFamilies():
         isAlive += family.getAliveMemberNumber()
@@ -192,7 +192,7 @@ def main(popBreakLimit=None):
         pygame.display.update()  # Call this only once per loop
         clock.tick(fps)
 
-        if popBreakLimit is not None and len(world.getAlivePeople()) > popBreakLimit:
+        if popBreakLimit is not None and world.getYear() > popBreakLimit:
             return timeTable
 
         if world.getYear() == 1200:

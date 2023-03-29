@@ -16,6 +16,7 @@ def Init(world):
     cultures = [culture1, culture2, culture3, culture4, culture5]
     #var = familie number
     for region in range(Parameters.startingNumberOfRegions):
+
         for familyNumber in range(Parameters.startingNumberOfFamiliesPerRegion):
             familyName = FamilyNameGenerator.getNewLastNameBasedOnRegion(world.getRegionFromIndex(region))
             family = Family(familyName)

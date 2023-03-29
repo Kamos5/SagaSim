@@ -356,7 +356,7 @@ class Canvas:
             if pausedPressed == False:
                 self.showHelp = False
                 self.showPlots = False
-                self.showWorldMap = False
+                #self.showWorldMap = False
             if event.key == pygame.K_q and not self.showHelp and not self.showPlots and not self.showWorldMap and not self.showFamilyScreen:
                 exit()
 
