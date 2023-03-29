@@ -58,6 +58,7 @@ def running(world, manualOverride):
 
     print(str(world.getDay()) + "/" + str(world.getMonth()) + "/" + str(world.getYear()))
 
+    terrytoryTime = Utils.timeFunction(False, Events.terrytoryManagement, world)
     weatherChangeTime = Utils.timeFunction(timers, world.weatherChange)
     incAgeTime = Utils.timeFunction(timers, Events.increaseAge, world)
     infectionsTime = Utils.timeFunction(timers, Events.infectionsSpread, world)
@@ -79,6 +80,7 @@ def running(world, manualOverride):
     fullTime = end-start
     if fullTime > 0.0:
         print("WorldTime: " + str(worldtime) + " %: " + str(round(worldtime/fullTime, 2)))
+        print("TerritoryTime: " + str(terrytoryTime) + " %: " + str(round(terrytoryTime/fullTime, 2)))
         print("WeaterTime: " + str(weatherChangeTime) + " %: " + str(round(weatherChangeTime / fullTime, 2)))
         print("IncAgeTime: " + str(incAgeTime) + " %: " + str(round(incAgeTime/fullTime, 2)))
 

@@ -11,7 +11,9 @@ class Region():
         self.regionSize = Parameters.regionSizeMax
         self.activeSettlements = 0
         self.regionCulture = ''
-        self.regionColor = (200, 20, 20)
+        self.regionColor = (0, 0, 0)
+        self.regionStartingCords = (0, 0)
+        self.regionTerritories = []
         self.uiExpand = True
         self.weather = Enums.weatherStatus.NORMAL
         self.daysSinceLastWeatherChange = 0
@@ -38,6 +40,27 @@ class Region():
     def setWeather(self, newWeater):
         self.weatherHistory.append(newWeater.value[1])
         self.weather = newWeater
+
+    def setRegionColor(self, color):
+        self.regionColor = color
+
+    def getRegionColor(self):
+        return self.regionColor
+
+    def setStartingCords(self, cords):
+        self.startingCords = cords
+
+    def getStartingCords(self):
+        return self.startingCords
+
+    def getRegionTerritories(self):
+        return self.regionTerritories
+
+    def addRegionTerritory(self, region):
+        self.regionTerritories.append(region)
+
+    def removeRegionTerritory(self, removeRegion):
+        self.regionTerritories.remove(removeRegion)
 
     def getTowns(self):
 

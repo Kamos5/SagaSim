@@ -182,7 +182,7 @@ class Canvas:
             self.helpScreenObj = self.screen.blit(self.helpScreenSurface, (self.helpPosX, self.helpPosY))
 
         if self.showWorldMap:
-            self.worldMapScreen.addMap(self.lastFocusObj)
+            self.worldMapScreen.addMap(self.lastFocusObj, world)
             self.worldMapScreenObj = self.screen.blit(self.worldMapScreenSurface, (self.worldMapPosX, self.worldMapPosY))
 
         if self.showPlots:

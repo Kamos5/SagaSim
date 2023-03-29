@@ -74,7 +74,14 @@ class WorldMapScreen:
         self.chunkSizeY = self.chunkSizeYWithBorder - 2*self.borderChunkSizeY
         self.verticalPadding = 40
 
-    def addMap(self, lastFocusObj):
+    def switchBackgroundColors(self):
+
+        if self.color == self.DEFAULT_GRAY_1:
+            self.color = self.DEFAULT_GRAY_2
+        elif self.color == self.DEFAULT_GRAY_2:
+            self.color = self.DEFAULT_GRAY_1
+
+    def addMap(self, lastFocusObj, world):
 
         self.writeLine += 1
 
@@ -126,7 +133,7 @@ class WorldMapScreen:
         else:
             self.addLoadedMap()
         #self.createMap()
-        self.modMap()
+        self.modMap(world)
 
     def setAllButtonsFalse(self):
 
@@ -186,16 +193,12 @@ class WorldMapScreen:
                 rectInner = pygame.draw.rect(self.worldMapScreenSurface, self.color, [x + self.verticalPadding+self.borderChunkSizeX, y + (self.writeLine * self.lineHeight)+self.borderChunkSizeY, self.chunkSizeX, self.chunkSizeY])
                 self.worldMapScreenSurfaceObjsRect.append([rect, rectInner, self.color, self.BORDER_COLOR])
                 self.map.append([rect, rectInner, self.color, self.BORDER_COLOR])
-                if self.color == self.GRAY_1:
-                    self.color = self.GRAY_2
-                else:
-                    self.color = self.GRAY_1
-            if self.color == self.GRAY_1:
-                self.color = self.GRAY_2
-            else:
-                self.color = self.GRAY_1
+                self.switchBackgroundColors()
+            self.switchBackgroundColors()
 
-    def modMap(self):
+
+    def modMap(self, world):
+
         oldcolor = self.color
         for changeColorRectBorder, changeColorRect, color, borderColor in self.changedColorCordsArray:
             self.color = color
@@ -208,6 +211,26 @@ class WorldMapScreen:
             self.map.append([rect, rectInner, self.color, borderColor])
         self.color = oldcolor
 
+        for pixel in world.getWorldMap().getWorldMapObj():
+
+            xNorm, yNorm, = pixel[0]
+            borderColor = pixel[1][0]
+
+            if pixel[1][1] is not None:
+                color = pixel[1][1]
+            else:
+                if (xNorm + yNorm) % 2 == 0:
+                    color = self.DEFAULT_GRAY_1
+                else:
+                    color = self.DEFAULT_GRAY_2
+
+            x = xNorm * self.chunkSizeXWithBorder + self.verticalPadding
+            y = yNorm * self.chunkSizeYWithBorder + (self.writeLine * self.lineHeight)
+            w, h = (self.chunkSizeXWithBorder, self.chunkSizeYWithBorder)
+            rect = pygame.draw.rect(self.worldMapScreenSurface, borderColor, [x, y, w, h])
+            rectInner = pygame.draw.rect(self.worldMapScreenSurface, color, [x+1, y+1, w-2, h-2])
+            self.worldMapScreenSurfaceObjsRect.append([rect, rectInner, color, borderColor])
+            self.map.append([rect, rectInner, color, borderColor])
 
     def resetWriteLine(self):
 
@@ -234,7 +257,7 @@ class WorldMapScreen:
 
         if self.brushFlag:
             color = self.brushColor[self.brushColorIndex]
-            borderColor = (192,25,192)
+            borderColor = (255-color[0],255-color[1],255-color[2])
             if self.brushSize % 2 == 1:
                 offset = self.brushSize//2 * 8
             else:

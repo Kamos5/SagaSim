@@ -6,6 +6,7 @@ from Region import Region
 import RegionNameGenerator as RNG
 import Parameters
 from RegionLifeEventsHistory import weatherEvent
+from WorldMap import WorldMap
 
 
 class World:
@@ -81,6 +82,8 @@ class World:
         self.hairColorWhiteHistory = []
         self.hairColorGrayHistory = []
 
+        self.worldMap = WorldMap()
+
     def reset(self, startYear=initYear):
 
         self.initYear = startYear
@@ -147,6 +150,8 @@ class World:
         self.hairColorWhiteHistory = []
         self.hairColorGrayHistory = []
 
+    def getWorldMap(self):
+        return self.worldMap
 
     def getPeople(self):
         return self.people
@@ -309,13 +314,25 @@ class World:
     def generateRegionsNames(self, regionsNumber = 5):
 
         if regionsNumber >= 1:
-            self.regions.append(Region(RNG.randomEnglishRegionName()))
+            region = Region(RNG.randomEnglishRegionName())
+            region.setRegionColor((220, 20, 20))
+            region.addRegionTerritory((0, 0))
+            self.regions.append(region)
         if regionsNumber >= 2:
-            self.regions.append(Region(RNG.randomNorseRegionName()))
+            region = Region(RNG.randomNorseRegionName())
+            region.setRegionColor((20, 20, 220))
+            region.addRegionTerritory((self.getWorldMap().getWidth()-1, 0))
+            self.regions.append(region)
         if regionsNumber >= 3:
-            self.regions.append(Region(RNG.randomSlavicRegionName()))
+            region = Region(RNG.randomSlavicRegionName())
+            region.setRegionColor((20, 220, 20))
+            region.addRegionTerritory((0, self.getWorldMap().getHeight()-1))
+            self.regions.append(region)
         if regionsNumber >= 4:
-            self.regions.append(Region(RNG.randomEgyptRegionName()))
+            region = Region(RNG.randomEgyptRegionName())
+            region.setRegionColor((220, 220, 20))
+            region.addRegionTerritory((self.getWorldMap().getWidth()-1, self.getWorldMap().getHeight()-1))
+            self.regions.append(region)
 
     def generateSettlements(self):
 

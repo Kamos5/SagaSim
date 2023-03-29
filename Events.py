@@ -4,6 +4,7 @@ from statistics import mean
 import Enums
 import FamilyFunctions as FF
 import HouseFunctions
+import WorldFunctions
 from Enums import LifeStatus, MaritalStatus, CauseOfDeath, Sexes, Settlements, Traits
 import Utils
 from Family import Family as Family
@@ -159,6 +160,29 @@ def infectionsSpread (world):
     infectionsPerPop = round(infectionsPerDay / len(world.getAlivePeople()), 2)
     print("Infections Per Day:" + str(infectionsPerDay))
     print("Infections Per Pop:" + str(infectionsPerPop))
+
+def terrytoryManagement(world):
+
+    snakeLength = 1
+
+    regionsTerritories = []
+
+    for region in world.getRegions():
+        regionsTerritories.extend(region.getRegionTerritories())
+    for region in world.getRegions():
+        expandToX, expandToY = region.getRegionTerritories()[0]
+        world.getWorldMap().addField(region.getRegionColor(), x=expandToX, y=expandToY)
+
+        possibleExpansion = WorldFunctions.caltulatePossibleTerritoryExpansions(region, world, regionsTerritories)
+        if snakeLength > 0:
+            for step in range(snakeLength):
+
+                expandToX, expandToY = Utils.randomFromCollection(possibleExpansion)
+                region.addRegionTerritory((expandToX, expandToY))
+                world.getWorldMap().addField(region.getRegionColor(), x=expandToX, y=expandToY)
+                possibleExpansion = WorldFunctions.caltulatePossibleTerritoryExpansions(region, world, regionsTerritories)
+        for pEX, PEY in possibleExpansion:
+            world.getWorldMap().addField(region.getRegionColor(), (0, 0, 0), x=pEX, y=PEY)
 
 def diseasesProgress(world):
 
