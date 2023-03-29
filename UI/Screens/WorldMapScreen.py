@@ -165,12 +165,14 @@ class WorldMapScreen:
     def addLoadedMap(self):
 
         self.map = []
+        print(self.loadedMap)
         for pixel in self.loadedMap:
             color = pixel[2]
-            rect = pygame.draw.rect(self.worldMapScreenSurface, self.BORDER_COLOR, [pixel[0][0], pixel[0][1], pixel[0][2], pixel[0][3]])
+            borderColor = pixel[3]
+            rect = pygame.draw.rect(self.worldMapScreenSurface, borderColor, [pixel[0][0], pixel[0][1], pixel[0][2], pixel[0][3]])
             rectInner = pygame.draw.rect(self.worldMapScreenSurface, color, [pixel[1][0], pixel[1][1], pixel[1][2], pixel[1][3]])
-            self.worldMapScreenSurfaceObjsRect.append([rect, rectInner, color, self.BORDER_COLOR])
-            self.map.append([rect, rectInner, color, self.BORDER_COLOR])
+            self.worldMapScreenSurfaceObjsRect.append([rect, rectInner, color, borderColor])
+            self.map.append([rect, rectInner, color, borderColor])
 
 
     def addDefaultMap(self):
@@ -203,7 +205,7 @@ class WorldMapScreen:
             rect = pygame.draw.rect(self.worldMapScreenSurface, borderColor, [xB, yb, wb, hb])
             rectInner = pygame.draw.rect(self.worldMapScreenSurface, self.color, [x, y, w, h])
             self.worldMapScreenSurfaceObjsRect.append([rect, rectInner, self.color, borderColor])
-            self.map.append([rect, rectInner, self.color, self.BORDER_COLOR])
+            self.map.append([rect, rectInner, self.color, borderColor])
         self.color = oldcolor
 
 
@@ -232,7 +234,7 @@ class WorldMapScreen:
 
         if self.brushFlag:
             color = self.brushColor[self.brushColorIndex]
-            borderColor = self.BORDER_COLOR
+            borderColor = (192,25,192)
             if self.brushSize % 2 == 1:
                 offset = self.brushSize//2 * 8
             else:
@@ -293,6 +295,7 @@ class WorldMapScreen:
                 tempFlag = 0
                 splitedDataPack = dataPack.split('.')
                 color = self.BORDER_COLOR
+                colorBorder = color
                 rectData = None
                 rectInnerData = None
                 for dataInside in splitedDataPack:
