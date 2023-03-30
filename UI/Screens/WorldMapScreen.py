@@ -255,7 +255,6 @@ class WorldMapScreen:
                     for changeColorRectBorder, changeColorRect, color, borderColor in self.map:
                         if (changeColorRect.left, changeColorRect.top, changeColorRect.width, changeColorRect.height) == (rect.left + sizeX * 8 - offset, rect.top + sizeY * 8 - offset, rect.width, rect.height):
                             if color != self.DEFAULT_GRAY_1 and color != self.DEFAULT_GRAY_2:
-                                print(self.changedColorCordsArray)
                                 if [(rectBord.left + sizeX * 8 - offset, rectBord.top + sizeY * 8 - offset, rectBord.width, rectBord.height), (rect.left + sizeX * 8 - offset, rect.top + sizeY * 8 - offset, rect.width, rect.height), color, borderColor] in self.changedColorCordsArray:
                                     self.changedColorCordsArray.remove([(rectBord.left + sizeX * 8 - offset, rectBord.top + sizeY * 8 - offset, rectBord.width, rectBord.height),(rect.left + sizeX * 8 - offset, rect.top + sizeY * 8 - offset, rect.width, rect.height), color, borderColor ])
 
