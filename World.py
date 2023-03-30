@@ -313,7 +313,7 @@ class World:
 
     def generateRegionsNames(self, regionsNumber = 5):
 
-        startingSet = 0
+        startingSet = 1
 
         if startingSet == 0:
             startingSet1For4 = [[], [], [], []]
