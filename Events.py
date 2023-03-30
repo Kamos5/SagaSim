@@ -164,7 +164,6 @@ def infectionsSpread (world):
 def terrytoryManagement(world):
 
     regionsTerritories = []
-
     marginColor = (0, 0, 0)
 
     for region in world.getRegions():
@@ -176,7 +175,6 @@ def terrytoryManagement(world):
         possibleExpansion = WorldFunctions.caltulatePossibleTerritoryExpansions(region, world, regionsTerritories)
 
         if len(possibleExpansion) > 0:
-
 
             expandToX, expandToY = Utils.randomFromCollection(possibleExpansion)
             region.addRegionTerritory((expandToX, expandToY))

@@ -53,7 +53,7 @@ class WorldMapScreen:
 
         self.color = self.GRAY_1
 
-        self.brushColor = [(20, 220, 20), (20, 20, 220), (220, 20, 20), (220, 220, 20), (20, 220, 220), (220, 20, 220)]
+        self.brushColor = [(20, 220, 20), (20, 20, 220), (220, 20, 20), (220, 220, 20), (20, 220, 220), (220, 20, 220), (20, 20, 20)]
         self.brushColorIndex = 0
         self.changedColorCordsArray = []
 
@@ -204,11 +204,19 @@ class WorldMapScreen:
             self.color = color
             borderColor = borderColor
             x, y, w, h = changeColorRect
-            xB, yb, wb, hb = changeColorRectBorder
-            rect = pygame.draw.rect(self.worldMapScreenSurface, borderColor, [xB, yb, wb, hb])
+            xB, yB, wB, hB = changeColorRectBorder
+            rect = pygame.draw.rect(self.worldMapScreenSurface, borderColor, [xB, yB, wB, hB])
             rectInner = pygame.draw.rect(self.worldMapScreenSurface, self.color, [x, y, w, h])
             self.worldMapScreenSurfaceObjsRect.append([rect, rectInner, self.color, borderColor])
             self.map.append([rect, rectInner, self.color, borderColor])
+
+            normX, normY = self.convertCordsToNormalized(xB, yB)
+            for region in world.getRegions():
+                if borderColor == region.getRegionColor():
+                    region.addRegionTerritory((normX, normY))
+
+            world.getWorldMap().addField(borderColor, color, normX, normY)
+
         self.color = oldcolor
 
         for pixel in world.getWorldMap().getWorldMapObj():
@@ -224,8 +232,7 @@ class WorldMapScreen:
                 else:
                     color = self.DEFAULT_GRAY_2
 
-            x = xNorm * self.chunkSizeXWithBorder + self.verticalPadding
-            y = yNorm * self.chunkSizeYWithBorder + (self.writeLine * self.lineHeight)
+            x, y = self.convertCordsFromNormalized(xNorm, yNorm)
             w, h = (self.chunkSizeXWithBorder, self.chunkSizeYWithBorder)
             rect = pygame.draw.rect(self.worldMapScreenSurface, borderColor, [x, y, w, h])
             rectInner = pygame.draw.rect(self.worldMapScreenSurface, color, [x+1, y+1, w-2, h-2])
@@ -257,7 +264,8 @@ class WorldMapScreen:
 
         if self.brushFlag:
             color = self.brushColor[self.brushColorIndex]
-            borderColor = (255-color[0],255-color[1],255-color[2])
+            #borderColor = (255-color[0],255-color[1],255-color[2])
+            borderColor = color
             if self.brushSize % 2 == 1:
                 offset = self.brushSize//2 * 8
             else:
@@ -295,6 +303,20 @@ class WorldMapScreen:
 
     def getVerticalPositioning(self):
         return self.writeLine * (self.lineHeight + 4 * self.labelBoarderDefault + 4 * self.labelMarginVerticalDefault)
+
+    def convertCordsFromNormalized(self, xNorm, yNorm):
+
+        x = xNorm * self.chunkSizeXWithBorder + self.verticalPadding
+        y = yNorm * self.chunkSizeYWithBorder + (self.writeLine * self.lineHeight)
+
+        return x, y
+
+    def convertCordsToNormalized(self, x, y):
+
+        xNorm = (x - self.verticalPadding) // self.chunkSizeYWithBorder
+        yNorm = (y - (self.writeLine * self.lineHeight)) // self.chunkSizeYWithBorder
+
+        return xNorm, yNorm
 
     def saveMap(self):
 

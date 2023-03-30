@@ -313,13 +313,14 @@ class World:
 
     def generateRegionsNames(self, regionsNumber = 5):
 
-        startingSet = 1
+        startingSet = 0
 
-        if startingSet == 1:
+        if startingSet == 0:
+            startingSet1For4 = [[], [], [], []]
+        elif startingSet == 1:
             startingSet1For4 = [(0, 0), (self.getWorldMap().getWidth()-1, 0), (0, self.getWorldMap().getHeight()-1), (self.getWorldMap().getWidth()-1, self.getWorldMap().getHeight()-1)]
         else:
-            startingSet1For4 = [(50, 50),(50, 51),(51, 50),(51, 51)]
-
+            startingSet1For4 = [(50, 50), (50, 51), (51, 50), (51, 51)]
 
         if regionsNumber >= 1:
             region = Region(RNG.randomEnglishRegionName())
@@ -343,8 +344,9 @@ class World:
             self.regions.append(region)
 
         for region in self.getRegions():
-            expandToX, expandToY = region.getRegionTerritories()[0]
-            self.getWorldMap().addField(region.getRegionColor(), x=expandToX, y=expandToY)
+            if len(region.getRegionTerritories()) > 0:
+                expandToX, expandToY = list(region.getRegionTerritories())[0]
+                self.getWorldMap().addField(region.getRegionColor(), x=expandToX, y=expandToY)
 
     def generateSettlements(self):
 

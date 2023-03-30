@@ -1,4 +1,3 @@
-import time
 
 
 def caltulatePossibleTerritoryExpansions(region, world, regionsTerritories):
@@ -6,8 +5,8 @@ def caltulatePossibleTerritoryExpansions(region, world, regionsTerritories):
     possibleExpansion = set()
     setRegionTerritories = set(region.getRegionTerritories())
     setRegionsTerritories = set(regionsTerritories)
-
-    setDouble = setRegionsTerritories
+    impassibleTerrain = world.getWorldMap().getImpassibleTerrain()
+    setDouble = setRegionsTerritories.union(impassibleTerrain)
 
     x0 = 0
     y0 = 0

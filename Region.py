@@ -13,7 +13,7 @@ class Region():
         self.regionCulture = ''
         self.regionColor = (0, 0, 0)
         self.regionStartingCords = (0, 0)
-        self.regionTerritories = []
+        self.regionTerritories = set()
         self.uiExpand = True
         self.weather = Enums.weatherStatus.NORMAL
         self.daysSinceLastWeatherChange = 0
@@ -57,14 +57,15 @@ class Region():
         return self.regionTerritories
 
     def addRegionTerritory(self, region):
-        self.regionTerritories.append(region)
+        if len(region) > 0:
+            self.regionTerritories.add(region)
 
     def removeRegionTerritory(self, removeRegion):
         self.regionTerritories.remove(removeRegion)
 
     def getTowns(self):
 
-        townList =[]
+        townList = []
         for settlement in self.getSettlements():
             if settlement.getSettlementType() == Enums.Settlements.TOWN:
                 townList.append(settlement)
