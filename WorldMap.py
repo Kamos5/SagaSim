@@ -67,6 +67,8 @@ class WorldMap:
                 province.addCords(randomX, randomY)
                 provinceMap.add(province)
                 cordsUsed.add((randomX, randomY))
+            if len(provinceMap) == maxX * maxY:
+                break
 
         while not sortedFlag:
             cordX = shuffledWidth[Utils.randomRange(0, maxX-1)]
