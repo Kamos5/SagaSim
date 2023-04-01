@@ -127,11 +127,11 @@ class WorldMapScreen:
         self.worldMapScreenSurface.blit(self.brushSizeDigitLabel.localSurface, (self.width * 0.05+ self.brushSizeLabel.w, self.getVerticalPositioning()))
 
         self.writeLine += 3
-        if not self.isLoaded:
-            self.addDefaultMap()
-
-        else:
-            self.addLoadedMap()
+        # if not self.isLoaded:
+        #     # self.addDefaultMap()
+        #
+        # else:
+        #     self.addLoadedMap()
         #self.createMap()
         self.modMap(world)
 
@@ -199,25 +199,25 @@ class WorldMapScreen:
 
     def modMap(self, world):
 
-        oldcolor = self.color
-        for changeColorRectBorder, changeColorRect, color, borderColor in self.changedColorCordsArray:
-            self.color = color
-            borderColor = borderColor
-            x, y, w, h = changeColorRect
-            xB, yB, wB, hB = changeColorRectBorder
-            rect = pygame.draw.rect(self.worldMapScreenSurface, borderColor, [xB, yB, wB, hB])
-            rectInner = pygame.draw.rect(self.worldMapScreenSurface, self.color, [x, y, w, h])
-            self.worldMapScreenSurfaceObjsRect.append([rect, rectInner, self.color, borderColor])
-            self.map.append([rect, rectInner, self.color, borderColor])
-
-            normX, normY = self.convertCordsToNormalized(xB, yB)
-            for region in world.getRegions():
-                if borderColor == region.getRegionColor():
-                    region.addRegionTerritory((normX, normY))
-
-            world.getWorldMap().addField(borderColor, color, normX, normY)
-
-        self.color = oldcolor
+        # oldcolor = self.color
+        # for changeColorRectBorder, changeColorRect, color, borderColor in self.changedColorCordsArray:
+        #     self.color = color
+        #     borderColor = borderColor
+        #     x, y, w, h = changeColorRect
+        #     xB, yB, wB, hB = changeColorRectBorder
+        #     rect = pygame.draw.rect(self.worldMapScreenSurface, borderColor, [xB, yB, wB, hB])
+        #     rectInner = pygame.draw.rect(self.worldMapScreenSurface, self.color, [x, y, w, h])
+        #     self.worldMapScreenSurfaceObjsRect.append([rect, rectInner, self.color, borderColor])
+        #     self.map.append([rect, rectInner, self.color, borderColor])
+        #
+        #     normX, normY = self.convertCordsToNormalized(xB, yB)
+        #     for region in world.getRegions():
+        #         if borderColor == region.getRegionColor():
+        #             region.addRegionTerritory((normX, normY))
+        #
+        #     world.getWorldMap().addField(borderColor, color, normX, normY)
+        #
+        # self.color = oldcolor
 
         for pixel in world.getWorldMap().getWorldMapObj():
 

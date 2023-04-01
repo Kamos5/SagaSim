@@ -13,12 +13,15 @@ class WorldMap:
         self.width = 200
         self.height = 100
 
-        self.numberOfProvinces = 500
+        self.numberOfProvinces = 100
+        self.numberOfSeaProvinces = self.numberOfProvinces // 3
 
         self.worldMapObj = set()
         self.impassibleTerrain = set()
 
         self.provinces = set()
+        self.seaProvinces = set()
+        self.landProvinces = set()
 
     def addField(self, borderColor, color=None, x=0, y=0):
 
@@ -47,12 +50,12 @@ class WorldMap:
     def generateProvinces(self):
 
         print("Genereting World Map...")
+        print("Genereting Provinces")
         provinceMap = set()
         sortedFlag = False
         cordsUsed = set()
+        tempName = 0
 
-        x0 = self.x0
-        y0 = self.y0
         maxX = self.width
         maxY = self.height
 
@@ -63,8 +66,10 @@ class WorldMap:
             randomX = Utils.randomRange(0, maxX-1)
             randomY = Utils.randomRange(0, maxY-1)
             if (randomX, randomY) not in cordsUsed:
-                province = Province.Provinve()
+                province = Province.Province()
                 province.addCords(randomX, randomY)
+                province.setName(tempName)
+                tempName += 1
                 provinceMap.add(province)
                 cordsUsed.add((randomX, randomY))
             if len(provinceMap) == maxX * maxY:
@@ -78,25 +83,25 @@ class WorldMap:
             if (cordX, cordY) not in cordsUsed:
                 if (cordX, cordY) not in cordsUsed:
                     left = (cordX - 1, cordY)
-                    if left in cordsUsed and not cordX == x0:
+                    if left in cordsUsed and not cordX == self.x0:
                         provinceToAdd = self.checkWhereCordsWereUsed(left, provinceMap)
                         if provinceToAdd not in provinceCandidates:
                             provinceCandidates.append(provinceToAdd)
                     # RIGHT
                     right = (cordX + 1, cordY)
-                    if right in cordsUsed and not cordX == maxX:
+                    if right in cordsUsed and not cordX == maxX-1:
                         provinceToAdd = self.checkWhereCordsWereUsed(right, provinceMap)
                         if provinceToAdd not in provinceCandidates:
                             provinceCandidates.append(provinceToAdd)
                     # UP
                     up = (cordX, cordY - 1)
-                    if up in cordsUsed and not cordY == y0:
+                    if up in cordsUsed and not cordY == self.y0:
                         provinceToAdd = self.checkWhereCordsWereUsed(up, provinceMap)
                         if provinceToAdd not in provinceCandidates:
                             provinceCandidates.append(provinceToAdd)
                     # DOWN
                     down = (cordX, cordY + 1)
-                    if down in cordsUsed and not cordY == maxY:
+                    if down in cordsUsed and not cordY == maxY-1:
                         provinceToAdd = self.checkWhereCordsWereUsed(down, provinceMap)
                         if provinceToAdd not in provinceCandidates:
                             provinceCandidates.append(provinceToAdd)
@@ -115,9 +120,17 @@ class WorldMap:
             if len(cordsUsed) == (maxX) * (maxY):
                 sortedFlag = True
             #Utils.printPercentDone(len(cordsUsed), ((maxX) * (maxY)))
-        print("Generation Completed!")
         self.provinces = set(provinceMap)
+        self.landProvinces = self.provinces - self.seaProvinces
+        print("Genereting Provinces Completed!")
+        print("Generation Neighbours...")
+        self.generateProvinceNeighbours()
+        print("Generation Neighbours Completed!")
+        print("Generation Seas...")
+        self.genereteSeas()
+        print("Generation Seas Completed!")
         self.generateProvincesMap()
+        print("Generation Completed!")
 
     def checkWhereCordsWereUsed(self, cords, provinceMap):
 
@@ -132,6 +145,72 @@ class WorldMap:
 
         for province in self.getProvinces():
             provinceColor = province.getColor()
+            provinceBorderColor = provinceColor
+            if province.getType() == 'SEA':
+                provinceBorderColor = (20, 20, 20)
+                provinceColor = (00, 69, 94)
             for terrytory in province.getCords():
                 provinceX, provinceY = terrytory
-                self.addField(provinceColor,  provinceColor, x=provinceX, y=provinceY)
+                self.addField(borderColor=provinceBorderColor,  color=provinceColor, x=provinceX, y=provinceY)
+
+    def generateProvinceNeighbours(self):
+
+        maxX = self.width
+        maxY = self.height
+
+        for province in self.getProvinces():
+            for cordX, cordY in province.getCords():
+                left = (cordX - 1, cordY)
+                if left not in province.getCords() and not cordX == self.x0:
+                    neighbour = self.checkOtherProvincesForCords(left)
+                    if neighbour not in province.getNeighbours():
+                        province.addNeighbour(neighbour)
+                # RIGHT
+                right = (cordX + 1, cordY)
+                if right not in province.getCords() and not cordX == maxX-1:
+                    neighbour = self.checkOtherProvincesForCords(right)
+                    if neighbour not in province.getNeighbours():
+                        province.addNeighbour(neighbour)
+                # UP
+                up = (cordX, cordY - 1)
+                if up not in province.getCords() and not cordY == self.y0:
+                    neighbour = self.checkOtherProvincesForCords(up)
+                    if neighbour not in province.getNeighbours():
+                        province.addNeighbour(neighbour)
+                # DOWN
+                down = (cordX, cordY + 1)
+                if down not in province.getCords() and not cordY == maxY-1:
+                    neighbour = self.checkOtherProvincesForCords(down)
+                    if neighbour not in province.getNeighbours():
+                        province.addNeighbour(neighbour)
+
+    def checkOtherProvincesForCords(self, cords):
+
+        for province in self.getProvinces():
+            if cords in province.getCords():
+                return province
+
+    def genereteSeas(self, province=None, numberOfSeaProvinces = None):
+
+        try:
+            if numberOfSeaProvinces is None:
+                numberOfSeaProvinces = self.numberOfSeaProvinces
+            if province is None:
+                province = Utils.randomFromCollection(list(self.getProvinces()))
+            randomProvince = Utils.randomFromCollection(list(province.getNeighbours()))
+            seaNeighbours = 0
+            for provinceNeighbour in province.getNeighbours():
+                if provinceNeighbour.getType() == 'SEA':
+                    seaNeighbours += 1
+
+            if randomProvince not in self.seaProvinces and seaNeighbours <= 2:
+                self.seaProvinces.add(randomProvince)
+                randomProvince.setType('SEA')
+                numberOfSeaProvinces -= 1
+                if numberOfSeaProvinces > 0:
+                    self.genereteSeas(randomProvince, numberOfSeaProvinces)
+            else:
+                self.genereteSeas(None, numberOfSeaProvinces)
+        except RecursionError:
+            print("RECURSION ERROR FAILED")
+            return
