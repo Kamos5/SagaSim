@@ -1,5 +1,4 @@
 ﻿import random
-import time
 
 import Province
 import Utils
@@ -57,8 +56,8 @@ class WorldMap:
         maxX = self.width
         maxY = self.height
 
-        shuffledWidth = random.sample(range(maxX+1), maxX+1)
-        shuffledHeight = random.sample(range(maxY+1), maxY+1)
+        shuffledWidth = random.sample(range(maxX), maxX)
+        shuffledHeight = random.sample(range(maxY), maxY)
 
         while len(provinceMap) < self.numberOfProvinces:
             randomX = Utils.randomRange(0, maxX-1)
@@ -70,8 +69,8 @@ class WorldMap:
                 cordsUsed.add((randomX, randomY))
 
         while not sortedFlag:
-            cordX = shuffledWidth[Utils.randomRange(0, maxX)]
-            cordY = shuffledHeight[Utils.randomRange(0, maxY)]
+            cordX = shuffledWidth[Utils.randomRange(0, maxX-1)]
+            cordY = shuffledHeight[Utils.randomRange(0, maxY-1)]
             provinceCandidates = []
 
             if (cordX, cordY) not in cordsUsed:
@@ -111,9 +110,9 @@ class WorldMap:
                         lowestProvince.addCords(cordX, cordY)
                         cordsUsed.add((cordX, cordY))
 
-            if len(cordsUsed) == (maxX + 1) * (maxY + 1):
+            if len(cordsUsed) == (maxX) * (maxY):
                 sortedFlag = True
-            #Utils.printPercentDone(len(cordsUsed), ((maxX + 1) * (maxY + 1)))
+            #Utils.printPercentDone(len(cordsUsed), ((maxX) * (maxY)))
         print("Generation Completed!")
         self.provinces = set(provinceMap)
         self.generateProvincesMap()
