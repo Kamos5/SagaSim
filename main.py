@@ -58,7 +58,7 @@ def running(world, manualOverride):
 
     print(str(world.getDay()) + "/" + str(world.getMonth()) + "/" + str(world.getYear()))
 
-    terrytoryTime = Utils.timeFunction(timers, Events.terrytoryManagement, world)
+    terrytoryTime = Utils.timeFunction(False, Events.terrytoryManagement, world)
     weatherChangeTime = Utils.timeFunction(timers, world.weatherChange)
     incAgeTime = Utils.timeFunction(timers, Events.increaseAge, world)
     infectionsTime = Utils.timeFunction(timers, Events.infectionsSpread, world)
@@ -126,7 +126,7 @@ def main(popBreakLimit=None):
     world.generateSettlements()
     world.setFamilies(initFamilies())
     world.setPeople(initPeople(world.getFamilies()))
-
+    world.getWorldMap().generateProvinces()
     world.diseases = IOtools.loadFiles('diseases')
 
     windowWidth = 1024
