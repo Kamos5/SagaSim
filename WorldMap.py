@@ -15,6 +15,7 @@ class WorldMap:
 
         self.numberOfProvinces = 100
         self.numberOfSeaProvinces = self.numberOfProvinces // 3
+        self.seaNeighboursForSeaProvincesParam = 2
 
         self.worldMapObj = set()
         self.impassibleTerrain = set()
@@ -203,7 +204,7 @@ class WorldMap:
                 if provinceNeighbour.getType() == 'SEA':
                     seaNeighbours += 1
 
-            if randomProvince not in self.seaProvinces and seaNeighbours <= 2:
+            if randomProvince not in self.seaProvinces and seaNeighbours <= self.seaNeighboursForSeaProvincesParam:
                 self.seaProvinces.add(randomProvince)
                 randomProvince.setType('SEA')
                 numberOfSeaProvinces -= 1
