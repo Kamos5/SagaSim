@@ -33,7 +33,7 @@ def increaseAge (world):
 
                     #for accelerating groth in children
                     if Parameters.growthSpeed > 0:
-                        for grothAccelerator in range(Parameters.growthSpeed-1):
+                        for growthAccelerator in range(Parameters.growthSpeed-1):
                             person.increaseAge()
 
                     if person.age > 15:
