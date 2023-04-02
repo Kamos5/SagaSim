@@ -7,6 +7,7 @@ import RegionNameGenerator as RNG
 import Parameters
 from RegionLifeEventsHistory import weatherEvent
 from WorldMap import WorldMap
+from WorldMapObjClass import WorldMapObjClass
 
 
 class World:
@@ -326,6 +327,7 @@ class World:
             region = Region(RNG.randomEnglishRegionName())
             region.setRegionColor((220, 20, 20))
             region.addRegionTerritory(startingSet1For4[0])
+
             self.regions.append(region)
         if regionsNumber >= 2:
             region = Region(RNG.randomNorseRegionName())
@@ -346,7 +348,7 @@ class World:
         for region in self.getRegions():
             if len(region.getRegionTerritories()) > 0:
                 expandToX, expandToY = list(region.getRegionTerritories())[0]
-                self.getWorldMap().addField(region.getRegionColor(), x=expandToX, y=expandToY)
+                self.getWorldMap().addField(WorldMapObjClass(colors=region.getRegionColor(), cords=(expandToX, expandToY), objectVar=region))
 
     def generateSettlements(self):
 
@@ -777,3 +779,37 @@ class World:
 
 
         return modVariable
+
+    def pickRandomProvincesForRegions(self):
+
+        for region in self.regions:
+            provincesNotFound = True
+            findFirst = True
+            for i in range(1):
+                while provincesNotFound:
+                    if len(region.getProvinces()) == 0:
+                        while findFirst:
+                            secVariable = 0
+                            province = Utils.randomFromCollection(list(self.getWorldMap().getProvinces()))
+                            if province.getType() == 'SEA' or province.getRegion() is not None:
+                                continue
+                            else:
+                                findFirst = False
+
+                            secVariable += 1
+                            if secVariable > 100:
+                                break
+                    else:
+                        possibleExpansions = []
+                        for province in region.getProvinces():
+                            for neighbour in province.getNeighbours():
+                                if not neighbour.getType() == 'SEA' or neighbour.getRegion() is not None:
+                                    possibleExpansions.append(neighbour)
+
+                        province = Utils.randomFromCollection(possibleExpansions)
+                    region.addProvince(province)
+                    province.setRegion(region)
+                    provincesNotFound = False
+
+            region.generateRegionalProvincesMap(self)
+

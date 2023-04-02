@@ -2,6 +2,8 @@ import Enums
 import Utils
 from Settlements import Settlements
 import Parameters
+from WorldMapObjClass import WorldMapObjClass
+
 
 class Region():
 
@@ -21,6 +23,7 @@ class Region():
         self.weatherHistory = []
         self.currentTemperature = 0
         self.temperatureHistory = []
+        self.provinces = []
 
     def getUIExpand(self):
         return self.uiExpand
@@ -170,3 +173,20 @@ class Region():
 
     def addendTemperatureHistory(self, temp):
         self.temperatureHistory.append(temp)
+
+    def addProvince(self, province):
+        self.provinces.append(province)
+
+    def getProvinces(self):
+        return self.provinces
+
+    def generateRegionalProvincesMap(self, world):
+
+        for province in self.getProvinces():
+            provinceColor = province.getColor()
+            provinceBorderColor = self.getRegionColor()
+
+            for terrytory in province.getCords():
+                provinceX, provinceY = terrytory
+                worldMapObjClass = WorldMapObjClass(colors=(provinceBorderColor, provinceColor), cords=(provinceX,provinceY), objectVar=province)
+                world.getWorldMap().addField(worldMapObjClass, weight=1)

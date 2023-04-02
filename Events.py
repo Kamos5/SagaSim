@@ -166,29 +166,29 @@ def terrytoryManagement(world):
     regionsTerritories = []
     marginColor = (0, 0, 0)
 
-    for region in world.getRegions():
-        regionsTerritories.extend(region.getRegionTerritories())
-
-    for region in world.getRegions():
-
-        regionColor = region.getRegionColor()
-        possibleExpansion = WorldFunctions.caltulatePossibleTerritoryExpansions(region, world, regionsTerritories)
-
-        if len(possibleExpansion) > 0:
-
-            expandToX, expandToY = Utils.randomFromCollection(possibleExpansion)
-            region.addRegionTerritory((expandToX, expandToY))
-            regionsTerritories.append((expandToX, expandToY))
-            world.getWorldMap().addField(regionColor, x=expandToX, y=expandToY)
-            possibleExpansion.remove((expandToX, expandToY))    # TODO consequence: can't expand to bordering pixel that was not in possibleExpansion list if snakeLength > 1.
-            possibleExpansion.extend(WorldFunctions.caltulatePossibleTerritoryExpansionsForSinglePoint(region, world, regionsTerritories, (expandToX, expandToY)))
-
-            #possibleExpansion = WorldFunctions.caltulatePossibleTerritoryExpansions(region, world, regionsTerritories)
-
-        # for pEX, pEY in possibleExpansion:
-        #     world.getWorldMap().addField(regionColor, marginColor, x=pEX, y=pEY)
-
-    print(len(world.getWorldMap().getWorldMapObj()))
+    # for region in world.getRegions():
+    #     regionsTerritories.extend(region.getRegionTerritories())
+    #
+    # for region in world.getRegions():
+    #
+    #     regionColor = region.getRegionColor()
+    #     possibleExpansion = WorldFunctions.caltulatePossibleTerritoryExpansions(region, world, regionsTerritories)
+    #
+    #     if len(possibleExpansion) > 0:
+    #
+    #         expandToX, expandToY = Utils.randomFromCollection(possibleExpansion)
+    #         region.addRegionTerritory((expandToX, expandToY))
+    #         regionsTerritories.append((expandToX, expandToY))
+    #         world.getWorldMap().addField(regionColor, x=expandToX, y=expandToY)
+    #         possibleExpansion.remove((expandToX, expandToY))    # TODO consequence: can't expand to bordering pixel that was not in possibleExpansion list if snakeLength > 1.
+    #         possibleExpansion.extend(WorldFunctions.caltulatePossibleTerritoryExpansionsForSinglePoint(region, world, regionsTerritories, (expandToX, expandToY)))
+    #
+    #         #possibleExpansion = WorldFunctions.caltulatePossibleTerritoryExpansions(region, world, regionsTerritories)
+    #
+    #     # for pEX, pEY in possibleExpansion:
+    #     #     world.getWorldMap().addField(regionColor, marginColor, x=pEX, y=pEY)
+    #
+    # print(len(world.getWorldMap().getWorldMapObj()))
 
 def diseasesProgress(world):
 

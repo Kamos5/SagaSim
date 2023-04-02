@@ -12,6 +12,7 @@ class Province:
         self.setRandomColor()
         self.neighbours = set()
         self.provinceType = 'TERRAIN'
+        self.region = None
 
     def setName(self, name):
         self.name = name
@@ -50,3 +51,15 @@ class Province:
 
     def setType(self, newType):
         self.provinceType = newType
+
+    def setRegion(self, region):
+        self.region = region
+
+    def getRegion(self):
+        return self.region
+
+    def markInnerCords(self):
+
+        for cordX, cordY in self.getCords():
+            if (cordX+1, cordY) in self.getCords() and (cordX-1, cordY) in self.getCords() and (cordX, cordY+1) in self.getCords() and (cordX, cordY-1) in self.getCords():
+                self.setIsInner(True)

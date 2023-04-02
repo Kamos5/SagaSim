@@ -127,6 +127,7 @@ def main(popBreakLimit=None):
     world.setFamilies(initFamilies())
     world.setPeople(initPeople(world.getFamilies()))
     world.getWorldMap().generateProvinces()
+    world.pickRandomProvincesForRegions()
     world.diseases = IOtools.loadFiles('diseases')
 
     windowWidth = 1024

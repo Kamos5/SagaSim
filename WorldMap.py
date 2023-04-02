@@ -2,6 +2,7 @@
 
 import Province
 import Utils
+from WorldMapObjClass import WorldMapObjClass
 
 
 class WorldMap:
@@ -13,7 +14,7 @@ class WorldMap:
         self.width = 200
         self.height = 100
 
-        self.numberOfProvinces = 100
+        self.numberOfProvinces = 60
         self.numberOfSeaProvinces = self.numberOfProvinces // 3
         self.seaNeighboursForSeaProvincesParam = 2
 
@@ -24,14 +25,12 @@ class WorldMap:
         self.seaProvinces = set()
         self.landProvinces = set()
 
-    def addField(self, borderColor, color=None, x=0, y=0):
+    def addField(self, worldMapObjClass, weight=0):
 
-        # xCord = len(self.worldMapObj) % self.width
-        # yCord = len(self.worldMapObj) // self.width
-        if ((x, y), (borderColor, color)) not in self.getWorldMapObj():
-            self.worldMapObj.add(((x, y), (borderColor, color)))
-        if color == (20, 20, 20) and ((x, y), (borderColor, color)) not in self.getImpassibleTerrain():
-            self.impassibleTerrain.add((x, y))
+        if worldMapObjClass not in self.getWorldMapObj():
+            self.worldMapObj.add((worldMapObjClass, weight))
+        if worldMapObjClass.getColor() and worldMapObjClass not in self.getImpassibleTerrain():
+            self.impassibleTerrain.add(worldMapObjClass.getCords())
 
     def resetWorldMapObj(self):
         self.worldMapObj = []
@@ -85,27 +84,27 @@ class WorldMap:
                 if (cordX, cordY) not in cordsUsed:
                     left = (cordX - 1, cordY)
                     if left in cordsUsed and not cordX == self.x0:
-                        provinceToAdd = self.checkWhereCordsWereUsed(left, provinceMap)
-                        if provinceToAdd not in provinceCandidates:
-                            provinceCandidates.append(provinceToAdd)
+                        pixelToAdd = self.checkWhereCordsWereUsed(left, provinceMap)
+                        if pixelToAdd not in provinceCandidates:
+                            provinceCandidates.append(pixelToAdd)
                     # RIGHT
                     right = (cordX + 1, cordY)
                     if right in cordsUsed and not cordX == maxX-1:
-                        provinceToAdd = self.checkWhereCordsWereUsed(right, provinceMap)
-                        if provinceToAdd not in provinceCandidates:
-                            provinceCandidates.append(provinceToAdd)
+                        pixelToAdd = self.checkWhereCordsWereUsed(right, provinceMap)
+                        if pixelToAdd not in provinceCandidates:
+                            provinceCandidates.append(pixelToAdd)
                     # UP
                     up = (cordX, cordY - 1)
                     if up in cordsUsed and not cordY == self.y0:
-                        provinceToAdd = self.checkWhereCordsWereUsed(up, provinceMap)
-                        if provinceToAdd not in provinceCandidates:
-                            provinceCandidates.append(provinceToAdd)
+                        pixelToAdd = self.checkWhereCordsWereUsed(up, provinceMap)
+                        if pixelToAdd not in provinceCandidates:
+                            provinceCandidates.append(pixelToAdd)
                     # DOWN
                     down = (cordX, cordY + 1)
                     if down in cordsUsed and not cordY == maxY-1:
-                        provinceToAdd = self.checkWhereCordsWereUsed(down, provinceMap)
-                        if provinceToAdd not in provinceCandidates:
-                            provinceCandidates.append(provinceToAdd)
+                        pixelToAdd = self.checkWhereCordsWereUsed(down, provinceMap)
+                        if pixelToAdd not in provinceCandidates:
+                            provinceCandidates.append(pixelToAdd)
 
                     if len(provinceCandidates) > 0:
                         provincesWeight = 100
@@ -152,7 +151,7 @@ class WorldMap:
                 provinceColor = (00, 69, 94)
             for terrytory in province.getCords():
                 provinceX, provinceY = terrytory
-                self.addField(borderColor=provinceBorderColor,  color=provinceColor, x=provinceX, y=provinceY)
+                self.addField(WorldMapObjClass(colors=(provinceBorderColor, provinceColor), cords=(provinceX, provinceY), objectVar=province))
 
     def generateProvinceNeighbours(self):
 

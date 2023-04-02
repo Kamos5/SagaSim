@@ -3,6 +3,7 @@ import time
 
 import pygame
 
+from Province import Province
 from UI.Utils.Button import Button
 from UI.Utils.Label2 import Label2
 
@@ -219,13 +220,39 @@ class WorldMapScreen:
         #
         # self.color = oldcolor
 
-        for pixel in world.getWorldMap().getWorldMapObj():
+        forLater = set()
 
-            xNorm, yNorm, = pixel[0]
-            borderColor = pixel[1][0]
+        for worldMapObjClass, weight in world.getWorldMap().getWorldMapObj():
 
-            if pixel[1][1] is not None:
-                color = pixel[1][1]
+            pixelObject = worldMapObjClass.getObject()
+            if not isinstance(pixelObject, Province) or weight == 0:
+                xNorm, yNorm, = worldMapObjClass.getCords()
+                borderColor = worldMapObjClass.getBorderColor()
+
+                if worldMapObjClass.getColor() is not None:
+                    color = worldMapObjClass.getColor()
+                else:
+                    if (xNorm + yNorm) % 2 == 0:
+                        color = self.DEFAULT_GRAY_1
+                    else:
+                        color = self.DEFAULT_GRAY_2
+
+                x, y = self.convertCordsFromNormalized(xNorm, yNorm)
+                w, h = (self.chunkSizeXWithBorder, self.chunkSizeYWithBorder)
+                rect = pygame.draw.rect(self.worldMapScreenSurface, borderColor, [x, y, w, h])
+                rectInner = pygame.draw.rect(self.worldMapScreenSurface, color, [x+1, y+1, w-2, h-2])
+                self.worldMapScreenSurfaceObjsRect.append([rect, rectInner, color, borderColor])
+                self.map.append([rect, rectInner, color, borderColor])
+            else:
+                forLater.add(worldMapObjClass)
+
+        for worldMapObjClass in forLater:
+
+            xNorm, yNorm, = worldMapObjClass.getCords()
+            borderColor = worldMapObjClass.getBorderColor()
+
+            if worldMapObjClass.getColor() is not None:
+                color = worldMapObjClass.getColor()
             else:
                 if (xNorm + yNorm) % 2 == 0:
                     color = self.DEFAULT_GRAY_1
@@ -234,10 +261,14 @@ class WorldMapScreen:
 
             x, y = self.convertCordsFromNormalized(xNorm, yNorm)
             w, h = (self.chunkSizeXWithBorder, self.chunkSizeYWithBorder)
-            rect = pygame.draw.rect(self.worldMapScreenSurface, borderColor, [x, y, w, h])
-            rectInner = pygame.draw.rect(self.worldMapScreenSurface, color, [x+1, y+1, w-2, h-2])
+            if worldMapObjClass.isInner:
+                rect = pygame.draw.rect(self.worldMapScreenSurface, color, [x, y, w, h])
+            else:
+                rect = pygame.draw.rect(self.worldMapScreenSurface, borderColor, [x, y, w, h])
+            rectInner = pygame.draw.rect(self.worldMapScreenSurface, color, [x + 1, y + 1, w - 2, h - 2])
             self.worldMapScreenSurfaceObjsRect.append([rect, rectInner, color, borderColor])
             self.map.append([rect, rectInner, color, borderColor])
+
 
     def resetWriteLine(self):
 
