@@ -158,7 +158,7 @@ slavicFamilyNames = [
 
 ]
 
-initialFamilyNames = [
+genericFamilyNames = [
     'Alfarius',
     'Betarius',
     'Gammarius',
@@ -310,9 +310,9 @@ def getInitEgyptName():
 def getInitFamilyName():
     global namesPicked
     namesPicked += 1
-    if len(initialFamilyNames) > 0:
-        choice = random.choice(initialFamilyNames)
-        initialFamilyNames.remove(choice)
+    if len(genericFamilyNames) > 0:
+        choice = random.choice(genericFamilyNames)
+        genericFamilyNames.remove(choice)
     else:
         choice = 'Generic Family Name' + str(namesPicked)
     return choice

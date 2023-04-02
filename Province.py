@@ -81,7 +81,7 @@ class Province:
             up = (cordX, cordY - 1)
             down = (cordX, cordY + 1)
 
-            if (right in self.getCords() or cordX == maxX-1) and (left in self.getCords() or cordX == minX) and (up in self.getCords() or cordY == minY) and (down in self.getCords() or cordY == maxY - 1):
+            if (right in self.getCords() or cordX == maxX-1) and (left in self.getCords() or cordX == minX) and (up in self.getCords() or cordY == minY) and (down in self.getCords() or cordY   == maxY - 1):
                 self.addInnerCords((cordX, cordY))
 
     def checkIfIsland(self):
