@@ -2,12 +2,12 @@
 
 class WorldMapObjClass:
 
-    def __init__(self, cords=(), colors=((0, 0, 0), (0, 0, 0)), objectVar=None):
+    def __init__(self, cords=(), colors=((0, 0, 0), (0, 0, 0)), objectVar=None, isInner = False):
 
         self.cordX, self.cordY = cords
         self.borderColor, self.color = colors
         self.objectVar = objectVar
-        self.isInner = False
+        self.isInner = isInner
 
     def getCordX(self):
         return self.cordX

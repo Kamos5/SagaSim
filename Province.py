@@ -13,6 +13,8 @@ class Province:
         self.neighbours = set()
         self.provinceType = 'TERRAIN'
         self.region = None
+        self.innerCords = set()
+        self.isIsland = False
 
     def setName(self, name):
         self.name = name
@@ -58,8 +60,23 @@ class Province:
     def getRegion(self):
         return self.region
 
+    def addInnerCords(self, cords):
+        self.innerCords.add(cords)
+
+    def getInnerCords(self):
+        return self.innerCords
+
     def markInnerCords(self):
 
         for cordX, cordY in self.getCords():
             if (cordX+1, cordY) in self.getCords() and (cordX-1, cordY) in self.getCords() and (cordX, cordY+1) in self.getCords() and (cordX, cordY-1) in self.getCords():
-                self.setIsInner(True)
+                self.addInnerCords((cordX, cordY))
+
+    def checkIfIsland(self):
+
+        isIsland = True
+        for neighbour in self.getNeighbours():
+            if not neighbour.getType() == 'SEA':
+                isIsland = False
+
+        self.isIsland = isIsland

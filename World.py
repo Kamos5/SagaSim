@@ -783,10 +783,12 @@ class World:
     def pickRandomProvincesForRegions(self):
 
         for region in self.regions:
-            provincesNotFound = True
             findFirst = True
             for i in range(1):
+                provincesNotFound = True
                 while provincesNotFound:
+                    secBreak = 0
+                    province = None
                     if len(region.getProvinces()) == 0:
                         while findFirst:
                             secVariable = 0
@@ -806,10 +808,17 @@ class World:
                                 if not neighbour.getType() == 'SEA' or neighbour.getRegion() is not None:
                                     possibleExpansions.append(neighbour)
 
-                        province = Utils.randomFromCollection(possibleExpansions)
-                    region.addProvince(province)
-                    province.setRegion(region)
-                    provincesNotFound = False
+                        if len(possibleExpansions) > 0:
+                            province = Utils.randomFromCollection(possibleExpansions)
+
+                    if province is not None:
+                        region.addProvince(province)
+                        province.setRegion(region)
+                        provincesNotFound = False
+
+                    secBreak += 1
+                    if secBreak == 1000:
+                        break
 
             region.generateRegionalProvincesMap(self)
 

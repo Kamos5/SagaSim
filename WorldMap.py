@@ -146,12 +146,17 @@ class WorldMap:
         for province in self.getProvinces():
             provinceColor = province.getColor()
             provinceBorderColor = provinceColor
+            province.checkIfIsland()
             if province.getType() == 'SEA':
                 provinceBorderColor = (20, 20, 20)
                 provinceColor = (00, 69, 94)
+                province.markInnerCords()
             for terrytory in province.getCords():
                 provinceX, provinceY = terrytory
-                self.addField(WorldMapObjClass(colors=(provinceBorderColor, provinceColor), cords=(provinceX, provinceY), objectVar=province))
+                isInner = False
+                if (provinceX, provinceY) in province.getInnerCords():
+                    isInner = True
+                self.addField(WorldMapObjClass(colors=(provinceBorderColor, provinceColor), cords=(provinceX, provinceY), objectVar=province, isInner=isInner))
 
     def generateProvinceNeighbours(self):
 

@@ -185,8 +185,11 @@ class Region():
         for province in self.getProvinces():
             provinceColor = province.getColor()
             provinceBorderColor = self.getRegionColor()
-
+            province.markInnerCords()
             for terrytory in province.getCords():
                 provinceX, provinceY = terrytory
-                worldMapObjClass = WorldMapObjClass(colors=(provinceBorderColor, provinceColor), cords=(provinceX,provinceY), objectVar=province)
+                isInner = False
+                if (provinceX, provinceY) in province.getInnerCords():
+                    isInner = True
+                worldMapObjClass = WorldMapObjClass(colors=(provinceBorderColor, provinceColor), cords=(provinceX, provinceY), objectVar=province, isInner=isInner)
                 world.getWorldMap().addField(worldMapObjClass, weight=1)

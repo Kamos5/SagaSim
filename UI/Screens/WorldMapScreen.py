@@ -239,7 +239,10 @@ class WorldMapScreen:
 
                 x, y = self.convertCordsFromNormalized(xNorm, yNorm)
                 w, h = (self.chunkSizeXWithBorder, self.chunkSizeYWithBorder)
-                rect = pygame.draw.rect(self.worldMapScreenSurface, borderColor, [x, y, w, h])
+                if worldMapObjClass.isInner:
+                    rect = pygame.draw.rect(self.worldMapScreenSurface, color, [x, y, w, h])
+                else:
+                    rect = pygame.draw.rect(self.worldMapScreenSurface, borderColor, [x, y, w, h])
                 rectInner = pygame.draw.rect(self.worldMapScreenSurface, color, [x+1, y+1, w-2, h-2])
                 self.worldMapScreenSurfaceObjsRect.append([rect, rectInner, color, borderColor])
                 self.map.append([rect, rectInner, color, borderColor])
