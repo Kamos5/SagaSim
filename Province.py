@@ -3,7 +3,7 @@
 
 class Province:
 
-    def __init__(self):
+    def __init__(self, worldMap):
 
         self.name = ''
         self.color = (0, 0, 0)
@@ -15,6 +15,7 @@ class Province:
         self.region = None
         self.innerCords = set()
         self.isIsland = False
+        self.worldMap = worldMap
 
     def setName(self, name):
         self.name = name
@@ -24,9 +25,9 @@ class Province:
 
     def setRandomColor(self):
 
-        r = Utils.randomRange(50, 220)
-        g = Utils.randomRange(50, 220)
-        b = Utils.randomRange(50, 220)
+        r = Utils.randomRange(100, 200)
+        g = Utils.randomRange(100, 200)
+        b = Utils.randomRange(100, 200)
         self.color = (r, g, b)
 
     def setColor(self, color):
@@ -68,8 +69,19 @@ class Province:
 
     def markInnerCords(self):
 
+        minX = self.worldMap.x0
+        maxX = self.worldMap.getWidth()
+        minY = self.worldMap.y0
+        maxY = self.worldMap.getHeight()
+
         for cordX, cordY in self.getCords():
-            if (cordX+1, cordY) in self.getCords() and (cordX-1, cordY) in self.getCords() and (cordX, cordY+1) in self.getCords() and (cordX, cordY-1) in self.getCords():
+
+            right = (cordX + 1, cordY)
+            left = (cordX - 1, cordY)
+            up = (cordX, cordY - 1)
+            down = (cordX, cordY + 1)
+
+            if (right in self.getCords() or cordX == maxX-1) and (left in self.getCords() or cordX == minX) and (up in self.getCords() or cordY == minY) and (down in self.getCords() or cordY == maxY - 1):
                 self.addInnerCords((cordX, cordY))
 
     def checkIfIsland(self):

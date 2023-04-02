@@ -66,7 +66,7 @@ class WorldMap:
             randomX = Utils.randomRange(0, maxX-1)
             randomY = Utils.randomRange(0, maxY-1)
             if (randomX, randomY) not in cordsUsed:
-                province = Province.Province()
+                province = Province.Province(self)
                 province.addCords(randomX, randomY)
                 province.setName(tempName)
                 tempName += 1
