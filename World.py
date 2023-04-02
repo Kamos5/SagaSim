@@ -85,6 +85,8 @@ class World:
 
         self.worldMap = WorldMap()
 
+        self.allNames = None
+
     def reset(self, startYear=initYear):
 
         self.initYear = startYear
@@ -153,6 +155,12 @@ class World:
 
     def getWorldMap(self):
         return self.worldMap
+
+    def setAllNames(self, names):
+        self.allNames = names
+
+    def getAllNames(self):
+        return self.allNames
 
     def getPeople(self):
         return self.people
@@ -324,23 +332,23 @@ class World:
             startingSet1For4 = [(50, 50), (50, 51), (51, 50), (51, 51)]
 
         if regionsNumber >= 1:
-            region = Region(RNG.randomEnglishRegionName())
+            region = Region(RNG.randomRegionName(self.allNames['english']['englishRegionNames']['regionNames'], 0))
             region.setRegionColor((220, 20, 20))
             region.addRegionTerritory(startingSet1For4[0])
 
             self.regions.append(region)
         if regionsNumber >= 2:
-            region = Region(RNG.randomNorseRegionName())
+            region = Region(RNG.randomRegionName(self.allNames['norse']['norseRegionNames']['regionNames'], 1))
             region.setRegionColor((20, 20, 220))
             region.addRegionTerritory(startingSet1For4[1])
             self.regions.append(region)
         if regionsNumber >= 3:
-            region = Region(RNG.randomSlavicRegionName())
+            region = Region(RNG.randomRegionName(self.allNames['slavic']['slavicRegionNames']['regionNames'], 2))
             region.setRegionColor((20, 220, 20))
             region.addRegionTerritory(startingSet1For4[2])
             self.regions.append(region)
         if regionsNumber >= 4:
-            region = Region(RNG.randomEgyptRegionName())
+            region = Region(RNG.randomRegionName(self.allNames['egyptian']['egyptianRegionNames']['regionNames'], 3))
             region.setRegionColor((220, 220, 20))
             region.addRegionTerritory(startingSet1For4[3])
             self.regions.append(region)

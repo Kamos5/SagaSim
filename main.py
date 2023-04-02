@@ -1,5 +1,7 @@
 
 import time
+
+import CultureNames
 import Events
 import FamilyFunctions as FF
 import FamilyInitGenerator as FIG
@@ -121,7 +123,8 @@ def running(world, manualOverride):
 def main(popBreakLimit=None):
 
     world.reset()
-
+    names = CultureNames.foundations
+    world.setAllNames(names)
     world.generateRegionsNames(Parameters.startingNumberOfRegions)
     world.generateSettlements()
     world.setFamilies(initFamilies())
@@ -129,6 +132,7 @@ def main(popBreakLimit=None):
     world.getWorldMap().generateProvinces()
     world.pickRandomProvincesForRegions()
     world.diseases = IOtools.loadFiles('diseases')
+    print(names)
 
     windowWidth = 1024
     windowHeight = 768
