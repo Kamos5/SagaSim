@@ -333,30 +333,25 @@ class World:
 
         if regionsNumber >= 1:
             region = Region(RNG.randomRegionName(self.allNames['english']['englishRegionNames']['regionNames'], 0))
-            region.setRegionColor((220, 20, 20))
-            region.addRegionTerritory(startingSet1For4[0])
-
+            region.setRegionColor(eval(self.allNames['english']['englishColors']))
             self.regions.append(region)
         if regionsNumber >= 2:
             region = Region(RNG.randomRegionName(self.allNames['norse']['norseRegionNames']['regionNames'], 1))
-            region.setRegionColor((20, 20, 220))
-            region.addRegionTerritory(startingSet1For4[1])
+            region.setRegionColor(eval(self.allNames['norse']['norseColors']))
             self.regions.append(region)
         if regionsNumber >= 3:
             region = Region(RNG.randomRegionName(self.allNames['slavic']['slavicRegionNames']['regionNames'], 2))
-            region.setRegionColor((20, 220, 20))
-            region.addRegionTerritory(startingSet1For4[2])
+            region.setRegionColor(eval(self.allNames['slavic']['slavicColors']))
             self.regions.append(region)
         if regionsNumber >= 4:
             region = Region(RNG.randomRegionName(self.allNames['egyptian']['egyptianRegionNames']['regionNames'], 3))
-            region.setRegionColor((220, 220, 20))
-            region.addRegionTerritory(startingSet1For4[3])
+            region.setRegionColor(eval(self.allNames['egyptian']['egyptianColors']))
             self.regions.append(region)
 
-        for region in self.getRegions():
-            if len(region.getRegionTerritories()) > 0:
-                expandToX, expandToY = list(region.getRegionTerritories())[0]
-                self.getWorldMap().addField(WorldMapObjClass(colors=region.getRegionColor(), cords=(expandToX, expandToY), objectVar=region))
+        # for region in self.getRegions():
+        #     if len(region.getRegionTerritories()) > 0:
+        #         expandToX, expandToY = list(region.getRegionTerritories())[0]
+        #         self.getWorldMap().addField(WorldMapObjClass(colors=region.getRegionColor(), cords=(expandToX, expandToY), objectVar=region))
 
     def generateSettlements(self):
 

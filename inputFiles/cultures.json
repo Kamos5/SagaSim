@@ -125,7 +125,9 @@
         "Reading",
         "Stotfold",
         "Thornaby"]
-      }
+      },
+    "englishColors":
+      "(200,20,20)"
   },
   "norse": {
     "norseFamilyNames": {
@@ -243,7 +245,9 @@
         "Tóftir",
         "Ebeltoft",
         "Kvívi"]
-      }
+      },
+    "norseColors":
+      "(20,200,20)"
     },
   "slavic": {
     "slavicFamilyNames": {
@@ -454,7 +458,9 @@
         "Kotor",
         "Stolac",
         "Novgorod"]
-      }
+      },
+    "slavicColors":
+      "(20,20,200)"
     },
   "egyptian": {
     "egyptianFamilyNames": {
@@ -677,7 +683,9 @@
         "Waset",
         "Weprehwy",
         "Zawty"]
-      }
+      },
+    "egyptianColors":
+      "(200,220,20)"
     },
   "generic": {
     "genericFamilyNames": {

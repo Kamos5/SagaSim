@@ -1,4 +1,4 @@
 ﻿import IOtools
 
-foundations = IOtools.loadFiles('culturalNames')
+foundations = IOtools.loadFiles('cultures')
 
