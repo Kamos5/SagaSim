@@ -16,7 +16,7 @@ class World:
 
     initYear = Parameters.startingYear
     regions = []
-    settlementsInitNumber = Parameters.startingSettlementsPerRegion
+    settlementsInitNumber = Parameters.startingSettlementsPerProvince
 
     def __init__(self, startYear=initYear):
 

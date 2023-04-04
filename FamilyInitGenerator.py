@@ -5,7 +5,7 @@ import FamilyNameGenerator
 
 def Init(world):
 
-    startingSettlements = Parameters.startingSettlementsPerRegion
+    startingSettlements = Parameters.startingSettlementsPerProvince
     families = []
     FamilyNameGenerator.makeListsForLastNames(world)
     NameGenerator.makeListsForFirstNames(world)

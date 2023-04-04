@@ -1,4 +1,4 @@
-startingSettlementsPerRegion = 2
+startingSettlementsPerProvince = 2
 startingNumberOfFamiliesPerRegion = 10
 startingNumberOfRegions = 4
 startingYear = 499
@@ -26,8 +26,8 @@ migrationWaveForVillage = 15
 
 chanceForChangingLastNameDuringMigration = 25  # aka 5% to chance create new branch family
 
-regionSizeMin = 8
-regionSizeMax = 8
+regionSizeMin = 4
+regionSizeMax = 4
 
 # socage -> % production to homeTown TODO _ FIXFIXFIX
 socage = 0
