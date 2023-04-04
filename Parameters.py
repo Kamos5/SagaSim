@@ -1,6 +1,6 @@
 startingSettlementsPerProvince = 2
 startingNumberOfFamiliesPerRegion = 10
-startingNumberOfRegions = 4
+startingNumberOfRegions = 5
 startingYear = 499
 baseCitySize = 1000
 baseVillageSize = 300
@@ -11,6 +11,7 @@ percentageVillagePopulationThresholdForCreatingNewVillage = 0.4
 percentageVillagePopulationThresholdForUpgradeToTown = 0.75
 chancePerYearToUpgradeVillageToTown = 80
 chanceForMigration = 50
+provincesPerRegion = 5
 
 #growthAccelerationForKidsUpToAdulthood
 growthSpeed = 15
