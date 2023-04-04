@@ -3,7 +3,6 @@ import pygame
 from UI.Utils.Button import Button
 from UI.Utils.Fonts import Fonts
 from UI.Utils.Label import Label
-from UI.Utils.Label2 import Label2
 from UI.Utils.TextField import TextField
 
 
@@ -131,6 +130,21 @@ class ListScreen:
 
         self.writeLine += 1
 
+    def addProvinces(self, region, focusObj):
+
+        label = Label(f'Provinces:', 200, self.lineHeight, self.textFont)
+
+        self.listScreenSurface.blit(label.localSurface, (self.width * 0.15, self.lineHeight * self.writeLine + self.scroll_y))
+
+        self.writeLine += 1
+
+    def addProvince(self, province, focusObj):
+
+        label = Label(f'{province.getName()}', 200, self.lineHeight, self.textFont)
+
+        self.listScreenSurface.blit(label.localSurface, (self.width * 0.20, self.lineHeight * self.writeLine + self.scroll_y))
+
+        self.writeLine += 1
 
     def addSettlement(self, settlement, focusObj):
 

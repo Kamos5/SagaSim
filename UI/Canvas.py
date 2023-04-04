@@ -153,6 +153,9 @@ class Canvas:
         for region in world.getRegions():
             self.listScreen.addRegion(region, self.lastFocusObj)
             if region.getUIExpand():
+                self.listScreen.addProvinces(region, self.lastFocusObj)
+                for province in region.getProvinces():
+                    self.listScreen.addProvince(province, self.lastFocusObj)
                 for settlement in region.getSettlements():
                     self.listScreen.addSettlement(settlement, self.lastFocusObj)
                     if settlement.getUIExpand():
