@@ -125,6 +125,7 @@ def main(popBreakLimit=None):
     world.reset()
     names = CultureNames.foundations
     world.setAllNames(names)
+    world.setCultures(list(names.keys()))
     world.generateRegionsNames(Parameters.startingNumberOfRegions)
     world.generateSettlements()
     world.setFamilies(initFamilies())

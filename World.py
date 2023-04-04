@@ -1,5 +1,7 @@
 import Enums
+import SettlementNameGenerator
 import Utils
+from Culture import Culture
 from Enums import Settlements
 from PersonLifeEventsHistory import adulthoodReached
 from Region import Region
@@ -86,6 +88,7 @@ class World:
         self.worldMap = WorldMap()
 
         self.allNames = None
+        self.cultures = []
 
     def reset(self, startYear=initYear):
 
@@ -161,6 +164,13 @@ class World:
 
     def getAllNames(self):
         return self.allNames
+
+    def setCultures(self, cultures):
+        for culture in cultures:
+            self.cultures.append(Culture(culture))
+
+    def getCultures(self):
+        return self.cultures
 
     def getPeople(self):
         return self.people
@@ -331,30 +341,22 @@ class World:
         else:
             startingSet1For4 = [(50, 50), (50, 51), (51, 50), (51, 51)]
 
-        if regionsNumber >= 1:
-            region = Region(RNG.randomRegionName(self.allNames['english']['englishRegionNames']['regionNames'], 0))
-            region.setRegionColor(eval(self.allNames['english']['englishColors']))
-            self.regions.append(region)
-        if regionsNumber >= 2:
-            region = Region(RNG.randomRegionName(self.allNames['norse']['norseRegionNames']['regionNames'], 1))
-            region.setRegionColor(eval(self.allNames['norse']['norseColors']))
-            self.regions.append(region)
-        if regionsNumber >= 3:
-            region = Region(RNG.randomRegionName(self.allNames['slavic']['slavicRegionNames']['regionNames'], 2))
-            region.setRegionColor(eval(self.allNames['slavic']['slavicColors']))
-            self.regions.append(region)
-        if regionsNumber >= 4:
-            region = Region(RNG.randomRegionName(self.allNames['egyptian']['egyptianRegionNames']['regionNames'], 3))
-            region.setRegionColor(eval(self.allNames['egyptian']['egyptianColors']))
-            self.regions.append(region)
+        regionNamesStr = 'RegionNames'
+        regionNamesStrLowerFirst = regionNamesStr[0].lower() + regionNamesStr[1:]
+        colorsStr = 'Colors'
 
-        # for region in self.getRegions():
-        #     if len(region.getRegionTerritories()) > 0:
-        #         expandToX, expandToY = list(region.getRegionTerritories())[0]
-        #         self.getWorldMap().addField(WorldMapObjClass(colors=region.getRegionColor(), cords=(expandToX, expandToY), objectVar=region))
+        for number in range(regionsNumber):
+            cultureName = self.cultures[number].getCultureName()
+            cultureRegionNames = f'{cultureName}{regionNamesStr}'
+            regionNames = f'{regionNamesStrLowerFirst}'
+            cultureColors = f'{cultureName}{colorsStr}'
+            region = Region(RNG.randomRegionName(self.allNames[cultureName][cultureRegionNames][regionNames], regionsNumber))
+            region.setRegionNumber(number)
+            region.setRegionColor(eval(self.allNames[cultureName][cultureColors]))
+            self.regions.append(region)
 
     def generateSettlements(self):
-
+        SettlementNameGenerator.makeListsForSettlementsNames(self)
         for region in self.regions:
             townInitList = []
             for i in range(self.settlementsInitNumber):

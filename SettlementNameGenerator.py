@@ -181,6 +181,42 @@ copyRomanList = englishSettlementsNames.copy()
 copyAfricanList = englishSettlementsNames.copy()
 copyEgyptianList = egyptianSettlementsNames.copy()
 
+settlementsNamesStr = 'SettlementsNames'
+settlementsNamesStrLowerFirst = settlementsNamesStr[0].lower() + settlementsNamesStr[1:]
+
+copySettlementsNamesList = []
+
+def makeListsForSettlementsNames(world):
+
+    for cultureName in world.allNames:
+        cultureSettlementsNames = f'{cultureName}{settlementsNamesStr}'
+        copySettlementsNamesList.append(list(world.allNames[cultureName][cultureSettlementsNames][settlementsNamesStrLowerFirst]))
+
+def randomSettlementsName (regionNumber =0, rebuildOldSettlement = False):
+
+    namesList = copySettlementsNamesList[regionNumber]
+    choice = ''
+
+    if namesList is None:
+        if regionNumber == 0:
+            choice = copyEnglishList
+        elif regionNumber == 1:
+            choice = copyNorseList
+        elif regionNumber == 2:
+            choice = copySlavicList
+        elif regionNumber == 3:
+            choice = copyEgyptianList
+    else:
+        if len(namesList) > 0:
+            choice = randomChoice(namesList)
+            namesList.remove(choice)
+        else:
+            global namesPicked
+            namesPicked += 1
+            choice = f'Generic Settlement Name {namesPicked}'
+
+    return choice
+
 def randomEnglishSettlementsName (rebuildOldSettlement = False):
 
     if len(copyEnglishList) > 0:

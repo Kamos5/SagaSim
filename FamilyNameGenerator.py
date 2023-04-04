@@ -1,6 +1,7 @@
 from enum import Enum
 import RegionNameGenerator as RNG
 import random
+from random import choice as randomChoice
 
 englishFamilyNames = [
     'Parkin',
@@ -223,6 +224,13 @@ copySlavList = slavicFamilyNames.copy()
 copyEgyptList = egyptianFamilyNames.copy()
 namesPicked = 0
 
+familyNamesStr = 'FamilyNames'
+familyNamesStrLowerFirst = familyNamesStr[0].lower() + familyNamesStr[1:]
+
+copyNamesList = []
+
+
+
 class FamilyNamesBasedOnProfessions(Enum):
 
     SMITH = 'Smith',
@@ -236,7 +244,36 @@ class FamilyNamesBasedOnProfessions(Enum):
     TAYLOR = 'Taylor',
     COLEMAN = 'Coleman',
 
+def makeListsForLastNames(world):
 
+    for cultureName in world.allNames:
+        cultureFamilyNames = f'{cultureName}{familyNamesStr}'
+        copyNamesList.append(list(world.allNames[cultureName][cultureFamilyNames][familyNamesStrLowerFirst]))
+
+def getNewLastNameBasedOnCulture(regionNumber = 0):
+
+    namesList = copyNamesList[regionNumber]
+    choice = ''
+
+    if namesList is None:
+        if regionNumber == 0:
+            choice = getInitEnglishName()
+        elif regionNumber == 1:
+            choice = getInitNorseName()
+        elif regionNumber == 2:
+            choice = getInitSlavicName()
+        elif regionNumber == 3:
+            choice = getInitEgyptName()
+    else:
+        if len(namesList) > 0:
+            choice = randomChoice(namesList)
+            namesList.remove(choice)
+        else:
+            global namesPicked
+            namesPicked += 1
+            choice = f'Generic Family Name {namesPicked}'
+
+    return choice
 
 
 def getNewLastNameBasedOnRegion(region):

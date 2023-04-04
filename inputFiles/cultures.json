@@ -34,8 +34,8 @@
       "Craven"
     ]
       },
-    "maleEnglishNameList": {
-      "firstNames": [
+    "maleEnglishNames": {
+      "names": [
         "Adam",
         "Alvin",
         "Balthazar",
@@ -69,8 +69,8 @@
         "York"
       ]
       },
-    "femaleEnglishNameList": {
-      "firstNames": [
+    "femaleEnglishNames": {
+      "names": [
         "Abigail",
         "Alodie",
         "Bella",
@@ -104,7 +104,7 @@
         "Blighty"]
       },
     "englishSettlementsNames": {
-      "settlementNames": [
+      "settlementsNames": [
         "Amesbury",
         "Bedford",
         "Chesterfield",
@@ -146,8 +146,8 @@
       "Frisk"
     ]
       },
-    "maleNorseNameList": {
-      "firstNames": [
+    "maleNorseNames": {
+      "names": [
       "Arne",
       "Birger",
       "Bjørn",
@@ -176,8 +176,8 @@
       "Åge"
     ]
       },
-    "femaleNorseNameList": {
-      "firstNames": [
+    "femaleNorseNames": {
+      "names": [
         "Astrid",
         "Bodil",
         "Frida",
@@ -214,7 +214,7 @@
         "Saami"]
       },
     "norseSettlementsNames": {
-      "settlementNames": [
+      "settlementsNames": [
         "Aebeltoft",
         "Kalbaek",
         "Breiðhatóftir",
@@ -355,8 +355,8 @@
         "Zorić"
       ]
       },
-    "maleSlavicNameList": {
-      "firstNames": [
+    "maleSlavicNames": {
+      "names": [
         "Aleksandru",
         "Athanasi",
         "Berislav",
@@ -407,8 +407,8 @@
         "Zbigniew"
       ]
       },
-    "femaleSlavicNameList": {
-      "firstNames": [
+    "femaleSlavicNames": {
+      "names": [
         "Bogdana",
         "Bozhena",
         "Desislava",
@@ -433,7 +433,7 @@
         "Sclaveni"]
       },
     "slavicSettlementsNames": {
-      "settlementNames": [
+      "settlementsNames": [
         "Kalisz",
         "Stobi",
         "Zadar",
@@ -493,8 +493,8 @@
             "Rahotep",
             "Ramose"]
       },
-    "malesEgyptianNameList": {
-      "firstNames": [
+    "maleEgyptianNames": {
+      "names": [
           "Asim",
           "Chisisi",
           "Gyasi",
@@ -541,8 +541,8 @@
           "Mido"
         ]
       },
-    "femaleEgyptianNameList": {
-      "firstNames": [
+    "femaleEgyptianNames": {
+      "names": [
           "Akila",
           "Bahiti",
           "Dalila",
@@ -605,7 +605,7 @@
         "Kush"]
       },
     "egyptianSettlementsNames": {
-      "settlementNames": [
+      "settlementsNames": [
         "Men-nefer",
         "Khem",
         "Yamu",
@@ -714,6 +714,9 @@
         "Psius",
         "Omegius"
       ]
+    },
+    "genericSettlementsNames": {
+      "settlementsNames": ["Genetic Settlement Name"]
     }
   }
 }

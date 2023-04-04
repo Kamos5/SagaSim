@@ -14,7 +14,7 @@ class WorldMap:
         self.width = 200
         self.height = 100
 
-        self.numberOfProvinces = 60
+        self.numberOfProvinces = 30
         self.numberOfSeaProvinces = self.numberOfProvinces // 3
         self.seaNeighboursForSeaProvincesParam = 2
 

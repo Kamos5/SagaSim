@@ -1,5 +1,6 @@
 from random import choice
 
+import Utils
 from RegionNameGenerator import englishRegionNames, norseRegionNames, slavicRegionNames, egyptRegionNames
 
 maleEnglishNameList = [
@@ -299,31 +300,74 @@ femaleEgyptianNameList = [
     'Mariam'
 
 ]
-def getRandomMNameForRegion(region):
 
-    if region.getRegionName() in englishRegionNames:
-        return randomEnglishMName()
-    elif region.getRegionName() in norseRegionNames:
-        return randomNorseMName()
-    elif region.getRegionName() in slavicRegionNames:
-        return randomSlavicMName()
-    elif region.getRegionName() in egyptRegionNames:
-        return randomEgyptianMName()
+firstNamesStr = 'Names'
+firstNamesStrLowerFirst = firstNamesStr[0].lower() + firstNamesStr[1:]
+copyNamesMList = []
+copyNamesFList = []
+
+def makeListsForFirstNames(world):
+
+    for index, cultureName in enumerate(world.allNames):
+        if index < len(world.getRegions()):
+            firstNamesStrUpperFirst = cultureName[0].upper() + cultureName[1:]
+            cultureFamilyNames = f'male{firstNamesStrUpperFirst}{firstNamesStr}'
+            copyNamesMList.append(list(world.allNames[cultureName][cultureFamilyNames][firstNamesStrLowerFirst]))
+            firstNamesStrUpperFirst = cultureName[0].upper() + cultureName[1:]
+            cultureFamilyNames = f'female{firstNamesStrUpperFirst}{firstNamesStr}'
+            copyNamesFList.append(list(world.allNames[cultureName][cultureFamilyNames][firstNamesStrLowerFirst]))
+
+def getRandomMNameForRegion(regionNumber = 0):
+
+    namesList = []
+    choice = ''
+
+    if copyNamesMList is None:
+        if regionNumber == 0:
+            choice = randomEnglishMName()
+        elif regionNumber == 1:
+            choice = randomNorseMName()
+        elif regionNumber == 2:
+            choice = randomSlavicMName()
+        elif regionNumber == 3:
+            choice = randomEgyptianMName()
     else:
-        return randomEnglishMName()
+        namesList = copyNamesMList[regionNumber]
+        if len(namesList) > 0:
+            choice = Utils.randomFromCollection(namesList)
+        else:
+            global namesPicked
+            namesPicked += 1
+            choice = f'Generic Male Name'
 
-def getRandomFNameForRegion(region):
+    return choice
 
-    if region.getRegionName() in englishRegionNames:
-        return randomEnglishFName()
-    elif region.getRegionName() in norseRegionNames:
-        return randomNorseFName()
-    elif region.getRegionName() in slavicRegionNames:
-        return randomSlavicFName()
-    elif region.getRegionName() in egyptRegionNames:
-        return randomEgyptianFName()
+
+def getRandomFNameForRegion(regionNumber = 0):
+
+    namesList = []
+    choice = ''
+
+    if copyNamesMList is None:
+        if regionNumber == 0:
+            choice = randomEnglishMName()
+        elif regionNumber == 1:
+            choice = randomNorseMName()
+        elif regionNumber == 2:
+            choice = randomSlavicMName()
+        elif regionNumber == 3:
+            choice = randomEgyptianMName()
     else:
-        return randomEnglishMName()
+        namesList = copyNamesMList[regionNumber]
+        if len(namesList) > 0:
+            choice = Utils.randomFromCollection(namesList)
+        else:
+            global namesPicked
+            namesPicked += 1
+            choice = f'Generic Female Name'
+
+    return choice
+
 def randomEnglishMName():
 
     return choice(maleEnglishNameList)

@@ -675,7 +675,7 @@ def settlementWorkersManagement(world):
                     weightedFoodJobs = len(foodFreeWorkplacesSpots) * basicFoodJobWeight
                     weightedProdJobs = len(prodFreeWorkplacesSpots) * basicProdJobWeight
 
-                    if basicAdminJobWeight + basicFoodJobWeight + basicProdJobWeight > 0:
+                    if basicAdminJobWeight + basicFoodJobWeight + basicProdJobWeight > 0 and weightedAdminJobs + weightedFoodJobs + weightedProdJobs > 0:
 
                         for freeWorkPlace in range(numberOfFreeWorkplaces):
                             if loopBreaker == 10:
@@ -775,10 +775,14 @@ def splitFamiliesInMigration(world, region, newTargetSettlement, complexRandomMi
                 len(randomMigrantList) > 1 and
                 randomMigrantList[0].familyObjRef.aliveMemberNumber > 1 and
                 randomMigrantList[0].familyObjRef.getOriginCulture().getInheritanceBy() != randomMigrantList[0].sex):
+
+
+
             chanceForRevingAncestralFamily = Utils.randomRange(1, 100)
 
             if chanceForRevingAncestralFamily > 20:
-                newFamilyName = FNG.getNewLastNameBasedOnRegion(region)
+                newFamilyName = FNG.getNewLastNameBasedOnCulture(region.getRegionNumber())
+#                newFamilyName = FNG.getNewLastNameBasedOnRegion(region)
                 family = Family(newFamilyName)
                 family.setFoundingYear(world.getYear())
                 family.setOriginRegion(region)
@@ -794,7 +798,8 @@ def splitFamiliesInMigration(world, region, newTargetSettlement, complexRandomMi
                     family = Utils.randomFromCollection(ancestralFamilies)
                     newFamilyName = family.getFamilyName()
                 else:
-                    newFamilyName = FNG.getNewLastNameBasedOnRegion(region)
+                    newFamilyName = FNG.getNewLastNameBasedOnCulture(region.getRegionNumber())
+#                    newFamilyName = FNG.getNewLastNameBasedOnRegion(region)
                     family = Family(newFamilyName)
                     family.setFoundingYear(world.getYear())
                     family.setOriginRegion(region)

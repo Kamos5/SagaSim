@@ -8,6 +8,7 @@ from WorldMapObjClass import WorldMapObjClass
 class Region():
 
     def __init__(self, regionName):
+        self.regionNumber = 0
         self.regionName = regionName
         self.settlements = []
         self.regionSize = Parameters.regionSizeMax
@@ -39,6 +40,12 @@ class Region():
 
     def getWeather(self):
         return self.weather
+
+    def getRegionNumber(self):
+        return self.regionNumber
+
+    def setRegionNumber(self, number):
+        self.regionNumber = number
 
     def setWeather(self, newWeater):
         self.weatherHistory.append(newWeater.value[1])
@@ -94,14 +101,14 @@ class Region():
         return villageList
 
     def addInitSettlement(self, world):
-        newSettlement = Settlements(self.regionName, world.getYear())
+        newSettlement = Settlements(self.regionNumber, world.getYear())
         self.settlements.append(newSettlement)
         newSettlement.maxPopulation = Parameters.baseVillageSize
 
         return newSettlement
 
     def addSettlement(self, world):
-        newSettlement = Settlements(self.regionName, world.getYear())
+        newSettlement = Settlements(self.regionNumber, world.getYear())
         self.settlements.append(newSettlement)
         newSettlement.maxPopulation = Parameters.baseVillageSize
         newSettlement.setProvision(Utils.randomFromCollection(self.getTowns()))

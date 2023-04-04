@@ -9,3 +9,6 @@ class Culture:
 
     def getInheritanceBy(self):
         return self.inheritanceBy
+
+    def getCultureName(self):
+        return self.cultureName

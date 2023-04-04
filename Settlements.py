@@ -12,21 +12,10 @@ def takeFeatureNumber(elem):
 
 class Settlements:
 
-    def __init__(self, region, year=Parameters.startingYear, rebuildFlag = False):
+    def __init__(self, regionNumber, year=Parameters.startingYear, rebuildFlag = False):
         self.settlementType = Enums.Settlements.VILLAGE
 
-        if region in RNG.englishRegionNames:
-            self.name = SNG.randomEnglishSettlementsName(rebuildFlag)
-        elif region in RNG.norseRegionNames:
-            self.name = SNG.randomNorseSettlementsName(rebuildFlag)
-        elif region in RNG.slavicRegionNames:
-            self.name = SNG.randomSlavicSettlementsName(rebuildFlag)
-        elif region in RNG.egyptRegionNames:
-            self.name = SNG.randomEgyptSettlementsName(rebuildFlag)
-        elif region == "Region 4":
-            self.name = SNG.randomEnglishSettlementsName(rebuildFlag)
-        else:
-            self.name = SNG.randomEnglishSettlementsName(rebuildFlag)
+        self.name = SNG.randomSettlementsName(regionNumber=regionNumber, rebuildOldSettlement=rebuildFlag)
 
         self.region = None
         self.population = 0
