@@ -683,6 +683,9 @@ def settlementWorkersManagement(world):
                             if len(unemployedWorkerList) == 0:
                                 break
 
+                            if weightedAdminJobs + weightedFoodJobs + weightedProdJobs == 0:
+                                break
+
                             randomJobSite = Utils.randomRange(1, weightedAdminJobs + weightedFoodJobs + weightedProdJobs)
 
                             if len(adminFreeWorkplacesSpots) > 0 and randomJobSite <= weightedAdminJobs:
