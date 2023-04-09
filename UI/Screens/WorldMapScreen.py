@@ -241,11 +241,13 @@ class WorldMapScreen:
                 w, h = (self.chunkSizeXWithBorder, self.chunkSizeYWithBorder)
                 if worldMapObjClass.isInner:
                     rect = pygame.draw.rect(self.worldMapScreenSurface, color, [x, y, w, h])
+                    rectInner = pygame.draw.rect(self.worldMapScreenSurface, color, [x + 1, y + 1, w - 2, h - 2])
                 else:
                     rect = pygame.draw.rect(self.worldMapScreenSurface, borderColor, [x, y, w, h])
-                rectInner = pygame.draw.rect(self.worldMapScreenSurface, color, [x+1, y+1, w-2, h-2])
+                    rectInner = self.returnRectInner(worldMapObjClass, color, x, y, w, h)
                 self.worldMapScreenSurfaceObjsRect.append([rect, rectInner, color, borderColor])
                 self.map.append([rect, rectInner, color, borderColor])
+                self.showProvinceNamesOnMap(worldMapObjClass)
             else:
                 forLater.add(worldMapObjClass)
 
@@ -266,16 +268,69 @@ class WorldMapScreen:
             w, h = (self.chunkSizeXWithBorder, self.chunkSizeYWithBorder)
             if worldMapObjClass.isInner:
                 rect = pygame.draw.rect(self.worldMapScreenSurface, color, [x, y, w, h])
+                rectInner = pygame.draw.rect(self.worldMapScreenSurface, color, [x + 1, y + 1, w - 2, h - 2])
             else:
                 rect = pygame.draw.rect(self.worldMapScreenSurface, borderColor, [x, y, w, h])
-            rectInner = pygame.draw.rect(self.worldMapScreenSurface, color, [x + 1, y + 1, w - 2, h - 2])
+                rectInner = self.returnRectInner(worldMapObjClass, color, x, y, w, h)
             self.worldMapScreenSurfaceObjsRect.append([rect, rectInner, color, borderColor])
+
+            self.showProvinceNamesOnMap(worldMapObjClass, isInRegion=True)
             self.map.append([rect, rectInner, color, borderColor])
+
+    def showProvinceNamesOnMap(self, object, isInRegion = False):
+
+        xNorm, yNorm = object.getObject().getMiddleCords()
+        x, y = self.convertCordsFromNormalized(xNorm, yNorm)
+
+        if object.getObject().getRegion() is not None:
+            regionXNorm, regionYNorm = object.getObject().getRegion().getMiddleCords()
+            rX, rY = self.convertCordsFromNormalized(regionXNorm, regionYNorm)
+            pygame.draw.line(self.worldMapScreenSurface, (220, 220, 220), (x, y), (rX, rY), 1)
+
+        self.provinceLabel = Label2(f'{object.getObject().getName()}', self.textFont, isInRegion)
+        self.worldMapScreenSurface.blit(self.provinceLabel.localSurface, (x, y))
 
 
     def resetWriteLine(self):
 
         self.writeLine = 0
+
+    def returnRectInner(self, worldMapObjClass, color, x, y, w, h):
+
+        if worldMapObjClass.getOuterType() == 0:  # NO BORDERS  0000 dec 0
+            rectInner = pygame.draw.rect(self.worldMapScreenSurface, color, [x, y, w, h])
+        elif worldMapObjClass.getOuterType() == 8:  # LEFT   1000 dec 8
+            rectInner = pygame.draw.rect(self.worldMapScreenSurface, color, [x + 1, y, w - 1, h])
+        elif worldMapObjClass.getOuterType() == 4:  # RIGHT 0100 dec 4
+            rectInner = pygame.draw.rect(self.worldMapScreenSurface, color, [x, y, w - 1, h])
+        elif worldMapObjClass.getOuterType() == 2:  # UP 0010 dec 2
+            rectInner = pygame.draw.rect(self.worldMapScreenSurface, color, [x, y + 1, w, h - 1])
+        elif worldMapObjClass.getOuterType() == 1:  # DOWN 0001 dec 1
+            rectInner = pygame.draw.rect(self.worldMapScreenSurface, color, [x, y, w, h - 1])
+        elif worldMapObjClass.getOuterType() == 12:  # LEFT+RIGHT 1100 dec 12
+            rectInner = pygame.draw.rect(self.worldMapScreenSurface, color, [x + 1, y, w - 2, h])
+        elif worldMapObjClass.getOuterType() == 3:  # UP+DOWN 0011 dec 3
+            rectInner = pygame.draw.rect(self.worldMapScreenSurface, color, [x, y + 1, w, h - 2])
+        elif worldMapObjClass.getOuterType() == 10:  # LEFT+UP 1010 dec 10
+            rectInner = pygame.draw.rect(self.worldMapScreenSurface, color, [x + 1, y + 1, w - 1, h - 1])
+        elif worldMapObjClass.getOuterType() == 6:  # RIGHT+UP 0110 dec 6
+            rectInner = pygame.draw.rect(self.worldMapScreenSurface, color, [x, y + 1, w - 1, h - 1])
+        elif worldMapObjClass.getOuterType() == 9:  # LEFT+DOWN 1001 dec 9
+            rectInner = pygame.draw.rect(self.worldMapScreenSurface, color, [x + 1, y, w - 1, h - 1])
+        elif worldMapObjClass.getOuterType() == 5:  # RIGHT+DOWN 0101 dec 5
+            rectInner = pygame.draw.rect(self.worldMapScreenSurface, color, [x, y, w - 1, h - 1])
+        elif worldMapObjClass.getOuterType() == 14:  # LEFT+RIGHT+UP 1110 dec 14
+            rectInner = pygame.draw.rect(self.worldMapScreenSurface, color, [x + 1, y + 1, w - 2, h - 1])
+        elif worldMapObjClass.getOuterType() == 13:  # LEFT+RIGHT+DOWN 1101 dec 13
+            rectInner = pygame.draw.rect(self.worldMapScreenSurface, color, [x + 1, y, w - 2, h - 1])
+        elif worldMapObjClass.getOuterType() == 7:  # RIGHT+UP+DOWN 0111 dec 7
+            rectInner = pygame.draw.rect(self.worldMapScreenSurface, color, [x, y + 1, w - 1, h - 2])
+        elif worldMapObjClass.getOuterType() == 11:  # LEFT+UP+DOWN 1011 dec 11
+            rectInner = pygame.draw.rect(self.worldMapScreenSurface, color, [x + 1, y + 1, w - 1, h - 2])
+        elif worldMapObjClass.getOuterType() == 15:  # RIGHT+LEFT+UP+DOWN 1111 dec 15
+            rectInner = pygame.draw.rect(self.worldMapScreenSurface, color, [x + 1, y + 1, w - 2, h - 2])
+
+        return rectInner
 
     def changeColorAfterClick(self, rectBord, rect):
 

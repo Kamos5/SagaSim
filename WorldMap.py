@@ -1,5 +1,6 @@
 ﻿import random
 
+import Parameters
 import Province
 import Utils
 from WorldMapObjClass import WorldMapObjClass
@@ -14,7 +15,7 @@ class WorldMap:
         self.width = 200
         self.height = 100
 
-        self.numberOfProvinces = 30
+        self.numberOfProvinces = Parameters.startingNumberOfRegions * Parameters.provincesPerRegion * 3 // 2
         self.numberOfSeaProvinces = self.numberOfProvinces // 3
         self.seaNeighboursForSeaProvincesParam = 2
 
@@ -50,7 +51,7 @@ class WorldMap:
     def generateProvinces(self):
 
         print("Genereting World Map...")
-        print("Genereting Provinces")
+        print("Genereting Provinces...")
         provinceMap = set()
         sortedFlag = False
         cordsUsed = set()
@@ -121,6 +122,9 @@ class WorldMap:
                 sortedFlag = True
             #Utils.printPercentDone(len(cordsUsed), ((maxX) * (maxY)))
         self.provinces = set(provinceMap)
+        for province in self.provinces:
+            province.setMiddleCord()
+            province.markInnerCords()
         self.landProvinces = self.provinces - self.seaProvinces
         print("Genereting Provinces Completed!")
         print("Generation Neighbours...")
@@ -151,12 +155,15 @@ class WorldMap:
                 provinceBorderColor = (20, 20, 20)
                 provinceColor = (00, 69, 94)
                 province.markInnerCords()
-            for terrytory in province.getCords():
-                provinceX, provinceY = terrytory
-                isInner = False
-                if (provinceX, provinceY) in province.getInnerCords():
-                    isInner = True
-                self.addField(WorldMapObjClass(colors=(provinceBorderColor, provinceColor), cords=(provinceX, provinceY), objectVar=province, isInner=isInner))
+
+            for innerTerrytories in province.getInnerCords():
+                terrytoryX, terrytoryY, terrytoryType = innerTerrytories
+                self.addField(WorldMapObjClass(colors=(provinceBorderColor, provinceColor), cords=(terrytoryX, terrytoryY), objectVar=province, isInner=True, outerType=terrytoryType))
+
+            for outerTerrytories in province.getOuterCords():
+                terrytoryX, terrytoryY, terrytoryType = outerTerrytories
+                self.addField(WorldMapObjClass(colors=(provinceBorderColor, provinceColor), cords=(terrytoryX, terrytoryY), objectVar=province, isInner=False, outerType=terrytoryType))
+
 
     def generateProvinceNeighbours(self):
 

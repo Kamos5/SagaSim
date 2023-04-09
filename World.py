@@ -1,3 +1,5 @@
+import math
+
 import Enums
 import SettlementNameGenerator
 import Utils
@@ -787,43 +789,118 @@ class World:
 
     def pickRandomProvincesForRegions(self):
 
-        for region in self.regions:
-            findFirst = True
-            for i in range(1):
+        provincesUsed = set()
+        provincesNotUsed = set()
+
+        for i in range(2):
+            for region in self.regions:
+                findFirst = True
                 provincesNotFound = True
+                secBreak = 0
                 while provincesNotFound:
-                    secBreak = 0
-                    province = None
+                    provinceToAdd = None
                     if len(region.getProvinces()) == 0:
                         while findFirst:
                             secVariable = 0
-                            province = Utils.randomFromCollection(list(self.getWorldMap().getProvinces()))
-                            if province.getType() == 'SEA' or province.getRegion() is not None:
+                            provinceToAdd = Utils.randomFromCollection(list(self.getWorldMap().getProvinces()))
+                            if provinceToAdd.getType() == 'SEA' or provinceToAdd.getRegion() is not None:
                                 continue
                             else:
-                                findFirst = False
+                                isNeighbourTaken = False
+                                for neighbour in provinceToAdd.getNeighbours():
+                                    if neighbour in provincesUsed:
+                                        isNeighbourTaken = True
+                                if isNeighbourTaken:
+                                    continue
+                                else:
+                                    findFirst = False
+                                    provincesUsed.add(provinceToAdd)
 
                             secVariable += 1
                             if secVariable > 100:
                                 break
                     else:
-                        possibleExpansions = []
+                        possibleExpansions = set()
                         for province in region.getProvinces():
                             for neighbour in province.getNeighbours():
-                                if not neighbour.getType() == 'SEA' or neighbour.getRegion() is not None:
-                                    possibleExpansions.append(neighbour)
+                                if (not neighbour.getType() == 'SEA' or neighbour.getRegion() is not None) and neighbour not in region.getProvinces() and neighbour not in provincesUsed:
+                                    possibleExpansions.add(neighbour)
 
                         if len(possibleExpansions) > 0:
-                            province = Utils.randomFromCollection(possibleExpansions)
+                            provinceToAdd = Utils.randomFromCollection(list(possibleExpansions))
 
-                    if province is not None:
-                        region.addProvince(province)
-                        province.setRegion(region)
+                    if provinceToAdd is not None:
+                        region.addProvince(provinceToAdd)
+                        provincesUsed.add(provinceToAdd)
+                        provinceToAdd.setRegion(region)
                         provincesNotFound = False
 
                     secBreak += 1
                     if secBreak == 1000:
                         break
 
+        for region in self.regions:
+            centerCords = []
+            for province in region.getProvinces():
+                centerCords.append(list(province.getMiddleCords()))
+            region.caltulateMiddleCords(centerCords)
+
+        for province in self.getWorldMap().getProvinces():
+            if province.getRegion() is None and not province.getType() == 'SEA':
+                provincesNotUsed.add(province)
+
+        if len(provincesNotUsed) > 0:
+            self.reshuffleProvincesInRegions(self.getRegions(), provincesUsed, provincesNotUsed)
+
+        for region in self.regions:
             region.generateRegionalProvincesMap(self)
 
+
+    def reshuffleProvincesInRegions(self, regions, provincesUsed, provincesNotUsed):
+
+        print("NOT USED")
+        print(len(provincesNotUsed))
+        for provinceNotUsed in provincesNotUsed:
+            closestRegion = None
+            closestRegionDistance = 0
+            provinceNotUsedX, provinceNotUsedY = provinceNotUsed.getMiddleCords()
+            for region in regions:
+                if closestRegion == None:
+                    closestRegion = region
+                    regionX, regionY = region.getMiddleCords()
+                    closestRegionDistance = math.sqrt((regionX-provinceNotUsedX)**2+(regionY-provinceNotUsedY)**2)
+
+                else:
+                    regionX, regionY = region.getMiddleCords()
+                    regionDistanceToProvince = math.sqrt((regionX - provinceNotUsedX) ** 2 + (regionY - provinceNotUsedY) ** 2)
+                    if regionDistanceToProvince < closestRegionDistance:
+                        closestRegionDistance = regionDistanceToProvince
+                        closestRegion = region
+
+            closestRegion.addProvince(provinceNotUsed)
+            provincesUsed.add(provinceNotUsed)
+            provinceNotUsed.setRegion(closestRegion)
+
+        for province in provincesUsed:
+            closestRegion = None
+            provinceNotUsedX, provinceNotUsedY = province.getMiddleCords()
+            region0X, region0Y = province.getRegion().getMiddleCords()
+            closestRegionDistance = math.sqrt((region0X - provinceNotUsedX) ** 2 + (region0Y - provinceNotUsedY) ** 2)
+            for region in regions:
+                    regionX, regionY = region.getMiddleCords()
+                    regionDistanceToProvince = math.sqrt((regionX - provinceNotUsedX) ** 2 + (regionY - provinceNotUsedY) ** 2)
+                    if regionDistanceToProvince < closestRegionDistance:
+                        closestRegionDistance = regionDistanceToProvince
+                        closestRegion = region
+
+            if closestRegion is not None:
+                print("RESHUFLED")
+                print(province.getName())
+                print("FROM")
+                print(province.getRegion().getRegionColor())
+                print("TO")
+                province.getRegion().removeProvince(province)
+                closestRegion.addProvince(province)
+                province.setRegion(closestRegion)
+                print(province.getRegion().getRegionColor())
+        return
