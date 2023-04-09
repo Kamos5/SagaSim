@@ -792,7 +792,7 @@ class World:
         provincesUsed = set()
         provincesNotUsed = set()
 
-        for i in range(2):
+        for i in range(5):
             for region in self.regions:
                 findFirst = True
                 provincesNotFound = True

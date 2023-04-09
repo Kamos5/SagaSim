@@ -133,7 +133,7 @@ def main(popBreakLimit=None):
     world.getWorldMap().generateProvinces()
     world.pickRandomProvincesForRegions()
     world.diseases = IOtools.loadFiles('diseases')
-    print(names)
+    #print(names)
 
     windowWidth = 1024
     windowHeight = 768

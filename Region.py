@@ -235,29 +235,22 @@ class Region():
 
     def generateRegionalProvincesMap(self, world):
 
-        minX = world.getWorldMap().x0
-        minY = world.getWorldMap().y0
-        maxX = world.getWorldMap().width
-        maxY = world.getWorldMap().height
-        corners = set()
-        leftMargin = set()
-        provinceColor = (0, 0, 0)
-        provinceBorderColor = (0, 0, 0)
         outerTempProvinceBorders = set()
         outerProvincesBordersDict = {}
 
 
         for province in self.getProvinces():
-            provinceColor = province.getColor()
-            provinceBorderColor = self.getRegionColor()
 
             for outerProvinceCord in province.getOuterCords():
                 outerTempProvinceBorders.add((outerProvinceCord, province))
+                # worldMapObjClass = WorldMapObjClass(colors=(self.getRegionColor(), province.getColor()), cords=(outerProvinceCord[0], outerProvinceCord[1]), objectVar=province, isInner=False, outerType=outerProvinceCord[2])
+                # world.getWorldMap().addField(worldMapObjClass, weight=1)
+        # print(len(outerTempProvinceBorders))
         cordsUsed = set()
         for cords, province in outerTempProvinceBorders:
             cordsX, cordsY, cordsT = cords
             for cords2, province2 in outerTempProvinceBorders.difference((cords, province)):
-                if cords != cords2 and (cords, cords2) not in cordsUsed and (cords2, cords) not in cordsUsed:
+                if cords != cords2 and (cords, cords2) not in cordsUsed:
 
                     cords2X, cords2Y, cords2T = cords2
                     if cordsX + 1 == cords2X and cordsY == cords2Y and self.getCordTypeBit(cordsT, 1) == self.getCordTypeBit(cords2T, 0) == '1':
@@ -277,7 +270,7 @@ class Region():
                             mergedType = self.mergeTypes(self.changeCordTypeBit(cords2T, 0), dictType)
                             outerProvincesBordersDict.pop((cords2X, cords2Y))
                             outerProvincesBordersDict[(cords2X, cords2Y)] = (mergedType, dictProvince, (cords2X, cords2Y))
-                        continue
+
 
                     elif cordsX - 1 == cords2X and cordsY == cords2Y and self.getCordTypeBit(cordsT, 0) == self.getCordTypeBit(cords2T, 1) == '1':
 
@@ -296,7 +289,6 @@ class Region():
                             mergedType = self.mergeTypes(self.changeCordTypeBit(cords2T, 1), dictType)
                             outerProvincesBordersDict.pop((cords2X, cords2Y))
                             outerProvincesBordersDict[(cords2X, cords2Y)] = (mergedType, dictProvince, (cords2X, cords2Y))
-                        continue
 
                     elif cordsY + 1 == cords2Y and cordsX == cords2X and self.getCordTypeBit(cordsT, 3) == self.getCordTypeBit(cords2T, 2) == '1':
 
@@ -315,7 +307,7 @@ class Region():
                             mergedType = self.mergeTypes(self.changeCordTypeBit(cords2T, 2), dictType)
                             outerProvincesBordersDict.pop((cords2X, cords2Y))
                             outerProvincesBordersDict[(cords2X, cords2Y)] = (mergedType, dictProvince, (cords2X, cords2Y))
-                        continue
+
 
                     elif cordsY - 1 == cords2Y and cordsX == cords2X and self.getCordTypeBit(cordsT, 2) == self.getCordTypeBit(cords2T, 3) == '1':
 
@@ -334,29 +326,33 @@ class Region():
                             mergedType = self.mergeTypes(self.changeCordTypeBit(cords2T, 3), dictType)
                             outerProvincesBordersDict.pop((cords2X, cords2Y))
                             outerProvincesBordersDict[(cords2X, cords2Y)] = (mergedType, dictProvince, (cords2X, cords2Y))
-                        continue
+
 
                     else:
                         if (cordsX, cordsY) not in outerProvincesBordersDict:
                             outerProvincesBordersDict[(cordsX, cordsY)] = (cordsT, province, (cordsX, cordsY))
                         else:
                             dictType, dictProvince, dictCords = outerProvincesBordersDict[(cordsX, cordsY)]
-                            mergedType = self.mergeTypes(cordsT, dictType, 0)
+                            mergedType = self.mergeTypes(cordsT, dictType)
                             outerProvincesBordersDict[(cordsX, cordsY)] = (mergedType, province, (cordsX, cordsY))
 
                     cordsUsed.add((cords, cords2))
-
+        zeroCount = 0
         for key, element in outerProvincesBordersDict.items():
             cordsT, province, cords = element
             cordsX, cordsY = cords
+
             if cordsT != 0:
                 self.outerProvincesBorders.add(((cordsX, cordsY, cordsT), province))
                 worldMapObjClass = WorldMapObjClass(colors=(self.getRegionColor(), province.getColor()), cords=(cordsX, cordsY), objectVar=province, isInner=False, outerType=cordsT)
                 world.getWorldMap().addField(worldMapObjClass, weight=1)
-
-        print(len(self.outerProvincesBorders))
-        print(self.outerProvincesBorders)
-
+            else:
+                zeroCount +=1
+        # print(f'Cords used: {len(cordsUsed)}')
+        # print(f'Outer provinces: {len(self.outerProvincesBorders)}')
+        # #print(self.outerProvincesBorders)
+        # print(f'Zero count: {zeroCount}')
+        # print(f'DIF : {len(outerTempProvinceBorders)-len(self.outerProvincesBorders)}')
     def getMiddleCords(self):
         return self.provincesInnerCords
 
