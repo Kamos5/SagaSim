@@ -4,6 +4,7 @@ import time
 import pygame
 
 from Province import Province
+from Region import Region
 from UI.Utils.Button import Button
 from UI.Utils.Label2 import Label2
 
@@ -92,42 +93,42 @@ class WorldMapScreen:
 
         self.worldMapScreenSurface.blit(self.mapLabel.localSurface, (self.width * 0.10, self.getVerticalPositioning()))
 
-        self.writeLine += 1
+        # self.writeLine += 1
+        #
+        # self.brushColorLabel = Label2("Brush Color", self.textFont, True)
+        # self.brushColorLabel.changeColorBasedOnFlag(self.brushFlag)
+        #
+        # self.worldMapScreenSurfaceObjsRect.append([self.worldMapScreenSurface.blit(self.brushColorLabel.localSurface, (self.width * 0.05, self.getVerticalPositioning())), Button('changeColor')])
+        #
+        # pygame.draw.rect(self.worldMapScreenSurface, self.BORDER_COLOR, [self.width * 0.05 + self.brushColorLabel.w, self.getVerticalPositioning(), self.brushColorLabel.h, self.brushColorLabel.h])
+        # pygame.draw.rect(self.worldMapScreenSurface, self.brushColor[self.brushColorIndex], [self.width * 0.05 + self.brushColorLabel.w+1, self.getVerticalPositioning()+1, self.brushColorLabel.h-2, self.brushColorLabel.h-2])
+        #
+        # self.eraseLabel = Label2("Erase", self.textFont, True)
+        # self.eraseLabel.changeColorBasedOnFlag(self.eraseFlag)
+        #
+        # self.worldMapScreenSurfaceObjsRect.append([self.worldMapScreenSurface.blit(self.eraseLabel.localSurface, (self.width * 0.15, self.getVerticalPositioning())), Button('erase')])
+        #
+        # self.saveMapLabel = Label2("Save Map", self.textFont, True)
+        #
+        # self.worldMapScreenSurfaceObjsRect.append([self.worldMapScreenSurface.blit(self.saveMapLabel.localSurface, (self.width * 0.25, self.getVerticalPositioning())), Button('saveMap')])
+        #
+        # self.loadMapLabel = Label2("Load Map", self.textFont, True)
+        #
+        # self.worldMapScreenSurfaceObjsRect.append([self.worldMapScreenSurface.blit(self.loadMapLabel.localSurface, (self.width * 0.35, self.getVerticalPositioning())), Button('loadMap')])
+        #
+        # self.cleanBoardLabel = Label2("Clean Board", self.textFont, True)
+        #
+        # self.worldMapScreenSurfaceObjsRect.append([self.worldMapScreenSurface.blit(self.cleanBoardLabel.localSurface, (self.width * 0.75, self.getVerticalPositioning())), Button('cleanBoard')])
+        #
+        # self.writeLine += 1
+        #
+        # self.brushSizeLabel = Label2("Brush Size", self.textFont, False)
+        # self.worldMapScreenSurface.blit(self.brushSizeLabel.localSurface, (self.width * 0.05, self.getVerticalPositioning()))
+        #
+        # self.brushSizeDigitLabel = Label2(f'{self.brushSize}', self.textFont, False)
+        # self.worldMapScreenSurface.blit(self.brushSizeDigitLabel.localSurface, (self.width * 0.05+ self.brushSizeLabel.w, self.getVerticalPositioning()))
 
-        self.brushColorLabel = Label2("Brush Color", self.textFont, True)
-        self.brushColorLabel.changeColorBasedOnFlag(self.brushFlag)
-
-        self.worldMapScreenSurfaceObjsRect.append([self.worldMapScreenSurface.blit(self.brushColorLabel.localSurface, (self.width * 0.05, self.getVerticalPositioning())), Button('changeColor')])
-
-        pygame.draw.rect(self.worldMapScreenSurface, self.BORDER_COLOR, [self.width * 0.05 + self.brushColorLabel.w, self.getVerticalPositioning(), self.brushColorLabel.h, self.brushColorLabel.h])
-        pygame.draw.rect(self.worldMapScreenSurface, self.brushColor[self.brushColorIndex], [self.width * 0.05 + self.brushColorLabel.w+1, self.getVerticalPositioning()+1, self.brushColorLabel.h-2, self.brushColorLabel.h-2])
-
-        self.eraseLabel = Label2("Erase", self.textFont, True)
-        self.eraseLabel.changeColorBasedOnFlag(self.eraseFlag)
-
-        self.worldMapScreenSurfaceObjsRect.append([self.worldMapScreenSurface.blit(self.eraseLabel.localSurface, (self.width * 0.15, self.getVerticalPositioning())), Button('erase')])
-
-        self.saveMapLabel = Label2("Save Map", self.textFont, True)
-
-        self.worldMapScreenSurfaceObjsRect.append([self.worldMapScreenSurface.blit(self.saveMapLabel.localSurface, (self.width * 0.25, self.getVerticalPositioning())), Button('saveMap')])
-
-        self.loadMapLabel = Label2("Load Map", self.textFont, True)
-
-        self.worldMapScreenSurfaceObjsRect.append([self.worldMapScreenSurface.blit(self.loadMapLabel.localSurface, (self.width * 0.35, self.getVerticalPositioning())), Button('loadMap')])
-
-        self.cleanBoardLabel = Label2("Clean Board", self.textFont, True)
-
-        self.worldMapScreenSurfaceObjsRect.append([self.worldMapScreenSurface.blit(self.cleanBoardLabel.localSurface, (self.width * 0.75, self.getVerticalPositioning())), Button('cleanBoard')])
-
-        self.writeLine += 1
-
-        self.brushSizeLabel = Label2("Brush Size", self.textFont, False)
-        self.worldMapScreenSurface.blit(self.brushSizeLabel.localSurface, (self.width * 0.05, self.getVerticalPositioning()))
-
-        self.brushSizeDigitLabel = Label2(f'{self.brushSize}', self.textFont, False)
-        self.worldMapScreenSurface.blit(self.brushSizeDigitLabel.localSurface, (self.width * 0.05+ self.brushSizeLabel.w, self.getVerticalPositioning()))
-
-        self.writeLine += 3
+        self.writeLine += 5
         # if not self.isLoaded:
         #     # self.addDefaultMap()
         #
@@ -221,7 +222,6 @@ class WorldMapScreen:
         # self.color = oldcolor
 
         forLater = set()
-
         for worldMapObjClass, weight in world.getWorldMap().getWorldMapObj():
 
             pixelObject = worldMapObjClass.getObject()
@@ -253,6 +253,10 @@ class WorldMapScreen:
 
         for worldMapObjClass in forLater:
 
+            if isinstance(pixelObject, Region):
+                self.showRegionNamesOnMap(pixelObject)
+                continue
+
             xNorm, yNorm, = worldMapObjClass.getCords()
             borderColor = worldMapObjClass.getBorderColor()
 
@@ -277,6 +281,7 @@ class WorldMapScreen:
             self.showProvinceNamesOnMap(worldMapObjClass, isInRegion=True)
             self.map.append([rect, rectInner, color, borderColor])
 
+
     def showProvinceNamesOnMap(self, object, isInRegion = False):
 
         xNorm, yNorm = object.getObject().getMiddleCords()
@@ -289,8 +294,25 @@ class WorldMapScreen:
         color = (20, 20, 20)
         if object.getObject().getType() == 'SEA':
             color = (220, 200, 200)
+        else:
+            color = object.getObject().getRegion().getRegionColor()
         self.provinceLabel = Label2(f'{object.getObject().getName()}', self.miniTextFont, isInRegion, onlyText=True, fontColor=color)
         self.worldMapScreenSurface.blit(self.provinceLabel.localSurface, (x-(self.provinceLabel.w//2), y-(self.provinceLabel.h//2)))
+
+    def showRegionNamesOnMap(self, object):
+
+        xNorm, yNorm = object.getObject().provincesInnerCords()
+        x, y = self.convertCordsFromNormalized(xNorm, yNorm)
+
+        # if object.getObject().getRegion() is not None:
+        #     regionXNorm, regionYNorm = object.getObject().getRegion().getMiddleCords()
+        #     rX, rY = self.convertCordsFromNormalized(regionXNorm, regionYNorm)
+        #     pygame.draw.line(self.worldMapScreenSurface, (220, 220, 220), (x, y), (rX, rY), 1)
+
+        color = object.getObject().getRegionColor()
+        self.provinceLabel = Label2(f'{object.getObject().getName()}', self.miniTextFont, onlyText=True, fontColor=color)
+        self.worldMapScreenSurface.blit(self.provinceLabel.localSurface, (x-(self.provinceLabel.w//2), y-(self.provinceLabel.h//2)))
+
 
 
     def resetWriteLine(self):

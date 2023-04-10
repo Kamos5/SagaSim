@@ -907,6 +907,7 @@ class World:
                         closestRegionDistance = regionDistanceToProvince
                         closestRegion = region
 
+
             if closestRegion is not None:
                 print("RESHUFLED")
                 print(province.getName())

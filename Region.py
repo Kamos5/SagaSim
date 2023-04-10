@@ -367,7 +367,8 @@ class Region():
         # print(f'Outer provinces: {len(self.outerProvincesBorders)}')
         # #print(self.outerProvincesBorders)
         # print(f'Zero count: {zeroCount}')
-        # print(f'DIF : {len(outerTempProvinceBorders)-len(self.outerProvincesBorders)}')
+        # print(f'DIF : {len(outerTempProvinceBorders)-len(self.outerProvincesBorders)}
+
     def getMiddleCords(self):
         return self.provincesInnerCords
 

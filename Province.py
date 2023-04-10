@@ -27,9 +27,9 @@ class Province:
 
     def setRandomColor(self):
 
-        r = Utils.randomRange(100, 200)
-        g = Utils.randomRange(100, 200)
-        b = Utils.randomRange(100, 200)
+        r = Utils.randomRange(50, 150)
+        g = Utils.randomRange(50, 150)
+        b = Utils.randomRange(50, 150)
         self.color = (r, g, b)
 
     def setColor(self, color):
