@@ -348,17 +348,17 @@ def getRandomFNameForRegion(regionNumber = 0):
     namesList = []
     choice = ''
 
-    if copyNamesMList is None:
+    if copyNamesFList is None:
         if regionNumber == 0:
-            choice = randomEnglishMName()
+            choice = randomEnglishFName()
         elif regionNumber == 1:
-            choice = randomNorseMName()
+            choice = randomNorseFName()
         elif regionNumber == 2:
-            choice = randomSlavicMName()
+            choice = randomSlavicFName()
         elif regionNumber == 3:
-            choice = randomEgyptianMName()
+            choice = randomEgyptianFName()
     else:
-        namesList = copyNamesMList[regionNumber]
+        namesList = copyNamesFList[regionNumber]
         if len(namesList) > 0:
             choice = Utils.randomFromCollection(namesList)
         else:

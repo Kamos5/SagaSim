@@ -217,8 +217,8 @@ class Settlements:
     def changeFreeFood(self, value):
         self.freeFood += value
         self.freeFood = round(self.freeFood, 2)
-        if self.freeFood > 1000:
-            self.freeFood = 1000
+        # if self.freeFood > 1000:
+        #     self.freeFood = 1000
         self.adjustFertilityModifier()
 
     def getFreeProd(self):
