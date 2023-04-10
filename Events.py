@@ -522,13 +522,18 @@ def settlementGoodsProduction(world):
                     foodConsumed = 0
                     for resident in settlement.getResidents():
                         if resident.getAge() < 10:
-                            foodConsumed += 0.5
-                            settlement.increaseSettlementFoodConsumed(0.5)
+                            foodConsumed += 0.3
+                            settlement.increaseSettlementFoodConsumed(0.3)
                         elif 10 <= resident.getAge() < 15:
-                            foodConsumed += 0.75
-                            settlement.increaseSettlementFoodConsumed(0.75)
+                            foodConsumed += 0.6
+                            settlement.increaseSettlementFoodConsumed(0.6)
                         else:
-                            foodConsumed += 1
+                            if Enums.Traits.GREGARIOUS in resident.getTraits():
+                                foodConsumed += 0.9
+                            if Enums.Traits.GREEDY in resident.getTraits():
+                                foodConsumed += 1.1
+                            else:
+                                foodConsumed += 1
                             settlement.increaseSettlementFoodConsumed(1)
                     settlement.setSettlementFoodConsumedLastYear(foodConsumed)
                     if settlement.getFreeFood() + (foodProd1 - foodProd0) - foodConsumed < 0:
