@@ -10,6 +10,9 @@ import PersonLifeEventsHistory as PLEH
 
 def birthChild(world, parent1, parent2=None, trueParent1=None, trueParent2=None):
 
+    firstName = []
+    person = []
+    numberOfChildren = 1
     if parent2 is None:
         secondParent = parent1
     else:
@@ -23,11 +26,21 @@ def birthChild(world, parent1, parent2=None, trueParent1=None, trueParent2=None)
         sexuality = 'homo'
     else:
         sexuality = 'hetero'
+    randomChanceForMultipleChildren = Utils.randomRange(1, 100)
+    if randomChanceForMultipleChildren < 10:
+        numberOfChildren += 1
+    if randomChanceForMultipleChildren < 5:
+        numberOfChildren += 1
+    if randomChanceForMultipleChildren < 2:
+        numberOfChildren += 1
+    if randomChanceForMultipleChildren < 1:
+        numberOfChildren += 1
 
-    if sex == Sexes.MALE:
-        firstName = NameGenerator.getRandomMNameForRegion(parent1.getSettlement().getRegion().getRegionNumber())
-    else:
-        firstName = NameGenerator.getRandomFNameForRegion(parent1.getSettlement().getRegion().getRegionNumber())
+    for number in range(numberOfChildren):
+        if sex == Sexes.MALE:
+            firstName.append(NameGenerator.getRandomMNameForRegion(parent1.getSettlement().getRegion().getRegionNumber()))
+        else:
+            firstName.append(NameGenerator.getRandomFNameForRegion(parent1.getSettlement().getRegion().getRegionNumber()))
 
     lifespan = Utils.geneticRandomFromValues(trueParent1.lifespan, trueParent2.lifespan)
 
@@ -45,7 +58,8 @@ def birthChild(world, parent1, parent2=None, trueParent1=None, trueParent2=None)
     hairColor, hairColorGen1, hairColorGen2 = Utils.geneticHairColor(trueParent1, trueParent2)
     eyeColor, eyeColorGen1, eyeColorGen2 = Utils.geneticEyeColor(trueParent1, trueParent2)
 
-    person = PersonObj()
+    for childFirstName in firstName:
+        person.append(PersonObj())
 
     immunities = []
     for immunity in parent1.getImmunityTo():
@@ -53,12 +67,13 @@ def birthChild(world, parent1, parent2=None, trueParent1=None, trueParent2=None)
         if chanceToInheritImmunity == 1:
             immunities.append(immunity)
 
+    for personObj, childFirstName in zip(person, firstName):
     #Child goes to father's family
-    person.birthNewPerson(firstName, secondParent.familyName, secondParent.familyName, world.getDay(), world.getMonth(), world.getYear(), lifespan, sex,
-                          sexGen1, sexGen2, sexuality, fertility, offspringHeight, hairColor, hairColorGen1, hairColorGen2, eyeColor, eyeColorGen1, eyeColorGen2,
-                          parent1, parent2, trueParent1, trueParent2, secondParent.familyObjRef, immunities)
+        personObj.birthNewPerson(childFirstName, secondParent.familyName, secondParent.familyName, world.getDay(), world.getMonth(), world.getYear(), lifespan, sex,
+                              sexGen1, sexGen2, sexuality, fertility, offspringHeight, hairColor, hairColorGen1, hairColorGen2, eyeColor, eyeColorGen1, eyeColorGen2,
+                              parent1, parent2, trueParent1, trueParent2, secondParent.familyObjRef, immunities)
 
-    Utils.inheretTraits(person, parent1, secondParent, trueParent1, trueParent2)
+        Utils.inheretTraits(personObj, parent1, secondParent, trueParent1, trueParent2)
 
     return person
 
@@ -99,6 +114,7 @@ def deathProcedures(person, world):
 
     if person.age < 15:
         PLEH.lostChild(person.mother, person, world)
+        PLEH.lostChild(person.father, person, world)
     if person.getFather() is not None:
         person.getFather().getAliveChildrenList().remove(person)
         person.getFather().appendDeadChildrenList(person)

@@ -310,45 +310,47 @@ def birthPeopleNew (world):
                         person.changeSpouseRelation(25)
                         person.getSpouse().changeSpouseRelation(25)
                     childObj = PF.birthChild(world, person, person.getSpouse(), person, person.getPregnancyTrueFather())
+                    for child in childObj:
                     # add child to proper family
-                    childObj.familyObjRef.addNewMember(childObj)
-                    world.addPerson(childObj)
-                    world.addAlivePerson(childObj)
-                    PLEH.beenBorn(childObj, world)
+                        child.familyObjRef.addNewMember(child)
+                        world.addPerson(child)
+                        world.addAlivePerson(child)
+                        PLEH.beenBorn(child, world)
 
                     person.setIsPregnant(False)
                     person.setImpregnationMonth(None)
                     person.setPregnancyFather("")
                     person.setPregnancyTrueFather("")
 
-                    person.numberOfChildren += 1
-                    if person.getSpouse() is not None:
-                        person.getSpouse().numberOfChildren += 1
+                    for child in childObj:
+                        person.numberOfChildren += 1
+                        if person.getSpouse() is not None:
+                            person.getSpouse().numberOfChildren += 1
 
-                    if person.modifiedLifespan-person.age > 1:
-                        if Utils.randomRange(1, 2) == 1:
-                            person.modifiedLifespan -= 1
-                    person.appendAliveChildrenList(childObj)
-                    if person.getSpouse() is not None:
-                        person.getSpouse().appendAliveChildrenList(childObj)
-                    childObj.changeMaritalStatus(MS.CHILD)
-                    person.getAccommodation().addHouseResident(childObj)
+                        if person.modifiedLifespan-person.age > 1:
+                            if Utils.randomRange(1, 2) == 1:
+                                person.modifiedLifespan -= 1
+                        person.appendAliveChildrenList(child)
+                        if person.getSpouse() is not None:
+                            person.getSpouse().appendAliveChildrenList(child)
+                        child.changeMaritalStatus(MS.CHILD)
+                        person.getAccommodation().addHouseResident(child)
 
-                    childObj.setSettlement(childObj.getTrueMother().getSettlement())
-                    childObj.getSettlement().increasePopulation()
-                    childObj.getSettlement().addResident(childObj)
+                        child.setSettlement(child.getTrueMother().getSettlement())
+                        child.getSettlement().increasePopulation()
+                        child.getSettlement().addResident(child)
 
-                    world.increaseBirthsPerYearTemp()
+                        world.increaseBirthsPerYearTemp()
 
-                    # change of dying from childbirth (mother and child)
-                    motherDeath, childdeath = deathChangeFromGivingBirth(person, childObj)
+                        # change of dying from childbirth (mother and child)
+                        motherDeath, childdeath = deathChangeFromGivingBirth(person, child)
 
-                    if motherDeath:
-                        PF.deathProcedures(person, world)
+                        if motherDeath:
+                            PF.deathProcedures(person, world)
 
-                    if childdeath:
-                        #parameters: child
-                        PF.deathProcedures(childObj, world)
+                        if childdeath:
+                            #parameters: child
+                            PF.deathProcedures(child, world)
 
                 else:
                     person.setIsPregnant(False)
