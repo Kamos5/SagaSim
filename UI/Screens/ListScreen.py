@@ -155,7 +155,7 @@ class ListScreen:
         else:
             label = Label(text, 400, self.lineHeight, self.textFont, True)
 
-        self.listScreenSurfaceObjsRect.append([self.listScreenSurface.blit(label.localSurface, ((self.width * 0.15), self.lineHeight * self.writeLine + self.scroll_y)), settlement])
+        self.listScreenSurfaceObjsRect.append([self.listScreenSurface.blit(label.localSurface, ((self.width * 0.25), self.lineHeight * self.writeLine + self.scroll_y)), settlement])
 
         self.writeLine += 1
 

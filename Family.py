@@ -10,6 +10,7 @@ class Family:
         self.foundingYear = 0
         self.foundedBy = ''
         self.originRegion = ''
+        self.originProvince = None
         self.originSettlement = ''
         self.originCulture = ''
 
@@ -65,6 +66,13 @@ class Family:
         return self.originRegion
     def setOriginRegion(self, newOriginRegion):
         self.originRegion = newOriginRegion
+
+    def getOriginProvince(self):
+        return self.originProvince
+
+    def setOriginProvince(self, newOriginProvince):
+        self.originProvince = newOriginProvince
+
     def getOriginSettlement(self):
         return self.originSettlement
     def setOriginSettlement(self, newOriginSettlement):

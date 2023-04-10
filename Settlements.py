@@ -18,6 +18,7 @@ class Settlements:
         self.name = SNG.randomSettlementsName(regionNumber=regionNumber, rebuildOldSettlement=rebuildFlag)
 
         self.region = None
+        self.province = None
         self.population = 0
         self.foundedIn = year
         self.baseFertility = Parameters.baseVillageFertility
@@ -60,6 +61,12 @@ class Settlements:
 
     def setRegion(self, newRegion):
         self.region = newRegion
+
+    def getProvince(self):
+        return self.province
+
+    def setProvince(self, newProvince):
+        self.province = newProvince
 
     def updateFeaturesForTown(self):
         self.createUpdateVillageFeaturesForTown()
@@ -210,6 +217,8 @@ class Settlements:
     def changeFreeFood(self, value):
         self.freeFood += value
         self.freeFood = round(self.freeFood, 2)
+        if self.freeFood > 1000:
+            self.freeFood = 1000
         self.adjustFertilityModifier()
 
     def getFreeProd(self):

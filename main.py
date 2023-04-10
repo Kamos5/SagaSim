@@ -128,12 +128,12 @@ def main(popBreakLimit=None):
     world.setAllNames(names)
     world.setCultures(list(names.keys()))
     world.generateRegionsNames(Parameters.startingNumberOfRegions)
-    world.generateSettlements()
-    world.setFamilies(initFamilies())
-    world.setPeople(initPeople(world.getFamilies()))
     ProvinceNameGenerator.makeListsForProvinceNames(world)
     world.getWorldMap().generateProvinces()
     world.pickRandomProvincesForRegions()
+    world.generateSettlements()
+    world.setFamilies(initFamilies())
+    world.setPeople(initPeople(world.getFamilies()))
     world.diseases = IOtools.loadFiles('diseases')
     #print(names)
 
@@ -341,16 +341,17 @@ def pygameEvents(event, canvas, pausedPressed):
 
                 if isinstance(canvas.focusObj[len(canvas.focusObj) - 1], Settlements):
                     for region in world.getRegions():
-                        for settlement in region.getSettlements():
-                            if settlement == lastFocusedObj and region.getSettlements().index(lastFocusedObj) > 0:
-                                lastFocusedObj.setUIExpand(False)
-                                canvas.focusObj.append(region.getSettlements()[region.getSettlements().index(lastFocusedObj)-1])
-                                return pausedPressed
+                        for province in region.getProvinces():
+                            for settlement in province.getSettlements():
+                                if settlement == lastFocusedObj and province.getSettlements().index(lastFocusedObj) > 0:
+                                    lastFocusedObj.setUIExpand(False)
+                                    canvas.focusObj.append(province.getSettlements()[province.getSettlements().index(lastFocusedObj)-1])
+                                    return pausedPressed
 
-                            if settlement == lastFocusedObj and region.getSettlements().index(lastFocusedObj) == 0:
-                                lastFocusedObj.setUIExpand(False)
-                                canvas.focusObj.append(region)
-                                return pausedPressed
+                                if settlement == lastFocusedObj and province.getSettlements().index(lastFocusedObj) == 0:
+                                    lastFocusedObj.setUIExpand(False)
+                                    canvas.focusObj.append(province)
+                                    return pausedPressed
 
                 if isinstance(canvas.focusObj[len(canvas.focusObj) - 1], Region):
                     if world.getRegions().index(lastFocusedObj) > 0:
@@ -382,32 +383,33 @@ def pygameEvents(event, canvas, pausedPressed):
 
                 if isinstance(canvas.focusObj[len(canvas.focusObj) - 1], Settlements):
                     for region in world.getRegions():
-                        for settlement in region.getSettlements():
-                            if settlement == lastFocusedObj and region.getSettlements().index(lastFocusedObj) < len(region.getSettlements())-1:
-                                if not lastFocusedObj.getUIExpand():
-                                    canvas.focusObj.append(region.getSettlements()[region.getSettlements().index(lastFocusedObj)+1])
-                                    return pausedPressed
-                                else:
-                                    if len(settlement.getResidents()) > 0:
-                                        canvas.focusObj.append(settlement.getResidents()[0])
+                        for province in region.getProvinces():
+                            for settlement in province.getSettlements():
+                                if settlement == lastFocusedObj and province.getSettlements().index(lastFocusedObj) < len(region.getSettlements())-1:
+                                    if not lastFocusedObj.getUIExpand():
+                                        canvas.focusObj.append(province.getSettlements()[province.getSettlements().index(lastFocusedObj)+1])
                                         return pausedPressed
                                     else:
-                                        canvas.focusObj.append(region.getSettlements[region.getSettlements().index(lastFocusedObj) + 1])
-                                        return pausedPressed
+                                        if len(settlement.getResidents()) > 0:
+                                            canvas.focusObj.append(settlement.getResidents()[0])
+                                            return pausedPressed
+                                        else:
+                                            canvas.focusObj.append(province.getSettlements[province.getSettlements().index(lastFocusedObj) + 1])
+                                            return pausedPressed
 
-                if isinstance(canvas.focusObj[len(canvas.focusObj) - 1], Region):
-                    for region in world.getRegions():
-                        if region == lastFocusedObj and world.getRegions().index(lastFocusedObj) < len(world.getRegions())-1:
-                            if not lastFocusedObj.getUIExpand():
-                                canvas.focusObj.append(world.getRegions()[world.getRegions().index(lastFocusedObj)+1])
-                                return pausedPressed
-                            else:
-                                if len(lastFocusedObj.getSettlements()) > 0:
-                                    canvas.focusObj.append(lastFocusedObj.getSettlements()[0])
-                                    return pausedPressed
-                                else:
-                                    canvas.focusObj.append(world.getRegions()[world.getRegions().index(lastFocusedObj)+1])
-                                    return pausedPressed
+                # if isinstance(canvas.focusObj[len(canvas.focusObj) - 1], Region):
+                #     for region in world.getRegions():
+                #         # if region == lastFocusedObj and world.getRegions().index(lastFocusedObj) < len(world.getRegions())-1:
+                        #     if not lastFocusedObj.getUIExpand():
+                        #         canvas.focusObj.append(world.getRegions()[world.getRegions().index(lastFocusedObj)+1])
+                        #         return pausedPressed
+                        #     else:
+                        #         if len(lastFocusedObj.getSettlements()) > 0:
+                        #             canvas.focusObj.append(lastFocusedObj.getSettlements()[0])
+                        #             return pausedPressed
+                        #         else:
+                        #             canvas.focusObj.append(world.getRegions()[world.getRegions().index(lastFocusedObj)+1])
+                        #             return pausedPressed
 
         if isinstance(canvas.lastFocusObj, TextField):
 

@@ -156,10 +156,10 @@ class Canvas:
                 self.listScreen.addProvinces(region, self.lastFocusObj)
                 for province in region.getProvinces():
                     self.listScreen.addProvince(province, self.lastFocusObj)
-                for settlement in region.getSettlements():
-                    self.listScreen.addSettlement(settlement, self.lastFocusObj)
-                    if settlement.getUIExpand():
-                        self.filterBasedOnParamSettler(settlement.getResidents(), self.listScreen)
+                    for settlement in province.getSettlements():
+                        self.listScreen.addSettlement(settlement, self.lastFocusObj)
+                        if settlement.getUIExpand():
+                            self.filterBasedOnParamSettler(settlement.getResidents(), self.listScreen)
 
         self.listScreen.addFamilies(world.getFamilies())
 

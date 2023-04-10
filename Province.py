@@ -1,10 +1,15 @@
-﻿import Utils
+﻿import Enums
+import Parameters
+import Utils
+from Settlements import Settlements
 
 
 class Province:
 
     def __init__(self, worldMap):
 
+        self.settlements = []
+        self.provinceSize = Parameters.provinceSizeMax
         self.name = ''
         self.color = (0, 0, 0)
         self.borderColor = (0, 0, 0)
@@ -136,3 +141,79 @@ class Province:
                 isIsland = False
 
         self.isIsland = isIsland
+
+    def getSettlementFromIndex(self, index):
+        return self.settlements[index]
+
+    def getSettlements(self):
+        return self.settlements
+
+    def addSettlement(self, world):
+        newSettlement = Settlements(self.getRegion().getRegionNumber(), world.getYear())
+        self.settlements.append(newSettlement)
+        newSettlement.maxPopulation = Parameters.baseVillageSize
+        newSettlement.setProvision(Utils.randomFromCollection(self.getTowns()))
+
+        return newSettlement
+
+    def canAddSettlement(self):
+        if len(self.getSettlements()) < self.provinceSize:
+            return True
+        else:
+            return False
+
+    def addInitSettlement(self, world, region):
+        newSettlement = Settlements(region.getRegionNumber(), world.getYear())
+        self.settlements.append(newSettlement)
+        newSettlement.maxPopulation = Parameters.baseVillageSize
+
+        return newSettlement
+
+    def getTowns(self):
+
+        townList = []
+        for settlement in self.getSettlements():
+            if settlement.getSettlementType() == Enums.Settlements.TOWN:
+                townList.append(settlement)
+
+        return townList
+
+    def getVillages(self):
+
+        villageList = []
+        for settlement in self.getSettlements():
+            if settlement.getSettlementType() == Enums.Settlements.VILLAGE:
+                villageList.append(settlement)
+
+        return villageList
+
+    def getVillagesExProvisionToThisTown(self, town):
+
+        villageList = []
+        for settlement in self.getSettlements():
+            if settlement.getSettlementType() == Enums.Settlements.VILLAGE and settlement.getProvision() is not town:
+                villageList.append(settlement)
+
+        return villageList
+
+    def getLowestPopulatedSettlement(self):
+
+        tempMinPopVal = 1000000
+        lowestPopSettlement = None
+        index = 0
+        for settlement in self.getSettlements():
+            if len(settlement.getResidents()) < tempMinPopVal:
+                tempMinPopVal = len(settlement.getResidents())
+                lowestPopSettlement = settlement
+            index += 1
+        return lowestPopSettlement
+
+
+    def getActiveSettlements(self):
+        return self.activeSettlements
+    def increaseActiveSettlements(self):
+        self.activeSettlements += 1
+    def decreaseActiveSettlements(self):
+        self.activeSettlements -= 1
+    def setActiveSettlements(self, newActiveSettlements):
+        self.activeSettlements = newActiveSettlements

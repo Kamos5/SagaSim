@@ -77,86 +77,87 @@ def infectionsSpread (world):
 
     for region in world.getRegions():
         if -5 <= region.getCurrentTemperature() <= 15:
-            for settlement in region.getSettlements():
-                for person in settlement.getResidents():
-                    if person.lifeStatus == LifeStatus.ALIVE:
+            for province in region.getProvinces():
+                for settlement in province.getSettlements():
+                    for person in settlement.getResidents():
+                        if person.lifeStatus == LifeStatus.ALIVE:
 
-                        start1 = time.perf_counter()
-                        # 1)
-                        chanceForContractDisease = Utils.randomRange(1, 100_000)  # 1 in 1.000.000 / per day
-                        contractDiseaseThreshold = 1
+                            start1 = time.perf_counter()
+                            # 1)
+                            chanceForContractDisease = Utils.randomRange(1, 100_000)  # 1 in 1.000.000 / per day
+                            contractDiseaseThreshold = 1
 
-                        contractDiseaseThreshold = (contractDiseaseThreshold * person.getGeneralHealth().value[0]) + 2
+                            contractDiseaseThreshold = (contractDiseaseThreshold * person.getGeneralHealth().value[0]) + 2
 
-                        if chanceForContractDisease <= contractDiseaseThreshold:
-                            randomInfection = Utils.randomFromCollection(list(world.diseases.items()))[1]
-                            if len(person.getImmunityTo()) > 0:
-                                isImmune = False
-                                for immunityTo in person.getImmunityTo():
-                                    if not randomInfection == immunityTo[0][0]:
-                                        isImmune = True
-                                        break
-                                if not isImmune:
+                            if chanceForContractDisease <= contractDiseaseThreshold:
+                                randomInfection = Utils.randomFromCollection(list(world.diseases.items()))[1]
+                                if len(person.getImmunityTo()) > 0:
+                                    isImmune = False
+                                    for immunityTo in person.getImmunityTo():
+                                        if not randomInfection == immunityTo[0][0]:
+                                            isImmune = True
+                                            break
+                                    if not isImmune:
+                                        if InfectionsFunctions.checkIfInfected(person, randomInfection):
+                                            infectionsPerDay = InfectionsFunctions.addInfectionToPerson(person, randomInfection, world)
+                                            break
+                                else:
                                     if InfectionsFunctions.checkIfInfected(person, randomInfection):
                                         infectionsPerDay = InfectionsFunctions.addInfectionToPerson(person, randomInfection, world)
-                                        break
-                            else:
-                                if InfectionsFunctions.checkIfInfected(person, randomInfection):
-                                    infectionsPerDay = InfectionsFunctions.addInfectionToPerson(person, randomInfection, world)
-                        end1 = time.perf_counter()
-                        start2 = time.perf_counter()
-                        if len(person.getInfections()) > 0:
-                            for infection in person.getInfections()[0]:
-                                if type(infection) is dict and infection['contagious']:
+                            end1 = time.perf_counter()
+                            start2 = time.perf_counter()
+                            if len(person.getInfections()) > 0:
+                                for infection in person.getInfections()[0]:
+                                    if type(infection) is dict and infection['contagious']:
 
-                                    # 2a)
-                                    infectionsPerDay = InfectionsFunctions.tryToInfectPeopleFromList(person, person.getAccommodation().getHouseResidents(), infection, world)
+                                        # 2a)
+                                        infectionsPerDay = InfectionsFunctions.tryToInfectPeopleFromList(person, person.getAccommodation().getHouseResidents(), infection, world)
 
-                                    # 2b)
-                                    if person.getOccupation() is not None and len(person.getCurrentDiseases()) > 0:  # ONLY IF NOT SICK AKA CURRENT DISEASES > 0
-                                        infectionsPerDay = InfectionsFunctions.tryToInfectPeopleFromList(person, person.getOccupation().getWorkerList(), infection, world)
-                        end2 = time.perf_counter()
-                        start3 = time.perf_counter()
-                        # 3)
-                        if len(person.getInfections()) > 0:
-                            infections, infDate = zip(*person.getInfections())
-                            for (infection, infDate) in zip(infections, infDate):
-                                if infDate + infection['incubation'] <= world.getDayOfTheYear():
-                                    if len(person.getCurrentDiseases()) > 0:
-                                        diseases, disDates, disImmunity = zip(*person.getCurrentDiseases())
-                                        if infection not in diseases:
+                                        # 2b)
+                                        if person.getOccupation() is not None and len(person.getCurrentDiseases()) > 0:  # ONLY IF NOT SICK AKA CURRENT DISEASES > 0
+                                            infectionsPerDay = InfectionsFunctions.tryToInfectPeopleFromList(person, person.getOccupation().getWorkerList(), infection, world)
+                            end2 = time.perf_counter()
+                            start3 = time.perf_counter()
+                            # 3)
+                            if len(person.getInfections()) > 0:
+                                infections, infDate = zip(*person.getInfections())
+                                for (infection, infDate) in zip(infections, infDate):
+                                    if infDate + infection['incubation'] <= world.getDayOfTheYear():
+                                        if len(person.getCurrentDiseases()) > 0:
+                                            diseases, disDates, disImmunity = zip(*person.getCurrentDiseases())
+                                            if infection not in diseases:
+                                                person.addCurrentDiseases([infection, world.getDayOfTheYear(), 0])
+                                                PLEH.showingSymptomsOf(person, infection, world)
+                                                offsetHealth = person.getGeneralHealth().value[0] + infection['effectOnHealth'] + person.getHealthFromAge().value[0]
+                                                if offsetHealth >= len(Enums.getGeneralHealthArray()):
+                                                    offsetHealth = len(Enums.getGeneralHealthArray()) - 1
+                                                person.setGeneralHelth(Enums.getGeneralHealthArray()[offsetHealth])
+                                                if person.getGeneralHealth() == Enums.GeneralHealth.DEATH:
+                                                    person.causeOfDeath = CauseOfDeath.SICKNESS
+                                                    PF.deathProcedures(person, world)
+                                                    break
+                                        else:
                                             person.addCurrentDiseases([infection, world.getDayOfTheYear(), 0])
                                             PLEH.showingSymptomsOf(person, infection, world)
                                             offsetHealth = person.getGeneralHealth().value[0] + infection['effectOnHealth'] + person.getHealthFromAge().value[0]
-                                            if offsetHealth >= len(Enums.getGeneralHealthArray()):
+                                            if offsetHealth > len(Enums.getGeneralHealthArray()):
                                                 offsetHealth = len(Enums.getGeneralHealthArray()) - 1
                                             person.setGeneralHelth(Enums.getGeneralHealthArray()[offsetHealth])
                                             if person.getGeneralHealth() == Enums.GeneralHealth.DEATH:
                                                 person.causeOfDeath = CauseOfDeath.SICKNESS
                                                 PF.deathProcedures(person, world)
                                                 break
-                                    else:
-                                        person.addCurrentDiseases([infection, world.getDayOfTheYear(), 0])
-                                        PLEH.showingSymptomsOf(person, infection, world)
-                                        offsetHealth = person.getGeneralHealth().value[0] + infection['effectOnHealth'] + person.getHealthFromAge().value[0]
-                                        if offsetHealth > len(Enums.getGeneralHealthArray()):
-                                            offsetHealth = len(Enums.getGeneralHealthArray()) - 1
-                                        person.setGeneralHelth(Enums.getGeneralHealthArray()[offsetHealth])
-                                        if person.getGeneralHealth() == Enums.GeneralHealth.DEATH:
-                                            person.causeOfDeath = CauseOfDeath.SICKNESS
-                                            PF.deathProcedures(person, world)
-                                            break
 
-                        end3 = time.perf_counter()
+                            end3 = time.perf_counter()
 
-                #         time1Array.append(end1-start1)
-                #         time2Array.append(end2-start2)
-                #         time3Array.append(end3-start3)
-                # end0 = time.perf_counter()
-                # print("Time0:" + str(end0-start0))
-                # print("Time1:" + str(mean(time1Array)))
-                # print("Time2:" + str(mean(time2Array)))
-                # print("Time3:" + str(mean(time3Array)))
+                    #         time1Array.append(end1-start1)
+                    #         time2Array.append(end2-start2)
+                    #         time3Array.append(end3-start3)
+                    # end0 = time.perf_counter()
+                    # print("Time0:" + str(end0-start0))
+                    # print("Time1:" + str(mean(time1Array)))
+                    # print("Time2:" + str(mean(time2Array)))
+                    # print("Time3:" + str(mean(time3Array)))
     infectionsPerPop = round(infectionsPerDay / len(world.getAlivePeople()), 2)
     print("Infections Per Day:" + str(infectionsPerDay))
     print("Infections Per Pop:" + str(infectionsPerPop))
@@ -381,58 +382,59 @@ def settlementsPopulationManagement (world):
 
     for region in world.getRegions():
         regionTimeArray = []
-        for settlement in region.getSettlements():
-            if world.getDay() == settlement.getMigrationDay() and world.getMonth() == settlement.getMigrationMonth():
-                start1 = time.perf_counter()
+        for province in region.getProvinces():
+            for settlement in province.getSettlements():
+                if world.getDay() == settlement.getMigrationDay() and world.getMonth() == settlement.getMigrationMonth():
+                    start1 = time.perf_counter()
 
-                villagesList = SF.getVillages(region.getSettlements())
-                townList = SF.getCities(region.getSettlements())
+                    villagesList = SF.getVillages(province.getSettlements())
+                    townList = SF.getCities(province.getSettlements())
 
-                unemployedList = settlement.getUnemployedResidentsList()
-                employedList = settlement.getEmployedResidentsList()
+                    unemployedList = settlement.getUnemployedResidentsList()
+                    employedList = settlement.getEmployedResidentsList()
 
-                #Treshhold to create migration wave
-                if (len(employedList) + len(unemployedList)) > 0 and round(len(unemployedList) / (len(employedList) + len(unemployedList)) * 100) > 15:
-                # if settlement.getPopulation() >= int(settlement.getMaxPopulation() * Parameters.percentagePopulationThresholdForMigration):
-                    chanceOfMigration = Utils.randomRange(1, 100)
-                    #Chance of migration happening
-                    if chanceOfMigration <= Parameters.chanceForMigration:
-                        #Check for max size of region
-                        if len(region.getSettlements()) == region.regionSize:
-                            newTargetSettlement = Utils.randomFromCollection(region.getSettlements())
+                    #Treshhold to create migration wave
+                    if (len(employedList) + len(unemployedList)) > 0 and round(len(unemployedList) / (len(employedList) + len(unemployedList)) * 100) > 15:
+                    # if settlement.getPopulation() >= int(settlement.getMaxPopulation() * Parameters.percentagePopulationThresholdForMigration):
+                        chanceOfMigration = Utils.randomRange(1, 100)
+                        #Chance of migration happening
+                        if chanceOfMigration <= Parameters.chanceForMigration:
+                            #Check for max size of region
+                            if len(province.getSettlements()) == province.provinceSize:
+                                newTargetSettlement = Utils.randomFromCollection(province.getSettlements())
 
-                        else:
-                            # # TODO FIX PEOPLE CAN MOVE TO THE SAME VILLAGE
-                            # #Take lowest population as dest
-                            # lowestSettlementInRegion = region.getLowestPopulatedSettlement()
-                            # newTargetSettlement = lowestSettlementInRegion
-                            # #If lowest pop > lowest max pop * modifier create new setttlement
-                            # if lowestSettlementInRegion.getPopulation() > int(lowestSettlementInRegion.getMaxPopulation() * Parameters.percentageVillagePopulationThresholdForCreatingNewVillage):
-                                newSettlement = region.addSettlement(world)
-                                newSettlement.setRegion(settlement.getRegion())
-                                newSettlement.setMaxPopulation = Parameters.baseVillageSize
-                                newTargetSettlement = newSettlement
+                            else:
+                                # # TODO FIX PEOPLE CAN MOVE TO THE SAME VILLAGE
+                                # #Take lowest population as dest
+                                # lowestSettlementInRegion = region.getLowestPopulatedSettlement()
+                                # newTargetSettlement = lowestSettlementInRegion
+                                # #If lowest pop > lowest max pop * modifier create new setttlement
+                                # if lowestSettlementInRegion.getPopulation() > int(lowestSettlementInRegion.getMaxPopulation() * Parameters.percentageVillagePopulationThresholdForCreatingNewVillage):
+                                    newSettlement = province.addSettlement(world)
+                                    newSettlement.setRegion(settlement.getRegion())
+                                    newSettlement.setMaxPopulation = Parameters.baseVillageSize
+                                    newTargetSettlement = newSettlement
 
-                        #Migration Wave
-                        complexRandomMigrantsList = prepareMigration(settlement, newTargetSettlement, world)
-                        iniciateMigration(complexRandomMigrantsList, newTargetSettlement, world)
-                        splitFamiliesInMigration(world, region, newTargetSettlement, complexRandomMigrantsList)
-                end1 = time.perf_counter()
-                start2 = time.perf_counter()
-                #Upgrading from Village to City
-                if len(villagesList) >= (len(townList)+1) * (Parameters.villageToTownMultiplier + 1) - len(townList):
-                    randomVillage = Utils.randomFromCollection(villagesList)
-                    if randomVillage.getPopulation() > int(randomVillage.getMaxPopulation() * Parameters.percentageVillagePopulationThresholdForUpgradeToTown):
-                        chanceOfUpgradingToCity = Utils.randomRange(1, 100)
-                        if chanceOfUpgradingToCity < Parameters.chancePerYearToUpgradeVillageToTown:
-                            randomVillage.changeSettlementType(Settlements.TOWN)
-                            Utils.randomFromCollection(randomVillage.getRegion().getVillagesExProvisionToThisTown(randomVillage)).setProvision(randomVillage)
-                            Utils.randomFromCollection(randomVillage.getRegion().getVillagesExProvisionToThisTown(randomVillage)).setProvision(randomVillage)
-                            Utils.randomFromCollection(randomVillage.getRegion().getVillagesExProvisionToThisTown(randomVillage)).setProvision(randomVillage)
-                end2 = time.perf_counter()
-                regionTimeArray.append(0)
-                regionTimeArray.append(end1-start1)
-                regionTimeArray.append(end2-start2)
+                            #Migration Wave
+                            complexRandomMigrantsList = prepareMigration(settlement, newTargetSettlement, world)
+                            iniciateMigration(complexRandomMigrantsList, newTargetSettlement, world)
+                            splitFamiliesInMigration(world, region, province, newTargetSettlement, complexRandomMigrantsList)
+                    end1 = time.perf_counter()
+                    start2 = time.perf_counter()
+                    #Upgrading from Village to City
+                    if len(villagesList) >= (len(townList)+1) * (Parameters.villageToTownMultiplier + 1) - len(townList):
+                        randomVillage = Utils.randomFromCollection(villagesList)
+                        if randomVillage.getPopulation() > int(randomVillage.getMaxPopulation() * Parameters.percentageVillagePopulationThresholdForUpgradeToTown):
+                            chanceOfUpgradingToCity = Utils.randomRange(1, 100)
+                            if chanceOfUpgradingToCity < Parameters.chancePerYearToUpgradeVillageToTown:
+                                randomVillage.changeSettlementType(Settlements.TOWN)
+                                Utils.randomFromCollection(randomVillage.getProvince().getVillagesExProvisionToThisTown(randomVillage)).setProvision(randomVillage)
+                                Utils.randomFromCollection(randomVillage.getProvince().getVillagesExProvisionToThisTown(randomVillage)).setProvision(randomVillage)
+                                Utils.randomFromCollection(randomVillage.getProvince().getVillagesExProvisionToThisTown(randomVillage)).setProvision(randomVillage)
+                    end2 = time.perf_counter()
+                    regionTimeArray.append(0)
+                    regionTimeArray.append(end1-start1)
+                    regionTimeArray.append(end2-start2)
         timeArray.append(regionTimeArray)
 
     # print(timeArray)
@@ -447,146 +449,146 @@ def settlementGoodsProduction(world):
 
     if world.dayOfWeekFlag == 1:  # Only on Monday produce goods
         for region in world.getRegions():
+            for province in region.getProvinces():
+                for settlement in province.getSettlements():
 
-            for settlement in region.getSettlements():
-
-                mayorModifier = 1
+                    mayorModifier = 1
 
 
-                ## ADMIN PROD
-                #village center
-                if len(settlement.getAdminFeatures()[0].getWorkerList()) > 0:
+                    ## ADMIN PROD
+                    #village center
+                    if len(settlement.getAdminFeatures()[0].getWorkerList()) > 0:
 
-                    # flat bonus 5% if mayor
-                    mayorModifier = 1.05
-                    mayor = settlement.getAdminFeatures()[0].getWorkerList()[0]
+                        # flat bonus 5% if mayor
+                        mayorModifier = 1.05
+                        mayor = settlement.getAdminFeatures()[0].getWorkerList()[0]
 
-                    if Traits.LAZY in mayor.getTraits():
-                        mayorModifier = 0.8
-                    if Traits.DILIGENT in mayor.getTraits():
-                        mayorModifier = 1.2
-                    if Traits.GREEDY in mayor.getTraits():
-                        mayorModifier = 0.9
-                    if Traits.GREGARIOUS in mayor.getTraits():
-                        mayorModifier = 1.1
-                    if Traits.IMPATIENT in mayor.getTraits():
-                        mayorModifier = 0.9
-                    if Traits.PATIENT in mayor.getTraits():
-                        mayorModifier = 1.1
+                        if Traits.LAZY in mayor.getTraits():
+                            mayorModifier = 0.8
+                        if Traits.DILIGENT in mayor.getTraits():
+                            mayorModifier = 1.2
+                        if Traits.GREEDY in mayor.getTraits():
+                            mayorModifier = 0.9
+                        if Traits.GREGARIOUS in mayor.getTraits():
+                            mayorModifier = 1.1
+                        if Traits.IMPATIENT in mayor.getTraits():
+                            mayorModifier = 0.9
+                        if Traits.PATIENT in mayor.getTraits():
+                            mayorModifier = 1.1
 
-                    flatRate = 3
-                    if settlement.getAdminFeatures()[0].getName() == SFeat.getTownHall().getName():
-                        flatRate = 5
-                    mayor.changeFreeWealth(flatRate)
-                    settlement.changeFreeWealth(-flatRate)
+                        flatRate = 3
+                        if settlement.getAdminFeatures()[0].getName() == SFeat.getTownHall().getName():
+                            flatRate = 5
+                        mayor.changeFreeWealth(flatRate)
+                        settlement.changeFreeWealth(-flatRate)
 
-                #shrine
-                if len(settlement.getAdminFeatures()[1].getWorkerList()) > 0:
-                    flatRate = 3
-                    priest = settlement.getAdminFeatures()[1].getWorkerList()[0]
-                    priest.changeFreeWealth(flatRate)
-                    settlement.changeFreeWealth(-flatRate)
+                    #shrine
+                    if len(settlement.getAdminFeatures()[1].getWorkerList()) > 0:
+                        flatRate = 3
+                        priest = settlement.getAdminFeatures()[1].getWorkerList()[0]
+                        priest.changeFreeWealth(flatRate)
+                        settlement.changeFreeWealth(-flatRate)
 
-                ##  FOOD PRODUCTION
-                foodProd0 = settlement.getSettlementFoodProduced()
-                for foodTile in settlement.getFoodFeatures():
+                    ##  FOOD PRODUCTION
+                    foodProd0 = settlement.getSettlementFoodProduced()
+                    for foodTile in settlement.getFoodFeatures():
 
-                    foodProd = foodTile.prodYield * foodTile.foundationType['yieldModifier'] * mayorModifier / 100 * foodTile.getWorkersNumber()
+                        foodProd = foodTile.prodYield * foodTile.foundationType['yieldModifier'] * mayorModifier / 100 * foodTile.getWorkersNumber()
 
-                    if settlement.getProvision() is not None:
-                        settlement.getProvision().increaseSettlementFoodProduced(foodProd*Parameters.socage)
-                        settlement.increaseSettlementFoodProduced(foodProd*(1-Parameters.socage))
+                        if settlement.getProvision() is not None:
+                            settlement.getProvision().increaseSettlementFoodProduced(foodProd*Parameters.socage)
+                            settlement.increaseSettlementFoodProduced(foodProd*(1-Parameters.socage))
+                        else:
+                            settlement.increaseSettlementFoodProduced(foodProd)
+
+                        for worker in foodTile.getWorkerList():
+                            if worker.getGeneralHealth().value[0] <= 1:  # Only Healthy or weaken can work
+                                workerModifier = 0
+                                if Traits.LAZY in worker.getTraits():
+                                    workerModifier = -10
+                                if Traits.DILIGENT in worker.getTraits():
+                                    workerModifier = 10
+                                if worker.getGeneralHealth().value[1] == 1:  # weaken workers work less
+                                    workerModifier = round(workerModifier / 2)
+                                goodProduced = foodTile.prodYield * (foodTile.foundationType['yieldModifier'] + workerModifier) / 100
+                                worker.changeFreeWealth(goodProduced * (100 - settlement.getLocalIncomeTax()) / 100)
+                                settlement.changeFreeWealth(goodProduced * (settlement.getLocalIncomeTax()) / 100)
+
+                    foodProd1 = settlement.getSettlementFoodProduced()
+                    settlement.setSettlementFoodProducedLastYear(foodProd1-foodProd0)
+
+                    foodConsumed = 0
+                    for resident in settlement.getResidents():
+                        if resident.getAge() < 10:
+                            foodConsumed += 0.5
+                            settlement.increaseSettlementFoodConsumed(0.5)
+                        elif 10 <= resident.getAge() < 15:
+                            foodConsumed += 0.75
+                            settlement.increaseSettlementFoodConsumed(0.75)
+                        else:
+                            foodConsumed += 1
+                            settlement.increaseSettlementFoodConsumed(1)
+                    settlement.setSettlementFoodConsumedLastYear(foodConsumed)
+                    if settlement.getFreeFood() + (foodProd1 - foodProd0) - foodConsumed < 0:
+                        settlement.setFreeFood(0)
                     else:
-                        settlement.increaseSettlementFoodProduced(foodProd)
+                        settlement.changeFreeFood(foodProd1 - foodProd0 - foodConsumed)
 
-                    for worker in foodTile.getWorkerList():
-                        if worker.getGeneralHealth().value[0] <= 1:  # Only Healthy or weaken can work
-                            workerModifier = 0
-                            if Traits.LAZY in worker.getTraits():
-                                workerModifier = -10
-                            if Traits.DILIGENT in worker.getTraits():
-                                workerModifier = 10
-                            if worker.getGeneralHealth().value[1] == 1:  # weaken workers work less
-                                workerModifier = round(workerModifier / 2)
-                            goodProduced = foodTile.prodYield * (foodTile.foundationType['yieldModifier'] + workerModifier) / 100
-                            worker.changeFreeWealth(goodProduced * (100 - settlement.getLocalIncomeTax()) / 100)
-                            settlement.changeFreeWealth(goodProduced * (settlement.getLocalIncomeTax()) / 100)
+                    settlement.setNetFoodLastYear(foodProd1-foodProd0-foodConsumed)
 
-                foodProd1 = settlement.getSettlementFoodProduced()
-                settlement.setSettlementFoodProducedLastYear(foodProd1-foodProd0)
+                    ##PRODUCTION PRODUCTION
+                    prodProd0 = settlement.getSettlementProdProduced()
 
-                foodConsumed = 0
-                for resident in settlement.getResidents():
-                    if resident.getAge() < 10:
-                        foodConsumed += 0.5
-                        settlement.increaseSettlementFoodConsumed(0.5)
-                    elif 10 <= resident.getAge() < 15:
-                        foodConsumed += 0.75
-                        settlement.increaseSettlementFoodConsumed(0.75)
-                    else:
-                        foodConsumed += 1
-                        settlement.increaseSettlementFoodConsumed(1)
-                settlement.setSettlementFoodConsumedLastYear(foodConsumed)
-                if settlement.getFreeFood() + (foodProd1 - foodProd0) - foodConsumed < 0:
-                    settlement.setFreeFood(0)
-                else:
-                    settlement.changeFreeFood(foodProd1 - foodProd0 - foodConsumed)
+                    for prodTile in settlement.getProdFeatures():
 
-                settlement.setNetFoodLastYear(foodProd1-foodProd0-foodConsumed)
+                        prodProd = prodTile.prodYield * prodTile.foundationType['yieldModifier'] * mayorModifier / 100 * prodTile.getWorkersNumber()
 
-                ##PRODUCTION PRODUCTION
-                prodProd0 = settlement.getSettlementProdProduced()
+                        if settlement.getProvision() is not None:
+                            settlement.getProvision().increaseSettlementProdProduced(prodProd*Parameters.socage)
+                            settlement.increaseSettlementProdProduced(prodProd*(1-Parameters.socage))
+                        else:
+                            settlement.increaseSettlementProdProduced(prodProd)
+                        for worker in prodTile.getWorkerList():
+                            if worker.getGeneralHealth().value[0] <= 1:
+                                workerModifier = 0
+                                if Traits.LAZY in worker.getTraits():
+                                    workerModifier = -10
+                                if Traits.DILIGENT in worker.getTraits():
+                                    workerModifier = 10
+                                if worker.getGeneralHealth().value[1] == 1:  # weaken workers work less
+                                    workerModifier = round(workerModifier / 2)
+                                goodProduced = prodTile.prodYield * (prodTile.foundationType['yieldModifier'] + workerModifier) / 100
+                                worker.changeFreeWealth(goodProduced * (100-settlement.getLocalIncomeTax())/100)
+                                settlement.changeFreeWealth(goodProduced * (settlement.getLocalIncomeTax())/100)
 
-                for prodTile in settlement.getProdFeatures():
-
-                    prodProd = prodTile.prodYield * prodTile.foundationType['yieldModifier'] * mayorModifier / 100 * prodTile.getWorkersNumber()
-
-                    if settlement.getProvision() is not None:
-                        settlement.getProvision().increaseSettlementProdProduced(prodProd*Parameters.socage)
-                        settlement.increaseSettlementProdProduced(prodProd*(1-Parameters.socage))
-                    else:
-                        settlement.increaseSettlementProdProduced(prodProd)
-                    for worker in prodTile.getWorkerList():
-                        if worker.getGeneralHealth().value[0] <= 1:
-                            workerModifier = 0
-                            if Traits.LAZY in worker.getTraits():
-                                workerModifier = -10
-                            if Traits.DILIGENT in worker.getTraits():
-                                workerModifier = 10
-                            if worker.getGeneralHealth().value[1] == 1:  # weaken workers work less
-                                workerModifier = round(workerModifier / 2)
-                            goodProduced = prodTile.prodYield * (prodTile.foundationType['yieldModifier'] + workerModifier) / 100
-                            worker.changeFreeWealth(goodProduced * (100-settlement.getLocalIncomeTax())/100)
-                            settlement.changeFreeWealth(goodProduced * (settlement.getLocalIncomeTax())/100)
-
-                prodProd1 = settlement.getSettlementProdProduced()
-                settlement.changeFreeProd(prodProd1 - prodProd0)
-                settlement.setSettlementProdProducedLastYear(prodProd1 - prodProd0)
+                    prodProd1 = settlement.getSettlementProdProduced()
+                    settlement.changeFreeProd(prodProd1 - prodProd0)
+                    settlement.setSettlementProdProducedLastYear(prodProd1 - prodProd0)
 
 
-                #UPGRADING FEATURES
+                    #UPGRADING FEATURES
 
-                if float(settlement.getFreeProd()) > 0:
-    #                if settlement.getSettlementFoodProducedLastYear() - settlement.getSettlementFoodConsumedLastYear() < int(round(len(settlement.getResidents())/2)):
-                        for tile in settlement.getFoodFeatures():
-                            if len(SFeat.getPotencialUpgradesForZone(tile.getName())) > 0:
-                                upgradable = Utils.randomFromCollectionWithWeight(SFeat.getPotencialUpgradesForZone(tile.getName()))
-                                #for upgradable in (SFeat.getPotencialUpgradesForZone(tile.getName())):
-                                if float(settlement.getFreeProd()) >= float(upgradable.value.getUpgradeCost()):
-                                    settlement.changeFreeProd(-upgradable.value.getUpgradeCost())
-                                    newFeature = SFeat.createZones()[SFeat.getFeatureIndexFromName(upgradable.value.getName())]
-                                    settlement.upgradeTile(tile, newFeature, world)
-                                    return
+                    if float(settlement.getFreeProd()) > 0:
+        #                if settlement.getSettlementFoodProducedLastYear() - settlement.getSettlementFoodConsumedLastYear() < int(round(len(settlement.getResidents())/2)):
+                            for tile in settlement.getFoodFeatures():
+                                if len(SFeat.getPotencialUpgradesForZone(tile.getName())) > 0:
+                                    upgradable = Utils.randomFromCollectionWithWeight(SFeat.getPotencialUpgradesForZone(tile.getName()))
+                                    #for upgradable in (SFeat.getPotencialUpgradesForZone(tile.getName())):
+                                    if float(settlement.getFreeProd()) >= float(upgradable.value.getUpgradeCost()):
+                                        settlement.changeFreeProd(-upgradable.value.getUpgradeCost())
+                                        newFeature = SFeat.createZones()[SFeat.getFeatureIndexFromName(upgradable.value.getName())]
+                                        settlement.upgradeTile(tile, newFeature, world)
+                                        return
 
-                        for tile in settlement.getProdFeatures():
-                            if len(SFeat.getPotencialUpgradesForZone(tile.getName())) > 0:
-                                upgradable = Utils.randomFromCollectionWithWeight(SFeat.getPotencialUpgradesForZone(tile.getName()))
-        #                        for upgradable in (SFeat.getPotencialUpgradesForZone(tile.getName())):
-                                if float(settlement.getFreeProd()) >= float(upgradable.value.getUpgradeCost()):
-                                    settlement.changeFreeProd(-upgradable.value.getUpgradeCost())
-                                    newFeature = SFeat.createZones()[SFeat.getFeatureIndexFromName(upgradable.value.getName())]
-                                    settlement.upgradeTile(tile, newFeature, world)
-                                    return
+                            for tile in settlement.getProdFeatures():
+                                if len(SFeat.getPotencialUpgradesForZone(tile.getName())) > 0:
+                                    upgradable = Utils.randomFromCollectionWithWeight(SFeat.getPotencialUpgradesForZone(tile.getName()))
+            #                        for upgradable in (SFeat.getPotencialUpgradesForZone(tile.getName())):
+                                    if float(settlement.getFreeProd()) >= float(upgradable.value.getUpgradeCost()):
+                                        settlement.changeFreeProd(-upgradable.value.getUpgradeCost())
+                                        newFeature = SFeat.createZones()[SFeat.getFeatureIndexFromName(upgradable.value.getName())]
+                                        settlement.upgradeTile(tile, newFeature, world)
+                                        return
 
 
 def accommodationManagment(world):
@@ -594,36 +596,38 @@ def accommodationManagment(world):
     if world.dayOfWeekFlag == 1:  # Only on Monday produce goods
 
         for region in world.getRegions():
+            for province in region.getProvinces():
+                for settlement in province.getSettlements():
 
-            for settlement in region.getSettlements():
+                    for house in settlement.getHousing():
 
-                for house in settlement.getHousing():
+                        HouseFunctions.payForUpkeep(house)
 
-                    HouseFunctions.payForUpkeep(house)
+                        if house.getHouseDurability() == 0:
+                            if len(house.getHouseResidents()) == 0:
+                                settlement.removeHouse(house)
+                            else:
+                                HouseFunctions.downgradeHouse(house)
 
-                    if house.getHouseDurability() == 0:
-                        if len(house.getHouseResidents()) == 0:
-                            settlement.removeHouse(house)
-                        else:
-                            HouseFunctions.downgradeHouse(house)
-
-                    HouseFunctions.payForUpgrade(house)
+                        HouseFunctions.payForUpgrade(house)
 
 
 def associateManagement(world):
 
     for region in world.getRegions():
 
-        for settlement in region.getSettlements():
+        for province in region.getProvinces():
 
-            for employee in settlement.getEmployedResidentsList():
+            for settlement in province.getSettlements():
 
-                for employeeSecond in settlement.getEmployedResidentsList():
+                for employee in settlement.getEmployedResidentsList():
 
-                    if employeeSecond not in employee.getKnownAssociates() or employee != employeeSecond:
+                    for employeeSecond in settlement.getEmployedResidentsList():
 
-                        employee.addKnownAssociates(employeeSecond, 0)
-                        employeeSecond.addKnownAssociates(employee, 0)
+                        if employeeSecond not in employee.getKnownAssociates() or employee != employeeSecond:
+
+                            employee.addKnownAssociates(employeeSecond, 0)
+                            employeeSecond.addKnownAssociates(employee, 0)
 
 
 
@@ -631,94 +635,95 @@ def settlementWorkersManagement(world):
 
     for region in world.getRegions():
 
-        for settlement in region.getSettlements():
+        for province in region.getProvinces():
+            for settlement in province.getSettlements():
 
-                loopBreaker = 0
-                basicAdminJobWeight = 10
-                basicFoodJobWeight = 1
-                basicProdJobWeight = 1
+                    loopBreaker = 0
+                    basicAdminJobWeight = 10
+                    basicFoodJobWeight = 1
+                    basicProdJobWeight = 1
 
-                unemployedWorkerList = settlement.getUnemployedResidentsList()
+                    unemployedWorkerList = settlement.getUnemployedResidentsList()
 
-                if len(unemployedWorkerList) > 0:
-                    if settlement.getSettlementFoodProducedLastYear() <= 0:
+                    if len(unemployedWorkerList) > 0:
+                        if settlement.getSettlementFoodProducedLastYear() <= 0:
 
-                        basicFoodJobWeight *= 20
+                            basicFoodJobWeight *= 20
 
-                    if settlement.getSettlementProdProducedLastYear() == 0:
-                        basicProdJobWeight *= 2
+                        if settlement.getSettlementProdProducedLastYear() == 0:
+                            basicProdJobWeight *= 2
 
-                    adminFreeWorkplacesSpots = []
-                    for adminTile in settlement.getAdminFeatures():
-                        for occupations in range(adminTile.getFreeWorkersSlots()):
-                            adminFreeWorkplacesSpots.append([adminTile, occupations])
+                        adminFreeWorkplacesSpots = []
+                        for adminTile in settlement.getAdminFeatures():
+                            for occupations in range(adminTile.getFreeWorkersSlots()):
+                                adminFreeWorkplacesSpots.append([adminTile, occupations])
 
-                    foodFreeWorkplacesSpots = []
-                    for foodTile in settlement.getFoodFeatures():
-                        for occupations in range(foodTile.getFreeWorkersSlots()):
-                            foodFreeWorkplacesSpots.append([foodTile, occupations])
+                        foodFreeWorkplacesSpots = []
+                        for foodTile in settlement.getFoodFeatures():
+                            for occupations in range(foodTile.getFreeWorkersSlots()):
+                                foodFreeWorkplacesSpots.append([foodTile, occupations])
 
-                    prodFreeWorkplacesSpots = []
-                    for prodTile in settlement.getProdFeatures():
-                        for occupations in range(prodTile.getFreeWorkersSlots()):
-                            prodFreeWorkplacesSpots.append([prodTile, occupations])
+                        prodFreeWorkplacesSpots = []
+                        for prodTile in settlement.getProdFeatures():
+                            for occupations in range(prodTile.getFreeWorkersSlots()):
+                                prodFreeWorkplacesSpots.append([prodTile, occupations])
 
-                    numberOfFreeWorkplaces = len(adminFreeWorkplacesSpots) + len(foodFreeWorkplacesSpots) + len(prodFreeWorkplacesSpots)
-                    if len(adminFreeWorkplacesSpots) == 0 or settlement.getFreeWealth() < 0:
-                        basicAdminJobWeight = 0
-                    if len(foodFreeWorkplacesSpots) == 0:
-                        basicFoodJobWeight = 0
-                    if len(prodFreeWorkplacesSpots) == 0:
-                        basicProdJobWeight = 0
+                        numberOfFreeWorkplaces = len(adminFreeWorkplacesSpots) + len(foodFreeWorkplacesSpots) + len(prodFreeWorkplacesSpots)
+                        if len(adminFreeWorkplacesSpots) == 0 or settlement.getFreeWealth() < 0:
+                            basicAdminJobWeight = 0
+                        if len(foodFreeWorkplacesSpots) == 0:
+                            basicFoodJobWeight = 0
+                        if len(prodFreeWorkplacesSpots) == 0:
+                            basicProdJobWeight = 0
 
-                    weightedAdminJobs = len(adminFreeWorkplacesSpots) * basicAdminJobWeight
-                    weightedFoodJobs = len(foodFreeWorkplacesSpots) * basicFoodJobWeight
-                    weightedProdJobs = len(prodFreeWorkplacesSpots) * basicProdJobWeight
+                        weightedAdminJobs = len(adminFreeWorkplacesSpots) * basicAdminJobWeight
+                        weightedFoodJobs = len(foodFreeWorkplacesSpots) * basicFoodJobWeight
+                        weightedProdJobs = len(prodFreeWorkplacesSpots) * basicProdJobWeight
 
-                    if basicAdminJobWeight + basicFoodJobWeight + basicProdJobWeight > 0 and weightedAdminJobs + weightedFoodJobs + weightedProdJobs > 0:
+                        if basicAdminJobWeight + basicFoodJobWeight + basicProdJobWeight > 0 and weightedAdminJobs + weightedFoodJobs + weightedProdJobs > 0:
 
-                        for freeWorkPlace in range(numberOfFreeWorkplaces):
-                            if loopBreaker == 10:
-                                break
-                            if len(unemployedWorkerList) == 0:
-                                break
+                            for freeWorkPlace in range(numberOfFreeWorkplaces):
+                                if loopBreaker == 10:
+                                    break
+                                if len(unemployedWorkerList) == 0:
+                                    break
 
-                            if weightedAdminJobs + weightedFoodJobs + weightedProdJobs == 0:
-                                break
+                                if weightedAdminJobs + weightedFoodJobs + weightedProdJobs == 0:
+                                    break
 
-                            randomJobSite = Utils.randomRange(1, weightedAdminJobs + weightedFoodJobs + weightedProdJobs)
+                                randomJobSite = Utils.randomRange(1, weightedAdminJobs + weightedFoodJobs + weightedProdJobs)
 
-                            if len(adminFreeWorkplacesSpots) > 0 and randomJobSite <= weightedAdminJobs:
-                                newWorker = Utils.randomFromCollection(unemployedWorkerList)
-                                randomJob = Utils.randomRange(0, len(adminFreeWorkplacesSpots)-1)
-                                if adminFreeWorkplacesSpots[randomJob][0].getOccupationName() != 'Priest' or (adminFreeWorkplacesSpots[randomJob][0].getOccupationName() == 'Priest' and newWorker.getSex() == Sexes.MALE and newWorker.getSpouse() is None):
-                                    hireEmployee(newWorker, adminFreeWorkplacesSpots[randomJob][0], world)
+                                if len(adminFreeWorkplacesSpots) > 0 and randomJobSite <= weightedAdminJobs:
+                                    newWorker = Utils.randomFromCollection(unemployedWorkerList)
+                                    randomJob = Utils.randomRange(0, len(adminFreeWorkplacesSpots)-1)
+                                    if adminFreeWorkplacesSpots[randomJob][0].getOccupationName() != 'Priest' or (adminFreeWorkplacesSpots[randomJob][0].getOccupationName() == 'Priest' and newWorker.getSex() == Sexes.MALE and newWorker.getSpouse() is None):
+                                        hireEmployee(newWorker, adminFreeWorkplacesSpots[randomJob][0], world)
+                                        unemployedWorkerList.remove(newWorker)
+                                        del adminFreeWorkplacesSpots[randomJob]
+                                        weightedAdminJobs -= basicAdminJobWeight
+                                    else:
+                                        loopBreaker +=1
+                                        continue
+
+                                elif len(foodFreeWorkplacesSpots) > 0 and randomJobSite <= weightedAdminJobs + weightedFoodJobs:
+                                    newWorker = Utils.randomFromCollection(unemployedWorkerList)
+                                    randomJob = Utils.randomRange(0, len(foodFreeWorkplacesSpots)-1)
+                                    hireEmployee(newWorker, foodFreeWorkplacesSpots[randomJob][0], world)
                                     unemployedWorkerList.remove(newWorker)
-                                    del adminFreeWorkplacesSpots[randomJob]
-                                    weightedAdminJobs -= basicAdminJobWeight
-                                else:
-                                    loopBreaker +=1
-                                    continue
+                                    del foodFreeWorkplacesSpots[randomJob]
+                                    weightedFoodJobs -= basicFoodJobWeight
 
-                            elif len(foodFreeWorkplacesSpots) > 0 and randomJobSite <= weightedAdminJobs + weightedFoodJobs:
-                                newWorker = Utils.randomFromCollection(unemployedWorkerList)
-                                randomJob = Utils.randomRange(0, len(foodFreeWorkplacesSpots)-1)
-                                hireEmployee(newWorker, foodFreeWorkplacesSpots[randomJob][0], world)
-                                unemployedWorkerList.remove(newWorker)
-                                del foodFreeWorkplacesSpots[randomJob]
-                                weightedFoodJobs -= basicFoodJobWeight
+                                elif len(prodFreeWorkplacesSpots) > 0 and randomJobSite <= weightedAdminJobs + weightedFoodJobs + weightedProdJobs:
+                                    newWorker = Utils.randomFromCollection(unemployedWorkerList)
+                                    randomJob = Utils.randomRange(0, len(prodFreeWorkplacesSpots)-1)
+                                    hireEmployee(newWorker, prodFreeWorkplacesSpots[randomJob][0], world)
+                                    unemployedWorkerList.remove(newWorker)
+                                    del prodFreeWorkplacesSpots[randomJob]
+                                    weightedProdJobs -= basicProdJobWeight
 
-                            elif len(prodFreeWorkplacesSpots) > 0 and randomJobSite <= weightedAdminJobs + weightedFoodJobs + weightedProdJobs:
-                                newWorker = Utils.randomFromCollection(unemployedWorkerList)
-                                randomJob = Utils.randomRange(0, len(prodFreeWorkplacesSpots)-1)
-                                hireEmployee(newWorker, prodFreeWorkplacesSpots[randomJob][0], world)
-                                unemployedWorkerList.remove(newWorker)
-                                del prodFreeWorkplacesSpots[randomJob]
-                                weightedProdJobs -= basicProdJobWeight
-
-                if settlement.getSettlementFoodProducedLastYear() <= 0:
-                    fireAllEmployees(settlement.getAdminFeatures()[0], world)
-                    fireAllEmployees(settlement.getProdFeatures()[0], world)
+                    if settlement.getSettlementFoodProducedLastYear() <= 0:
+                        fireAllEmployees(settlement.getAdminFeatures()[0], world)
+                        fireAllEmployees(settlement.getProdFeatures()[0], world)
 
 
 def hireEmployee(employee, tile, world):
@@ -768,7 +773,7 @@ def prepareMigration(settlement, newTargetSettlement, world):
 
     return complexRandomMigrantList
 
-def splitFamiliesInMigration(world, region, newTargetSettlement, complexRandomMigrantsList):
+def splitFamiliesInMigration(world, region, province, newTargetSettlement, complexRandomMigrantsList):
 
 
     for randomMigrantList in complexRandomMigrantsList:
@@ -789,6 +794,7 @@ def splitFamiliesInMigration(world, region, newTargetSettlement, complexRandomMi
                 family = Family(newFamilyName)
                 family.setFoundingYear(world.getYear())
                 family.setOriginRegion(region)
+                family.setOriginProvince(province)
                 family.setOriginSettlement(newTargetSettlement)
                 family.setOriginCulture(randomMigrantList[0].familyObjRef.getOriginCulture())
                 family.setFamilyBranchedFrom(randomMigrantList[0].familyObjRef)
@@ -806,6 +812,7 @@ def splitFamiliesInMigration(world, region, newTargetSettlement, complexRandomMi
                     family = Family(newFamilyName)
                     family.setFoundingYear(world.getYear())
                     family.setOriginRegion(region)
+                    family.setOriginProvince(province)
                     family.setOriginSettlement(newTargetSettlement)
                     family.setOriginCulture(randomMigrantList[0].familyObjRef.getOriginCulture())
                     family.setFamilyBranchedFrom(randomMigrantList[0].familyObjRef)
@@ -1035,31 +1042,32 @@ def deathChangeFromGivingBirth(person, child, modifier=0):
 def assosiatesFriendsAndFoes(world):
 
     for region in world.getRegions():
-        for settlement in region.getSettlements():
-            for person in settlement.getEmployedResidentsList():
-                for fellowEmployee in person.getOccupation().getWorkerList():
-                    if fellowEmployee != person and fellowEmployee not in person.getKnownAssociates():
-                        person.addKnownAssociates(fellowEmployee)
-                        fellowEmployee.addKnownAssociates(person)
-                        person1LikenessIndicatorForPerson2 = Utils.checkForLikedTraisInPerson2(person, fellowEmployee)
-                        person2LikenessIndicatorForPerson1 = Utils.checkForLikedTraisInPerson2(fellowEmployee, person)
-                        if person1LikenessIndicatorForPerson2 > 0 and person2LikenessIndicatorForPerson1 > 0:
-                            if fellowEmployee not in person.getFriends():
-                                person.addFriends(fellowEmployee)
-                                PLEH.gotFriend(person, fellowEmployee, world)
-                            if person not in fellowEmployee.getFriends():
-                                fellowEmployee.addFriends(person)
-                                PLEH.gotFriend(fellowEmployee, person, world)
+        for province in region.getProvinces():
+            for settlement in province.getSettlements():
+                for person in settlement.getEmployedResidentsList():
+                    for fellowEmployee in person.getOccupation().getWorkerList():
+                        if fellowEmployee != person and fellowEmployee not in person.getKnownAssociates():
+                            person.addKnownAssociates(fellowEmployee)
+                            fellowEmployee.addKnownAssociates(person)
+                            person1LikenessIndicatorForPerson2 = Utils.checkForLikedTraisInPerson2(person, fellowEmployee)
+                            person2LikenessIndicatorForPerson1 = Utils.checkForLikedTraisInPerson2(fellowEmployee, person)
+                            if person1LikenessIndicatorForPerson2 > 0 and person2LikenessIndicatorForPerson1 > 0:
+                                if fellowEmployee not in person.getFriends():
+                                    person.addFriends(fellowEmployee)
+                                    PLEH.gotFriend(person, fellowEmployee, world)
+                                if person not in fellowEmployee.getFriends():
+                                    fellowEmployee.addFriends(person)
+                                    PLEH.gotFriend(fellowEmployee, person, world)
 
-                        person1DislikenessIndicatorForPerson2 = Utils.checkForDislikedTraisInPerson2(person, fellowEmployee)
-                        person2DislikenessIndicatorForPerson1 = Utils.checkForDislikedTraisInPerson2(fellowEmployee, person)
-                        if person1DislikenessIndicatorForPerson2 > 0 and person2DislikenessIndicatorForPerson1 > 0:
-                            if fellowEmployee not in person.getFriends():
-                                person.addRivals(fellowEmployee)
-                                PLEH.gotRival(person, fellowEmployee, world)
-                            if person not in fellowEmployee.getFriends():
-                                fellowEmployee.addRivals(person)
-                                PLEH.gotRival(fellowEmployee, person, world)
+                            person1DislikenessIndicatorForPerson2 = Utils.checkForDislikedTraisInPerson2(person, fellowEmployee)
+                            person2DislikenessIndicatorForPerson1 = Utils.checkForDislikedTraisInPerson2(fellowEmployee, person)
+                            if person1DislikenessIndicatorForPerson2 > 0 and person2DislikenessIndicatorForPerson1 > 0:
+                                if fellowEmployee not in person.getFriends():
+                                    person.addRivals(fellowEmployee)
+                                    PLEH.gotRival(person, fellowEmployee, world)
+                                if person not in fellowEmployee.getFriends():
+                                    fellowEmployee.addRivals(person)
+                                    PLEH.gotRival(fellowEmployee, person, world)
 
 
     for person in world.getAlivePeople():

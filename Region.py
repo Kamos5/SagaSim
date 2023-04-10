@@ -12,9 +12,6 @@ class Region():
         self.cultureNumber = 0
         self.regionNumber = 0
         self.regionName = regionName
-        self.settlements = []
-        self.regionSize = Parameters.regionSizeMax
-        self.activeSettlements = 0
         self.regionCulture = ''
         self.regionColor = (0, 0, 0)
         self.regionStartingCords = (0, 0)
@@ -41,12 +38,6 @@ class Region():
 
     def getCultureNumber(self):
         return self.cultureNumber
-
-    def canAddSettlement(self):
-        if len(self.getSettlements()) < self.regionSize:
-            return True
-        else:
-            return False
 
     def getWeather(self):
         return self.weather
@@ -89,51 +80,6 @@ class Region():
     def removeRegionTerritory(self, removeRegion):
         self.regionTerritories.remove(removeRegion)
 
-    def getTowns(self):
-
-        townList = []
-        for settlement in self.getSettlements():
-            if settlement.getSettlementType() == Enums.Settlements.TOWN:
-                townList.append(settlement)
-
-        return townList
-
-    def getVillages(self):
-
-        villageList = []
-        for settlement in self.getSettlements():
-            if settlement.getSettlementType() == Enums.Settlements.VILLAGE:
-                villageList.append(settlement)
-
-        return villageList
-
-    def getVillagesExProvisionToThisTown(self, town):
-
-        villageList = []
-        for settlement in self.getSettlements():
-            if settlement.getSettlementType() == Enums.Settlements.VILLAGE and settlement.getProvision() is not town:
-                villageList.append(settlement)
-
-        return villageList
-
-    def addInitSettlement(self, world):
-        newSettlement = Settlements(self.regionNumber, world.getYear())
-        self.settlements.append(newSettlement)
-        newSettlement.maxPopulation = Parameters.baseVillageSize
-
-        return newSettlement
-
-    def addSettlement(self, world):
-        newSettlement = Settlements(self.regionNumber, world.getYear())
-        self.settlements.append(newSettlement)
-        newSettlement.maxPopulation = Parameters.baseVillageSize
-        newSettlement.setProvision(Utils.randomFromCollection(self.getTowns()))
-
-        return newSettlement
-
-    def getSettlementFromIndex(self, index):
-        return self.settlements[index]
-
     def getRegionName(self):
         return self.regionName
 
@@ -156,27 +102,6 @@ class Region():
 
     def resetDaysSinceWeatherChange(self):
         self.daysSinceLastWeatherChange = 0
-
-    def getActiveSettlements(self):
-        return self.activeSettlements
-    def increaseActiveSettlements(self):
-        self.activeSettlements += 1
-    def decreaseActiveSettlements(self):
-        self.activeSettlements -= 1
-    def setActiveSettlements(self, newActiveSettlements):
-        self.activeSettlements = newActiveSettlements
-
-    def getLowestPopulatedSettlement(self):
-
-        tempMinPopVal = 1000000
-        lowestPopSettlement = None
-        index = 0
-        for settlement in self.getSettlements():
-            if len(settlement.getResidents()) < tempMinPopVal:
-                tempMinPopVal = len(settlement.getResidents())
-                lowestPopSettlement = settlement
-            index += 1
-        return lowestPopSettlement
 
     def getWeatherHistory(self):
         return self.weatherHistory

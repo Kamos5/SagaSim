@@ -373,8 +373,9 @@ class World:
         for region in self.regions:
             townInitList = []
             for i in range(self.settlementsInitNumber):
-                newSettlement = region.addInitSettlement(self)
+                newSettlement = region.getProvinces()[0].addInitSettlement(self, region)
                 newSettlement.setRegion(region)
+                newSettlement.setProvince(region.getProvinces()[0])
                 # First settlement is always TOWN
                 if i == 0:
                     newSettlement.changeSettlementType(Settlements.TOWN)

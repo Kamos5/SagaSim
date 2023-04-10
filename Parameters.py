@@ -27,8 +27,8 @@ migrationWaveForVillage = 15
 
 chanceForChangingLastNameDuringMigration = 25  # aka 5% to chance create new branch family
 
-regionSizeMin = 4
-regionSizeMax = 4
+provinceSizeMin = 4
+provinceSizeMax = 4
 
 # socage -> % production to homeTown TODO _ FIXFIXFIX
 socage = 0

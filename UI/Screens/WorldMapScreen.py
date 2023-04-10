@@ -252,7 +252,7 @@ class WorldMapScreen:
                 forLater.add(worldMapObjClass)
 
         for worldMapObjClass in forLater:
-
+            # pixelObject = worldMapObjClass
             if isinstance(pixelObject, Region):
                 self.showRegionNamesOnMap(pixelObject)
                 continue
