@@ -180,7 +180,7 @@ copyMusslimList = englishSettlementsNames.copy()
 copyRomanList = englishSettlementsNames.copy()
 copyAfricanList = englishSettlementsNames.copy()
 copyEgyptianList = egyptianSettlementsNames.copy()
-
+namesPicked = 0
 settlementsNamesStr = 'SettlementsNames'
 settlementsNamesStrLowerFirst = settlementsNamesStr[0].lower() + settlementsNamesStr[1:]
 

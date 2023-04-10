@@ -103,6 +103,35 @@
         "Albion",
         "Blighty"]
       },
+    "englishProvinceNames": {
+      "provinceNames": [
+        "Albany",
+        "Connacht",
+        "Cornwall",
+        "Cumbria",
+        "Deheubarth",
+        "East Anglia",
+        "Essex",
+        "Galloway",
+        "Gwent",
+        "Gwynedd",
+        "Hwicce",
+        "Kent",
+        "Lancaster",
+        "Lothian",
+        "Man",
+        "Meath",
+        "Mercia",
+        "Moray",
+        "Munster",
+        "Northumberland",
+        "Powys",
+        "Somerset",
+        "The Isles",
+        "Ulster",
+        "Wessex",
+        "York"]
+    },
     "englishSettlementsNames": {
       "settlementsNames": [
         "Amesbury",
@@ -213,6 +242,35 @@
         "Muspelheim",
         "Saami"]
       },
+    "norseProvinceNames": {
+      "provinceNames": [
+        "Bergslagen",
+        "Bremen",
+        "Finnmark",
+        "Hälsingland",
+        "Holstein",
+        "Jämtland",
+        "Jylland",
+        "Karelia",
+        "Kola",
+        "Lapland",
+        "Nidaros",
+        "Oppland",
+        "Orkney",
+        "Östergötland",
+        "Ostlandet",
+        "Ostrobothnia",
+        "Pohjanmaa",
+        "Scania",
+        "Sjælland",
+        "Smáland",
+        "Suomi",
+        "Uppland",
+        "Värend",
+        "Västergötland",
+        "Vestlandet"
+]
+    },
     "norseSettlementsNames": {
       "settlementsNames": [
         "Aebeltoft",
@@ -432,6 +490,24 @@
         "Antes",
         "Sclaveni"]
       },
+    "slavicProvinceNames": {
+      "provinceNames": [
+        "Courland",
+        "Greater Poland",
+        "Kuyavia",
+        "Latgale",
+        "Lesser Poland",
+        "Lithuania",
+        "Livonia",
+        "Mazovia",
+        "Pomeralia",
+        "Prussia",
+        "Rügen",
+        "Samogitia",
+        "Silesia",
+        "Yatvingia"
+]
+    },
     "slavicSettlementsNames": {
       "settlementsNames": [
         "Kalisz",
@@ -604,6 +680,21 @@
         "Tawy",
         "Kush"]
       },
+    "egyptianProvinceNames": {
+      "provinceNames": [
+        "Alexandria",
+        "Aswan",
+        "Asyut",
+        "Cairo",
+        "Damietta",
+        "Faiyum",
+        "Paraetonium",
+        "Sinai",
+        "Giza",
+        "Dakahila",
+        "Nobatia",
+        "Makuria"]
+    },
     "egyptianSettlementsNames": {
       "settlementsNames": [
         "Men-nefer",
@@ -1005,6 +1096,25 @@
         "Moesiaria",
         "Viennensia"]
       },
+    "romanProvinceNames": {
+      "provinceNames": [
+        "Abruzzo",
+        "Ancona",
+        "Corsica",
+        "Ferrara",
+        "Genoa",
+        "Latium",
+        "Milano",
+        "Modena",
+        "Pisa",
+        "Sardinia",
+        "Spoleto",
+        "Susa",
+        "Tuscany",
+        "Venice",
+        "Verona"
+      ]
+    },
     "romanSettlementsNames": {
       "settlementsNames": [
         "Rome",
@@ -1212,6 +1322,46 @@
     },
     "genericSettlementsNames": {
       "settlementsNames": ["Genetic Settlement Name"]
+    },
+    "genericProvinceNames": {
+      "provinceNames": ["Genetic Settlement Name"]
+    },
+    "genericSeaNames": {
+      "seaNames": [
+        "Adriatic Sea",
+        "Aegean Sea",
+        "Alboran Sea",
+        "Balearic Sea",
+        "Baltic Sea",
+        "Barents Sea",
+        "Black Sea",
+        "Cantabrian Sea",
+        "Celtic Sea",
+        "Denmark Strait",
+        "Eemian Sea",
+        "Firth of Lorn",
+        "Greenland Sea",
+        "Ionian Sea",
+        "Irish Sea",
+        "Irminger Sea",
+        "Kara Sea",
+        "Kven Sea",
+        "Levantine Sea",
+        "Ligurian Sea",
+        "Malin Sea",
+        "Mediterranean Sea",
+        "North Sea",
+        "Norwegian Sea",
+        "Pechora Sea",
+        "Queen Victoria Sea",
+        "Sea of Azov",
+        "The Minch",
+        "Tyrrhenian Sea",
+        "Wandel Sea",
+        "West Ice",
+        "White Sea"
+      ]
     }
+
   }
 }

@@ -4,24 +4,29 @@ from PIL import ImageFont
 
 class Label2:
 
-    def __init__(self, text, font, clickable=False, focused=False, horizontalMargin = 2, verticalMargin = 2, borderSize=1):
+    def __init__(self, text, font, clickable=False, focused=False, horizontalMargin = 2, verticalMargin = 2, borderSize=1, onlyText = False, fontColor = (220, 220, 220)):
 
+        self.onlyText = onlyText
         fontW, fontH = font.size(text)
         self.horizontalMargin = horizontalMargin
         self.verticalMargin = verticalMargin
         w = fontW + 2 * borderSize + 2 * self.horizontalMargin
         h = fontH + 2 * borderSize + 2 * self.verticalMargin
-        self.localSurface = pygame.Surface([w, h])
+        if not self.onlyText:
+            self.localSurface = pygame.Surface([w, h])
+        else:
+            self.localSurface = pygame.Surface([w, h], pygame.SRCALPHA)
         self.x = 0
         self.y = 0
         self.w = w
         self.h = h
+
         self.font = font
         self.inactiveRectColor = 20, 20, 60
         self.activeRectColor = 100, 0, 0
         self.activeRectColorAlt = 10, 70, 10
         self.rectColor = self.inactiveRectColor
-        self.textColor = 220, 220, 220
+        self.textColor = fontColor
         self.inactiveBorderColor = 200, 200, 200
         self.activeBorderColor = 75, 150, 150
         self.borderColor = self.inactiveBorderColor
@@ -42,7 +47,8 @@ class Label2:
         self.set(text)
 
     def set(self, text):
-        self.addRect()
+        if not self.onlyText:
+            self.addRect()
         self.addText(text)
 
     def addRect(self):

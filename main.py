@@ -11,6 +11,7 @@ import MembersInitGenerator as MIG
 import Parameters
 import pygame
 
+import ProvinceNameGenerator
 import Utils
 from Family import Family
 from Region import Region
@@ -130,6 +131,7 @@ def main(popBreakLimit=None):
     world.generateSettlements()
     world.setFamilies(initFamilies())
     world.setPeople(initPeople(world.getFamilies()))
+    ProvinceNameGenerator.makeListsForProvinceNames(world)
     world.getWorldMap().generateProvinces()
     world.pickRandomProvincesForRegions()
     world.diseases = IOtools.loadFiles('diseases')

@@ -23,7 +23,7 @@ class WorldMapScreen:
         self.heightOffSet = heightOffSet
         self.font = Fonts()
         self.textFont = self.font.getPlotsFont()
-        self.miniTextFont = self.font.getFont2()
+        self.miniTextFont = self.font.getMiniFont()
         self.lineHeight = self.font.getPlotsLineHeight()
         self.scroll_y = 0
         self.screenPosX = screenPosX
@@ -282,13 +282,15 @@ class WorldMapScreen:
         xNorm, yNorm = object.getObject().getMiddleCords()
         x, y = self.convertCordsFromNormalized(xNorm, yNorm)
 
-        if object.getObject().getRegion() is not None:
-            regionXNorm, regionYNorm = object.getObject().getRegion().getMiddleCords()
-            rX, rY = self.convertCordsFromNormalized(regionXNorm, regionYNorm)
-            pygame.draw.line(self.worldMapScreenSurface, (220, 220, 220), (x, y), (rX, rY), 1)
-
-        self.provinceLabel = Label2(f'{object.getObject().getName()}', self.textFont, isInRegion)
-        self.worldMapScreenSurface.blit(self.provinceLabel.localSurface, (x, y))
+        # if object.getObject().getRegion() is not None:
+        #     regionXNorm, regionYNorm = object.getObject().getRegion().getMiddleCords()
+        #     rX, rY = self.convertCordsFromNormalized(regionXNorm, regionYNorm)
+        #     pygame.draw.line(self.worldMapScreenSurface, (220, 220, 220), (x, y), (rX, rY), 1)
+        color = (20, 20, 20)
+        if object.getObject().getType() == 'SEA':
+            color = (220, 200, 200)
+        self.provinceLabel = Label2(f'{object.getObject().getName()}', self.miniTextFont, isInRegion, onlyText=True, fontColor=color)
+        self.worldMapScreenSurface.blit(self.provinceLabel.localSurface, (x-(self.provinceLabel.w//2), y-(self.provinceLabel.h//2)))
 
 
     def resetWriteLine(self):

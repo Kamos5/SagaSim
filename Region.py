@@ -1,5 +1,6 @@
 import Enums
 import Utils
+import ProvinceNameGenerator as PNG
 from Settlements import Settlements
 import Parameters
 from WorldMapObjClass import WorldMapObjClass
@@ -8,6 +9,7 @@ from WorldMapObjClass import WorldMapObjClass
 class Region():
 
     def __init__(self, regionName):
+        self.cultureNumber = 0
         self.regionNumber = 0
         self.regionName = regionName
         self.settlements = []
@@ -34,6 +36,12 @@ class Region():
     def setUIExpand(self, newValue):
         self.uiExpand = newValue
 
+    def setCultureNumber(self, number):
+        self.cultureNumber = number
+
+    def getCultureNumber(self):
+        return self.cultureNumber
+
     def canAddSettlement(self):
         if len(self.getSettlements()) < self.regionSize:
             return True
@@ -42,6 +50,12 @@ class Region():
 
     def getWeather(self):
         return self.weather
+
+    def getRegionCulture(self):
+        return self.regionCulture
+
+    def setRegionCulture(self, culture):
+        self.regionCulture = culture
 
     def getRegionNumber(self):
         return self.regionNumber
@@ -240,7 +254,8 @@ class Region():
 
 
         for province in self.getProvinces():
-
+            # rr, rg, rb = self.getRegionColor()
+            # province.setColor((255 - rr, 255 - rg, 255 - rb))
             for outerProvinceCord in province.getOuterCords():
                 outerTempProvinceBorders.add((outerProvinceCord, province))
                 # worldMapObjClass = WorldMapObjClass(colors=(self.getRegionColor(), province.getColor()), cords=(outerProvinceCord[0], outerProvinceCord[1]), objectVar=province, isInner=False, outerType=outerProvinceCord[2])
@@ -361,3 +376,8 @@ class Region():
         mean0 = sum(elt[0] for elt in provinceInnerCordsList) // len(provinceInnerCordsList)
         mean1 = sum(elt[1] for elt in provinceInnerCordsList) // len(provinceInnerCordsList)
         self.provincesInnerCords = (mean0, mean1)
+
+    def generateNamesForProvinces(self):
+
+        for province in self.getProvinces():
+            province.setName(PNG.randomProvinceName(self.getRegionNumber()))

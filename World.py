@@ -354,8 +354,19 @@ class World:
             cultureColors = f'{cultureName}{colorsStr}'
             region = Region(RNG.randomRegionName(self.allNames[cultureName][cultureRegionNames][regionNames], regionsNumber))
             region.setRegionNumber(number)
+            region.setRegionCulture(cultureName)
             region.setRegionColor(eval(self.allNames[cultureName][cultureColors]))
             self.regions.append(region)
+
+    def generateProvinceNames(self, region):
+
+        provinceNamesStr = 'ProvinceNames'
+        provinceNamesStrLowerFirst = provinceNamesStr[0].lower() + provinceNamesStr[1:]
+        provinceCultureStr = region.getRegionCulture()
+
+        for province in region.getProvinces():
+            print()
+
 
     def generateSettlements(self):
         SettlementNameGenerator.makeListsForSettlementsNames(self)
@@ -853,6 +864,9 @@ class World:
             self.reshuffleProvincesInRegions(self.getRegions(), provincesUsed, provincesNotUsed)
 
         for region in self.regions:
+            region.generateNamesForProvinces()
+
+        for region in self.regions:
             region.generateRegionalProvincesMap(self)
 
 
@@ -904,3 +918,5 @@ class World:
                 province.setRegion(closestRegion)
                 print(province.getRegion().getRegionColor())
         return
+
+

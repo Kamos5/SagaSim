@@ -2,6 +2,7 @@
 
 import Parameters
 import Province
+import ProvinceNameGenerator as PNG
 import Utils
 from WorldMapObjClass import WorldMapObjClass
 
@@ -132,6 +133,7 @@ class WorldMap:
         print("Generation Neighbours Completed!")
         print("Generation Seas...")
         self.genereteSeas()
+        self.nameSeaProvinces()
         print("Generation Seas Completed!")
         self.generateProvincesMap()
         print("Generation Completed!")
@@ -226,3 +228,9 @@ class WorldMap:
         except RecursionError:
             print("RECURSION ERROR FAILED")
             return
+
+    def nameSeaProvinces(self):
+
+        for sea in self.seaProvinces:
+            sea.setName(PNG.randomProvinceSeaName())
+
