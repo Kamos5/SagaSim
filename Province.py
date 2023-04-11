@@ -164,11 +164,15 @@ class Province:
         newSettlement.setRegion(self.getRegion())
         newSettlement.setProvince(self)
         notClear = True
+        secVar = 0
         settlementCord = (0, 0, 0)
         while notClear:
             settlementCord = Utils.randomFromCollection(list(newSettlement.getProvince().getInnerCords()))
             if settlementCord not in newSettlement.getProvince().getCordsUsed():
                 notClear = False
+            secVar += 1
+            if secVar > 100:
+                return None
         newSettlement.getProvince().addCordsUsed(settlementCord)
         newSettlement.getProvince().addCordsUsed((settlementCord[0] - 1, settlementCord[1], settlementCord))
         newSettlement.getProvince().addCordsUsed((settlementCord[0] + 1, settlementCord[1], settlementCord))
