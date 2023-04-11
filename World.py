@@ -372,10 +372,25 @@ class World:
         SettlementNameGenerator.makeListsForSettlementsNames(self)
         for region in self.regions:
             townInitList = []
+            cordsUsed = []
             for i in range(self.settlementsInitNumber):
                 newSettlement = region.getProvinces()[0].addInitSettlement(self, region)
                 newSettlement.setRegion(region)
                 newSettlement.setProvince(region.getProvinces()[0])
+                notClear = True
+                settlementCord = (0, 0, 0)
+                while notClear:
+                    settlementCord = Utils.randomFromCollection(list(newSettlement.getProvince().getInnerCords()))
+                    if settlementCord not in newSettlement.getProvince().getCordsUsed():
+                        notClear = False
+                newSettlement.getProvince().addCordsUsed(settlementCord)
+                newSettlement.getProvince().addCordsUsed((settlementCord[0]-1, settlementCord[1], settlementCord))
+                newSettlement.getProvince().addCordsUsed((settlementCord[0]+1, settlementCord[1], settlementCord))
+                newSettlement.getProvince().addCordsUsed((settlementCord[0], settlementCord[1]-1, settlementCord))
+                newSettlement.getProvince().addCordsUsed((settlementCord[0], settlementCord[1]+1, settlementCord))
+                newSettlement.setProvinceCords(settlementCord)
+                worldMapObjClass = WorldMapObjClass(colors=(newSettlement.getRegion().getRegionColor(), newSettlement.getProvince().getColor()), cords=(settlementCord[0],settlementCord[1]), objectVar=newSettlement, isInner=False)
+                self.getWorldMap().addField(worldMapObjClass, weight=2)
                 # First settlement is always TOWN
                 if i == 0:
                     newSettlement.changeSettlementType(Settlements.TOWN)

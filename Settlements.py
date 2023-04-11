@@ -55,6 +55,7 @@ class Settlements:
         self.adjustFertilityModifier()
         self.migrationMonth = Utils.randomFromEnumCollection(Enums.Months)
         self.migrationDay = Utils.randomRange(1, self.migrationMonth.value[2])
+        self.provinceCords = (0, 0)
 
     def getRegion(self):
         return self.region
@@ -76,6 +77,12 @@ class Settlements:
 
     def setUIExpand(self, newValue):
         self.uiExpand = newValue
+
+    def setProvinceCords(self, cords):
+        self.provinceCords = cords
+
+    def getProvinceCords(self):
+        return self.provinceCords
 
     def getPopulation(self):
         return self.population

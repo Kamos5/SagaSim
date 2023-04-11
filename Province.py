@@ -2,6 +2,7 @@
 import Parameters
 import Utils
 from Settlements import Settlements
+from WorldMapObjClass import WorldMapObjClass
 
 
 class Province:
@@ -23,6 +24,7 @@ class Province:
         self.outerCords = set()    #0 (inner); 1 (border LEFT); 2 (RIGHT); 3 (UP); 4(DOWN); 5(LEFT+RIGHT) 6(UP+DOWN); 7 (LEFT+UP); 8(RIGHT+UP); 9 (LEFT+DOWN); 10 (RIGHT+DOWN); 11 (LEFT+RIGHT+UP); 12 (LEFT+RIGHT+DOWN); 13 (RIGHT+UP+DOWN); 14 (LEFT+UP+DOWN); 15 (LEFT+RIGHT+UP+DOWN)
         self.isIsland = False
         self.worldMap = worldMap
+        self.cordsUsed = set()
 
     def setName(self, name):
         self.name = name
@@ -75,6 +77,15 @@ class Province:
 
     def getRegion(self):
         return self.region
+
+    def getCordsUsed(self):
+        return self.cordsUsed
+
+    def setCordsUsed(self, cords):
+        self.cordsUsed = cords
+
+    def addCordsUsed(self, newCords):
+        self.cordsUsed.add(newCords)
 
     def addInnerCords(self, cords):
         self.innerCords.add(cords)
@@ -150,6 +161,23 @@ class Province:
 
     def addSettlement(self, world):
         newSettlement = Settlements(self.getRegion().getRegionNumber(), world.getYear())
+        newSettlement.setRegion(self.getRegion())
+        newSettlement.setProvince(self)
+        notClear = True
+        settlementCord = (0, 0, 0)
+        while notClear:
+            settlementCord = Utils.randomFromCollection(list(newSettlement.getProvince().getInnerCords()))
+            if settlementCord not in newSettlement.getProvince().getCordsUsed():
+                notClear = False
+        newSettlement.getProvince().addCordsUsed(settlementCord)
+        newSettlement.getProvince().addCordsUsed((settlementCord[0] - 1, settlementCord[1], settlementCord))
+        newSettlement.getProvince().addCordsUsed((settlementCord[0] + 1, settlementCord[1], settlementCord))
+        newSettlement.getProvince().addCordsUsed((settlementCord[0], settlementCord[1] - 1, settlementCord))
+        newSettlement.getProvince().addCordsUsed((settlementCord[0], settlementCord[1] + 1, settlementCord))
+        newSettlement.setProvinceCords(settlementCord)
+        worldMapObjClass = WorldMapObjClass(colors=(newSettlement.getRegion().getRegionColor(), newSettlement.getProvince().getColor()), cords=(settlementCord[0], settlementCord[1]), objectVar=newSettlement, isInner=False)
+        world.getWorldMap().addField(worldMapObjClass, weight=2)
+
         self.settlements.append(newSettlement)
         newSettlement.maxPopulation = Parameters.baseVillageSize
         newSettlement.setProvision(Utils.randomFromCollection(self.getTowns()))

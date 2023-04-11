@@ -398,7 +398,7 @@ def settlementsPopulationManagement (world):
 
                     chanceForMigragion = Parameters.chanceForMigration
                     #Treshhold to create migration wave
-                    if ((len(employedList) + len(unemployedList)) > 0 and round(len(unemployedList) / (len(employedList) + len(unemployedList)) * 100) > 15) or (len(settlement.getResidents) > 300 and settlement.getFreeFood() < 1000):
+                    if ((len(employedList) + len(unemployedList)) > 0 and round(len(unemployedList) / (len(employedList) + len(unemployedList)) * 100) > 15) or (len(settlement.getResidents()) > 300 and settlement.getFreeFood() < 1000):
                         chanceForMigragion *= 2
                     else:
                     # if settlement.getPopulation() >= int(settlement.getMaxPopulation() * Parameters.percentagePopulationThresholdForMigration):

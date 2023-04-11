@@ -5,6 +5,7 @@ import pygame
 
 from Province import Province
 from Region import Region
+from Settlements import Settlements
 from UI.Utils.Button import Button
 from UI.Utils.Label2 import Label2
 
@@ -222,40 +223,8 @@ class WorldMapScreen:
         # self.color = oldcolor
 
         forLater = set()
-        for worldMapObjClass, weight in world.getWorldMap().getWorldMapObj():
-
-            pixelObject = worldMapObjClass.getObject()
-            if not isinstance(pixelObject, Province) or weight == 0:
-                xNorm, yNorm, = worldMapObjClass.getCords()
-                borderColor = worldMapObjClass.getBorderColor()
-
-                if worldMapObjClass.getColor() is not None:
-                    color = worldMapObjClass.getColor()
-                else:
-                    if (xNorm + yNorm) % 2 == 0:
-                        color = self.DEFAULT_GRAY_1
-                    else:
-                        color = self.DEFAULT_GRAY_2
-
-                x, y = self.convertCordsFromNormalized(xNorm, yNorm)
-                w, h = (self.chunkSizeXWithBorder, self.chunkSizeYWithBorder)
-                if worldMapObjClass.isInner:
-                    rect = pygame.draw.rect(self.worldMapScreenSurface, color, [x, y, w, h])
-                    rectInner = pygame.draw.rect(self.worldMapScreenSurface, color, [x + 1, y + 1, w - 2, h - 2])
-                else:
-                    rect = pygame.draw.rect(self.worldMapScreenSurface, borderColor, [x, y, w, h])
-                    rectInner = self.returnRectInner(worldMapObjClass, color, x, y, w, h)
-                self.worldMapScreenSurfaceObjsRect.append([rect, rectInner, color, borderColor])
-                self.map.append([rect, rectInner, color, borderColor])
-                self.showProvinceNamesOnMap(worldMapObjClass)
-            else:
-                forLater.add(worldMapObjClass)
-
-        for worldMapObjClass in forLater:
-            # pixelObject = worldMapObjClass
-            if isinstance(pixelObject, Region):
-                self.showRegionNamesOnMap(pixelObject)
-                continue
+        sortedSet = self.sort(world.getWorldMap().getWorldMapObj())
+        for worldMapObjClass, weight in sortedSet:
 
             xNorm, yNorm, = worldMapObjClass.getCords()
             borderColor = worldMapObjClass.getBorderColor()
@@ -277,10 +246,33 @@ class WorldMapScreen:
                 rect = pygame.draw.rect(self.worldMapScreenSurface, borderColor, [x, y, w, h])
                 rectInner = self.returnRectInner(worldMapObjClass, color, x, y, w, h)
             self.worldMapScreenSurfaceObjsRect.append([rect, rectInner, color, borderColor])
-
-            self.showProvinceNamesOnMap(worldMapObjClass, isInRegion=True)
             self.map.append([rect, rectInner, color, borderColor])
 
+            if isinstance(worldMapObjClass.getObject(), Province):
+                self.showProvinceNamesOnMap(worldMapObjClass)
+
+            if isinstance(worldMapObjClass.getObject(), Settlements):
+                self.showCitiesOnMap(worldMapObjClass)
+
+    def sort(self, sub_li):
+
+        listSorted = list(sub_li)
+        listSorted.sort(key=lambda x: x[1])
+        return listSorted
+
+    def showCitiesOnMap(self, object):
+
+        xNorm, yNorm, tNorm = object.getObject().getProvinceCords()
+        x, y = self.convertCordsFromNormalized(xNorm, yNorm)
+        w, h = (self.chunkSizeXWithBorder, self.chunkSizeYWithBorder)
+        color = (20, 20, 20)
+        borderColor = (20, 20, 20)
+        rect = pygame.draw.rect(self.worldMapScreenSurface, color, [x, y, w, h])
+        rectInner = pygame.draw.rect(self.worldMapScreenSurface, color, [x + 1, y + 1, w - 2, h - 2])
+        self.worldMapScreenSurfaceObjsRect.append([rect, rectInner, color, borderColor])
+        self.map.append([rect, rectInner, color, borderColor])
+        self.settlementLabel = Label2(f'{object.getObject().getSettlementName()}', self.miniTextFont, onlyText=True, fontColor=color)
+        self.worldMapScreenSurface.blit(self.settlementLabel.localSurface, (x-(self.settlementLabel.w//2), y-(self.settlementLabel.h//2)+self.lineHeight))
 
     def showProvinceNamesOnMap(self, object, isInRegion = False):
 
