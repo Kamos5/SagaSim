@@ -387,7 +387,7 @@ def settlementsPopulationManagement (world):
         regionTimeArray = []
         for province in region.getProvinces():
             for settlement in province.getSettlements():
-                if world.getDay() == settlement.getMigrationDay():
+                if world.getDay() == settlement.getMigrationDay() and len(settlement.getResidents()) > 50:
                     start1 = time.perf_counter()
 
                     villagesList = SF.getVillages(province.getSettlements())
