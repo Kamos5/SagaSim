@@ -174,17 +174,17 @@ class Province:
             if secVar > 100:
                 return None
         newSettlement.getProvince().addCordsUsed(settlementCord)
-        newSettlement.getProvince().addCordsUsed((settlementCord[0] - 1, settlementCord[1], settlementCord))
-        newSettlement.getProvince().addCordsUsed((settlementCord[0] + 1, settlementCord[1], settlementCord))
-        newSettlement.getProvince().addCordsUsed((settlementCord[0], settlementCord[1] - 1, settlementCord))
-        newSettlement.getProvince().addCordsUsed((settlementCord[0], settlementCord[1] + 1, settlementCord))
+        newSettlement.getProvince().addCordsUsed((settlementCord[0] - 1, settlementCord[1], settlementCord[2]))
+        newSettlement.getProvince().addCordsUsed((settlementCord[0] + 1, settlementCord[1], settlementCord[2]))
+        newSettlement.getProvince().addCordsUsed((settlementCord[0], settlementCord[1] - 1, settlementCord[2]))
+        newSettlement.getProvince().addCordsUsed((settlementCord[0], settlementCord[1] + 1, settlementCord[2]))
         newSettlement.setProvinceCords(settlementCord)
         worldMapObjClass = WorldMapObjClass(colors=(newSettlement.getRegion().getRegionColor(), newSettlement.getProvince().getColor()), cords=(settlementCord[0], settlementCord[1]), objectVar=newSettlement, isInner=False)
         world.getWorldMap().addField(worldMapObjClass, weight=2)
 
         self.settlements.append(newSettlement)
         newSettlement.maxPopulation = Parameters.baseVillageSize
-        newSettlement.setProvision(Utils.randomFromCollection(self.getTowns()))
+        # newSettlement.setProvision(Utils.randomFromCollection(self.getTowns()))
 
         return newSettlement
 

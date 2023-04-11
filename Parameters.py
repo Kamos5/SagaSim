@@ -22,8 +22,8 @@ settlementLowFoodFertilityModifier = 0.33   #default 0.33
 
 # aka how many village per town there must be
 villageToTownMultiplier = 3
-migrationWaveForTown = 3
-migrationWaveForVillage = 3
+migrationWaveForTown = 5
+migrationWaveForVillage = 7
 
 chanceForChangingLastNameDuringMigration = 25  # aka 5% to chance create new branch family
 

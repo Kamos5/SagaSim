@@ -299,7 +299,7 @@ class Settlements:
 
         self.unemployedRes = []
         for res in self.residents:
-            if res.getAge() >= 15 and res.getOccupation() is None and res not in self.unemployedRes and res.getAge() < 50 and res.getSex() == Enums.Sexes.MALE:
+            if res.getAge() >= 15 and res.getOccupation() is None and res not in self.unemployedRes and res.getAge() < 50: # and res.getSex() == Enums.Sexes.MALE:
                 self.unemployedRes.append(res)
         return self.unemployedRes
 

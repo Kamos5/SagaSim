@@ -405,23 +405,53 @@ def settlementsPopulationManagement (world):
                         chanceOfMigration = Utils.randomRange(1, 100)
                         #Chance of migration happening
                         if chanceOfMigration <= chanceForMigragion:
-                            #Check for max size of region
-                            if len(province.getSettlements()) == province.provinceSize:
-                                newTargetSettlement = Utils.randomFromCollection(province.getSettlements())
+
+                            possibleProvincesMigration = []
+                            for neighbour in settlement.getProvince().getNeighbours():
+                                if neighbour.getType() != 'SEA':
+                                    possibleProvincesMigration.append(neighbour)
+                            for provinceInRegion in settlement.getRegion().getProvinces():
+                                if provinceInRegion not in possibleProvincesMigration:
+                                    possibleProvincesMigration.append(provinceInRegion)
+
+                            if len(province.getSettlements()) != province.provinceSize:
+                                newSettlement = province.addSettlement(world)
+                                if newSettlement is None:
+                                    continue
+                                newSettlement.setRegion(settlement.getRegion())
+                                newSettlement.setMaxPopulation = Parameters.baseVillageSize
+                                newTargetSettlement = newSettlement
 
                             else:
-                                # # TODO FIX PEOPLE CAN MOVE TO THE SAME VILLAGE
-                                # #Take lowest population as dest
-                                # lowestSettlementInRegion = region.getLowestPopulatedSettlement()
-                                # newTargetSettlement = lowestSettlementInRegion
-                                # #If lowest pop > lowest max pop * modifier create new setttlement
-                                # if lowestSettlementInRegion.getPopulation() > int(lowestSettlementInRegion.getMaxPopulation() * Parameters.percentageVillagePopulationThresholdForCreatingNewVillage):
-                                    newSettlement = province.addSettlement(world)
+                                newTargerProvince = Utils.randomFromCollection(possibleProvincesMigration)
+                                if len(newTargerProvince.getSettlements()) != newTargerProvince.provinceSize:
+                                    newSettlement = newTargerProvince.addSettlement(world)
                                     if newSettlement is None:
                                         continue
-                                    newSettlement.setRegion(settlement.getRegion())
+                                    newSettlement.setRegion(newTargerProvince.getRegion())
                                     newSettlement.setMaxPopulation = Parameters.baseVillageSize
                                     newTargetSettlement = newSettlement
+                                else:
+                                    newTargetSettlement = Utils.randomFromCollection(newTargerProvince.getSettlements())
+
+                            #
+                            # #Check for max size of region
+                            # if len(province.getSettlements()) == province.provinceSize:
+                            #     newTargetSettlement = Utils.randomFromCollection(province.getSettlements())
+                            #
+                            # else:
+                            #     # # TODO FIX PEOPLE CAN MOVE TO THE SAME VILLAGE
+                            #     # #Take lowest population as dest
+                            #     # lowestSettlementInRegion = region.getLowestPopulatedSettlement()
+                            #     # newTargetSettlement = lowestSettlementInRegion
+                            #     # #If lowest pop > lowest max pop * modifier create new setttlement
+                            #     # if lowestSettlementInRegion.getPopulation() > int(lowestSettlementInRegion.getMaxPopulation() * Parameters.percentageVillagePopulationThresholdForCreatingNewVillage):
+                            #         newSettlement = province.addSettlement(world)
+                            #         if newSettlement is None:
+                            #             continue
+                            #         newSettlement.setRegion(settlement.getRegion())
+                            #         newSettlement.setMaxPopulation = Parameters.baseVillageSize
+                            #         newTargetSettlement = newSettlement
 
                             #Migration Wave
                             complexRandomMigrantsList = prepareMigration(settlement, newTargetSettlement, world)
@@ -736,7 +766,8 @@ def settlementWorkersManagement(world):
 
                     if settlement.getSettlementFoodProducedLastYear() <= 0:
                         fireAllEmployees(settlement.getAdminFeatures()[0], world)
-                        fireAllEmployees(settlement.getProdFeatures()[0], world)
+                        for prodfeature in settlement.getProdFeatures():
+                            fireAllEmployees(prodfeature, world)
 
 
 def hireEmployee(employee, tile, world):

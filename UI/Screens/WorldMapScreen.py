@@ -224,6 +224,7 @@ class WorldMapScreen:
 
         forLater = set()
         sortedSet = self.sort(world.getWorldMap().getWorldMapObj())
+        regions = set()
         for worldMapObjClass, weight in sortedSet:
 
             xNorm, yNorm, = worldMapObjClass.getCords()
@@ -250,9 +251,14 @@ class WorldMapScreen:
 
             if isinstance(worldMapObjClass.getObject(), Province):
                 self.showProvinceNamesOnMap(worldMapObjClass)
+                if worldMapObjClass.getObject().getRegion() not in regions and worldMapObjClass.getObject().getType() != 'SEA':
+                   regions.add(worldMapObjClass.getObject().getRegion())
 
             if isinstance(worldMapObjClass.getObject(), Settlements):
                 self.showCitiesOnMap(worldMapObjClass)
+
+        for region in regions:
+            self.showRegionNamesOnMap(region)
 
     def sort(self, sub_li):
 
@@ -293,7 +299,7 @@ class WorldMapScreen:
 
     def showRegionNamesOnMap(self, object):
 
-        xNorm, yNorm = object.getObject().provincesInnerCords()
+        xNorm, yNorm = object.getMiddleCords()
         x, y = self.convertCordsFromNormalized(xNorm, yNorm)
 
         # if object.getObject().getRegion() is not None:
@@ -301,8 +307,8 @@ class WorldMapScreen:
         #     rX, rY = self.convertCordsFromNormalized(regionXNorm, regionYNorm)
         #     pygame.draw.line(self.worldMapScreenSurface, (220, 220, 220), (x, y), (rX, rY), 1)
 
-        color = object.getObject().getRegionColor()
-        self.provinceLabel = Label2(f'{object.getObject().getName()}', self.miniTextFont, onlyText=True, fontColor=color)
+        color = object.getRegionColor()
+        self.provinceLabel = Label2(f'{object.getRegionName()}', self.textFont, onlyText=True, fontColor=color)
         self.worldMapScreenSurface.blit(self.provinceLabel.localSurface, (x-(self.provinceLabel.w//2), y-(self.provinceLabel.h//2)))
 
 
