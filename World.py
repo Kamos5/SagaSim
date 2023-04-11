@@ -384,10 +384,10 @@ class World:
                     if settlementCord not in newSettlement.getProvince().getCordsUsed():
                         notClear = False
                 newSettlement.getProvince().addCordsUsed(settlementCord)
-                newSettlement.getProvince().addCordsUsed((settlementCord[0]-1, settlementCord[1], settlementCord))
-                newSettlement.getProvince().addCordsUsed((settlementCord[0]+1, settlementCord[1], settlementCord))
-                newSettlement.getProvince().addCordsUsed((settlementCord[0], settlementCord[1]-1, settlementCord))
-                newSettlement.getProvince().addCordsUsed((settlementCord[0], settlementCord[1]+1, settlementCord))
+                newSettlement.getProvince().addCordsUsed((settlementCord[0]-1, settlementCord[1], settlementCord[2]))
+                newSettlement.getProvince().addCordsUsed((settlementCord[0]+1, settlementCord[1], settlementCord[2]))
+                newSettlement.getProvince().addCordsUsed((settlementCord[0], settlementCord[1]-1, settlementCord[2]))
+                newSettlement.getProvince().addCordsUsed((settlementCord[0], settlementCord[1]+1, settlementCord[2]))
                 newSettlement.setProvinceCords(settlementCord)
                 worldMapObjClass = WorldMapObjClass(colors=(newSettlement.getRegion().getRegionColor(), newSettlement.getProvince().getColor()), cords=(settlementCord[0],settlementCord[1]), objectVar=newSettlement, isInner=False)
                 self.getWorldMap().addField(worldMapObjClass, weight=2)

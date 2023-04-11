@@ -3,6 +3,7 @@ import time
 
 import pygame
 
+import Enums
 from Province import Province
 from Region import Region
 from Settlements import Settlements
@@ -271,8 +272,13 @@ class WorldMapScreen:
         xNorm, yNorm, tNorm = object.getObject().getProvinceCords()
         x, y = self.convertCordsFromNormalized(xNorm, yNorm)
         w, h = (self.chunkSizeXWithBorder, self.chunkSizeYWithBorder)
-        color = (20, 20, 20)
-        borderColor = (20, 20, 20)
+        if object.getObject().getSettlementType() == Enums.Settlements.VILLAGE:
+            color = (120, 60, 30)
+            borderColor = (120, 60, 30)
+        else:
+            color = (240, 240, 240)
+            borderColor = (240, 240, 240)
+
         rect = pygame.draw.rect(self.worldMapScreenSurface, color, [x, y, w, h])
         rectInner = pygame.draw.rect(self.worldMapScreenSurface, color, [x + 1, y + 1, w - 2, h - 2])
         self.worldMapScreenSurfaceObjsRect.append([rect, rectInner, color, borderColor])
