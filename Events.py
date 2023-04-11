@@ -322,6 +322,7 @@ def birthPeopleNew (world):
                     person.setPregnancyFather("")
                     person.setPregnancyTrueFather("")
 
+                    willMotherDie = False
                     for child in childObj:
                         person.numberOfChildren += 1
                         if person.getSpouse() is not None:
@@ -344,13 +345,13 @@ def birthPeopleNew (world):
 
                         # change of dying from childbirth (mother and child)
                         motherDeath, childdeath = deathChangeFromGivingBirth(person, child)
-
-                        if motherDeath:
-                            PF.deathProcedures(person, world)
-
+                        willMotherDie = willMotherDie & motherDeath
                         if childdeath:
                             #parameters: child
                             PF.deathProcedures(child, world)
+
+                    if willMotherDie:
+                        PF.deathProcedures(person, world)
 
                 else:
                     person.setIsPregnant(False)
@@ -386,7 +387,7 @@ def settlementsPopulationManagement (world):
         regionTimeArray = []
         for province in region.getProvinces():
             for settlement in province.getSettlements():
-                if world.getDay() == settlement.getMigrationDay() and world.getMonth() == settlement.getMigrationMonth():
+                if world.getDay() == settlement.getMigrationDay():
                     start1 = time.perf_counter()
 
                     villagesList = SF.getVillages(province.getSettlements())
@@ -395,12 +396,15 @@ def settlementsPopulationManagement (world):
                     unemployedList = settlement.getUnemployedResidentsList()
                     employedList = settlement.getEmployedResidentsList()
 
+                    chanceForMigragion = Parameters.chanceForMigration
                     #Treshhold to create migration wave
-                    if (len(employedList) + len(unemployedList)) > 0 and round(len(unemployedList) / (len(employedList) + len(unemployedList)) * 100) > 15:
+                    if ((len(employedList) + len(unemployedList)) > 0 and round(len(unemployedList) / (len(employedList) + len(unemployedList)) * 100) > 15) or settlement.getFreeFood() < 1000:
+                        chanceForMigragion *= 2
+                    else:
                     # if settlement.getPopulation() >= int(settlement.getMaxPopulation() * Parameters.percentagePopulationThresholdForMigration):
                         chanceOfMigration = Utils.randomRange(1, 100)
                         #Chance of migration happening
-                        if chanceOfMigration <= Parameters.chanceForMigration:
+                        if chanceOfMigration <= chanceForMigragion:
                             #Check for max size of region
                             if len(province.getSettlements()) == province.provinceSize:
                                 newTargetSettlement = Utils.randomFromCollection(province.getSettlements())

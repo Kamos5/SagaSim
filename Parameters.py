@@ -10,7 +10,7 @@ percentagePopulationThresholdForMigration = 0.5
 percentageVillagePopulationThresholdForCreatingNewVillage = 0.4
 percentageVillagePopulationThresholdForUpgradeToTown = 0.75
 chancePerYearToUpgradeVillageToTown = 80
-chanceForMigration = 50
+chanceForMigration = 5
 provincesPerRegion = 5
 
 #growthAccelerationForKidsUpToAdulthood
@@ -22,8 +22,8 @@ settlementLowFoodFertilityModifier = 0.33   #default 0.33
 
 # aka how many village per town there must be
 villageToTownMultiplier = 3
-migrationWaveForTown = 5
-migrationWaveForVillage = 15
+migrationWaveForTown = 3
+migrationWaveForVillage = 3
 
 chanceForChangingLastNameDuringMigration = 25  # aka 5% to chance create new branch family
 

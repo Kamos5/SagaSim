@@ -114,7 +114,8 @@ def deathProcedures(person, world):
 
     if person.age < 15:
         PLEH.lostChild(person.mother, person, world)
-        PLEH.lostChild(person.father, person, world)
+        if person.getFather() is not None:
+            PLEH.lostChild(person.father, person, world)
     if person.getFather() is not None:
         person.getFather().getAliveChildrenList().remove(person)
         person.getFather().appendDeadChildrenList(person)
