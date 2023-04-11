@@ -154,8 +154,8 @@ class WorldMap:
             provinceBorderColor = provinceColor
             province.checkIfIsland()
             if province.getType() == 'SEA':
-                provinceBorderColor = (20, 20, 20)
-                provinceColor = (00, 69, 94)
+                provinceBorderColor = (10, 60, 90)
+                provinceColor = (00, 70, 95)
                 province.markInnerCords()
 
             for innerTerrytories in province.getInnerCords():

@@ -160,7 +160,10 @@ def deathProcedures(person, world):
     for lover in person.getLovers():
         PLEH.gotLover(lover, person, world)
         lover.removeLover(person)
+        # try:
         person.removeLover(lover)
+        # except:
+        #     print("AAAA")
 
     # adding dead kids to the list od dead children
     # not needed. all kids that have Status.DEAD in child list is what we need
