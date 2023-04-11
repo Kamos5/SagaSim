@@ -273,8 +273,8 @@ class WorldMapScreen:
         x, y = self.convertCordsFromNormalized(xNorm, yNorm)
         w, h = (self.chunkSizeXWithBorder, self.chunkSizeYWithBorder)
         if object.getObject().getSettlementType() == Enums.Settlements.VILLAGE:
-            color = (120, 60, 30)
-            borderColor = (120, 60, 30)
+            color = (60, 30, 10)
+            borderColor = (60, 30, 10)
         else:
             color = (240, 240, 240)
             borderColor = (240, 240, 240)
