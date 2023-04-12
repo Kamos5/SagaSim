@@ -158,12 +158,10 @@ def deathProcedures(person, world):
         person.removeRival(rival)
 
     for lover in person.getLovers():
-        PLEH.gotLover(lover, person, world)
+        PLEH.lostLover(lover, person, world)
         lover.removeLover(person)
-        # try:
         person.removeLover(lover)
-        # except:
-        #     print("AAAA")
+
 
     # adding dead kids to the list od dead children
     # not needed. all kids that have Status.DEAD in child list is what we need
@@ -179,6 +177,9 @@ def retirement(person,world):
         PLEH.retired(person, world)
 
 def canBeLover(person1, person2):
+
+    if person1 == person2:
+        return False
 
     if person1.getSexuality() == 'homo' and person2.getSexuality() == person1.getSexuality() and person2.getSex() == person1.getSex():
         return True

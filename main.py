@@ -200,7 +200,7 @@ def main(popBreakLimit=None):
         pygame.display.update()  # Call this only once per loop
         clock.tick(fps)
 
-        if popBreakLimit is not None and world.getYear() > popBreakLimit:
+        if popBreakLimit is not None and len(world.getAlivePeople()) > popBreakLimit:
             return timeTable
 
         if world.getYear() == 1200:

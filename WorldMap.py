@@ -27,6 +27,24 @@ class WorldMap:
         self.seaProvinces = set()
         self.landProvinces = set()
 
+    def reset(self):
+
+        self.x0 = 0
+        self.y0 = 0
+        self.width = 200
+        self.height = 100
+
+        self.numberOfProvinces = Parameters.startingNumberOfRegions * Parameters.provincesPerRegion * 3 // 2
+        self.numberOfSeaProvinces = self.numberOfProvinces // 3
+        self.seaNeighboursForSeaProvincesParam = 2
+
+        self.worldMapObj = set()
+        self.impassibleTerrain = set()
+
+        self.provinces = set()
+        self.seaProvinces = set()
+        self.landProvinces = set()
+
     def addField(self, worldMapObjClass, weight=0):
 
         if worldMapObjClass not in self.getWorldMapObj():

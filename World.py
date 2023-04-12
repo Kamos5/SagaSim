@@ -158,6 +158,12 @@ class World:
         self.hairColorWhiteHistory = []
         self.hairColorGrayHistory = []
 
+        self.worldMap = WorldMap()
+        self.worldMap.reset()
+
+        self.allNames = None
+        self.cultures = []
+
     def getWorldMap(self):
         return self.worldMap
 

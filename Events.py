@@ -1,6 +1,8 @@
 import time
 from statistics import mean
 
+import numpy as np
+
 import Enums
 import FamilyFunctions as FF
 import HouseFunctions
@@ -19,10 +21,13 @@ import SettlementFeatures as SFeat
 
 def increaseAge (world):
 
-    for person in world.getAlivePeople():
-        if person.lifeStatus != LifeStatus.DEAD:  #must be sometimes people die in between years and getAlive is not updated yet
+    enumDead = LifeStatus.DEAD
+    enumHealty = Enums.GeneralHealth.HEALTHY
 
-            if person.getDayOfBirth() == world.getDay() and person.getMonthOfBirth() == world.getMonth():
+    for person in world.getAlivePeople():
+        if person.getLifeStatus() is not enumDead:  #must be sometimes people die in between years and getAlive is not updated yet
+
+            if person.getMonthOfBirth() == world.getMonth() and person.getDayOfBirth() == world.getDay():
                 person.increaseAge()
 
                 if len(person.getFriends()) > 0:
@@ -31,7 +36,7 @@ def increaseAge (world):
                 if person.age < 15:
                     person.increaseHeight()
 
-                    #for accelerating groth in children
+                    #for accelerating growth in children
                     if Parameters.growthSpeed > 0:
                         for growthAccelerator in range(Parameters.growthSpeed-1):
                             person.increaseAge()
@@ -48,7 +53,7 @@ def increaseAge (world):
                 if person.age > 50:
                     PF.retirement(person, world)
 
-                if person.getHealthFromAge() == Enums.GeneralHealth.HEALTHY and person.modifiedLifespan - person.getAge() <= 5:
+                if person.modifiedLifespan - person.getAge() <= 5 and person.getHealthFromAge() is enumHealty:
                     person.setHealthFromAge(Enums.GeneralHealth.WEAKEN)
 
             if deathChanceFromAge(person) or person.age >= person.modifiedLifespan:
@@ -57,10 +62,11 @@ def increaseAge (world):
 
             if person.getSettlement().getFreeFood() <= 0:
                 chanceForStarvation = Utils.randomRange(1, 100)
-                if chanceForStarvation <= 2:
+                if chanceForStarvation <= 1:
                     person.causeOfDeath = CauseOfDeath.STARVATION
                     PF.deathProcedures(person, world)
                     continue
+
 
 def infectionsSpread (world):
 
@@ -279,86 +285,87 @@ def birthPeopleNew (world):
 
     for person in world.getAlivePeople():
 
-        #TIME for labour aka 9m pregnancy
-        if person.sex == Sexes.FEMALE and person.isPregnant and person.getLifeStatus() != LifeStatus.DEAD:
-
+        if person.getLifeStatus() != LifeStatus.DEAD:
             if person.getSpouse() is not None:
                 # change spouseRelation based on liked/disliked traits
                 changeRelationToFromSpouse(person)
 
-            chanceForMiscarriage = Utils.randomRange(1, 10000)
+            #TIME for labour aka 9m pregnancy
+            if person.sex == Sexes.FEMALE and person.isPregnant:
 
-            if chanceForMiscarriage <= 5:
-                person.setIsPregnant(False)
-                person.setImpregnationMonth(None)
-                person.setPregnancyFather("")
-                person.setPregnancyTrueFather("")
-                PLEH.miscarriage(person, world)
-                continue
+                chanceForMiscarriage = Utils.randomRange(1, 10000)
 
-            # if (world.getMonth().value[0] > person.getImpregnationMonth().value[0] and world.getMonth().value[0]-person.getImpregnationMonth().value[0] == 9) or (world.getMonth().value[0] < person.getImpregnationMonth().value[0] and person.getImpregnationMonth().value[0] - world.getMonth().value[0] == 3):
-            if world.getMonth() == person.getLaborMonth() and world.getDay() == person.getLaborDay():
-
-                person.setLaborMonth(None)
-                person.setLaborDay(None)
-
-                chanceOfBirth = Utils.randomRange(1, 100)
-
-                if chanceOfBirth <= 95:
-                    # CHILD object
-                    if person.getSpouse() is not None:
-                        person.changeSpouseRelation(25)
-                        person.getSpouse().changeSpouseRelation(25)
-                    childObj = PF.birthChild(world, person, person.getSpouse(), person, person.getPregnancyTrueFather())
-                    for child in childObj:
-                    # add child to proper family
-                        child.familyObjRef.addNewMember(child)
-                        world.addPerson(child)
-                        world.addAlivePerson(child)
-                        PLEH.beenBorn(child, world)
-
+                if chanceForMiscarriage <= 5:
                     person.setIsPregnant(False)
                     person.setImpregnationMonth(None)
                     person.setPregnancyFather("")
                     person.setPregnancyTrueFather("")
-
-                    willMotherDie = False
-                    for child in childObj:
-                        person.numberOfChildren += 1
-                        if person.getSpouse() is not None:
-                            person.getSpouse().numberOfChildren += 1
-
-                        if person.modifiedLifespan-person.age > 1:
-                            if Utils.randomRange(1, 2) == 1:
-                                person.modifiedLifespan -= 1
-                        person.appendAliveChildrenList(child)
-                        if person.getSpouse() is not None:
-                            person.getSpouse().appendAliveChildrenList(child)
-                        child.changeMaritalStatus(MS.CHILD)
-                        person.getAccommodation().addHouseResident(child)
-
-                        child.setSettlement(child.getTrueMother().getSettlement())
-                        child.getSettlement().increasePopulation()
-                        child.getSettlement().addResident(child)
-
-                        world.increaseBirthsPerYearTemp()
-
-                        # change of dying from childbirth (mother and child)
-                        motherDeath, childdeath = deathChangeFromGivingBirth(person, child)
-                        willMotherDie = willMotherDie & motherDeath
-                        if childdeath:
-                            #parameters: child
-                            PF.deathProcedures(child, world)
-
-                    if willMotherDie:
-                        PF.deathProcedures(person, world)
-
-                else:
-                    person.setIsPregnant(False)
-                    person.setImpregnationMonth(None)
-                    person.setPregnancyFather(None)
-                    PLEH.stillborn(person, world)
+                    PLEH.miscarriage(person, world)
                     continue
+
+                # if (world.getMonth().value[0] > person.getImpregnationMonth().value[0] and world.getMonth().value[0]-person.getImpregnationMonth().value[0] == 9) or (world.getMonth().value[0] < person.getImpregnationMonth().value[0] and person.getImpregnationMonth().value[0] - world.getMonth().value[0] == 3):
+                if world.getMonth() == person.getLaborMonth() and world.getDay() == person.getLaborDay():
+
+                    person.setLaborMonth(None)
+                    person.setLaborDay(None)
+
+                    chanceOfBirth = Utils.randomRange(1, 100)
+
+                    if chanceOfBirth <= 95:
+                        # CHILD object
+                        if person.getSpouse() is not None:
+                            person.changeSpouseRelation(25)
+                            person.getSpouse().changeSpouseRelation(25)
+                        childObj = PF.birthChild(world, person, person.getSpouse(), person, person.getPregnancyTrueFather())
+                        for child in childObj:
+                        # add child to proper family
+                            child.familyObjRef.addNewMember(child)
+                            world.addPerson(child)
+                            world.addAlivePerson(child)
+                            PLEH.beenBorn(child, world)
+
+                        person.setIsPregnant(False)
+                        person.setImpregnationMonth(None)
+                        person.setPregnancyFather("")
+                        person.setPregnancyTrueFather("")
+
+                        willMotherDie = False
+                        for child in childObj:
+                            person.numberOfChildren += 1
+                            if person.getSpouse() is not None:
+                                person.getSpouse().numberOfChildren += 1
+
+                            if person.modifiedLifespan-person.age > 1:
+                                if Utils.randomRange(1, 2) == 1:
+                                    person.modifiedLifespan -= 1
+                            person.appendAliveChildrenList(child)
+                            if person.getSpouse() is not None:
+                                person.getSpouse().appendAliveChildrenList(child)
+                            child.changeMaritalStatus(MS.CHILD)
+                            person.getAccommodation().addHouseResident(child)
+
+                            child.setSettlement(child.getTrueMother().getSettlement())
+                            child.getSettlement().increasePopulation()
+                            child.getSettlement().addResident(child)
+
+                            world.increaseBirthsPerYearTemp()
+
+                            # change of dying from childbirth (mother and child)
+                            motherDeath, childdeath = deathChangeFromGivingBirth(person, child)
+                            willMotherDie = willMotherDie & motherDeath
+                            if childdeath:
+                                #parameters: child
+                                PF.deathProcedures(child, world)
+
+                        if willMotherDie:
+                            PF.deathProcedures(person, world)
+
+                    else:
+                        person.setIsPregnant(False)
+                        person.setImpregnationMonth(None)
+                        person.setPregnancyFather(None)
+                        PLEH.stillborn(person, world)
+                        continue
 
 
 def changeRelationToFromSpouse(person):
