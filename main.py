@@ -103,7 +103,7 @@ def running(world, manualOverride):
         print("MakeHistoryTime: " + str(makeHistoryTime) + " %: " + str(round(makeHistoryTime / fullTime, 2)))
         print(fullTime)
 
-    timeTable.extend([worldtime, terrytoryTime, weatherChangeTime, incAgeTime, infectionsTime, diseasesTime, loveMakingTime, birthtime, spouseMMTime, divorcesTime, breakSettlementsPopTime, workersManagementTime, crimeTime, settlementGoodsProdTime, accommodationManagmentTime, updateAliveTime, associateManagementTime, makeHistoryTime, fullTime])
+    timeTable.extend(["WorldTime", worldtime, "TerritoryTime", terrytoryTime, "WeaterTime", weatherChangeTime, "IncAgeTime", incAgeTime, "InfectionsTime", infectionsTime, "DiseasesTime", diseasesTime, "LovemakingTime", loveMakingTime, "BirthTime", birthtime, "SpouseMMTime", spouseMMTime, "DivorcesTime", divorcesTime, "BreakSettlementsPopTime", breakSettlementsPopTime, "WorkersManagementTime", workersManagementTime, "Crime", crimeTime, "SettlementGoodsProdTime", settlementGoodsProdTime, "AccomodationTime", accommodationManagmentTime, "UpdateAliveTime", updateAliveTime, "AssociateMngTime", associateManagementTime, "MakeHistoryTime", makeHistoryTime, "FullTime", fullTime])
 
     for family in world.getFamilies():
         isAlive += family.getAliveMemberNumber()
@@ -443,4 +443,4 @@ def pygameEvents(event, canvas, pausedPressed):
 def callMain (popBreakLimit):
     return main(popBreakLimit)
 
-main()
+#main()
