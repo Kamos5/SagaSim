@@ -247,7 +247,7 @@ class WorldMapScreen:
             else:
                 rect = pygame.draw.rect(self.worldMapScreenSurface, borderColor, [x, y, w, h])
                 rectInner = self.returnRectInner(worldMapObjClass, color, x, y, w, h)
-            self.worldMapScreenSurfaceObjsRect.append([rect, rectInner, color, borderColor])
+            #self.worldMapScreenSurfaceObjsRect.append([rect, rectInner, color, borderColor])
             self.map.append([rect, rectInner, color, borderColor])
 
             if isinstance(worldMapObjClass.getObject(), Province):
@@ -281,7 +281,8 @@ class WorldMapScreen:
 
         rect = pygame.draw.rect(self.worldMapScreenSurface, color, [x, y, w, h])
         rectInner = pygame.draw.rect(self.worldMapScreenSurface, color, [x + 1, y + 1, w - 2, h - 2])
-        self.worldMapScreenSurfaceObjsRect.append([rect, rectInner, color, borderColor])
+        self.worldMapScreenSurfaceObjsRect.append([rect, object.getObject()])
+#        self.worldMapScreenSurfaceObjsRect.append([rect, rectInner, color, borderColor])
         self.map.append([rect, rectInner, color, borderColor])
         self.settlementLabel = Label2(f'{object.getObject().getSettlementName()}', self.miniTextFont, onlyText=True, fontColor=color)
         self.worldMapScreenSurface.blit(self.settlementLabel.localSurface, (x-(self.settlementLabel.w//2), y-(self.settlementLabel.h//2)+self.lineHeight))

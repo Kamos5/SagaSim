@@ -3,6 +3,7 @@ import time
 import pygame
 
 from SettlementFeatures import Feature
+from Settlements import Settlements
 from UI.Screens.FamilyTreeScreen import FamilyTreeScreen
 from UI.Screens.HelpScreen import HelpScreen
 from UI.Screens.WorldMapScreen import WorldMapScreen
@@ -302,12 +303,9 @@ class Canvas:
                     mouseX, mouseY = pygame.mouse.get_pos()
                     for itemObj in itemsObj:
                         if itemObj[0].collidepoint([mouseX - itemObjRectScreen.screenPosX, mouseY - itemObjRectScreen.screenPosY]):
-                            if not isinstance(itemObj[1], Button):
-                                self.worldMapScreen.changeColorAfterClick(itemObj[0], itemObj[1])
-                                return True, pausedPressed
-                            else:
-                                self.worldMapScreen.buttonHandling(itemObj[1], event.button)
-                                return True, pausedPressed
+                            if isinstance(itemObj[1], Settlements):
+                                print("AAA")
+
             #burshSize
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_a:
