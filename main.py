@@ -443,4 +443,4 @@ def pygameEvents(event, canvas, pausedPressed):
 def callMain (popBreakLimit):
     return main(popBreakLimit)
 
-#main()
+main()
