@@ -2,7 +2,7 @@ import Enums
 import Utils
 import NameGenerator
 from FamilyTreeNode import BinaryTreeNode
-from Enums import LifeStatus, MaritalStatus, HairColor, CauseOfDeath, Sexes, EyeColor, GeneralHealth
+from Enums import LifeStatus, MaritalStatus, HairColor, CauseOfDeath, Sexes, EyeColor, GeneralHealth, SkinColor
 from House import House
 
 
@@ -73,6 +73,9 @@ class Person:
         self.eyeColor = EyeColor.GRAY
         self.eyeColorGen1 = [EyeColor.GRAY, 0]
         self.eyeColorGen2 = self.eyeColorGen1
+        self.skinColor = SkinColor.ALBIN
+        self.skinColorGen1 = [SkinColor.ALBIN, 0]
+        self.skinColorGen2 = self.skinColorGen1
         self.traits = []
         self.allChildren = []
         self.aliveChildren = []
@@ -95,7 +98,7 @@ class Person:
         self.isInFavorite = False
         pass
 
-    def setInitValues(self, familyName, yearOfBirth, age, randomLifespan, sex, hairColor, hairColorGen1, hairColorGen2, eyeColor, eyeColorGen1, eyeColorGen2, familyObj):
+    def setInitValues(self, familyName, yearOfBirth, age, randomLifespan, sex, hairColor, hairColorGen1, hairColorGen2, eyeColor, eyeColorGen1, eyeColorGen2, skinColor, skinColorGen1, skinColorGen2, familyObj):
 
         if sex == Sexes.MALE:
             self.firstName = NameGenerator.getRandomMNameForRegion(familyObj.getOriginRegion().getRegionNumber())
@@ -131,6 +134,9 @@ class Person:
         self.eyeColor = eyeColor
         self.eyeColorGen1 = eyeColorGen1
         self.eyeColorGen2 = eyeColorGen2
+        self.skinColor = skinColor
+        self.skinColorGen1 = skinColorGen1
+        self.skinColorGen2 = skinColorGen2
         self.familyObjRef = familyObj
         self.originFamilyObjRef = familyObj
         self.homeRegion = familyObj.getOriginRegion()
@@ -142,7 +148,7 @@ class Person:
         self.personalSexualityModifier = 1
         self.accommodation = House()
 
-    def birthNewPerson(self, firstName, lastName, familyName, dayOfBirth, monthOfBirth, yearOfBirth, lifespan, sex, sexGen1, sexGen2, sexuality, fertility, height, hairColor, hairColorGen1, hairColorGen2, eyeColor, eyeColorGen1, eyeColorGen2, mother, father, trueMother, trueFather, familyObj, immunities):
+    def birthNewPerson(self, firstName, lastName, familyName, dayOfBirth, monthOfBirth, yearOfBirth, lifespan, sex, sexGen1, sexGen2, sexuality, fertility, height, hairColor, hairColorGen1, hairColorGen2, eyeColor, eyeColorGen1, eyeColorGen2, skinColor, skinColorGen1, skinColorGen2, mother, father, trueMother, trueFather, familyObj, immunities):
 
         self.firstName = firstName
         self.lastName = lastName
@@ -164,6 +170,9 @@ class Person:
         self.eyeColor = eyeColor
         self.eyeColorGen1 = eyeColorGen1
         self.eyeColorGen2 = eyeColorGen2
+        self.skinColor = skinColor
+        self.skinColorGen1 = skinColorGen1
+        self.skinColorGen2 = skinColorGen2
         self.mother = mother
         self.father = father
         self.trueMother = trueMother
@@ -257,6 +266,9 @@ class Person:
 
     def getEyeColor(self):
         return self.eyeColor
+
+    def getSkinColor(self):
+        return self.skinColor
 
     def getLifeEvent(self):
         return self.lifeEvents

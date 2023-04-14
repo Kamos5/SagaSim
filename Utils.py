@@ -324,6 +324,25 @@ def eyeColorMap (eyeColorGen1, eyeColorGen2):
         else:
             return eyeColorGen1
 
+def skinColorMap (skinColorGen1, skinColorGen2):
+
+    randomNumber = randomRange(1, 100)
+
+    #sum must equal 100
+    threshold1 = 90
+    threshold2 = 10
+
+    if skinColorGen1[0].value[0] >= skinColorGen2[0].value[0]:
+        if randomNumber <= threshold1:
+            return skinColorGen1
+        else:
+            return skinColorGen2
+    else:
+        if randomNumber <= threshold1:
+            return skinColorGen2
+        else:
+            return skinColorGen1
+
 def geneticHairColor(trueParent1, trueParent2):
 
 
@@ -423,6 +442,56 @@ def geneticEyeColor(trueParent1, trueParent2):
     childEyeColor = eyeColorMap(childEyeColorGen1, childEyeColorGen2)[0]
 
     return childEyeColor, childEyeColorGen1, childEyeColorGen2
+
+def geneticSkinColor(trueParent1, trueParent2):
+
+
+    mutationChance = randomRange(1, 1000)
+    mutationGene = randomRange(1, 2)
+
+    damagedGene = 0
+
+    damagedGeneChange = randomRange(1, 100)
+
+    if damagedGeneChange < 5:
+        damagedGene = 1
+
+    personParent1SkinColorGen1 = trueParent1.skinColorGen1
+    personParent1SkinColorGen2 = trueParent1.skinColorGen2
+    personParent2SkinColorGen1 = trueParent2.skinColorGen1
+    personParent2SkinColorGen2 = trueParent2.skinColorGen2
+
+    randomGen1 = randomRange(1, 2)
+    randomGen2 = randomRange(1, 2)
+
+    childSkinColorGen1 = personParent1SkinColorGen1
+    childSkinColorGen2 = personParent1SkinColorGen2
+
+    if randomGen1 == 1 and randomGen2 == 1:
+        childSkinColorGen1 = personParent1SkinColorGen1
+        childSkinColorGen2 = personParent2SkinColorGen1
+
+    if randomGen1 == 1 and randomGen2 == 2:
+        childSkinColorGen1 = personParent1SkinColorGen1
+        childSkinColorGen2 = personParent2SkinColorGen2
+
+    if randomGen1 == 2 and randomGen2 == 1:
+        childSkinColorGen1 = personParent2SkinColorGen2
+        childSkinColorGen2 = personParent1SkinColorGen1
+
+    if randomGen1 == 2 and randomGen2 == 2:
+        childSkinColorGen1 = personParent2SkinColorGen2
+        childSkinColorGen2 = personParent2SkinColorGen2
+
+    if mutationGene == 1 and mutationChance <= 5:
+        childSkinColorGen1 = [randomFromEnumCollection(Enums.SkinColor), damagedGene]
+
+    if mutationGene == 2 and mutationChance <= 5:
+        childSkinColorGen2 = [randomFromEnumCollection(Enums.SkinColor), damagedGene]
+
+    childSkinColor = skinColorMap(childSkinColorGen1, childSkinColorGen2)[0]
+
+    return childSkinColor, childSkinColorGen1, childSkinColorGen2
 
 
 def triangularNumber(n):

@@ -69,13 +69,14 @@ class EyeColor(Enum):
     BLUE = 2, 'blue', (0, 0, 153)
     GRAY = 1, 'gray', (166, 166, 166)
 
+
 class SkinColor(Enum):
-    BLACK = 4, 'black'
-    BROWN = 3, 'brown'
-    YELLOW = 2, 'yellow'
-    WHITE = 1, 'white'
-    ALBINO = 0, 'albino'
-    UNDEFINED = -1, 'undefined'
+    BLACK = 5, 'black', (63, 40, 24)
+    BROWN = 4, 'brown', (148, 97, 60)
+    YELLOW = 3, 'yellow', (247, 226, 171)
+    RED = 2, 'red', (207, 158, 124)
+    WHITE = 1, 'white', (255, 223, 196)
+    ALBIN = 0, 'albin', (255, 250, 250)
 
 #0 means healthy gen
 class Sexes(Enum):

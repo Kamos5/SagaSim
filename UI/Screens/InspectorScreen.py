@@ -447,6 +447,11 @@ class InspectorScreen:
         self.drawCircle(self.width * 0.30 + self.lineHeight / 2, self.lineHeight * self.writeLine + self.scroll_y + self.lineHeight / 2, self.lineHeight / 2, (object.getEyeColor().value[2]))
         #self.inspectorScreenSurface.fill(object.getEyeColor().value[2], (self.width * 0.30 + 5, self.lineHeight * self.writeLine + self.scroll_y + 2, self.lineHeight - 4, self.lineHeight - 4))
         self.writeLine += 1
+        label = Label("Skin Color: " + str(object.getSkinColor().value[1]), 500, self.lineHeight, self.textFont)
+        self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding, self.lineHeight * self.writeLine + self.scroll_y))
+        self.drawCircle(self.width * 0.30 + self.lineHeight / 2, self.lineHeight * self.writeLine + self.scroll_y + self.lineHeight / 2, self.lineHeight / 2, (object.getSkinColor().value[2]))
+        #self.inspectorScreenSurface.fill(object.getEyeColor().value[2], (self.width * 0.30 + 5, self.lineHeight * self.writeLine + self.scroll_y + 2, self.lineHeight - 4, self.lineHeight - 4))
+        self.writeLine += 1
         if len(object.getTraits()) > 0:
             traits = ""
             for trait in object.getTraits():

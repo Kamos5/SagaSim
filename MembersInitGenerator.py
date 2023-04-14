@@ -2,7 +2,7 @@ from random import choice, seed, SystemRandom
 
 import HouseFunctions
 from Person import Person as PersonObj
-from Enums import MaritalStatus, HairColor, Sexes, EyeColor
+from Enums import MaritalStatus, HairColor, Sexes, EyeColor, SkinColor
 import Utils
 
 people = []
@@ -25,7 +25,10 @@ def Init(families, world):
             eyeColor = setUpEyeColorsToFamilies(family)
             eyeColorGen1 = [eyeColor, 0]
             eyeColorGen2 = [eyeColor, 0]
-            member.setInitValues(family.familyName, world.getYear(), randomAge, randomLifespan, sex, hairColor, hairColorGen1, hairColorGen2, eyeColor, eyeColorGen1, eyeColorGen2, family)
+            skinColor = setUpSkinColorsToFamilies(family)
+            skinColorGen1 = [skinColor, 0]
+            skinColorGen2 = [skinColor, 0]
+            member.setInitValues(family.familyName, world.getYear(), randomAge, randomLifespan, sex, hairColor, hairColorGen1, hairColorGen2, eyeColor, eyeColorGen1, eyeColorGen2, skinColor, skinColorGen1, skinColorGen2, family)
 
             member.addTrait(Utils.randomTrait(member))
             member.addTrait(Utils.randomTrait(member))
@@ -73,6 +76,12 @@ def setUpEyeColorsToFamilies (family):
 
     return eyeColor
 
+def setUpSkinColorsToFamilies (family):
+
+    skinColor = Utils.randomFromEnumCollection(SkinColor)
+
+
+    return skinColor
 
 def initInitMarrieges(family):
 

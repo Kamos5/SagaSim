@@ -57,6 +57,7 @@ def birthChild(world, parent1, parent2=None, trueParent1=None, trueParent2=None)
 
     hairColor, hairColorGen1, hairColorGen2 = Utils.geneticHairColor(trueParent1, trueParent2)
     eyeColor, eyeColorGen1, eyeColorGen2 = Utils.geneticEyeColor(trueParent1, trueParent2)
+    skinColor, skinColorGen1, skinColorGen2 = Utils.geneticSkinColor(trueParent1, trueParent2)
 
     for childFirstName in firstName:
         person.append(PersonObj())
@@ -71,7 +72,7 @@ def birthChild(world, parent1, parent2=None, trueParent1=None, trueParent2=None)
     #Child goes to father's family
         personObj.birthNewPerson(childFirstName, secondParent.familyName, secondParent.familyName, world.getDay(), world.getMonth(), world.getYear(), lifespan, sex,
                               sexGen1, sexGen2, sexuality, fertility, offspringHeight, hairColor, hairColorGen1, hairColorGen2, eyeColor, eyeColorGen1, eyeColorGen2,
-                              parent1, parent2, trueParent1, trueParent2, secondParent.familyObjRef, immunities)
+                              skinColor, skinColorGen1, skinColorGen2, parent1, parent2, trueParent1, trueParent2, secondParent.familyObjRef, immunities)
 
         Utils.inheretTraits(personObj, parent1, secondParent, trueParent1, trueParent2)
 
