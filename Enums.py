@@ -202,3 +202,7 @@ class geneticIllnesses(Enum):
     WHITEDEATH = 'White death', 'Being too white is a terminal sin.', [EyeColor.GRAY, HairColor.WHITE], ['lifespan', 'fertility'], [50, 25]
     BLACKDEATH = 'Black death', 'Black live does not matter', [EyeColor.BLACK, HairColor.BLACK], ['lifespan', 'fertility'], [25, 50]
 
+class ItemType(Enum):
+    FOOD = 'food'
+    MATERIAL = 'material'
+    MISC = 'misc'

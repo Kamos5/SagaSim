@@ -36,6 +36,7 @@ class Settlements:
         self.foodNetLastYear = 0
         self.freeFood = 100
         self.freeProd = 0
+        self.stockpile = []
         self.residents = []
         self.foodFeatures = []
         self.prodFeatures = []

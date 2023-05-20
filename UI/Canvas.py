@@ -20,6 +20,7 @@ class Canvas:
     windowWidth = 1920 # 1366
     windowHeight = 1080 # 768
 
+
     def __init__(self):
 
         self.redrawScreen()
