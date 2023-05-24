@@ -1122,12 +1122,14 @@ def assosiatesFriendsAndFoes(world):
 
 
     for person in world.getAlivePeople():
-        if len(person.getFriends()) > 0:
-            for friend in person.getFriends():
+        personFriends = person.getFriends()
+        if len(personFriends) > 0:
+            for friend in personFriends:
                 if PF.canBeLover(person, friend):
                     PF.checkAndAddPersonToLovers(person, friend, world)
-                if friend.getSpouse() is not None:
-                    if PF.canBeLover(person, friend.getSpouse()):
-                        PF.checkAndAddPersonToLovers(person, friend.getSpouse(), world)
+                friendSpouse = friend.getSpouse()
+                if friendSpouse is not None:
+                    if PF.canBeLover(person, friendSpouse):
+                        PF.checkAndAddPersonToLovers(person, friendSpouse, world)
 
 
