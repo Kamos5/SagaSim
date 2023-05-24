@@ -1,3 +1,4 @@
+import random
 import time
 
 import HouseFunctions
@@ -109,27 +110,27 @@ def spouseMatchmaking (params):
     world = params[0]
     timeTable = params[1]
 
+    validMaritalStatuses = {Enums.MaritalStatus.SINGLE, Enums.MaritalStatus.WIDOW, Enums.MaritalStatus.WIDOWER, Enums.MaritalStatus.DIVORCED}
+
     #CANT USE PERSON IN UNMARIED LIST BECAUSE OF STRANGE ERRORS CONNECTED WITH PREVIOUS SPOUS DYING IN THE SAME YEAR AND LOOP family.getUnmarried list NOT RECOGNIZING IT!!!
 
     times = 0
 
     for person in world.getAlivePeople():
 
-         if person.lifeStatus == Enums.LifeStatus.ALIVE and person.age >= 15 and person.spouse is None and (person.maritalStatus == Enums.MaritalStatus.SINGLE or person.maritalStatus == Enums.MaritalStatus.WIDOW or person.maritalStatus == Enums.MaritalStatus.WIDOWER or person.maritalStatus == Enums.MaritalStatus.DIVORCED):
+        if person.lifeStatus == Enums.LifeStatus.ALIVE and person.age >= 15 and person.spouse is None and validMaritalStatuses:
 
-            if person.getOccupation() is not None and person.getOccupation().getOccupationName() == 'Priest':
+            if checkIfOccupationIsPriest(person):
                 continue
-
-            changeForFindingSpouse = Utils.randomRange(1, 100)
 
             start = time.perf_counter()
             availableSpouesesList = FindAvailableSpouses(world.getFamilies(), person)
             end = time.perf_counter()
             findSpouseTime = end - start
             times += findSpouseTime
-            if len(availableSpouesesList) > 0 and changeForFindingSpouse < 5:
+            if len(availableSpouesesList) > 0 and random.random() < 0.05:
                 randomSpouse = Utils.randomFromCollection(availableSpouesesList)
-                if randomSpouse.getOccupation() is not None and randomSpouse.getOccupation().getOccupationName() == 'Priest':
+                if checkIfOccupationIsPriest(randomSpouse):
                     continue
                 person.spouse = randomSpouse
                 spouseObj = person.spouse
@@ -188,6 +189,13 @@ def spouseMatchmaking (params):
 
     timeTable.extend([times])
     print("SposesSumTime: " + str(times))
+
+def checkIfOccupationIsPriest(person):
+
+    if person.getOccupation() is not None and person.getOccupation().getOccupationName() == 'Priest':
+        return True
+    else:
+        return False
 
 def movingMarriedCoupleToNewHouse(person, newHouse, world):
 
