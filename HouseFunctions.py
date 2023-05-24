@@ -38,19 +38,20 @@ def payForUpgrade (house):
 
     for resident in house.getHouseResidents():
         costToPay = house.getHouseType().value.getCostToUpgrade()
-        if resident.getSpouse() is not None and resident.getFreeWealth() + resident.getSpouse().getFreeWealth() >= costToPay:
-            if resident.getFreeWealth() > costToPay:
+        residentWealth = resident.getFreeWealth()
+        if resident.getSpouse() is not None and residentWealth + resident.getSpouse().getFreeWealth() >= costToPay:
+            if residentWealth > costToPay:
                 resident.changeFreeWealth(-costToPay)
             if resident.getSpouse().getFreeWealth() > costToPay:
                 resident.getSpouse().changeFreeWealth(-costToPay)
             randomPerson = Utils.randomFromCollection([resident, resident.getSpouse()])
-            costToPay -= randomPerson.getFreeWealth()
-            randomPerson.changeFreeWealth(-randomPerson.getFreeWealth())
+            costToPay -= residentWealth
+            randomPerson.changeFreeWealth(-residentWealth)
             costToPay -= randomPerson.getSpouse().getFreeWealth()
             upgradeHouse(house)
             break
         else:
-            if resident.getFreeWealth() > costToPay:
+            if residentWealth > costToPay:
                 resident.changeFreeWealth(-costToPay)
                 upgradeHouse(house)
                 break
