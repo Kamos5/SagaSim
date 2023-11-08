@@ -931,7 +931,7 @@ class World:
 
 
             if closestRegion is not None:
-                print("RESHUFLED")
+                print("RESHUFFLED")
                 print(province.getName())
                 print("FROM")
                 print(province.getRegion().getRegionColor())

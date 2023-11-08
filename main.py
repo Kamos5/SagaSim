@@ -14,6 +14,7 @@ import pygame
 import ProvinceNameGenerator
 import Utils
 from Family import Family
+from GameState import GameState
 from Region import Region
 from Settlements import Settlements
 from UI import Canvas
@@ -121,7 +122,7 @@ def running(world, manualOverride):
 
     return (timeTable)
 
-def main(popBreakLimit=None):
+def newWorld(canvas):
 
     world.reset()
     names = CultureNames.foundations
@@ -129,12 +130,16 @@ def main(popBreakLimit=None):
     world.setCultures(list(names.keys()))
     world.generateRegionsNames(Parameters.startingNumberOfRegions)
     ProvinceNameGenerator.makeListsForProvinceNames(world)
-    world.getWorldMap().generateProvinces()
+    world.getWorldMap().generateProvinces(canvas)
     world.pickRandomProvincesForRegions()
     world.generateSettlements()
     world.setFamilies(initFamilies())
     world.setPeople(initPeople(world.getFamilies()))
     world.diseases = IOtools.loadFiles('diseases')
+
+def main(popBreakLimit=None):
+
+
     #print(names)
 
     windowWidth = 1024
@@ -144,16 +149,17 @@ def main(popBreakLimit=None):
     fps = 60
     clock = pygame.time.Clock()
 
+    initWorld = 0  # 0 no World, 1 create World, 2 load World
     manualOverride = False
 
     sun = True
-
     pausedPressed = False
     regionPressed = ''
 
     tickStartTime = time.time() * 1000.0
 
     canvas = Canvas.Canvas()
+    gameState = GameState()
 
     world.updateAlive()
 
@@ -164,51 +170,70 @@ def main(popBreakLimit=None):
         pTime = 1000 / pCount
 
         start = time.perf_counter()
-        # VisualLogic
-        canvas.clearCanvas()
-        canvas.navBarScreen.addHelpButton()
-        canvas.navBarScreen.addPlotsButton()
-        canvas.navBarScreen.addWorldMapButton()
-        canvas.navBarScreen.addGameSpeedCounter(world)
-        canvas.navBarScreen.addDateTimer(world)
-        canvas.drawStuff(world)
-
-        end = time.perf_counter()
-        timeUI = end - start
-        print("UITime: " + str(timeUI))
 
         #GameLogic
         tickCurrentTime = time.time() * 1000.0
         if tickCurrentTime - tickStartTime >= pTime:
-            timeTable = running(world, manualOverride)
+
+            canvas.refreshCanvas()
+            if gameState.isMenuState():
+                mainMenu(canvas)
+            # VisualLogic
+
+            if gameState.isInitState():
+                newWorld(canvas)
+                world.updateAlive()
+                gameState.changeToSimulation()
+                continue
+
+            if gameState.isSimulationState():
+
+                canvas.navBarScreen.addHelpButton()
+                canvas.navBarScreen.addPlotsButton()
+                canvas.navBarScreen.addWorldMapButton()
+                canvas.navBarScreen.addGameSpeedCounter(world)
+                canvas.navBarScreen.addDateTimer(world)
+                if pausedPressed:
+                    canvas.navBarScreen.addPausedIndicator()
+                canvas.drawStuff(world)
+
+                timeTable = running(world, manualOverride)
             tickStartTime = time.time() * 1000.0
 
+            end = time.perf_counter()
+            timeUI = end - start
+            print("UITime: " + str(timeUI))
 
-        pygame.display.update()
-        pygame.event.set_blocked(pygame.MOUSEMOTION)
-        for event in pygame.event.get():
+            pygame.display.update()
+            pygame.event.set_blocked(pygame.MOUSEMOTION)
+            for event in pygame.event.get():
 
-            pausedPressed = pygameEvents(event, canvas, pausedPressed)
-            while pausedPressed:  #For Pausing and resuming
-                for event in pygame.event.get():
-                    pausedPressed = pygameEvents(event, canvas, pausedPressed)
+                pausedPressed = pygameEvents(event, canvas, pausedPressed, gameState)
+                while pausedPressed and gameState.isSimulationState():  #For Pausing and resuming
+                    canvas.refreshScreen(world, canvas.listScreen.getScroll_y(), canvas.inspectorScreen.getScroll_y(), canvas.familyTreeScreen.getScroll_y(), isPausedPressed=pausedPressed)
+                    for event in pygame.event.get():
+                        pausedPressed = pygameEvents(event, canvas, pausedPressed, gameState)
 
-                # print(time.perf_counter()) #TODO OGARNAC
-
-
-
-        pygame.display.update()  # Call this only once per loop
-        clock.tick(fps)
-
-        if popBreakLimit is not None and len(world.getAlivePeople()) > popBreakLimit:
-            return timeTable
-
-        if world.getYear() == 1200:
-
-            return
+                    # print(time.perf_counter()) #TODO OGARNAC
 
 
-def pygameEvents(event, canvas, pausedPressed):
+
+            pygame.display.update()  # Call this only once per loop
+            clock.tick(fps)
+
+            if popBreakLimit is not None and len(world.getAlivePeople()) > popBreakLimit:
+                return timeTable
+
+            if world.getYear() == 1200:
+
+                return
+
+def mainMenu(canvas):
+
+    canvas.drawMainMenu(world)
+    return
+
+def pygameEvents(event, canvas, pausedPressed, gameState):
 
     #scrolling logic
     if event.type == pygame.MOUSEBUTTONDOWN:
@@ -217,15 +242,15 @@ def pygameEvents(event, canvas, pausedPressed):
             pos = pygame.mouse.get_pos()
             if canvas.listScreenObj.collidepoint(pos) and not canvas.showHelp and not canvas.showPlots and not canvas.showFamilyScreen:
                 scroll_y = min(canvas.listScreen.getScroll_y() + 50, 0)
-                canvas.refreshScreen(world, scroll_y, canvas.inspectorScreen.getScroll_y(), canvas.familyTreeScreen.getScroll_y())
+                canvas.refreshScreen(world, scroll_y, canvas.inspectorScreen.getScroll_y(), canvas.familyTreeScreen.getScroll_y(), isPausedPressed=pausedPressed)
             if canvas.detailsScreenObj.collidepoint(pos) and not canvas.showHelp and not canvas.showPlots and not canvas.showFamilyScreen:
                 scroll_y = min(canvas.inspectorScreen.getScroll_y() + 50, 0)
-                canvas.refreshScreen(world, canvas.listScreen.getScroll_y(), scroll_y, canvas.familyTreeScreen.getScroll_y())
+                canvas.refreshScreen(world, canvas.listScreen.getScroll_y(), scroll_y, canvas.familyTreeScreen.getScroll_y(), isPausedPressed=pausedPressed)
 
             if canvas.showFamilyScreen:
                 if canvas.familyTreeScreenObj.collidepoint(pos):
                     scroll_y = min(canvas.familyTreeScreen.getScroll_y() + 50, 0)
-                    canvas.refreshScreen(world, canvas.listScreen.getScroll_y(), canvas.inspectorScreen.getScroll_y(), scroll_y)
+                    canvas.refreshScreen(world, canvas.listScreen.getScroll_y(), canvas.inspectorScreen.getScroll_y(), scroll_y, isPausedPressed=pausedPressed)
         # scroll down
         if event.button == 5:
             pos = pygame.mouse.get_pos()
@@ -234,20 +259,20 @@ def pygameEvents(event, canvas, pausedPressed):
                     scroll_y = max(canvas.listScreen.getScroll_y() - 50, -int(canvas.listScreen.lineHeight*canvas.listScreen.writeLine) + canvas.listScreen.height/2)
                 else:
                     scroll_y = 0
-                canvas.refreshScreen(world, scroll_y, canvas.inspectorScreen.getScroll_y(), canvas.familyTreeScreen.getScroll_y())
+                canvas.refreshScreen(world, scroll_y, canvas.inspectorScreen.getScroll_y(), canvas.familyTreeScreen.getScroll_y(), isPausedPressed=pausedPressed)
             if canvas.detailsScreenObj.collidepoint(pos) and not canvas.showHelp and not canvas.showPlots and not canvas.showFamilyScreen:
                 if canvas.inspectorScreen.lineHeight*canvas.inspectorScreen.writeLine > canvas.inspectorScreen.height/2:
                     scroll_y = max(canvas.inspectorScreen.getScroll_y() - 50, -int(canvas.inspectorScreen.lineHeight*canvas.inspectorScreen.writeLine) + canvas.inspectorScreen.height/2)
                 else:
                     scroll_y = 0
-                canvas.refreshScreen(world, canvas.listScreen.getScroll_y(), scroll_y, canvas.familyTreeScreen.getScroll_y())
+                canvas.refreshScreen(world, canvas.listScreen.getScroll_y(), scroll_y, canvas.familyTreeScreen.getScroll_y(), isPausedPressed=pausedPressed)
             if canvas.showFamilyScreen:
                 if canvas.familyTreeScreenObj.collidepoint(pos):
                     if canvas.familyTreeScreen.lineHeight*canvas.familyTreeScreen.writeLine > canvas.familyTreeScreen.height/2:
                         scroll_y = max(canvas.familyTreeScreen.getScroll_y() - 50, -int(canvas.familyTreeScreen.lineHeight*canvas.familyTreeScreen.writeLine) + canvas.familyTreeScreen.height/2)
                     else:
                         scroll_y = 0
-                    canvas.refreshScreen(world, canvas.listScreen.getScroll_y(), canvas.inspectorScreen.getScroll_y(), scroll_y)
+                    canvas.refreshScreen(world, canvas.listScreen.getScroll_y(), canvas.inspectorScreen.getScroll_y(), scroll_y, isPausedPressed=pausedPressed)
 
     if event.type == pygame.KEYDOWN:
 
@@ -304,7 +329,7 @@ def pygameEvents(event, canvas, pausedPressed):
         if event.key == pygame.K_END:
             if len(canvas.focusObj) > 0:
                 canvas.focusObj.pop(len(canvas.focusObj)-1)
-                canvas.refreshScreen(world, canvas.listScreen.getScroll_y(), canvas.inspectorScreen.getScroll_y(), canvas.familyTreeScreen.getScroll_y())
+                canvas.refreshScreen(world, canvas.listScreen.getScroll_y(), canvas.inspectorScreen.getScroll_y(), canvas.familyTreeScreen.getScroll_y(), isPausedPressed = pausedPressed)
 
         if event.key == pygame.K_LEFT:
 
@@ -423,12 +448,12 @@ def pygameEvents(event, canvas, pausedPressed):
             # formation
             else:
                 canvas.lastFocusObj.addText(event.unicode)
-            canvas.refreshScreen(world, canvas.listScreen.getScroll_y(), canvas.inspectorScreen.getScroll_y(), canvas.familyTreeScreen.getScroll_y())
+            canvas.refreshScreen(world, canvas.listScreen.getScroll_y(), canvas.inspectorScreen.getScroll_y(), canvas.familyTreeScreen.getScroll_y(), isPausedPressed = pausedPressed)
 
-    collectionEvent, pausedPressed = canvas.handleClickOnCollection(event, pausedPressed)
+    collectionEvent, pausedPressed = canvas.handleClickOnCollection(event, pausedPressed, gameState)
 
     if collectionEvent:
-        canvas.refreshScreen(world, canvas.listScreen.getScroll_y(), canvas.inspectorScreen.getScroll_y(), canvas.familyTreeScreen.getScroll_y())
+        canvas.refreshScreen(world, canvas.listScreen.getScroll_y(), canvas.inspectorScreen.getScroll_y(), canvas.familyTreeScreen.getScroll_y(), isPausedPressed = pausedPressed)
         return pausedPressed
 
     if event.type == pygame.QUIT:
@@ -437,7 +462,8 @@ def pygameEvents(event, canvas, pausedPressed):
 
     # Pause from mousclick on Time
     pausedPressed = canvas.pauseHandle(event, pausedPressed)
-    canvas.refreshScreen(world, canvas.listScreen.getScroll_y(), canvas.inspectorScreen.getScroll_y(), canvas.familyTreeScreen.getScroll_y())
+    #
+    # canvas.refreshScreen(world, canvas.listScreen.getScroll_y(), canvas.inspectorScreen.getScroll_y(), canvas.familyTreeScreen.getScroll_y(), isPausedPressed = pausedPressed)
     return pausedPressed
 
 def callMain (popBreakLimit):

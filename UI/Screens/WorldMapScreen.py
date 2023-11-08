@@ -315,7 +315,7 @@ class WorldMapScreen:
         #     pygame.draw.line(self.worldMapScreenSurface, (220, 220, 220), (x, y), (rX, rY), 1)
 
         color = object.getRegionColor()
-        self.provinceLabel = Label2(f'{object.getRegionName()}', self.textFont, onlyText=True, fontColor=color)
+        self.provinceLabel = Label2(f'{object.getRegionName()}', self.textFont, onlyText=True, fontColor=(0,0,0))
         self.worldMapScreenSurface.blit(self.provinceLabel.localSurface, (x-(self.provinceLabel.w//2), y-(self.provinceLabel.h//2)))
 
 

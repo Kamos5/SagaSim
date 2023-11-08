@@ -92,3 +92,6 @@ class Label2:
             r, g, b = self.inactiveRectColor
             self.textColor = 220, 220, 220
         self.setActiveRectColor(r, g, b)
+
+    def centerElement(self, screenWidth):
+        return screenWidth * 0.5 - (self.w / 2)

@@ -80,5 +80,10 @@ class NavBarScreen:
         self.dateTimeLabel = Label2("Day: " + str(world.getDay()) + " Month: " + str(world.getMonth().value[1]) + " Year: " + str(world.getYear()), self.textFont, True, borderSize=1)
         self.navBarScreenSurfaceObjsRect.append([self.navBarScreenSurface.blit(self.dateTimeLabel.localSurface, (self.width * 0.80, 0)), 'Clock'])
 
+    def addPausedIndicator(self):
+
+        self.pausedLabel = Label2("PAUSED", self.textFont, False, True)
+        self.navBarScreenSurface.blit(self.pausedLabel.localSurface, (self.width * 0.95, 0))
+
     def getVerticalPositioning(self):
         return self.writeLine * (self.lineHeight + 4 * self.labelBoarderDefault + 4 * self.labelMarginVerticalDefault)

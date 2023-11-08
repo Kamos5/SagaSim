@@ -67,7 +67,7 @@ class WorldMap:
     def getHeight(self):
         return self.height
 
-    def generateProvinces(self):
+    def generateProvinces(self, canvas):
 
         print("Genereting World Map...")
         print("Genereting Provinces...")
@@ -146,6 +146,7 @@ class WorldMap:
             province.markInnerCords()
         self.landProvinces = self.provinces - self.seaProvinces
         print("Genereting Provinces Completed!")
+        canvas.loadingScreen.provinces = True
         print("Generation Neighbours...")
         self.generateProvinceNeighbours()
         print("Generation Neighbours Completed!")
