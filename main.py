@@ -162,7 +162,7 @@ def main(popBreakLimit=None):
     gameState = GameState()
 
     world.updateAlive()
-
+    world.setGameState(gameState)
     while sun:
 
         pCount = world.getGameSpeed()
@@ -184,10 +184,12 @@ def main(popBreakLimit=None):
                 newWorld(canvas)
                 world.updateAlive()
                 gameState.changeToSimulation()
+                world.setGameState(gameState)
                 continue
 
             if gameState.isSimulationState():
 
+                canvas.navBarScreen.addMenuButton()
                 canvas.navBarScreen.addHelpButton()
                 canvas.navBarScreen.addPlotsButton()
                 canvas.navBarScreen.addWorldMapButton()
@@ -195,7 +197,7 @@ def main(popBreakLimit=None):
                 canvas.navBarScreen.addDateTimer(world)
                 if pausedPressed:
                     canvas.navBarScreen.addPausedIndicator()
-                canvas.drawStuff(world)
+                canvas.drawStuff(world, pausedPressed)
 
                 timeTable = running(world, manualOverride)
             tickStartTime = time.time() * 1000.0
@@ -210,6 +212,11 @@ def main(popBreakLimit=None):
 
                 pausedPressed = pygameEvents(event, canvas, pausedPressed, gameState)
                 while pausedPressed and gameState.isSimulationState():  #For Pausing and resuming
+                    if canvas.showMenu:
+                        gameState.changeToMenu()
+                    if gameState.isMenuState():
+                        canvas.refreshCanvas()
+                        mainMenu(canvas)
                     canvas.refreshScreen(world, canvas.listScreen.getScroll_y(), canvas.inspectorScreen.getScroll_y(), canvas.familyTreeScreen.getScroll_y(), isPausedPressed=pausedPressed)
                     for event in pygame.event.get():
                         pausedPressed = pygameEvents(event, canvas, pausedPressed, gameState)
@@ -450,7 +457,10 @@ def pygameEvents(event, canvas, pausedPressed, gameState):
                 canvas.lastFocusObj.addText(event.unicode)
             canvas.refreshScreen(world, canvas.listScreen.getScroll_y(), canvas.inspectorScreen.getScroll_y(), canvas.familyTreeScreen.getScroll_y(), isPausedPressed = pausedPressed)
 
-    collectionEvent, pausedPressed = canvas.handleClickOnCollection(event, pausedPressed, gameState)
+    collectionEvent, pausedPressed, loadWorld = canvas.handleClickOnCollection(event, pausedPressed, gameState, worldObj=world)
+
+    if loadWorld != None:
+        world.loadWorld(loadWorld)
 
     if collectionEvent:
         canvas.refreshScreen(world, canvas.listScreen.getScroll_y(), canvas.inspectorScreen.getScroll_y(), canvas.familyTreeScreen.getScroll_y(), isPausedPressed = pausedPressed)

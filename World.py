@@ -92,10 +92,69 @@ class World:
         self.allNames = None
         self.cultures = []
 
+        self.gameState = 0
+
+    def loadWorld(self, world):
+
+        self.setInitYear(world.getInitYear())
+        self.setDay(world.getDay())
+        self.setDayOfTheYear(world.getDayOfTheYear())
+        self.setDayOfWeekFlag(world.getDayOfWeekFlag())
+        self.setMonth(world.getMonth())
+        self.setYear(world.getYear())
+        self.setRegions(world.getRegions())
+        self.setGameSpeed(world.getGameSpeed())
+        self.setGameSpeedCounter(world.getGameSpeedCounter())
+        self.setDivorcesNumber(world.getDivorcesNumber())
+        self.setFamilies(world.getFamilies())
+        self.setPeople(world.getPeople())
+        self.setAlivePeople(world.getAlivePeople())
+        self.setBirthsPerYear(world.getBirthsPerYear())
+        self.setBirthsPerYearTemp(world.getBirthsPerYearTemp())
+        self.setCrimesPerYear(world.getCrimesPerYear())
+        self.setCrimesPerYearReduced(world.getCrimesPerYearReduced())
+        self.setAvarageLifeSpamHistory(world.getAvarageLifeSpam())
+        self.setAverageHeightHistory(world.getAverageHeightHistory()[0])
+        self.setAverageHeightMHistory(world.getAverageHeightHistory()[1])
+        self.setAverageHeightFHistory(world.getAverageHeightHistory()[2])
+        self.setCrimesHomicidePerYear(world.getCrimesHomicidePerYear())
+        self.setCrimesAssaultPerYear(world.getCrimesAssaultPerYear())
+        self.setCrimesBurglaryPerYear(world.getCrimesBurglaryPerYear())
+        self.setCrimesTheftPerYear(world.getCrimesTheftPerYear())
+        self.setCrimesFailedPerYear(world.getCrimesFailedPerYear())
+        self.setCrimesHomicidePerYearReduced(world.getCrimesHomicidePerYearReduced())
+        self.setCrimesAssaultPerYearReduced(world.getCrimesAssaultPerYearReduced())
+        self.setCrimesBurglaryPerYearReduced(world.getCrimesBurglaryPerYearReduced())
+        self.setCrimesTheftPerYearReduced(world.getCrimesTheftPerYearReduced())
+        self.setCrimesFailedPerYearReduced(world.getCrimesFailedPerYearReduced())
+        self.setSexualityHomoHistory(world.getSexualityHistory()[1])
+        self.setSexualityHeteroHistory(world.getSexualityHistory()[0])
+        self.setSexualityHomoPctHistory(world.getSexualityPctHistory()[1])
+        self.setSexualityHeteroPctHistory(world.getSexualityPctHistory()[0])
+        self.setWorldYearHistory(world.getWorldYearHistory())
+        self.setWorldYearHistoryReduced(world.getWorldYearHistoryReduced())
+        # self.setPeopleNumberHistory(world.getPeopleNumberHistory())
+        # self.setAlivePeopleNumberHistory(world.getAlivePeopleNumberHistory())
+        # self.setAlivePeopleNumberHistoryReduced(world.getAlivePeopleNumberHistoryReduced())
+        # self.setBirthsPerYearNumberHistory(world.getBirthsPerYearNumberHistory())
+        # self.setCrimesPerYearNumberHistory(world.getCrimesPerYearNumberHistory())
+        # self.setFamiliesMembersNumberHistory(world.getFamiliesMembersNumberHistory())
+        # self.setPeopleAliveHistory(world.getPeopleAliveHistory())
+        self.updateAlive()
+        self.countEyeColor()
+        self.countHairColor()
+        self.makeHistory()
+        self.setWorldMap(world.getWorldMap())
+        self.setAllNames(world.getAllNames())
+        self.setCultures(world.getCultures())
+        self.setGameState(world.getGameState())
+
+
     def reset(self, startYear=initYear):
 
         self.initYear = startYear
         self.day = 31
+        self.dayOfTheYear = 0
         self.dayOfWeekFlag = Utils.randomRange(1, 7)
         self.month = Enums.Months.DECEMBER
         self.year = self.initYear
@@ -164,8 +223,19 @@ class World:
         self.allNames = None
         self.cultures = []
 
+        self.gameState = 0
+
+    def getInitYear(self):
+        return self.initYear
+
+    def setInitYear(self, newYear):
+        self.initYear = newYear
+
     def getWorldMap(self):
         return self.worldMap
+
+    def setWorldMap(self, newWorldMap):
+        self.worldMap = newWorldMap
 
     def setAllNames(self, names):
         self.allNames = names
@@ -215,6 +285,9 @@ class World:
     def getBirthsPerYearTemp(self):
         return self.birthsPerYearTemp
 
+    def setBirthsPerYearTemp(self, newBirths):
+        self.birthsPerYearTemp = newBirths
+
     def increaseBirthsPerYearTemp(self):
         self.birthsPerYearTemp += 1
 
@@ -248,17 +321,26 @@ class World:
     def getDivorcesNumber(self):
         return self.divorcesNumber
 
+    def setDivorcesNumber(self, newNumber):
+        self.divorcesNumber = newNumber
+
     def changeDivorcesNumber(self, value):
         self.divorcesNumber += value
 
     def getYear(self):
         return self.year
 
+    def setYear(self, newYear):
+        self.year = newYear
+
     def increaseYear(self):
         self.year += 1
 
     def getDayOfTheYear(self):
         return self.dayOfTheYear
+
+    def setDayOfTheYear(self, newDayOfTheYear):
+        self.dayOfTheYear = newDayOfTheYear
 
     def resetDayOfTheYear(self):
         self.dayOfTheYear = 0
@@ -280,6 +362,9 @@ class World:
 
     def getDayOfWeekFlag(self):
         return self.dayOfWeekFlag
+
+    def setDayOfWeekFlag(self, newDayOfWeekFlag):
+        self.dayOfWeekFlag = newDayOfWeekFlag
 
     def increaseDayOfWeekFlag(self):
         if self.dayOfWeekFlag < 7:
@@ -337,6 +422,12 @@ class World:
 
     def getVillageSize(self):
         return Parameters.baseVillageSize
+
+    def getGameState(self):
+        return self.gameState
+
+    def setGameState(self, newGameState):
+        self.gameState = newGameState
 
     def generateRegionsNames(self, regionsNumber = 5):
 
@@ -412,8 +503,14 @@ class World:
     def getRegions(self):
         return self.regions
 
+    def setRegions(self, newRegions):
+        self.regions = newRegions
+
     def getBirthsPerYear(self):
         return self.birthsPerYear
+
+    def setBirthsPerYear(self, newBirths):
+        self.birthsPerYear = newBirths
 
     def appendBirthsPerYear(self, value):
         self.birthsPerYear.append(int(value))
@@ -433,38 +530,74 @@ class World:
     def getCrimesPerYear(self):
         return self.crimesPerYear
 
+    def setCrimesPerYear(self, newCrimePerYear):
+        self.crimesPerYear = newCrimePerYear
+
     def getCrimesHomicidePerYear(self):
         return self.crimeHomicidePerYear
+
+    def setCrimesHomicidePerYear(self, newCrimeHomicidePerYear):
+        self.crimeHomicidePerYear = newCrimeHomicidePerYear
 
     def getCrimesAssaultPerYear(self):
         return self.crimeAssaultPerYear
 
+    def setCrimesAssaultPerYear(self, newCrimesAssaultPerYear):
+        self.crimeAssaultPerYear = newCrimesAssaultPerYear
+
     def getCrimesBurglaryPerYear(self):
         return self.crimeBurglaryPerYear
+
+    def setCrimesBurglaryPerYear(self, newCrimeBurglaryPerYear):
+        self.crimeBurglaryPerYear = newCrimeBurglaryPerYear
 
     def getCrimesTheftPerYear(self):
         return self.crimeTheftPerYear
 
+    def setCrimesTheftPerYear(self, newCrimeTheftPerYear):
+        self.crimeTheftPerYear = newCrimeTheftPerYear
+
     def getCrimesFailedPerYear(self):
         return self.crimeFailedPerYear
+
+    def setCrimesFailedPerYear(self, newCrimeFailedPerYear):
+        self.crimeFailedPerYear = newCrimeFailedPerYear
 
     def getCrimesPerYearReduced(self):
         return self.crimesPerYearReduced
 
+    def setCrimesPerYearReduced(self, newCrimesPerYearReduced):
+        self.crimesPerYearReduced = newCrimesPerYearReduced
+
     def getCrimesHomicidePerYearReduced(self):
         return self.crimeHomicidePerYearReduced
+
+    def setCrimesHomicidePerYearReduced(self, newCrimeHomicidePerYearReduced):
+        self.crimeHomicidePerYearReduced = newCrimeHomicidePerYearReduced
 
     def getCrimesAssaultPerYearReduced(self):
         return self.crimeAssaultPerYearReduced
 
+    def setCrimesAssaultPerYearReduced(self, newCrimeAssaultPerYearReduced):
+        self.crimeAssaultPerYearReduced = newCrimeAssaultPerYearReduced
+
     def getCrimesBurglaryPerYearReduced(self):
         return self.crimeBurglaryPerYearReduced
+
+    def setCrimesBurglaryPerYearReduced(self, newCrimeBurglaryPerYearReduced):
+        self.crimeBurglaryPerYearReduced = newCrimeBurglaryPerYearReduced
 
     def getCrimesTheftPerYearReduced(self):
         return self.crimeTheftPerYearReduced
 
+    def setCrimesTheftPerYearReduced(self, newCrimeTheftPerYearReduced):
+        self.crimeTheftPerYearReduced = newCrimeTheftPerYearReduced
+
     def getCrimesFailedPerYearReduced(self):
         return self.crimeFailedPerYearReduced
+
+    def setCrimesFailedPerYearReduced(self, newCrimeFailedPerYearReduced):
+        self.crimeFailedPerYearReduced = newCrimeFailedPerYearReduced
 
     def appendCrimesPerYear(self, value, crimes):
         self.crimesPerYear.append(int(value))
@@ -748,17 +881,35 @@ class World:
     def getAlivePeopleNumberHistory(self):
         return [self.alivePeopleNumberHistory]
 
+    def setAlivePeopleNumberHistory(self, newAlivePeopleNumberHistory):
+        self.alivePeopleNumberHistory = newAlivePeopleNumberHistory
+
     def getBirthsPerYearNumberHistory(self):
         return self.birthsPerYearNumberHistory
 
     def getAvarageLifeSpam(self):
         return self.avarageLifeSpamHistory
 
+    def setAvarageLifeSpamHistory(self, newAvarageLifeSpamHistory):
+        self.avarageLifeSpamHistory = newAvarageLifeSpamHistory
+
     def getAverageHeightHistory(self):
         return [self.averageHeightHistory, self.averageHeightMHistory, self.averageHeightFHistory]
 
+    def setAverageHeightHistory(self, newAverageHeightHistory):
+        self.averageHeightHistory = newAverageHeightHistory
+
+    def setAverageHeightMHistory(self, newAverageHeightMHistory):
+        self.averageHeightMHistory = newAverageHeightMHistory
+
+    def setAverageHeightFHistory(self, newAverageHeightFHistory):
+        self.averageHeightFHistory = newAverageHeightFHistory
+
     def getWorldYearHistory(self):
         return self.worldHistory
+
+    def setWorldYearHistory(self, newWorldHistory):
+        self.worldHistory = newWorldHistory
 
     def getWorldYearHistoryReduced(self):
 
@@ -774,6 +925,9 @@ class World:
                 yearIndex += 1
                 continue
         return self.worldHistoryReduced
+
+    def setWorldYearHistoryReduced(self, newWorldHistoryReduced):
+        self.worldHistoryReduced = newWorldHistoryReduced
 
     def getWeatherHistoryForAllRegions(self):
 
@@ -795,11 +949,26 @@ class World:
     def getSexualityHistory(self):
         return [self.getSexualityHetero(), self.getSexualityHomo()]
 
+    def setSexualityHeteroHistory(self, newSexualityHeteroHistory):
+        self.sexualityHeteroHistory = newSexualityHeteroHistory
+
+    def setSexualityHomoHistory(self, newSexualityHomoHistory):
+        self.sexualityHomoHistory = newSexualityHomoHistory
+
     def getSexualityPctHistory(self):
         return [self.getSexualityHeteroPct(), self.getSexualityHomoPct()]
 
+    def setSexualityHeteroPctHistory(self, newSexualityHeteroPctHistory):
+        self.sexualityHeteroPctHistory = newSexualityHeteroPctHistory
+
+    def setSexualityHomoPctHistory(self, newSexualityHomoPctHistory):
+        self.sexualityHomoPctHistory = newSexualityHomoPctHistory
+
     def getPeopleAliveHistory(self):
         return [self.peopleAliveHistory]
+
+    def setPeopleAliveHistory(self, newPeopleAliveHistory):
+        self.peopleAliveHistory = newPeopleAliveHistory
 
     def getPeopleEyeColorsComplexArray(self):
         return [self.eyeColorBlackHistory, self.eyeColorBrownHistory, self.eyeColorAmberHistory, self.eyeColorHazelHistory, self.eyeColorGreenHistory, self.eyeColorBlueHistory, self.eyeColorGrayHistory]

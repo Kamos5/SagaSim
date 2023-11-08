@@ -8,11 +8,20 @@
         self.state = 0
 
 
+    def getGameState(self):
+        return self.state
+
     def changeToInit(self):
         self.state = 100
 
     def changeToSimulation(self):
         self.state = 101
+
+    def changeToMenu(self):
+        self.state = 1
+
+    def isMenuState(self):
+        return self.getGameState() == 1
 
     def isMenuState(self):
         return 0 <= self.state < 100

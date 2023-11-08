@@ -1,3 +1,4 @@
+import pickle
 
 
 def caltulatePossibleTerritoryExpansions(region, world, regionsTerritories):
@@ -68,3 +69,13 @@ def caltulatePossibleTerritoryExpansionsForSinglePoint(region, world, regionsTer
         possibleExpansion.add((terrytoryX, terrytoryY + 1))
 
     return list(possibleExpansion)
+
+
+def saveWorld(world):
+    print("save")
+    with open('save.txt', 'wb') as outp:  # Overwrites any existing file.
+        pickle.dump(world, outp, pickle.HIGHEST_PROTOCOL)
+
+def loadWorld(world):
+    print('load')
+    return pickle.load(open("save.txt", "rb"))

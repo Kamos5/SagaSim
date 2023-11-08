@@ -42,10 +42,17 @@ class NavBarScreen:
     def getNavBarScreenSurface(self):
         return self.navBarScreenSurface
 
+    def addMenuButton (self):
+
+        self.menuLabel = Label2("Menu", self.textFont, True, borderSize=1)
+        self.menuLabel.setActiveRectColor(100, 100, 10)
+        self.menuLabel.setActiveBorderColor(10, 100, 100)
+        self.navBarScreenSurfaceObjsRect.append([self.navBarScreenSurface.blit(self.menuLabel.localSurface, (50, self.heightOffSet)), 'Menu'])
+
     def addHelpButton (self):
 
         self.helpLabel = Label2("Help", self.textFont, True, True, borderSize=1)
-        self.navBarScreenSurfaceObjsRect.append([self.navBarScreenSurface.blit(self.helpLabel.localSurface, (self.width * 0.01, 0)), 'Help'])
+        self.navBarScreenSurfaceObjsRect.append([self.navBarScreenSurface.blit(self.helpLabel.localSurface, (150, self.heightOffSet)), 'Help'])
 
 
     def addPlotsButton (self):
@@ -53,37 +60,37 @@ class NavBarScreen:
         self.plotsLabel = Label2("Graphs", self.textFont, True, borderSize=1)
         self.plotsLabel.setActiveRectColor(20, 60, 20)
         self.plotsLabel.setActiveBorderColor(100, 10, 10)
-        self.navBarScreenSurfaceObjsRect.append([self.navBarScreenSurface.blit(self.plotsLabel.localSurface, (self.width * 0.05, 0)), 'Plots'])
+        self.navBarScreenSurfaceObjsRect.append([self.navBarScreenSurface.blit(self.plotsLabel.localSurface, (250, self.heightOffSet)), 'Plots'])
 
     def addWorldMapButton (self):
 
-        self.plotsLabel = Label2("World Map", self.textFont, True, borderSize=1)
-        self.plotsLabel.setActiveRectColor(10, 10, 70)
-        self.plotsLabel.setActiveBorderColor(100, 100, 100)
-        self.navBarScreenSurfaceObjsRect.append([self.navBarScreenSurface.blit(self.plotsLabel.localSurface, (self.width * 0.10, 0)), 'worldMap'])
+        self.worldMapLabel = Label2("World Map", self.textFont, True, borderSize=1)
+        self.worldMapLabel.setActiveRectColor(10, 10, 70)
+        self.worldMapLabel.setActiveBorderColor(100, 100, 100)
+        self.navBarScreenSurfaceObjsRect.append([self.navBarScreenSurface.blit(self.worldMapLabel.localSurface, (350, self.heightOffSet)), 'worldMap'])
 
 
     def addGameSpeedCounter(self, world):
 
-        self.gameSpeedCounter = Label2("Speed:", self.textFont, False, borderSize=1)
-        self.navBarScreenSurface.blit(self.gameSpeedCounter.localSurface, (self.width * 0.70, 0))
+        self.gameSpeedCounter = Label2(f'Speed:', self.textFont, False, borderSize=1)
+        self.navBarScreenSurface.blit(self.gameSpeedCounter.localSurface, (self.width * 0.70, self.heightOffSet))
 
         gameSpeedString = ""
         for gameSpeedCounter in range(world.getGameSpeedCounter()):
             gameSpeedString += "|"
 
         self.gameSpeedCounter = Label2(gameSpeedString, self.textFont, False, borderSize=1)
-        self.navBarScreenSurface.blit(self.gameSpeedCounter.localSurface, (self.width * 0.70 + 70, 0))
+        self.navBarScreenSurface.blit(self.gameSpeedCounter.localSurface, (self.width * 0.70 + 70, self.heightOffSet))
 
     def addDateTimer(self, world):
 
-        self.dateTimeLabel = Label2("Day: " + str(world.getDay()) + " Month: " + str(world.getMonth().value[1]) + " Year: " + str(world.getYear()), self.textFont, True, borderSize=1)
-        self.navBarScreenSurfaceObjsRect.append([self.navBarScreenSurface.blit(self.dateTimeLabel.localSurface, (self.width * 0.80, 0)), 'Clock'])
+        self.dateTimeLabel = Label2(f'{str(world.getDay())} / {str(world.getMonth().value[1])} / {str(world.getYear())}', self.textFont, True, borderSize=1, horizontalMargin=10)
+        self.navBarScreenSurfaceObjsRect.append([self.navBarScreenSurface.blit(self.dateTimeLabel.localSurface, (self.width * 0.80, self.heightOffSet)), 'Clock'])
 
     def addPausedIndicator(self):
 
         self.pausedLabel = Label2("PAUSED", self.textFont, False, True)
-        self.navBarScreenSurface.blit(self.pausedLabel.localSurface, (self.width * 0.95, 0))
+        self.navBarScreenSurface.blit(self.pausedLabel.localSurface, (self.width * 0.95, self.heightOffSet))
 
     def getVerticalPositioning(self):
         return self.writeLine * (self.lineHeight + 4 * self.labelBoarderDefault + 4 * self.labelMarginVerticalDefault)
