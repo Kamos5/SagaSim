@@ -17,7 +17,8 @@ class FeatureTypes(Enum):
     FOODTYPE = FeatureType("Food type", "produces food resource")
     PRODTYPE = FeatureType("Production type", "produces production resource")
     ADMINTYPE = FeatureType("Administrative type", "administering stuff")
-
+    MILITARYTYPE = FeatureType("Military type", "fending of bad people")
+    MISC = FeatureType("Misc type", "random type")
     # POORSOIL = FundationType("Poor Soil", "Soil here is very poor.", 80)
     # GOODSOIL = FundationType("Good Soil", "Soil here is quite good.", 100)
     # RICHSOIL = FundationType("Rich Soil", "Soil here is very enriched.", 120)
@@ -221,6 +222,12 @@ def getTownHall():
     return Feature(FeatureTypes.ADMINTYPE, 1, 1, 'City hall', 'Place of meeting for town people', 'Mayor')
 def getShrine():
     return Feature(FeatureTypes.ADMINTYPE, 1, 1, 'Shrine', 'Place of basic worship', 'Priest')
+def getMilitiaHut():
+    return Feature(FeatureTypes.MILITARYTYPE, 0, 10, 'Militia Hut', 'Place for peasants with pitchforks and axes', 'Militiaman')
+def getArcherHut():
+    return Feature(FeatureTypes.MILITARYTYPE, 0, 10, 'Archer\'s Hut', 'Place for people with flying sharp sticks', 'Archer')
+def getSwordsmansGuild():
+    return Feature(FeatureTypes.MILITARYTYPE, 0, 10, 'Swordsman\'sGuild', 'Place from where people with big metal sticks are coming from', 'Swordsman')
 
 def createZones():
 
@@ -254,6 +261,16 @@ def createAdminZones():
     zones.append(getVillageHall())
     zones.append(getTownHall())
     zones.append(getShrine())
+
+    return zones
+
+def createMilitaryZones():
+
+    zones = []
+
+    zones.append(getMilitiaHut())
+    zones.append(getArcherHut())
+    zones.append(getSwordsmansGuild())
 
     return zones
 

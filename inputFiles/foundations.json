@@ -61,5 +61,12 @@
     "description": "Foundation here is extremely fertile.",
     "yieldModifier": 180,
     "chanceWeightModifier": 100
+  },
+  "none": {
+    "name": "None",
+    "namePL": "Brak",
+    "description": "No fundation here.",
+    "yieldModifier": 1,
+    "chanceWeightModifier": 0
   }
 }

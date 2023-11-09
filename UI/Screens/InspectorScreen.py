@@ -140,6 +140,9 @@ class InspectorScreen:
         label = Label(f'Number of civilian workplaces: {object.getCivilianWorkplaces()}', 500, self.lineHeight, self.textFont)
         self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding, self.lineHeight * self.writeLine + self.scroll_y))
         self.writeLine += 1
+        label = Label(f'Number of military personel: {object.getMilitary()}', 500, self.lineHeight, self.textFont)
+        self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding, self.lineHeight * self.writeLine + self.scroll_y))
+        self.writeLine += 1
         if (len(object.getEmployedResidentsList())+len(object.getUnemployedResidentsList())*100) > 0:
             label = Label("Percentage unemployed: " + str(round(len(object.getUnemployedResidentsList())/(len(object.getEmployedResidentsList())+len(object.getUnemployedResidentsList()))*100)) + "%", 500, self.lineHeight, self.textFont)
         else:
@@ -180,6 +183,16 @@ class InspectorScreen:
 
         for feature in object.getAdminFeatures():
             label = Label(f"Admin feature: {feature.getName()} < {feature.getFoundationType()['name']} ({feature.getWorkerListNumber()} / {feature.getMaxWorkersNumber()} )>", 500, self.lineHeight, self.textFont, True)
+            self.inspectorScreenSurfaceObjsRect.append([self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding*2, self.lineHeight * self.writeLine + self.scroll_y)), feature])
+            self.writeLine += 1
+            if feature.getUIExpand():
+                for worker in feature.getWorkerList():
+                    label = Label(str(worker.getFirstName() + " " + str(worker.getLastName())), 500, self.lineHeight, self.textFont, True)
+                    self.inspectorScreenSurfaceObjsRect.append([self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding*3, self.lineHeight * self.writeLine + self.scroll_y)), worker])
+                    self.writeLine += 1
+
+        for feature in object.getMilitaryFeatures():
+            label = Label(f"Military feature: {feature.getName()} < ({feature.getWorkerListNumber()} / {feature.getMaxWorkersNumber()} )>", 500, self.lineHeight, self.textFont, True)
             self.inspectorScreenSurfaceObjsRect.append([self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding*2, self.lineHeight * self.writeLine + self.scroll_y)), feature])
             self.writeLine += 1
             if feature.getUIExpand():

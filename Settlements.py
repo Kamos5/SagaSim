@@ -41,6 +41,7 @@ class Settlements:
         self.foodFeatures = []
         self.prodFeatures = []
         self.adminFeatures = []
+        self.militaryFeatures = []
         self.unemployedRes = []
         self.employedRes = []
         self.providesTo = None
@@ -124,6 +125,14 @@ class Settlements:
     def removeAdminFeature(self, feature):
         self.adminFeatures.remove(feature)
 
+    def getMilitaryFeatures(self):
+        return self.militaryFeatures
+
+    def addMilitaryFeature(self, newFeature):
+        self.militaryFeatures.append(newFeature)
+
+    def removeMilitaryFeature(self, feature):
+        self.militaryFeatures.remove(feature)
 
     def getProdFeatures(self):
         return self.prodFeatures
@@ -286,6 +295,13 @@ class Settlements:
     def removeResident(self, person):
         self.residents.remove(person)
 
+    def getMilitary(self):
+
+        workplaces = 0
+        for workplace in self.getMilitaryFeatures():
+            workplaces += workplace.getWorkersNumber()
+        return workplaces
+
     def getCivilianWorkplaces(self):
         workplaces = 0
         for workplace in self.getAdminFeatures():
@@ -336,6 +352,10 @@ class Settlements:
         adminFeature = SF.createAdminZones()[2]
         adminFeature.setFoundationType(FoundationTypes.foundations['medium'])#FoundationTypes.FoundationEnums.MEDIUM)
         self.addAdminFeature(adminFeature)
+
+        militaryFeature = SF.createMilitaryZones()[0]
+        militaryFeature.setFoundationType(FoundationTypes.foundations['none'])#FoundationTypes.FoundationEnums.MEDIUM)
+        self.addMilitaryFeature(militaryFeature)
 
         for i in range(7):
             randomBasicFeature = Utils.randomRange(0, 4)
