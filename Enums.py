@@ -206,3 +206,23 @@ class ItemType(Enum):
     FOOD = 'food'
     MATERIAL = 'material'
     MISC = 'misc'
+
+class skillLevels(Enum):
+
+    # lvl, skill name, description, requiredXp, lvl
+    NONE = 0, 'None', 'No skill whatsoever', 0
+    NOVICE = 1, 'Novice', 'No skill whatsoever', 30
+    ADEQUATE = 2, 'Adequate', 'No skill whatsoever', 60
+    COMPETENT = 3, 'Competent', 'No skill whatsoever', 100
+    SKILLED = 4, 'Skilled', 'No skill whatsoever', 150
+    PROFICIENT = 5, 'Proficient', 'No skill whatsoever', 200
+    TALENTED = 6, 'Talented', 'No skill whatsoever', 400
+    ADEPT = 7, 'Adept', 'No skill whatsoever', 600
+    EXPERT = 8, 'Expert', 'No skill whatsoever', 800
+    PROFESSIONAL = 9, 'Professional', 'No skill whatsoever', 1000
+    ACCOMPLISHED = 10, 'Accomplished', 'No skill whatsoever', 2000
+    GREAT = 11, 'Great', 'No skill whatsoever', 3000
+    MASTER = 12, 'Master', 'No skill whatsoever', 4000
+    HIGHMASTER = 13, 'High Master', 'No skill whatsoever', 5000
+    GRANDMASTER = 14, 'Grand Master', 'No skill whatsoever', 6000
+    LEGENDARY = 15, 'Legendary', 'No skill whatsoever', 7500

@@ -7,6 +7,7 @@ class Item:
         self.name = name
         self.description = description
         self.quantity = quantity
+        self.icon = None
         self.type = itemType
 
     def increaseQuantity (self, newValue):

@@ -37,7 +37,7 @@ class MainMenuScreen:
         self.writeLine += 1
 
         self.mainMenuLabel = Label2(f'Saga Simulator', self.titleFont, False, borderSize=1)
-        self.mainMenuLabel.setActiveRectColor(50, 50, 50)
+        self.mainMenuLabel.setActiveRectColor(150, 50, 150)
         self.mainMenuLabel.setActiveBorderColor(10, 10, 100)
         self.mainMenuScreenSurface.blit(self.mainMenuLabel.localSurface, (self.mainMenuLabel.centerElement(self.width), self.getVerticalPositioning()))
 
