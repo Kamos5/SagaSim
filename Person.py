@@ -1,4 +1,5 @@
 import Enums
+import Skills
 import Utils
 import NameGenerator
 from FamilyTreeNode import BinaryTreeNode
@@ -96,6 +97,7 @@ class Person:
         self.currentDiseases = []
         self.infections = []
         self.isInFavorite = False
+        self.skills = Skills.Skills()
         pass
 
     def setInitValues(self, familyName, yearOfBirth, age, randomLifespan, sex, hairColor, hairColorGen1, hairColorGen2, eyeColor, eyeColorGen1, eyeColorGen2, skinColor, skinColorGen1, skinColorGen2, familyObj):

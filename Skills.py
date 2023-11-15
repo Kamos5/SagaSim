@@ -1,20 +1,27 @@
 ﻿import Enums
+from Skill import Skill
 
 
 class Skills:
 
     def __init__(self):
-        self.skillLaborXp = 0
-        self.skillLaborLvl = Enums.skillLevels.NONE
-        self.skillPhysical = 0
-        self.skillPhysicalLvl = Enums.skillLevels.NONE
-        self.skillFishery = 0
-        self.skillFisheryLvl = Enums.skillLevels.NONE
-        self.skillAdmin = 0
-        self.skillAdminLvl = Enums.skillLevels.NONE
-        self.skillFighter = 0
-        self.skillFighterLvl = Enums.skillLevels.NONE
+        self.skills = []
+        self.skills.append(Skill(Enums.SkillNames.LABOR, 0, Enums.skillLevels.NONE))
+        self.skills.append(Skill(Enums.SkillNames.ADMIN, 0, Enums.skillLevels.NONE))
+        self.skills.append(Skill(Enums.SkillNames.FIGHTER, 0, Enums.skillLevels.NONE))
 
+    def getLaborSkill(self):
+        for skill in self.skills:
+            if skill.skillName == Enums.SkillNames.LABOR:
+                return skill
 
-    def isEnoughXpForLvl(self):
-        return True
+    def getAdminSkill(self):
+        for skill in self.skills:
+            if skill.skillName == Enums.SkillNames.ADMIN:
+                return skill
+
+    def getFighterSkill(self):
+        for skill in self.skills:
+            if skill.skillName == Enums.SkillNames.FIGHTER:
+                return skill
+

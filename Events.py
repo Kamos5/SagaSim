@@ -641,6 +641,10 @@ def settlementGoodsProduction(world):
                                         return
 
 
+def earnSkillXp(person, feature):
+
+    return
+
 def accommodationManagment(world):
 
     if world.dayOfWeekFlag == 1:  # Only on Monday produce goods

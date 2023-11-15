@@ -226,3 +226,9 @@ class skillLevels(Enum):
     HIGHMASTER = 13, 'High Master', 'No skill whatsoever', 5000
     GRANDMASTER = 14, 'Grand Master', 'No skill whatsoever', 6000
     LEGENDARY = 15, 'Legendary', 'No skill whatsoever', 7500
+
+
+class SkillNames(Enum):
+    LABOR = 'labor'
+    ADMIN = 'admin'
+    FIGHTER = 'figher'

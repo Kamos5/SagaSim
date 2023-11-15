@@ -1,6 +1,7 @@
 import uuid
 from enum import Enum
 
+import Enums
 import Utils
 
 features = []
@@ -34,7 +35,7 @@ class FeatureTypes(Enum):
 
 class Feature:
 
-    def __init__(self, featureType=None, prodYield=0, maxWorkers=0, name='', desc='', occupationName='', upgrCost=0, upgrFrom=None, upgrWeightValue=100, cordx=0, cordy=0, featureNumber=0):
+    def __init__(self, featureType=None, prodYield=0, maxWorkers=0, name='', desc='', occupationName='', upgrCost=0, upgrFrom=None, upgrWeightValue=100, cordx=0, cordy=0, featureNumber=0, skillUsed=Enums.SkillNames.LABOR):
         self.featureType = featureType
         self.prodYield = prodYield
         self.workers = 0
@@ -50,6 +51,7 @@ class Feature:
         self.cordX = cordx
         self.cordY = cordy
         self.featureNumber = featureNumber
+        self.skillUsed = skillUsed
         self.uiExpand = False
 
     def setFoundationType(self, newType):
@@ -123,6 +125,12 @@ class Feature:
     def getUIExpand(self):
         return self.uiExpand
 
+    def getSkillUsed(self):
+        return self.skillUsed
+
+    def changeSkillUsed(self, newSkill):
+        self.skillUsed = newSkill
+
     def changeExpandedUI(self):
         self.uiExpand = not self.uiExpand
 
@@ -179,55 +187,55 @@ def get0ProdZone():
     return returnArray
 
 
-#foundation type, productionValue, workersNumber, name, descr, workerName, upgrCost, upgrFrom, weightUpgrValue
+#foundation type, productionValue, workersNumber, name, descr, workerName, upgrCost, upgrFrom, weightUpgrValue, skill
 def getNewFallow():
-    return Feature(FeatureTypes.FOODTYPE, 2, 5, 'Fallow', 'fallow land', 'Fallow farmer')
+    return Feature(FeatureTypes.FOODTYPE, 2, 5, 'Fallow', 'fallow land', 'Fallow farmer', skillUsed=Enums.SkillNames.LABOR)
 def getNewWildrness():
-    return Feature(FeatureTypes.FOODTYPE, 2, 5, 'Wilderness', 'unpassable terrain', 'Primitive gatherer')
+    return Feature(FeatureTypes.FOODTYPE, 2, 5, 'Wilderness', 'unpassable terrain', 'Primitive gatherer', skillUsed=Enums.SkillNames.LABOR)
 def getNewRiver():
-    return Feature(FeatureTypes.FOODTYPE, 3, 5, 'River', 'running volume of not sparkling water', 'River fisher')
+    return Feature(FeatureTypes.FOODTYPE, 3, 5, 'River', 'running volume of not sparkling water', 'River fisher', skillUsed=Enums.SkillNames.LABOR)
 def getNewSeaSide():
-    return Feature(FeatureTypes.FOODTYPE, 3, 5, 'Sea side', 'running volume of not sparkling salt water', 'Sea fisher')
+    return Feature(FeatureTypes.FOODTYPE, 3, 5, 'Sea side', 'running volume of not sparkling salt water', 'Sea fisher', skillUsed=Enums.SkillNames.LABOR)
 def getNewWildlife():
-    return Feature(FeatureTypes.FOODTYPE, 3, 3, 'Wild animals', 'Packs of wild animals are roaming around', 'Primitive hunter')
+    return Feature(FeatureTypes.FOODTYPE, 3, 3, 'Wild animals', 'Packs of wild animals are roaming around', 'Primitive hunter', skillUsed=Enums.SkillNames.LABOR)
 def getNewRockyTerrain():
-    return Feature(FeatureTypes.PRODTYPE, 1, 5, 'Rocky Terrain', 'Piece of terrain that has high concentration of rock within.', 'Rock gatherer')
+    return Feature(FeatureTypes.PRODTYPE, 1, 5, 'Rocky Terrain', 'Piece of terrain that has high concentration of rock within.', 'Rock gatherer', skillUsed=Enums.SkillNames.LABOR)
 def getNewFallenLogs():
-    return Feature(FeatureTypes.PRODTYPE, 2, 3, 'Fallen Logs', 'Trees that took a bit to long nap', 'Wood howler')
+    return Feature(FeatureTypes.PRODTYPE, 2, 3, 'Fallen Logs', 'Trees that took a bit to long nap', 'Wood howler', skillUsed=Enums.SkillNames.LABOR)
 def getNewSimplefarm():
-    return Feature(FeatureTypes.FOODTYPE, 3, 7, 'Simple farm', 'simple farm', 'Farmer', 200, 'Fallow', 100)
+    return Feature(FeatureTypes.FOODTYPE, 3, 7, 'Simple farm', 'simple farm', 'Farmer', 200, 'Fallow', 100, skillUsed=Enums.SkillNames.LABOR)
 def getNewOrchard():
-    return Feature(FeatureTypes.FOODTYPE, 3, 7, 'Orchard', 'fruit tree paradise', 'Fruit grower', 200, 'Fallow', 100)
+    return Feature(FeatureTypes.FOODTYPE, 3, 7, 'Orchard', 'fruit tree paradise', 'Fruit grower', 200, 'Fallow', 100, skillUsed=Enums.SkillNames.LABOR)
 def getNewForest():
-    return Feature(FeatureTypes.FOODTYPE, 3, 7, 'Forest', 'forest with wild life and forage supply', 'Gatherer', 200, 'Wilderness')
+    return Feature(FeatureTypes.FOODTYPE, 3, 7, 'Forest', 'forest with wild life and forage supply', 'Gatherer', 200, 'Wilderness', skillUsed=Enums.SkillNames.LABOR)
 def getNewMill():
-    return Feature(FeatureTypes.FOODTYPE, 4, 7, 'Mill', 'running volume of not sparkling water', 'Miller', 200, 'River')
+    return Feature(FeatureTypes.FOODTYPE, 4, 7, 'Mill', 'running volume of not sparkling water', 'Miller', 200, 'River', skillUsed=Enums.SkillNames.LABOR)
 def getNewBigGame():
-    return Feature(FeatureTypes.FOODTYPE, 4, 5, 'Big Game', 'there are signs of big hunter game in the area', 'Hunter', 200, 'Wild animals')
+    return Feature(FeatureTypes.FOODTYPE, 4, 5, 'Big Game', 'there are signs of big hunter game in the area', 'Hunter', 200, 'Wild animals', skillUsed=Enums.SkillNames.LABOR)
 def getNewLumberMill():
-    return Feature(FeatureTypes.PRODTYPE, 3, 5, 'Lumber mill', 'Mill that produces lumber', 'Logger', 200, 'Fallen Logs')
+    return Feature(FeatureTypes.PRODTYPE, 3, 5, 'Lumber mill', 'Mill that produces lumber', 'Logger', 200, 'Fallen Logs', skillUsed=Enums.SkillNames.LABOR)
 def getNewQuarry():
-    return Feature(FeatureTypes.PRODTYPE, 2, 7, 'Quarry', 'Man made rock farm', 'Miner', 250, 'Rocky Terrain', 100)
+    return Feature(FeatureTypes.PRODTYPE, 2, 7, 'Quarry', 'Man made rock farm', 'Miner', 250, 'Rocky Terrain', 100, skillUsed=Enums.SkillNames.LABOR)
 def getNewCoalMine():
-    return Feature(FeatureTypes.PRODTYPE, 3, 7, 'Coal mine', 'Dirty rocks', 'Coal miner', 250, 'Rocky Terrain', 80)
+    return Feature(FeatureTypes.PRODTYPE, 3, 7, 'Coal mine', 'Dirty rocks', 'Coal miner', 250, 'Rocky Terrain', 80, skillUsed=Enums.SkillNames.LABOR)
 def getNewIronMine():
-    return Feature(FeatureTypes.PRODTYPE, 4, 7, 'Iron mine', 'Hard rocks', 'Iron miner', 250, 'Rocky Terrain', 50)
+    return Feature(FeatureTypes.PRODTYPE, 4, 7, 'Iron mine', 'Hard rocks', 'Iron miner', 250, 'Rocky Terrain', 50, skillUsed=Enums.SkillNames.LABOR)
 def getNewSilverMine():
-    return Feature(FeatureTypes.PRODTYPE, 5, 7, 'Silver mine', 'Shiny white rocks', 'Silver miner', 250, 'Rocky Terrain', 25)
+    return Feature(FeatureTypes.PRODTYPE, 5, 7, 'Silver mine', 'Shiny white rocks', 'Silver miner', 250, 'Rocky Terrain', 25, skillUsed=Enums.SkillNames.LABOR)
 def getNewGoldMine():
-    return Feature(FeatureTypes.PRODTYPE, 6, 7, 'Gold mine', 'Shiny rocks', 'Gold miner', 250, 'Rocky Terrain', 10)
+    return Feature(FeatureTypes.PRODTYPE, 6, 7, 'Gold mine', 'Shiny rocks', 'Gold miner', 250, 'Rocky Terrain', 10, skillUsed=Enums.SkillNames.LABOR)
 def getVillageHall():
-    return Feature(FeatureTypes.ADMINTYPE, 1, 1, 'Village hall', 'Place of meeting for village people', 'Village Mayor')
+    return Feature(FeatureTypes.ADMINTYPE, 1, 1, 'Village hall', 'Place of meeting for village people', 'Village Mayor', skillUsed=Enums.SkillNames.ADMIN)
 def getTownHall():
-    return Feature(FeatureTypes.ADMINTYPE, 1, 1, 'City hall', 'Place of meeting for town people', 'Mayor')
+    return Feature(FeatureTypes.ADMINTYPE, 1, 1, 'City hall', 'Place of meeting for town people', 'Mayor', skillUsed=Enums.SkillNames.ADMIN)
 def getShrine():
-    return Feature(FeatureTypes.ADMINTYPE, 1, 1, 'Shrine', 'Place of basic worship', 'Priest')
+    return Feature(FeatureTypes.ADMINTYPE, 1, 1, 'Shrine', 'Place of basic worship', 'Priest', skillUsed=Enums.SkillNames.ADMIN)
 def getMilitiaHut():
-    return Feature(FeatureTypes.MILITARYTYPE, 0, 10, 'Militia Hut', 'Place for peasants with pitchforks and axes', 'Militiaman')
+    return Feature(FeatureTypes.MILITARYTYPE, 0, 10, 'Militia Hut', 'Place for peasants with pitchforks and axes', 'Militiaman', skillUsed=Enums.SkillNames.FIGHTER)
 def getArcherHut():
-    return Feature(FeatureTypes.MILITARYTYPE, 0, 10, 'Archer\'s Hut', 'Place for people with flying sharp sticks', 'Archer')
+    return Feature(FeatureTypes.MILITARYTYPE, 0, 10, 'Archer\'s Hut', 'Place for people with flying sharp sticks', 'Archer', skillUsed=Enums.SkillNames.FIGHTER)
 def getSwordsmansGuild():
-    return Feature(FeatureTypes.MILITARYTYPE, 0, 10, 'Swordsman\'sGuild', 'Place from where people with big metal sticks are coming from', 'Swordsman')
+    return Feature(FeatureTypes.MILITARYTYPE, 0, 10, 'Swordsman\'sGuild', 'Place from where people with big metal sticks are coming from', 'Swordsman', skillUsed=Enums.SkillNames.FIGHTER)
 
 def createZones():
 
