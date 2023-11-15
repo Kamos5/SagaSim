@@ -509,18 +509,21 @@ def settlementGoodsProduction(world):
                         mayor = settlement.getAdminFeatures()[0].getWorkerList()[0]
 
                         if Traits.LAZY in mayor.getTraits():
-                            mayorModifier = 0.8
+                            mayorModifier *= 0.8
                         if Traits.DILIGENT in mayor.getTraits():
-                            mayorModifier = 1.2
+                            mayorModifier *= 1.2
                         if Traits.GREEDY in mayor.getTraits():
-                            mayorModifier = 0.9
+                            mayorModifier *= 0.9
                         if Traits.GREGARIOUS in mayor.getTraits():
-                            mayorModifier = 1.1
+                            mayorModifier *= 1.1
                         if Traits.IMPATIENT in mayor.getTraits():
-                            mayorModifier = 0.9
+                            mayorModifier *= 0.9
                         if Traits.PATIENT in mayor.getTraits():
-                            mayorModifier = 1.1
+                            mayorModifier *= 1.1
 
+                        mayorModifier = mayorModifier * mayor.getSkills().getAdminSkill().getSkillLevel().value[4]
+
+                        earnSkillXp(mayor, settlement.getAdminFeatures()[0], (mayorModifier * 100 - 100), world)
                         flatRate = 3
                         if settlement.getAdminFeatures()[0].getName() == SFeat.getTownHall().getName():
                             flatRate = 5
@@ -531,6 +534,22 @@ def settlementGoodsProduction(world):
                     if len(settlement.getAdminFeatures()[1].getWorkerList()) > 0:
                         flatRate = 3
                         priest = settlement.getAdminFeatures()[1].getWorkerList()[0]
+                        priestModifier = 1
+
+                        if Traits.LAZY in priest.getTraits():
+                            priestModifier *= 0.8
+                        if Traits.DILIGENT in priest.getTraits():
+                            priestModifier *= 1.2
+                        if Traits.GREEDY in priest.getTraits():
+                            priestModifier *= 0.9
+                        if Traits.GREGARIOUS in priest.getTraits():
+                            priestModifier *= 1.1
+                        if Traits.IMPATIENT in priest.getTraits():
+                            priestModifier *= 0.9
+                        if Traits.PATIENT in priest.getTraits():
+                            priestModifier *= 1.1
+
+                        earnSkillXp(priest, settlement.getAdminFeatures()[0], (priestModifier * 100 - 100), world)
                         priest.changeFreeWealth(flatRate)
                         settlement.changeFreeWealth(-flatRate)
 
@@ -538,26 +557,26 @@ def settlementGoodsProduction(world):
                     foodProd0 = settlement.getSettlementFoodProduced()
                     for foodTile in settlement.getFoodFeatures():
 
-                        foodProd = foodTile.prodYield * foodTile.foundationType['yieldModifier'] * mayorModifier / 100 * foodTile.getWorkersNumber()
-
-                        if settlement.getProvision() is not None:
-                            settlement.getProvision().increaseSettlementFoodProduced(foodProd*Parameters.socage)
-                            settlement.increaseSettlementFoodProduced(foodProd*(1-Parameters.socage))
-                        else:
-                            settlement.increaseSettlementFoodProduced(foodProd)
-
                         for worker in foodTile.getWorkerList():
                             if worker.getGeneralHealth().value[0] <= 1:  # Only Healthy or weaken can work
                                 workerModifier = 0
                                 if Traits.LAZY in worker.getTraits():
-                                    workerModifier = -10
+                                    workerModifier += -10
                                 if Traits.DILIGENT in worker.getTraits():
-                                    workerModifier = 10
+                                    workerModifier += 10
                                 if worker.getGeneralHealth().value[1] == 1:  # weaken workers work less
                                     workerModifier = round(workerModifier / 2)
 
-                                earnSkillXp(worker, foodTile, workerModifier)
-                                goodProduced = foodTile.prodYield * (foodTile.foundationType['yieldModifier'] + workerModifier) / 100
+                                foodProd = foodTile.prodYield * worker.getSkills().getLaborSkill().getSkillLevel().value[4] * (foodTile.foundationType['yieldModifier'] + workerModifier) * mayorModifier / 100
+
+                                if settlement.getProvision() is not None:
+                                    settlement.getProvision().increaseSettlementFoodProduced(foodProd * Parameters.socage)
+                                    settlement.increaseSettlementFoodProduced(foodProd * (1 - Parameters.socage))
+                                else:
+                                    settlement.increaseSettlementFoodProduced(foodProd)
+
+                                earnSkillXp(worker, foodTile, workerModifier, world)
+                                goodProduced = foodTile.prodYield * worker.getSkills().getLaborSkill().getSkillLevel().value[4] * (foodTile.foundationType['yieldModifier'] + workerModifier) / 100
                                 worker.changeFreeWealth(goodProduced * (100 - settlement.getLocalIncomeTax()) / 100)
                                 settlement.changeFreeWealth(goodProduced * (settlement.getLocalIncomeTax()) / 100)
 
@@ -593,13 +612,6 @@ def settlementGoodsProduction(world):
 
                     for prodTile in settlement.getProdFeatures():
 
-                        prodProd = prodTile.prodYield * prodTile.foundationType['yieldModifier'] * mayorModifier / 100 * prodTile.getWorkersNumber()
-
-                        if settlement.getProvision() is not None:
-                            settlement.getProvision().increaseSettlementProdProduced(prodProd*Parameters.socage)
-                            settlement.increaseSettlementProdProduced(prodProd*(1-Parameters.socage))
-                        else:
-                            settlement.increaseSettlementProdProduced(prodProd)
                         for worker in prodTile.getWorkerList():
                             if worker.getGeneralHealth().value[0] <= 1:
                                 workerModifier = 0
@@ -610,8 +622,16 @@ def settlementGoodsProduction(world):
                                 if worker.getGeneralHealth().value[1] == 1:  # weaken workers work less
                                     workerModifier = round(workerModifier / 2)
 
-                                earnSkillXp(worker, prodTile, workerModifier)
-                                goodProduced = prodTile.prodYield * (prodTile.foundationType['yieldModifier'] + workerModifier) / 100
+                                prodProd = prodTile.prodYield * worker.getSkills().getLaborSkill().getSkillLevel().value[4] * (prodTile.foundationType['yieldModifier'] + workerModifier) * mayorModifier / 100
+
+                                if settlement.getProvision() is not None:
+                                    settlement.getProvision().increaseSettlementProdProduced(prodProd * Parameters.socage)
+                                    settlement.increaseSettlementProdProduced(prodProd * (1 - Parameters.socage))
+                                else:
+                                    settlement.increaseSettlementProdProduced(prodProd)
+
+                                earnSkillXp(worker, prodTile, workerModifier, world)
+                                goodProduced = prodTile.prodYield * worker.getSkills().getLaborSkill().getSkillLevel().value[4] * (prodTile.foundationType['yieldModifier'] + workerModifier) / 100
                                 worker.changeFreeWealth(goodProduced * (100-settlement.getLocalIncomeTax())/100)
                                 settlement.changeFreeWealth(goodProduced * (settlement.getLocalIncomeTax())/100)
 
@@ -645,10 +665,17 @@ def settlementGoodsProduction(world):
                                         return
 
 
-def earnSkillXp(person, feature, modifier):
+def earnSkillXp(person, feature, modifier, world):
 
+    #times 7 because for all the week (check is only for monday)
     if feature.getSkillUsed() == Enums.SkillNames.LABOR:
-        person.getSkills().getLaborSkill().increaseSkillXp(round((100 + modifier) / 100, 3))
+        gotBetter = person.getSkills().getLaborSkill().increaseSkillXp(round((100 + modifier) / 100, 2) * 7)
+        if gotBetter:
+            PLEH.gotBetterSkillLevel(person, Enums.SkillNames.LABOR, gotBetter, world)
+    if feature.getSkillUsed() == Enums.SkillNames.ADMIN:
+        gotBetter = person.getSkills().getAdminSkill().increaseSkillXp(round((100 + modifier) / 100, 2) * 7)
+        if gotBetter:
+            PLEH.gotBetterSkillLevel(person, Enums.SkillNames.ADMIN, gotBetter, world)
     return
 
 def accommodationManagment(world):

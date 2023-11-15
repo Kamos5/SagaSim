@@ -6,9 +6,9 @@ class Skills:
 
     def __init__(self):
         self.skills = []
-        self.skills.append(Skill(Enums.SkillNames.LABOR, 0, Enums.skillLevels.NONE))
-        self.skills.append(Skill(Enums.SkillNames.ADMIN, 0, Enums.skillLevels.NONE))
-        self.skills.append(Skill(Enums.SkillNames.FIGHTER, 0, Enums.skillLevels.NONE))
+        self.skills.append(Skill(Enums.SkillNames.LABOR, 0, Enums.SkillsLevels.NONE))
+        self.skills.append(Skill(Enums.SkillNames.ADMIN, 0, Enums.SkillsLevels.NONE))
+        self.skills.append(Skill(Enums.SkillNames.FIGHTER, 0, Enums.SkillsLevels.NONE))
 
     def getSkills(self):
         return self.skills

@@ -3,7 +3,7 @@
 
 class Skill:
 
-    def __init__(self, skillName = '', skillXp = 0, skillLevel = Enums.skillLevels.NONE):
+    def __init__(self, skillName = '', skillXp = 0, skillLevel = Enums.SkillsLevels.NONE):
         self.skillName = skillName
         self.skillXp = skillXp
         self.skillLevel = skillLevel
@@ -18,7 +18,14 @@ class Skill:
         self.skillXp = newXp
 
     def increaseSkillXp(self, moreXp):
-        self.skillXp = round(self.skillXp + moreXp, 3)
+        didGetBetter = False
+        self.skillXp = round(self.skillXp + moreXp, 2)
+        for skillLevels in Enums.SkillsLevels:
+            if self.skillXp >= skillLevels.value[3] and self.skillLevel.value[0] + 1 == skillLevels.value[0]:
+                self.skillLevel = skillLevels
+                didGetBetter = self.skillLevel
+
+        return didGetBetter
 
     def getSkillLevel(self):
         return self.skillLevel

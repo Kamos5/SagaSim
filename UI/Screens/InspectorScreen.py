@@ -452,7 +452,7 @@ class InspectorScreen:
         self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding, self.lineHeight * self.writeLine + self.scroll_y))
         self.writeLine += 1
         for skill in object.getSkills().getSkills():
-            label = Label(f'Skill: {skill.getSkillName()} XP: {skill.getSkillXp()} Level: {skill.getSkillLevel()}', 500, self.lineHeight, self.textFont)
+            label = Label(f'Skill: {skill.getSkillName().value} XP: {skill.getSkillXp()} Level: {skill.getSkillLevel().value[1]}', 500, self.lineHeight, self.textFont)
             self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding * 2, self.lineHeight * self.writeLine + self.scroll_y))
             self.writeLine += 1
 

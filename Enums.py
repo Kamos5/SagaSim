@@ -207,28 +207,28 @@ class ItemType(Enum):
     MATERIAL = 'material'
     MISC = 'misc'
 
-class skillLevels(Enum):
+class SkillsLevels(Enum):
 
-    # lvl, skill name, description, requiredXp, lvl
-    NONE = 0, 'None', 'No skill whatsoever', 0
-    NOVICE = 1, 'Novice', 'No skill whatsoever', 30
-    ADEQUATE = 2, 'Adequate', 'No skill whatsoever', 60
-    COMPETENT = 3, 'Competent', 'No skill whatsoever', 100
-    SKILLED = 4, 'Skilled', 'No skill whatsoever', 150
-    PROFICIENT = 5, 'Proficient', 'No skill whatsoever', 200
-    TALENTED = 6, 'Talented', 'No skill whatsoever', 400
-    ADEPT = 7, 'Adept', 'No skill whatsoever', 600
-    EXPERT = 8, 'Expert', 'No skill whatsoever', 800
-    PROFESSIONAL = 9, 'Professional', 'No skill whatsoever', 1000
-    ACCOMPLISHED = 10, 'Accomplished', 'No skill whatsoever', 2000
-    GREAT = 11, 'Great', 'No skill whatsoever', 3000
-    MASTER = 12, 'Master', 'No skill whatsoever', 4000
-    HIGHMASTER = 13, 'High Master', 'No skill whatsoever', 5000
-    GRANDMASTER = 14, 'Grand Master', 'No skill whatsoever', 6000
-    LEGENDARY = 15, 'Legendary', 'No skill whatsoever', 7500
+    # lvl, skill name, description, requiredXp, modifier
+    NONE = 0, 'None', 'has no skill whatsoever',                0, 0.5
+    NOVICE = 1, 'Novice', 'became novice',                      100, 0.6
+    ADEQUATE = 2, 'Adequate', 'became adequate',                200, 0.7
+    COMPETENT = 3, 'Competent', 'became competent',             300, 0.8
+    SKILLED = 4, 'Skilled', 'became skilled',                   400, 0.9
+    PROFICIENT = 5, 'Proficient', 'became proficient',          500, 1
+    TALENTED = 6, 'Talented', 'became talented',                600, 1.1
+    ADEPT = 7, 'Adept', 'became adept',                         1000, 1.2
+    EXPERT = 8, 'Expert', 'became expert',                      2000, 1.3
+    PROFESSIONAL = 9, 'Professional', 'became professional',    3000, 1.4
+    ACCOMPLISHED = 10, 'Accomplished', 'became accomplished',   5000, 1.5
+    GREAT = 11, 'Great', 'became great',                        7000, 1.6
+    MASTER = 12, 'Master', 'became master',                     9000, 1.7
+    HIGHMASTER = 13, 'High Master', 'became high master',       10000, 1.8
+    GRANDMASTER = 14, 'Grand Master', 'became grand master',    11000, 1.9
+    LEGENDARY = 15, 'Legendary', 'became legendary',            12000, 2.0
 
 
 class SkillNames(Enum):
-    LABOR = 'labor'
-    ADMIN = 'admin'
-    FIGHTER = 'figher'
+    LABOR = 'Labor'
+    ADMIN = 'Administrative'
+    FIGHTER = 'Fighter'

@@ -105,7 +105,7 @@ def retired(person, world):
 
 def gotPromotion(person, world):
 
-    person.lifeEvents.append(f'{person.getFirstName()} got promotion workings to {person.getOccupationName()} in the town of {person.getSettlement().getSettlementName()} on the {world.getDay()}/{world.getMonth().value[1]}/{world.getYear()}')
+    person.lifeEvents.append(f'{person.getFirstName()} was promoted to {person.getOccupationName()} in the town of {person.getSettlement().getSettlementName()} on the {world.getDay()}/{world.getMonth().value[1]}/{world.getYear()}')
 
 def gotInfectedWithDisease(person, disease, world, carrier=None):
 
@@ -160,3 +160,5 @@ def inheritFromParent(person, parent, ihneritance, world):
         preverb = 'his'
     person.lifeEvents.append(f'{person.getFirstName()} ihnerited wealth worth {ihneritance} from {preverb} parent {parent.getFirstName()} {parent.getLastName()} on the {world.getDay()}/{world.getMonth().value[1]}/{world.getYear()}')
 
+def gotBetterSkillLevel(person, skill, skillLevel, world):
+    person.lifeEvents.append(f'{person.getFirstName()} {skillLevel.value[2]} at {skill.value} on the {world.getDay()}/{world.getMonth().value[1]}/{world.getYear()}')
