@@ -555,6 +555,8 @@ def settlementGoodsProduction(world):
                                     workerModifier = 10
                                 if worker.getGeneralHealth().value[1] == 1:  # weaken workers work less
                                     workerModifier = round(workerModifier / 2)
+
+                                earnSkillXp(worker, foodTile, workerModifier)
                                 goodProduced = foodTile.prodYield * (foodTile.foundationType['yieldModifier'] + workerModifier) / 100
                                 worker.changeFreeWealth(goodProduced * (100 - settlement.getLocalIncomeTax()) / 100)
                                 settlement.changeFreeWealth(goodProduced * (settlement.getLocalIncomeTax()) / 100)
@@ -607,6 +609,8 @@ def settlementGoodsProduction(world):
                                     workerModifier = 10
                                 if worker.getGeneralHealth().value[1] == 1:  # weaken workers work less
                                     workerModifier = round(workerModifier / 2)
+
+                                earnSkillXp(worker, prodTile, workerModifier)
                                 goodProduced = prodTile.prodYield * (prodTile.foundationType['yieldModifier'] + workerModifier) / 100
                                 worker.changeFreeWealth(goodProduced * (100-settlement.getLocalIncomeTax())/100)
                                 settlement.changeFreeWealth(goodProduced * (settlement.getLocalIncomeTax())/100)
@@ -641,8 +645,10 @@ def settlementGoodsProduction(world):
                                         return
 
 
-def earnSkillXp(person, feature):
+def earnSkillXp(person, feature, modifier):
 
+    if feature.getSkillUsed() == Enums.SkillNames.LABOR:
+        person.getSkills().getLaborSkill().increaseSkillXp(round((100 + modifier) / 100, 3))
     return
 
 def accommodationManagment(world):

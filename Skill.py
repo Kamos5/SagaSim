@@ -17,6 +17,9 @@ class Skill:
     def changeSkillXp(self, newXp):
         self.skillXp = newXp
 
+    def increaseSkillXp(self, moreXp):
+        self.skillXp = round(self.skillXp + moreXp, 3)
+
     def getSkillLevel(self):
         return self.skillLevel
 

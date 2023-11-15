@@ -591,6 +591,9 @@ class Person:
     def removeRealEstate(self, estate):
         self.realEstate.remove(estate)
 
+    def getSkills(self):
+        return self.skills
+
     def getAncestralFamilies(self):
 
         ancestorsFamiles = []

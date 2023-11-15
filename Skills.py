@@ -10,6 +10,9 @@ class Skills:
         self.skills.append(Skill(Enums.SkillNames.ADMIN, 0, Enums.skillLevels.NONE))
         self.skills.append(Skill(Enums.SkillNames.FIGHTER, 0, Enums.skillLevels.NONE))
 
+    def getSkills(self):
+        return self.skills
+
     def getLaborSkill(self):
         for skill in self.skills:
             if skill.skillName == Enums.SkillNames.LABOR:
