@@ -312,6 +312,10 @@ class Settlements:
             workplaces += workplace.getMaxWorkersNumber()
         return workplaces
 
+    def getEmploymentRate(self):
+
+        return round(len(self.getEmployedResidentsList())/self.getCivilianWorkplaces(), 2)
+
     def getUnemployedResidentsList(self):
 
         self.unemployedRes = []
@@ -354,7 +358,7 @@ class Settlements:
         self.addAdminFeature(adminFeature)
 
         militaryFeature = SF.createMilitaryZones()[0]
-        militaryFeature.setFoundationType(FoundationTypes.foundations['none'])#FoundationTypes.FoundationEnums.MEDIUM)
+        militaryFeature.setFoundationType(FoundationTypes.foundations['none'])#FoundationTypes.FoundationEnums.None)
         self.addMilitaryFeature(militaryFeature)
 
         for i in range(7):

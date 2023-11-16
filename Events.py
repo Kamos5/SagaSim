@@ -756,6 +756,7 @@ def settlementWorkersManagement(world):
                                 prodFreeWorkplacesSpots.append([prodTile, occupations])
 
                         numberOfFreeWorkplaces = len(adminFreeWorkplacesSpots) + len(foodFreeWorkplacesSpots) + len(prodFreeWorkplacesSpots)
+                        print(f'{settlement.getSettlementName} : {settlement.getEmploymentRate()}')
                         if len(adminFreeWorkplacesSpots) == 0 or settlement.getFreeWealth() < 0:
                             basicAdminJobWeight = 0
                         if len(foodFreeWorkplacesSpots) == 0:
