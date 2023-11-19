@@ -34,7 +34,7 @@ class Settlements:
         self.foodConsumedLastYear = 0
         self.prodConsumedLastYear = 0
         self.foodNetLastYear = 0
-        self.freeFood = 100
+        self.freeFood = 1000
         self.freeProd = 0
         self.stockpile = []
         self.residents = []
@@ -49,7 +49,7 @@ class Settlements:
         self.maxPopulation = 0
         self.uiExpand = False
         self.freeWealth = 0
-        self.localIncomeTax = Utils.randomRange(1, 20)
+        self.localIncomeTax = Utils.randomRange(5, 20)
         self.avarageResidentsWealth = 0
         self.housings = []
         self.createStartingVillageFeatures()
@@ -58,6 +58,7 @@ class Settlements:
         self.migrationMonth = Utils.randomFromEnumCollection(Enums.Months)
         self.migrationDay = Utils.randomRange(1, self.migrationMonth.value[2])
         self.provinceCords = (0, 0)
+        self.events = []
 
     def getRegion(self):
         return self.region
@@ -112,6 +113,9 @@ class Settlements:
 
     def removeFoodFeature(self, feature):
         self.foodFeatures.remove(feature)
+
+    def getEvent(self):
+        return self.events
 
     def addFoodFeature(self, feature):
         self.foodFeatures.append(feature)

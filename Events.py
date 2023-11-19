@@ -18,6 +18,8 @@ import PersonLifeEventsHistory as PLEH
 from Enums import MaritalStatus as MS
 import SettlementsFunctions as SF
 import SettlementFeatures as SFeat
+from SettlementLifeEventsHistory import spoiledFood
+
 
 def increaseAge (world):
 
@@ -492,6 +494,14 @@ def settlementsPopulationManagement (world):
 
 def settlementGoodsProduction(world):
 
+    if world.getDayOfTheYear() == 90:
+        for region in world.getRegions():
+            for province in region.getProvinces():
+                for settlement in province.getSettlements():
+                    if settlement.getFreeFood() > 0:
+                        settlement.changeFreeFood(settlement.getFreeFood() * 0.9)
+                        spoiledFood(settlement, world)
+
     if world.dayOfWeekFlag == 1:  # Only on Monday produce goods
         for region in world.getRegions():
             for province in region.getProvinces():
@@ -525,8 +535,10 @@ def settlementGoodsProduction(world):
 
                         earnSkillXp(mayor, settlement.getAdminFeatures()[0], (mayorModifier * 100 - 100), world)
                         flatRate = 3
-                        if settlement.getAdminFeatures()[0].getName() == SFeat.getTownHall().getName():
+                        if settlement.getAdminFeatures()[0].getName() == SFeat.getVillageHall().getName():
                             flatRate = 5
+                        if settlement.getAdminFeatures()[0].getName() == SFeat.getTownHall().getName():
+                            flatRate = 7
                         mayor.changeFreeWealth(flatRate)
                         settlement.changeFreeWealth(-flatRate)
 
@@ -746,9 +758,9 @@ def settlementWorkersManagement(world):
 
 
                     #MILITARY
-                    if settlement.getEmploymentRate() >= 0.5 and len(unemployedWorkerList) > 0:
+                    if settlement.getEmploymentRate() >= 0.5 and len(unemployedWorkerList) > 0 and settlement.getFreeWealth() > 0:
 
-                        if (Utils.randomRange(1, 100) > 0.5):
+                        if (Utils.randomRange(1, 100) > 0.7):
                             militaryFreeWorkplacesSpots = []
                             for milTile in settlement.getMilitaryFeatures():
                                 for occupations in range(milTile.getFreeWorkersSlots()):

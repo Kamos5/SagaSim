@@ -218,12 +218,20 @@ def getNewQuarry():
     return Feature(FeatureTypes.PRODTYPE, 2, 7, 'Quarry', 'Man made rock farm', 'Miner', 250, 'Rocky Terrain', 100, skillUsed=Enums.SkillNames.LABOR)
 def getNewCoalMine():
     return Feature(FeatureTypes.PRODTYPE, 3, 7, 'Coal mine', 'Dirty rocks', 'Coal miner', 250, 'Rocky Terrain', 80, skillUsed=Enums.SkillNames.LABOR)
+def getNewTinMine():
+    return Feature(FeatureTypes.PRODTYPE, 2, 7, 'Tin mine', 'Grayish rocks', 'Tin miner', 250, 'Rocky Terrain', 50, skillUsed=Enums.SkillNames.LABOR)
+def getNewLeadMine():
+    return Feature(FeatureTypes.PRODTYPE, 2, 7, 'Lead mine', 'Almost silver rocks', 'Lead miner', 250, 'Rocky Terrain', 50, skillUsed=Enums.SkillNames.LABOR)
+def getNewCopperMine():
+    return Feature(FeatureTypes.PRODTYPE, 3, 7, 'Copper mine', 'Green rocks', 'Copper miner', 250, 'Rocky Terrain', 50, skillUsed=Enums.SkillNames.LABOR)
 def getNewIronMine():
     return Feature(FeatureTypes.PRODTYPE, 4, 7, 'Iron mine', 'Hard rocks', 'Iron miner', 250, 'Rocky Terrain', 50, skillUsed=Enums.SkillNames.LABOR)
 def getNewSilverMine():
     return Feature(FeatureTypes.PRODTYPE, 5, 7, 'Silver mine', 'Shiny white rocks', 'Silver miner', 250, 'Rocky Terrain', 25, skillUsed=Enums.SkillNames.LABOR)
 def getNewGoldMine():
     return Feature(FeatureTypes.PRODTYPE, 6, 7, 'Gold mine', 'Shiny rocks', 'Gold miner', 250, 'Rocky Terrain', 10, skillUsed=Enums.SkillNames.LABOR)
+def getEltersHut():
+    return Feature(FeatureTypes.ADMINTYPE, 1, 1, 'Elders hut', 'Place of meeting of old important village people', 'Village Elder', skillUsed=Enums.SkillNames.ADMIN)
 def getVillageHall():
     return Feature(FeatureTypes.ADMINTYPE, 1, 1, 'Village hall', 'Place of meeting for village people', 'Village Mayor', skillUsed=Enums.SkillNames.ADMIN)
 def getTownHall():
@@ -258,6 +266,9 @@ def createZones():
     zones.append(getNewGoldMine())
     zones.append(getNewCoalMine())
     zones.append(getNewIronMine())
+    zones.append(getNewTinMine())
+    zones.append(getNewLeadMine())
+    zones.append(getNewCopperMine())
     zones.append(getNewSilverMine())
 
     return zones
@@ -266,6 +277,7 @@ def createAdminZones():
 
     zones = []
 
+    zones.append(getEltersHut())
     zones.append(getVillageHall())
     zones.append(getTownHall())
     zones.append(getShrine())
