@@ -251,5 +251,6 @@ def fireSingleEmployee(person, world):
     if person.getOccupation() is not None:
         person.getOccupation().removeWorker(person)
         person.setOccupation(None)
+        person.setOccupationName('')
         PLEH.lostEmpoyment(person, world)
 

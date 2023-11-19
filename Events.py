@@ -553,6 +553,31 @@ def settlementGoodsProduction(world):
                         priest.changeFreeWealth(flatRate)
                         settlement.changeFreeWealth(-flatRate)
 
+
+                    ## MILITARY
+                    if len(settlement.getMilitaryFeatures()[0].getWorkerList()) > 0:
+                        flatRate = 3
+                        soldier = settlement.getMilitaryFeatures()[0].getWorkerList()[0]
+                        soldierModifier = 1
+
+                        if Traits.LAZY in soldier.getTraits():
+                            soldierModifier *= 0.8
+                        if Traits.DILIGENT in soldier.getTraits():
+                            soldierModifier *= 1.2
+                        if Traits.GREEDY in soldier.getTraits():
+                            soldierModifier *= 0.9
+                        if Traits.GREGARIOUS in soldier.getTraits():
+                            soldierModifier *= 1.1
+                        if Traits.IMPATIENT in soldier.getTraits():
+                            soldierModifier *= 0.9
+                        if Traits.PATIENT in soldier.getTraits():
+                            soldierModifier *= 1.1
+
+                        earnSkillXp(soldier, settlement.getMilitaryFeatures()[0], (soldierModifier * 100 - 100), world)
+                        soldier.changeFreeWealth(flatRate)
+                        settlement.changeFreeWealth(-flatRate)
+
+
                     ##  FOOD PRODUCTION
                     foodProd0 = settlement.getSettlementFoodProduced()
                     for foodTile in settlement.getFoodFeatures():
@@ -644,26 +669,8 @@ def settlementGoodsProduction(world):
 
                     if float(settlement.getFreeProd()) > 0:
         #                if settlement.getSettlementFoodProducedLastYear() - settlement.getSettlementFoodConsumedLastYear() < int(round(len(settlement.getResidents())/2)):
-                            for tile in settlement.getFoodFeatures():
-                                if len(SFeat.getPotencialUpgradesForZone(tile.getName())) > 0:
-                                    upgradable = Utils.randomFromCollectionWithWeight(SFeat.getPotencialUpgradesForZone(tile.getName()))
-                                    #for upgradable in (SFeat.getPotencialUpgradesForZone(tile.getName())):
-                                    if float(settlement.getFreeProd()) >= float(upgradable.value.getUpgradeCost()):
-                                        settlement.changeFreeProd(-upgradable.value.getUpgradeCost())
-                                        newFeature = SFeat.createZones()[SFeat.getFeatureIndexFromName(upgradable.value.getName())]
-                                        settlement.upgradeTile(tile, newFeature, world)
-                                        return
-
-                            for tile in settlement.getProdFeatures():
-                                if len(SFeat.getPotencialUpgradesForZone(tile.getName())) > 0:
-                                    upgradable = Utils.randomFromCollectionWithWeight(SFeat.getPotencialUpgradesForZone(tile.getName()))
-            #                        for upgradable in (SFeat.getPotencialUpgradesForZone(tile.getName())):
-                                    if float(settlement.getFreeProd()) >= float(upgradable.value.getUpgradeCost()):
-                                        settlement.changeFreeProd(-upgradable.value.getUpgradeCost())
-                                        newFeature = SFeat.createZones()[SFeat.getFeatureIndexFromName(upgradable.value.getName())]
-                                        settlement.upgradeTile(tile, newFeature, world)
-                                        return
-
+                            SF.checkForTileUpgrades(settlement, settlement.getFoodFeatures(), world)
+                            SF.checkForTileUpgrades(settlement, settlement.getProdFeatures(), world)
 
 def earnSkillXp(person, feature, modifier, world):
 
@@ -676,6 +683,11 @@ def earnSkillXp(person, feature, modifier, world):
         gotBetter = person.getSkills().getAdminSkill().increaseSkillXp(round((100 + modifier) / 100, 2) * 7)
         if gotBetter:
             PLEH.gotBetterSkillLevel(person, Enums.SkillNames.ADMIN, gotBetter, world)
+    if feature.getSkillUsed() == Enums.SkillNames.FIGHTER:
+        gotBetter = person.getSkills().getFighterSkill().increaseSkillXp(round((100 + modifier) / 100, 2) * 7)
+        if gotBetter:
+            PLEH.gotBetterSkillLevel(person, Enums.SkillNames.FIGHTER, gotBetter, world)
+
     return
 
 def accommodationManagment(world):
@@ -732,6 +744,29 @@ def settlementWorkersManagement(world):
 
                     unemployedWorkerList = settlement.getUnemployedResidentsList()
 
+
+                    #MILITARY
+                    if settlement.getEmploymentRate() >= 0.5 and len(unemployedWorkerList) > 0:
+
+                        if (Utils.randomRange(1, 100) > 0.5):
+                            militaryFreeWorkplacesSpots = []
+                            for milTile in settlement.getMilitaryFeatures():
+                                for occupations in range(milTile.getFreeWorkersSlots()):
+                                    militaryFreeWorkplacesSpots.append([milTile, occupations])
+
+                            if len(militaryFreeWorkplacesSpots) > 0:
+                                newWorker = Utils.randomFromCollection(unemployedWorkerList)
+                                randomJob = Utils.randomRange(0, len(militaryFreeWorkplacesSpots) - 1)
+
+                                if newWorker.getSex() == Sexes.MALE:
+                                    hireEmployee(newWorker, militaryFreeWorkplacesSpots[randomJob][0], world)
+                                    unemployedWorkerList.remove(newWorker)
+                                    del militaryFreeWorkplacesSpots[randomJob]
+                                else:
+                                    continue
+
+
+                    #REST
                     if len(unemployedWorkerList) > 0:
                         if settlement.getSettlementFoodProducedLastYear() <= 0:
 
@@ -756,7 +791,6 @@ def settlementWorkersManagement(world):
                                 prodFreeWorkplacesSpots.append([prodTile, occupations])
 
                         numberOfFreeWorkplaces = len(adminFreeWorkplacesSpots) + len(foodFreeWorkplacesSpots) + len(prodFreeWorkplacesSpots)
-                        print(f'{settlement.getSettlementName} : {settlement.getEmploymentRate()}')
                         if len(adminFreeWorkplacesSpots) == 0 or settlement.getFreeWealth() < 0:
                             basicAdminJobWeight = 0
                         if len(foodFreeWorkplacesSpots) == 0:
@@ -779,7 +813,7 @@ def settlementWorkersManagement(world):
                                 if weightedAdminJobs + weightedFoodJobs + weightedProdJobs == 0:
                                     break
 
-                                randomJobSite = Utils.randomRange(1, weightedAdminJobs + weightedFoodJobs + weightedProdJobs)
+                                randomJobSite = Utils.randomRange(0, weightedAdminJobs + weightedFoodJobs + weightedProdJobs)
 
                                 if len(adminFreeWorkplacesSpots) > 0 and randomJobSite <= weightedAdminJobs:
                                     newWorker = Utils.randomFromCollection(unemployedWorkerList)
@@ -811,8 +845,10 @@ def settlementWorkersManagement(world):
 
                     if settlement.getSettlementFoodProducedLastYear() <= 0:
                         fireAllEmployees(settlement.getAdminFeatures()[0], world)
+                        fireAllEmployees(settlement.getMilitaryFeatures()[0], world)
                         for prodfeature in settlement.getProdFeatures():
                             fireAllEmployees(prodfeature, world)
+
 
 
 def hireEmployee(employee, tile, world):
@@ -829,6 +865,7 @@ def fireAllEmployees(tile, world):
     for worker in tile.getWorkerList():
         worker.getOccupation().removeWorker(worker)
         worker.setOccupation(None)
+        worker.setOccupationName('')
         PLEH.lostEmpoyment(worker, world)
 
     return

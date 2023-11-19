@@ -459,5 +459,3 @@ class Settlements:
 
     def getMigrationMonth(self):
         return self.migrationMonth
-
-
