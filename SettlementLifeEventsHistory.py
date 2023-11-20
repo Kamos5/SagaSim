@@ -1,4 +1,3 @@
-import Enums
 
 def spoiledFood(settlement, world):
 

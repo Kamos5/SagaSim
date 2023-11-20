@@ -7,6 +7,7 @@ import FamilyFunctions as FF
 import FamilyInitGenerator as FIG
 import FoundationTypes
 import IOtools
+import InfectionsFunctions
 import MembersInitGenerator as MIG
 import Parameters
 import pygame
@@ -137,7 +138,8 @@ def newWorld(canvas):
     world.generateSettlements()
     world.setFamilies(initFamilies())
     world.setPeople(initPeople(world.getFamilies()))
-    world.diseases = IOtools.loadFiles('diseases')
+    world.diseases = InfectionsFunctions.getDiseases(list(IOtools.loadFiles('affliction').items()))
+    world.injures = InfectionsFunctions.getInjuries(list(IOtools.loadFiles('affliction').items()))
 
 def main(popBreakLimit=None):
 

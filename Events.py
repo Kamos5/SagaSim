@@ -99,7 +99,7 @@ def infectionsSpread (world):
                             contractDiseaseThreshold = (contractDiseaseThreshold * person.getGeneralHealth().value[0]) + 2
 
                             if chanceForContractDisease <= contractDiseaseThreshold:
-                                randomInfection = Utils.randomFromCollection(list(world.diseases.items()))[1]
+                                randomInfection = Utils.randomFromCollection(world.diseases)[1]
                                 if len(person.getImmunityTo()) > 0:
                                     isImmune = False
                                     for immunityTo in person.getImmunityTo():
@@ -137,25 +137,15 @@ def infectionsSpread (world):
                                             if infection not in diseases:
                                                 person.addCurrentDiseases([infection, world.getDayOfTheYear(), 0])
                                                 PLEH.showingSymptomsOf(person, infection, world)
-                                                offsetHealth = person.getGeneralHealth().value[0] + infection['effectOnHealth'] + person.getHealthFromAge().value[0]
-                                                if offsetHealth >= len(Enums.getGeneralHealthArray()):
-                                                    offsetHealth = len(Enums.getGeneralHealthArray()) - 1
-                                                person.setGeneralHelth(Enums.getGeneralHealthArray()[offsetHealth])
-                                                if person.getGeneralHealth() == Enums.GeneralHealth.DEATH:
-                                                    person.causeOfDeath = CauseOfDeath.SICKNESS
-                                                    PF.deathProcedures(person, world)
+                                                if InfectionsFunctions.offsetHealth(person, infection, world):
                                                     break
+
                                         else:
                                             person.addCurrentDiseases([infection, world.getDayOfTheYear(), 0])
                                             PLEH.showingSymptomsOf(person, infection, world)
-                                            offsetHealth = person.getGeneralHealth().value[0] + infection['effectOnHealth'] + person.getHealthFromAge().value[0]
-                                            if offsetHealth > len(Enums.getGeneralHealthArray()):
-                                                offsetHealth = len(Enums.getGeneralHealthArray()) - 1
-                                            person.setGeneralHelth(Enums.getGeneralHealthArray()[offsetHealth])
-                                            if person.getGeneralHealth() == Enums.GeneralHealth.DEATH:
-                                                person.causeOfDeath = CauseOfDeath.SICKNESS
-                                                PF.deathProcedures(person, world)
+                                            if InfectionsFunctions.offsetHealth(person, infection, world):
                                                 break
+
 
                             end3 = time.perf_counter()
 
@@ -210,6 +200,12 @@ def diseasesProgress(world):
                 if chanceToDieFromPoorHealth < 2 * 2 ** (person.getGeneralHealth().value[0]-2):
                     person.causeOfDeath = CauseOfDeath.SICKNESS
                     PF.deathProcedures(person, world)
+            person.setCurrentInjuries([injury for injury in person.getCurrentInjuries() if not toRemoveInjury(person, injury, world)])
+            if person.getGeneralHealth().value[0] > 1:
+                chanceToDieFromPoorHealth = Utils.randomRange(1, 100)
+                if chanceToDieFromPoorHealth < 2 * 2 ** (person.getGeneralHealth().value[0]-2):
+                    person.causeOfDeath = CauseOfDeath.INJURY
+                    PF.deathProcedures(person, world)
 
 def toRemoveDisease(person, disease, world):
 
@@ -222,6 +218,15 @@ def toRemoveDisease(person, disease, world):
             person.addImmunityTo([disease, world.getDayOfTheYear()])
             PLEH.gotImmunityTo(person, disease[0], world)
             return disease
+
+def toRemoveInjury(person, injury, world):
+
+    if injury[2] < 100:
+        injury[2] += round(100 / injury[0]["daysToCure"])
+        if injury[2] >= 100:
+            injury[2] = 100  ######TO COS JEST NIE TAK -> rozkminic te tablice
+            person.setGeneralHelth(Enums.getGeneralHealthArray()[person.getGeneralHealth().value[0] - injury[0]['effectOnHealth'] + person.getHealthFromAge().value[0]])
+            return injury
 
 
 def loveMaking (world):
@@ -1015,6 +1020,7 @@ def crime(world):
                     loot = randomPerson.getFreeWealth()
                     randomPerson.setFreeWealth(loot / 3)
                     person.changeFreeWealth(loot)
+                    InfectionsFunctions.injureSomeone(randomPerson, world)
                     crimeLevel += 1
                     crimeAssaultTemp += 1
                     continue
@@ -1206,7 +1212,11 @@ def raidingFunctions(settlement, world):
         settlement.changeFreeFood(stolenAmount)
         SettlementLifeEventsHistory.raided(settlement, randomTarget, stolenAmount, world)
         settlement.setRaidedFlag()
+        if len(randomTarget.getMilitary()) > 0:
+            for defSoldier in randomTarget.getMilitary():
+                InfectionsFunctions.injureSomeone(defSoldier, world)
         for soldier in settlement.getMilitary():
+            InfectionsFunctions.injureSomeone(soldier, world)
             PLEH.raided(soldier, randomTarget, world)
 
 

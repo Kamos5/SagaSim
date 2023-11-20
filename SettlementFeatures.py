@@ -206,10 +206,12 @@ def getNewSimplefarm():
     return Feature(FeatureTypes.FOODTYPE, 3, 7, 'Simple farm', 'simple farm', 'Farmer', 200, 'Fallow', 100, skillUsed=Enums.SkillNames.LABOR)
 def getNewOrchard():
     return Feature(FeatureTypes.FOODTYPE, 3, 7, 'Orchard', 'fruit tree paradise', 'Fruit grower', 200, 'Fallow', 100, skillUsed=Enums.SkillNames.LABOR)
+def getNewWindmill():
+    return Feature(FeatureTypes.FOODTYPE, 4, 7, 'Wind Mill', 'wind make it go brrr', 'Miller', 200, 'Fallow', skillUsed=Enums.SkillNames.LABOR)
 def getNewForest():
     return Feature(FeatureTypes.FOODTYPE, 3, 7, 'Forest', 'forest with wild life and forage supply', 'Gatherer', 200, 'Wilderness', skillUsed=Enums.SkillNames.LABOR)
-def getNewMill():
-    return Feature(FeatureTypes.FOODTYPE, 4, 7, 'Mill', 'running volume of not sparkling water', 'Miller', 200, 'River', skillUsed=Enums.SkillNames.LABOR)
+def getNewWatermill():
+    return Feature(FeatureTypes.FOODTYPE, 4, 7, 'Water Mill', 'running volume of not sparkling water', 'Miller', 200, 'River', skillUsed=Enums.SkillNames.LABOR)
 def getNewBigGame():
     return Feature(FeatureTypes.FOODTYPE, 4, 5, 'Big Game', 'there are signs of big hunter game in the area', 'Hunter', 200, 'Wild animals', skillUsed=Enums.SkillNames.LABOR)
 def getNewLumberMill():
@@ -259,7 +261,8 @@ def createZones():
     zones.append(getNewSimplefarm())
     zones.append(getNewOrchard())
     zones.append(getNewForest())
-    zones.append(getNewMill())
+    zones.append(getNewWatermill())
+    zones.append(getNewWindmill())
     zones.append(getNewBigGame())
     zones.append(getNewLumberMill())
     zones.append(getNewQuarry())
@@ -310,7 +313,8 @@ class Zones(Enum):
     SIMPLEFARM = getNewSimplefarm()
     ORCHARD = getNewOrchard()
     FOREST = getNewForest()
-    MILL = getNewMill()
+    WATERMILL = getNewWatermill()
+    WINDMILL = getNewWindmill()
     BIGGAME = getNewBigGame()
     LUMBERMILL = getNewLumberMill()
     QUARRY = getNewQuarry()
@@ -319,9 +323,9 @@ class Zones(Enum):
     COALMINE = getNewCoalMine()
     IRONMINE = getNewIronMine()
     SILVERMINE = getNewSilverMine()
-
-
-
+    TINMINE = getNewTinMine()
+    LEADMINE = getNewLeadMine()
+    COPPERMINE = getNewCopperMine()
 
 
     #bonus to max pop, description

@@ -31,6 +31,10 @@ class GeneralHealth(Enum): #Index, status,
 def getGeneralHealthArray():
     return [GeneralHealth.HEALTHY, GeneralHealth.WEAKEN, GeneralHealth.POOR, GeneralHealth.CRIPPLING, GeneralHealth.TERMINAL, GeneralHealth.DEATH]
 
+class InjuryHealth(Enum):
+    NOINJURIES = 0, 'No Injuries'
+    INJURED = 1, 'Injured'
+
 class MaritalStatus(Enum):
     CHILD = 'child'
     SINGLE = 'single'
@@ -47,6 +51,7 @@ class CauseOfDeath(Enum):
     KILLED = 'killed'
     CHILDSICKNESS = 'child sickness'
     SICKNESS = 'sickness'
+    INJURY = 'injury'
     STARVATION = 'starvation'
     UNKNOWN = 'unknown'
     NULL = ''

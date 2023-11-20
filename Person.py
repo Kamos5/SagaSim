@@ -95,6 +95,7 @@ class Person:
         self.iq = 0
         self.immunityTo = []
         self.currentDiseases = []
+        self.currentInjuries = []
         self.infections = []
         self.isInFavorite = False
         self.skills = Skills.Skills()
@@ -537,6 +538,18 @@ class Person:
 
     def removeCurrentDiseases(self, disease):
         self.currentDiseases.remove(disease)
+
+    def getCurrentInjuries(self):
+        return self.currentInjuries
+
+    def addCurrentInjuries(self, newInjuries):
+        self.currentInjuries.append(newInjuries)
+
+    def setCurrentInjuries(self, injuries):
+        self.currentInjuries = injuries
+
+    def removeCurrentInjuries(self, injuries):
+        self.currentInjuries.remove(injuries)
 
     def getInfections(self):
         return self.infections

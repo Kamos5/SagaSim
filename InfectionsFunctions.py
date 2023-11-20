@@ -1,6 +1,23 @@
+import Enums
 import PersonLifeEventsHistory as PLEH
 import Utils
+import PeopleFunctions as PF
 
+def getDiseases(afflictions):
+
+    diseases = []
+    for affliction in afflictions:
+        if affliction[1]['type'] == 'sickness':
+            diseases.append(affliction)
+    return diseases
+
+def getInjuries(afflictions):
+
+    injures = []
+    for affliction in afflictions:
+        if affliction[1]['type'] == 'injury':
+            injures.append(affliction)
+    return injures
 
 def checkIfInfected(infected, infection):
 
@@ -58,3 +75,21 @@ def tryToInfectPeopleFromList(carrier, list, infection, world):
 
     return infectionsPerDay
 
+def offsetHealth(person, affliction, world):
+
+    offsetHealth = person.getGeneralHealth().value[0] + affliction['effectOnHealth'] + person.getHealthFromAge().value[0]
+    if offsetHealth >= len(Enums.getGeneralHealthArray()):
+        offsetHealth = len(Enums.getGeneralHealthArray()) - 1
+    person.setGeneralHelth(Enums.getGeneralHealthArray()[offsetHealth])
+    if person.getGeneralHealth() == Enums.GeneralHealth.DEATH:
+        person.causeOfDeath = Enums.CauseOfDeath.SICKNESS
+        PF.deathProcedures(person, world)
+        return True
+    else:
+        return False
+
+def injureSomeone(randomPerson, world):
+    randomInjury = Utils.randomFromCollection(world.getInjuries())[1]
+    randomPerson.addCurrentInjuries([randomInjury, world.getDayOfTheYear(), 0])
+    PLEH.gotInjured(randomPerson, randomInjury, world)
+    offsetHealth(randomPerson, randomInjury, world)

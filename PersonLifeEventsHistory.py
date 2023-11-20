@@ -43,6 +43,10 @@ def killedByDuringCrime(victim, offender, world):
 
     victim.lifeEvents.append(f'{victim.firstName} was killed by {offenderString} + " during crime {world.getDay()}/{world.getMonth().value[1]}/{world.getYear()}')
 
+def gotInjured(person, injury, world):
+
+    person.lifeEvents.append(f'{person.firstName} got {injury["name"]} on the year {world.getDay()}/{world.getMonth().value[1]}/{world.getYear()}')
+
 def killedSMBDuringCrime(offender, victim, world):
 
     offender.lifeEvents.append(f'{offender.firstName} killed {victim.getFirstName()} {victim.getLastName()} while committing crime on the year {world.getDay()}/{world.getMonth().value[1]}/{world.getYear()}')

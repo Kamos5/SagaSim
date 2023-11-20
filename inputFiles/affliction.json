@@ -9,7 +9,8 @@
       "contagionChange": 5,
       "effectOnHealth": 2,
       "difficulty": 1,
-      "daysToCure": 20
+      "daysToCure": 20,
+      "type": "sickness"
     },
   "pneumonia":
     {
@@ -21,7 +22,8 @@
       "contagionChange": 1,
       "effectOnHealth": 1,
       "difficulty": 1,
-      "daysToCure": 30
+      "daysToCure": 30,
+      "type": "sickness"
     },
   "tuberculosis":
     {
@@ -33,7 +35,8 @@
       "contagionChange": 2,
       "effectOnHealth": 1,
       "difficulty": 1,
-      "daysToCure": 180
+      "daysToCure": 180,
+      "type": "sickness"
     },
   "leprosy":
     {
@@ -45,7 +48,8 @@
       "contagionChange": 0.01,
       "effectOnHealth": 1,
       "difficulty": 1,
-      "daysToCure": 10000000000
+      "daysToCure": 10000000000,
+      "type": "sickness"
     },
   "dysentry":
     {
@@ -57,7 +61,8 @@
       "contagionChange": 0,
       "effectOnHealth": 2,
       "difficulty": 1,
-      "daysToCure": 5
+      "daysToCure": 5,
+      "type": "sickness"
     },
   "malaria":
     {
@@ -69,7 +74,8 @@
       "contagionChange": 0,
       "effectOnHealth": 1,
       "difficulty": 1,
-      "daysToCure": 10000000000
+      "daysToCure": 10000000000,
+      "type": "sickness"
     },
   "diphtheria":
     {
@@ -81,7 +87,8 @@
       "contagionChange": 2,
       "effectOnHealth": 2,
       "difficulty": 1,
-      "daysToCure": 21
+      "daysToCure": 21,
+      "type": "sickness"
     },
   "flu":
     {
@@ -93,7 +100,8 @@
       "contagionChange": 4,
       "effectOnHealth": 1,
       "difficulty": 1,
-      "daysToCure": 7
+      "daysToCure": 7,
+      "type": "sickness"
     },
   "typhoid":
     {
@@ -105,7 +113,8 @@
       "contagionChange": 0,
       "effectOnHealth": 2,
       "difficulty": 1,
-      "daysToCure": 60
+      "daysToCure": 60,
+      "type": "sickness"
     },
   "smallpox":
     {
@@ -117,9 +126,10 @@
       "contagionChange": 1,
       "effectOnHealth": 2,
       "difficulty": 1,
-      "daysToCure": 10000000
+      "daysToCure": 10000000,
+      "type": "sickness"
     },
-      "cholera":
+  "cholera":
     {
       "name": "Cholera",
       "namePL": "Cholera",
@@ -129,7 +139,8 @@
       "contagionChange": 2,
       "effectOnHealth": 2,
       "difficulty": 1,
-      "daysToCure": 10000000
+      "daysToCure": 10000000,
+      "type": "sickness"
     },
   "anthrax":
     {
@@ -141,7 +152,8 @@
       "contagionChange": 0,
       "effectOnHealth": 3,
       "difficulty": 1,
-      "daysToCure": 60
+      "daysToCure": 60,
+      "type": "sickness"
     },
   "commonCold":
     {
@@ -153,7 +165,72 @@
       "contagionChange": 1,
       "effectOnHealth": 1,
       "difficulty": 1,
-      "daysToCure": 7
+      "daysToCure": 7,
+      "type": "sickness"
+    },
+  "brokenBone":
+    {
+      "name": "Broken bone",
+      "namePL": "Złamana kość",
+      "description": "The most common trauma.",
+      "incubation": 0,
+      "contagious": false,
+      "contagionChange": 0,
+      "effectOnHealth": 1,
+      "difficulty": 2,
+      "daysToCure": 40,
+      "type": "injury"
+    },
+    "fleshWound":
+    {
+      "name": "Flesh wound",
+      "namePL": "Rana powierzchowna",
+      "description": "It's just a flesh wound.",
+      "incubation": 0,
+      "contagious": false,
+      "contagionChange": 0,
+      "effectOnHealth": 1,
+      "difficulty": 1,
+      "daysToCure": 14,
+      "type": "injury"
+    },
+    "deepWound":
+    {
+      "name": "Deep wound",
+      "namePL": "Głęboka rana",
+      "description": "It's not just a flesh wound.",
+      "incubation": 0,
+      "contagious": false,
+      "contagionChange": 0,
+      "effectOnHealth": 2,
+      "difficulty": 1,
+      "daysToCure": 21,
+      "type": "injury"
+    },
+    "concussion":
+    {
+      "name": "Concussion",
+      "namePL": "Wstrząs mózgu",
+      "description": "Getin shay in the temple.",
+      "incubation": 0,
+      "contagious": false,
+      "contagionChange": 0,
+      "effectOnHealth": 1,
+      "difficulty": 5,
+      "daysToCure": 365,
+      "type": "injury"
+    },
+    "organFailure":
+    {
+      "name": "Organ failure",
+      "namePL": "Uszkodzony organ",
+      "description": "Breaking apart",
+      "incubation": 0,
+      "contagious": false,
+      "contagionChange": 0,
+      "effectOnHealth": 3,
+      "difficulty": 3,
+      "daysToCure": 100,
+      "type": "injury"
     }
-
 }

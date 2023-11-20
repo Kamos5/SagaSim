@@ -94,6 +94,9 @@ class World:
 
         self.gameState = 0
 
+        self.diseases = []
+        self.injures = []
+
     def loadWorld(self, world):
 
         self.setInitYear(world.getInitYear())
@@ -263,6 +266,9 @@ class World:
 
     def removePeople(self, person):
         self.people.remove(person)
+
+    def getInjuries(self):
+        return self.injures
 
     def getAlivePeople(self):
 

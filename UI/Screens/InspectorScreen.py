@@ -330,6 +330,15 @@ class InspectorScreen:
         self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding+500, self.lineHeight * self.writeLine + self.scroll_y))
         self.writeLine += 1
 
+        if len(object.getCurrentInjuries()) > 0:
+            label = Label("Suffer from injury:", 500, self.lineHeight, self.textFont)
+            self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding, self.lineHeight * self.writeLine + self.scroll_y))
+            self.writeLine += 1
+            for injury in object.getCurrentInjuries():
+                label = Label(str(injury[0]['name'] + " healed in: " + str(injury[2]) + "%"), 500, self.lineHeight, self.textFont)
+                self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding*2, self.lineHeight * self.writeLine + self.scroll_y))
+                self.writeLine += 1
+
         if len(object.getInfections()) > 0:
             label = Label("Get infected by:", 500, self.lineHeight, self.textFont)
             self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding, self.lineHeight * self.writeLine + self.scroll_y))
