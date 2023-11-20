@@ -225,6 +225,8 @@ class World:
 
         self.gameState = 0
 
+        self.season = Enums.Seasons.WINTER
+
     def getInitYear(self):
         return self.initYear
 
@@ -378,6 +380,12 @@ class World:
     def setMonth(self, newMonth):
         self.month = newMonth
 
+    def setSeason(self, newSeason):
+        self.season = newSeason
+
+    def getSeason(self):
+        return self.season
+
     def increaseDay(self):
 
         if self.getDay() == self.getMonth().value[2]:
@@ -385,24 +393,28 @@ class World:
                 self.month = Enums.Months.FEBRUARY
             elif self.getMonth().value[0] == 2:
                 self.month = Enums.Months.MARCH
+                self.setSeason(Enums.Seasons.SPRING)
             elif self.getMonth().value[0] == 3:
                 self.month = Enums.Months.APRIL
             elif self.getMonth().value[0] == 4:
                 self.month = Enums.Months.MAY
             elif self.getMonth().value[0] == 5:
                 self.month = Enums.Months.JUNE
+                self.setSeason(Enums.Seasons.SUMMER)
             elif self.getMonth().value[0] == 6:
                 self.month = Enums.Months.JULY
             elif self.getMonth().value[0] == 7:
                 self.month = Enums.Months.AUGUST
             elif self.getMonth().value[0] == 8:
                 self.month = Enums.Months.SEPTEMBER
+                self.setSeason(Enums.Seasons.FALL)
             elif self.getMonth().value[0] == 9:
                 self.month = Enums.Months.OCTOBER
             elif self.getMonth().value[0] == 10:
                 self.month = Enums.Months.NOVEMBER
             elif self.getMonth().value[0] == 11:
                 self.month = Enums.Months.DECEMBER
+                self.setSeason(Enums.Seasons.WINTER)
             else:
                 self.month = Enums.Months.JANUARY
                 self.increaseYear()

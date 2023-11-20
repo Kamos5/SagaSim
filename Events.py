@@ -6,6 +6,7 @@ import numpy as np
 import Enums
 import FamilyFunctions as FF
 import HouseFunctions
+import SettlementLifeEventsHistory
 import WorldFunctions
 from Enums import LifeStatus, MaritalStatus, CauseOfDeath, Sexes, Settlements, Traits
 import Utils
@@ -499,7 +500,7 @@ def settlementGoodsProduction(world):
             for province in region.getProvinces():
                 for settlement in province.getSettlements():
                     if settlement.getFreeFood() > 0:
-                        settlement.changeFreeFood(settlement.getFreeFood() * 0.9)
+                        settlement.changeFreeFood(-(settlement.getFreeFood() - settlement.getFreeFood() * 0.9))
                         spoiledFood(settlement, world)
 
     if world.dayOfWeekFlag == 1:  # Only on Monday produce goods
@@ -1176,6 +1177,63 @@ def deathChangeFromGivingBirth(person, child, modifier=0):
         childDeath = True
 
     return motherDeath, childDeath
+
+def raiding (world):
+
+    for region in world.getRegions():
+        for province in region.getProvinces():
+            for settlement in province.getSettlements():
+                if world.getSeason() == Enums.Seasons.WINTER and world.getDay() == settlement.getRaidDatesPerSeason()[0][0] and world.getMonth() == settlement.getRaidDatesPerSeason()[0][1]:
+                    raidingFunctions(settlement, world)
+                if world.getSeason() == Enums.Seasons.SPRING and world.getDay() == settlement.getRaidDatesPerSeason()[1][0] and world.getMonth() == settlement.getRaidDatesPerSeason()[1][1]:
+                    raidingFunctions(settlement, world)
+                if world.getSeason() == Enums.Seasons.SUMMER and world.getDay() == settlement.getRaidDatesPerSeason()[2][0] and world.getMonth() == settlement.getRaidDatesPerSeason()[2][1]:
+                    raidingFunctions(settlement, world)
+                if world.getSeason() == Enums.Seasons.FALL and world.getDay() == settlement.getRaidDatesPerSeason()[3][0] and world.getMonth() == settlement.getRaidDatesPerSeason()[3][1]:
+                    raidingFunctions(settlement, world)
+            if world.getDay() == 1 and (world.getMonth() == Enums.Months.DECEMBER or world.getMonth() == Enums.Months.MARCH or world.getMonth() == Enums.Months.JUNE or world.getMonth() == Enums.Months.SEPTEMBER):
+                for settlement in province.getSettlements():
+                    settlement.resetRaidedFlag()
+                    settlement.resetRaidDatesPerSeason()
+
+def raidingFunctions(settlement, world):
+
+    if len(settlement.getMilitary()) > 0:
+        randomTarget = findTarget(settlement, world)
+
+        stolenAmount = round(randomTarget.getFreeFood() * 0.5, 2)
+        randomTarget.changeFreeFood(-stolenAmount)
+        settlement.changeFreeFood(stolenAmount)
+        SettlementLifeEventsHistory.raided(settlement, randomTarget, stolenAmount, world)
+        settlement.setRaidedFlag()
+        for soldier in settlement.getMilitary():
+            PLEH.raided(soldier, randomTarget, world)
+
+
+def caltulateRaidSuccess(settlement, target, world):
+
+    attackingForce = len(settlement.getMilitary())
+    defendingForce = len(target.getMilitary())
+    if defendingForce == 0:
+        return 100
+
+    return
+
+def caltulateRaidCasuaslies():
+    return
+
+def findTarget(settlement, world):
+
+    raidList = []
+    regions = world.getRegions().copy()
+    regions.remove(settlement.getProvince().getRegion())
+    for region in regions:
+        for province in region.getProvinces():
+            raidList += province.getSettlements()
+
+    randomTarget = Utils.randomFromCollection(raidList)
+
+    return randomTarget
 
 def assosiatesFriendsAndFoes(world):
 

@@ -145,7 +145,7 @@ class InspectorScreen:
         label = Label(f'Number of civilian workplaces: {object.getCivilianWorkplaces()}', 500, self.lineHeight, self.textFont)
         self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding, self.lineHeight * self.writeLine + self.scroll_y))
         self.writeLine += 1
-        label = Label(f'Number of military personel: {object.getMilitary()}', 500, self.lineHeight, self.textFont)
+        label = Label(f'Number of military personel: {object.getMilitaryNumber()}', 500, self.lineHeight, self.textFont)
         self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding, self.lineHeight * self.writeLine + self.scroll_y))
         self.writeLine += 1
         if (len(object.getEmployedResidentsList())+len(object.getUnemployedResidentsList())*100) > 0:
@@ -233,6 +233,18 @@ class InspectorScreen:
             label = Label(house.getHouseType().value.getHouseTypeName() + " (" + str(len(house.getHouseResidents())) + ")", 500, self.lineHeight, self.textFont, True)
             self.inspectorScreenSurfaceObjsRect.append([self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding*2, self.lineHeight * self.writeLine + self.scroll_y)), house])
             self.writeLine += 1
+
+        # label = Label("Province " + str(object.getProvince()) + " neighbourds:", 500, self.lineHeight, self.textFont)
+        # self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding, self.lineHeight * self.writeLine + self.scroll_y))
+        # self.writeLine += 1
+        # for neighbour in object.getProvince().getNeighbours():
+        #     label = Label(neighbour.getName(), 500, self.lineHeight, self.textFont, True)
+        #     self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding*2, self.lineHeight * self.writeLine + self.scroll_y))
+        #     self.writeLine += 1
+
+        self.writeLine = SingleLineSurface("Events:", 500, self.lineHeight, self.textFont, self.leftPadding, self.lineHeight * self.writeLine + self.scroll_y, self.inspectorScreenSurface, self.writeLine)
+        for liveEvent in object.getEvent():
+            self.writeLine = MultiLineSurface(str(liveEvent), 500, self.lineHeight, self.textFont, self.leftPadding * 2, self.lineHeight * self.writeLine + self.scroll_y, self.inspectorScreenSurface, self.writeLine)
 
     def addInspectorForFamily(self, object):
 

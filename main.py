@@ -76,6 +76,7 @@ def running(world, manualOverride):
     crimeTime = Utils.timeFunction(timers, Events.crime, world)
     settlementGoodsProdTime = Utils.timeFunction(timers, Events.settlementGoodsProduction, world)           #ONCE PER WEEK (ALWAYS ON MONDAYS)
     accommodationManagmentTime = Utils.timeFunction(timers, Events.accommodationManagment, world)           #ONCE PER WEEK (ALWAYS ON MONDAYS)
+    raidingTime = Utils.timeFunction(timers, Events.raiding, world)
     updateAliveTime = Utils.timeFunction(timers, world.updateAlive)
     associateManagementTime = Utils.timeFunction(timers, Events.assosiatesFriendsAndFoes, world)
     makeHistoryTime = Utils.timeFunction(timers, world.makeHistory)
@@ -99,12 +100,13 @@ def running(world, manualOverride):
         print("Crime: " + str(crimeTime) + " %: " + str(round(crimeTime / fullTime, 2)))
         print("SettlementGoodsProdTime: " + str(settlementGoodsProdTime) + " %: " + str(round(settlementGoodsProdTime / fullTime, 2)))
         print("AccomodationTime: " + str(accommodationManagmentTime) + " %: " + str(round(accommodationManagmentTime / fullTime, 2)))
+        print("Raiding: " + str(raidingTime) + " %: " + str(round(raidingTime / fullTime, 2)))
         print("UpdateAliveTime: " + str(updateAliveTime) + " %: " + str(round(updateAliveTime / fullTime, 2)))
         print("AssociateMngTime: " + str(associateManagementTime) + " %: " + str(round(associateManagementTime / fullTime, 2)))
         print("MakeHistoryTime: " + str(makeHistoryTime) + " %: " + str(round(makeHistoryTime / fullTime, 2)))
         print(fullTime)
 
-    timeTable.extend(["WorldTime", worldtime, "TerritoryTime", terrytoryTime, "WeaterTime", weatherChangeTime, "IncAgeTime", incAgeTime, "InfectionsTime", infectionsTime, "DiseasesTime", diseasesTime, "LovemakingTime", loveMakingTime, "BirthTime", birthtime, "SpouseMMTime", spouseMMTime, "DivorcesTime", divorcesTime, "BreakSettlementsPopTime", breakSettlementsPopTime, "WorkersManagementTime", workersManagementTime, "Crime", crimeTime, "SettlementGoodsProdTime", settlementGoodsProdTime, "AccomodationTime", accommodationManagmentTime, "UpdateAliveTime", updateAliveTime, "AssociateMngTime", associateManagementTime, "MakeHistoryTime", makeHistoryTime, "FullTime", fullTime])
+    timeTable.extend(["WorldTime", worldtime, "TerritoryTime", terrytoryTime, "WeaterTime", weatherChangeTime, "IncAgeTime", incAgeTime, "InfectionsTime", infectionsTime, "DiseasesTime", diseasesTime, "LovemakingTime", loveMakingTime, "BirthTime", birthtime, "SpouseMMTime", spouseMMTime, "DivorcesTime", divorcesTime, "BreakSettlementsPopTime", breakSettlementsPopTime, "WorkersManagementTime", workersManagementTime, "Crime", crimeTime, "SettlementGoodsProdTime", settlementGoodsProdTime, "AccomodationTime", accommodationManagmentTime, 'RaidingTime', raidingTime, "UpdateAliveTime", updateAliveTime, "AssociateMngTime", associateManagementTime, "MakeHistoryTime", makeHistoryTime, "FullTime", fullTime])
 
     for family in world.getFamilies():
         isAlive += family.getAliveMemberNumber()
@@ -417,7 +419,7 @@ def pygameEvents(event, canvas, pausedPressed, gameState):
                     for region in world.getRegions():
                         for province in region.getProvinces():
                             for settlement in province.getSettlements():
-                                if settlement == lastFocusedObj and province.getSettlements().index(lastFocusedObj) < len(region.getSettlements())-1:
+                                if settlement == lastFocusedObj and province.getSettlements().index(lastFocusedObj) < len(province.getSettlements())-1:
                                     if not lastFocusedObj.getUIExpand():
                                         canvas.focusObj.append(province.getSettlements()[province.getSettlements().index(lastFocusedObj)+1])
                                         return pausedPressed

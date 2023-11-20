@@ -162,3 +162,6 @@ def inheritFromParent(person, parent, ihneritance, world):
 
 def gotBetterSkillLevel(person, skill, skillLevel, world):
     person.lifeEvents.append(f'{person.getFirstName()} {skillLevel.value[2]} at {skill.value} on the {world.getDay()}/{world.getMonth().value[1]}/{world.getYear()}')
+
+def raided(person, target, world):
+    person.lifeEvents.append(f'{person.getFirstName()} took a part in a raid against {target.getSettlementName()} on the {world.getDay()}/{world.getMonth().value[1]}/{world.getYear()}')

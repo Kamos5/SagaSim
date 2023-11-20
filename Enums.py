@@ -232,3 +232,9 @@ class SkillNames(Enum):
     LABOR = 'Labor'
     ADMIN = 'Administrative'
     FIGHTER = 'Fighter'
+
+class Seasons(Enum):
+    WINTER = 'Winter'
+    SPRING = 'Spring'
+    SUMMER = 'Summer'
+    FALL = 'Fall'

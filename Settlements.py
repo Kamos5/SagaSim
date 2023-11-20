@@ -59,6 +59,8 @@ class Settlements:
         self.migrationDay = Utils.randomRange(1, self.migrationMonth.value[2])
         self.provinceCords = (0, 0)
         self.events = []
+        self.raidedThisSeason = False
+        self.raidDatesPerSeason = self.resetRaidDatesPerSeason()
 
     def getRegion(self):
         return self.region
@@ -301,6 +303,13 @@ class Settlements:
 
     def getMilitary(self):
 
+        workerList = []
+        for workplace in self.getMilitaryFeatures():
+            workerList += workplace.getWorkerList()
+        return workerList
+
+    def getMilitaryNumber(self):
+
         workplaces = 0
         for workplace in self.getMilitaryFeatures():
             workplaces += workplace.getWorkersNumber()
@@ -463,3 +472,25 @@ class Settlements:
 
     def getMigrationMonth(self):
         return self.migrationMonth
+
+    def resetRaidedFlag(self):
+        self.raidedThisSeason = False
+
+    def setRaidedFlag(self):
+        self.raidedThisSeason = True
+
+    def resetRaidDatesPerSeason(self):
+
+        winterSeasonMonth = Utils.randomFromCollection([Enums.Months.DECEMBER, Enums.Months.JANUARY, Enums.Months.FEBRUARY])
+        springSeasonMonth = Utils.randomFromCollection([Enums.Months.MARCH, Enums.Months.APRIL, Enums.Months.MAY])
+        summerSeasonMonth = Utils.randomFromCollection([Enums.Months.JUNE, Enums.Months.JULY, Enums.Months.AUGUST])
+        fallSeasonMonth = Utils.randomFromCollection([Enums.Months.SEPTEMBER, Enums.Months.OCTOBER, Enums.Months.NOVEMBER])
+        winterSeasonDay = Utils.randomRange(1, winterSeasonMonth.value[2])
+        springSeasonDay = Utils.randomRange(1, springSeasonMonth.value[2])
+        summerSeasonDay = Utils.randomRange(1, summerSeasonMonth.value[2])
+        fallSeasonDay = Utils.randomRange(1, fallSeasonMonth.value[2])
+
+        return [[winterSeasonDay, winterSeasonMonth], [springSeasonDay, springSeasonMonth], [summerSeasonDay, summerSeasonMonth], [fallSeasonDay, fallSeasonMonth]]
+
+    def getRaidDatesPerSeason(self):
+        return self.raidDatesPerSeason
