@@ -241,7 +241,7 @@ def getTownHall():
 def getShrine():
     return Feature(FeatureTypes.ADMINTYPE, 1, 1, 'Shrine', 'Place of basic worship', 'Priest', skillUsed=Enums.SkillNames.ADMIN)
 def getMilitiaHut():
-    return Feature(FeatureTypes.MILITARYTYPE, 0, 10, 'Militia Hut', 'Place for peasants with pitchforks and axes', 'Militiaman', skillUsed=Enums.SkillNames.FIGHTER)
+    return Feature(FeatureTypes.MILITARYTYPE, 0, 15, 'Militia Hut', 'Place for peasants with pitchforks and axes', 'Militiaman', skillUsed=Enums.SkillNames.FIGHTER)
 def getArcherHut():
     return Feature(FeatureTypes.MILITARYTYPE, 0, 10, 'Archer\'s Hut', 'Place for people with flying sharp sticks', 'Archer', skillUsed=Enums.SkillNames.FIGHTER)
 def getSwordsmansGuild():

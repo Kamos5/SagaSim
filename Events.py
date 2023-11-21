@@ -1214,6 +1214,7 @@ def raidingFunctions(settlement, world):
         randomTarget.changeFreeFood(-stolenAmount)
         settlement.changeFreeFood(stolenAmount)
         SettlementLifeEventsHistory.raided(settlement, randomTarget, stolenAmount, world)
+        SettlementLifeEventsHistory.beenRaided(randomTarget, stolenAmount, world)
         settlement.setRaidedFlag()
         if len(randomTarget.getMilitary()) > 0:
             for defSoldier in randomTarget.getMilitary():
