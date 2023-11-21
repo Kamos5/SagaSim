@@ -168,31 +168,19 @@
       "daysToCure": 7,
       "type": "sickness"
     },
-  "brokenBone":
+    "organFailure":
     {
-      "name": "Broken bone",
-      "namePL": "Złamana kość",
-      "description": "The most common trauma.",
+      "name": "Organ failure",
+      "namePL": "Uszkodzony organ",
+      "description": "Breaking apart",
       "incubation": 0,
       "contagious": false,
       "contagionChange": 0,
-      "effectOnHealth": 1,
-      "difficulty": 2,
-      "daysToCure": 40,
-      "type": "injury"
-    },
-    "fleshWound":
-    {
-      "name": "Flesh wound",
-      "namePL": "Rana powierzchowna",
-      "description": "It's just a flesh wound.",
-      "incubation": 0,
-      "contagious": false,
-      "contagionChange": 0,
-      "effectOnHealth": 1,
-      "difficulty": 1,
-      "daysToCure": 14,
-      "type": "injury"
+      "effectOnHealth": 3,
+      "difficulty": 3,
+      "daysToCure": 100,
+      "type": "injury",
+      "chanceWeightModifier": 10
     },
     "deepWound":
     {
@@ -205,32 +193,49 @@
       "effectOnHealth": 2,
       "difficulty": 1,
       "daysToCure": 21,
-      "type": "injury"
+      "type": "injury",
+      "chanceWeightModifier": 30
     },
     "concussion":
     {
       "name": "Concussion",
       "namePL": "Wstrząs mózgu",
-      "description": "Getin shay in the temple.",
+      "description": "Getting shaky in the temple.",
       "incubation": 0,
       "contagious": false,
       "contagionChange": 0,
       "effectOnHealth": 1,
       "difficulty": 5,
       "daysToCure": 365,
-      "type": "injury"
+      "type": "injury",
+      "chanceWeightModifier": 40
     },
-    "organFailure":
+  "brokenBone":
     {
-      "name": "Organ failure",
-      "namePL": "Uszkodzony organ",
-      "description": "Breaking apart",
+      "name": "Broken bone",
+      "namePL": "Złamana kość",
+      "description": "The most common trauma.",
       "incubation": 0,
       "contagious": false,
       "contagionChange": 0,
-      "effectOnHealth": 3,
-      "difficulty": 3,
-      "daysToCure": 100,
-      "type": "injury"
+      "effectOnHealth": 1,
+      "difficulty": 2,
+      "daysToCure": 40,
+      "type": "injury",
+      "chanceWeightModifier": 60
+    },
+    "fleshWound":
+    {
+      "name": "Flesh wound",
+      "namePL": "Rana powierzchowna",
+      "description": "It's just a flesh wound.",
+      "incubation": 0,
+      "contagious": false,
+      "contagionChange": 0,
+      "effectOnHealth": 1,
+      "difficulty": 1,
+      "daysToCure": 14,
+      "type": "injury",
+      "chanceWeightModifier": 90
     }
 }

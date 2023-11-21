@@ -21,9 +21,9 @@ class Skill:
         didGetBetter = False
         self.skillXp = round(self.skillXp + moreXp, 2)
         for skillLevels in Enums.SkillsLevels:
-            if self.skillXp >= skillLevels.value[3] and self.skillLevel.value[0] + 1 == skillLevels.value[0]:
+            if self.skillXp >= skillLevels.value[3] and self.getSkillLevel().value[0] + 1 == skillLevels.value[0]:
                 self.skillLevel = skillLevels
-                didGetBetter = self.skillLevel
+                didGetBetter = self.getSkillLevel()
 
         return didGetBetter
 

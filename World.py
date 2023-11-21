@@ -96,6 +96,11 @@ class World:
 
         self.diseases = []
         self.injures = []
+        self.fleshWounds = 0
+        self.deepWounds = 0
+        self.brokenBones = 0
+        self.concussion = 0
+        self.organFailure = 0
 
     def loadWorld(self, world):
 

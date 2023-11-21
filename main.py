@@ -123,6 +123,12 @@ def running(world, manualOverride):
     print("Male population: " + str(malePop))
     print("Female population: " + str(femalePop))
     print("Births: " + str(world.getBirthsPerYearTemp()))
+    print(f'Injuries: {world.fleshWounds + world.deepWounds + world.brokenBones + world.concussion + world.organFailure}')
+    print(f'Organ: {world.organFailure}')
+    print(f'DeepWound: {world.deepWounds}')
+    print(f'Concussion: {world.concussion}')
+    print(f'Broken: {world.brokenBones}')
+    print(f'Flesh: {world.fleshWounds}')
 
     return (timeTable)
 

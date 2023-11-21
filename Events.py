@@ -194,7 +194,7 @@ def diseasesProgress(world):
 
     for person in world.getAlivePeople():
         if person.getLifeStatus() == Enums.LifeStatus.ALIVE:
-            person.setCurrentDiseases([disease for disease in person.getCurrentDiseases() if not toRemoveDisease(person, disease, world)])
+            person.setCurrentDiseases([disease for disease in person.getCurrentDiseases() if not InfectionsFunctions.toRemoveDisease(person, disease, world)])
             if person.getGeneralHealth().value[0] > 0:
                 if len(person.getCurrentDiseases()) > 1:
                     chanceToDieFromPoorHealth = Utils.randomRange(1, 1000)
@@ -202,35 +202,13 @@ def diseasesProgress(world):
                         person.causeOfDeath = CauseOfDeath.SICKNESS
                         PF.deathProcedures(person, world)
                         continue
-            person.setCurrentInjuries([injury for injury in person.getCurrentInjuries() if not toRemoveInjury(person, injury, world)])
+            person.setCurrentInjuries([injury for injury in person.getCurrentInjuries() if not InfectionsFunctions.toRemoveInjury(person, injury, world)])
             if person.getGeneralHealth().value[0] > 1:
                 if len(person.getCurrentInjuries()) > 0:
                     chanceToDieFromPoorHealth = Utils.randomRange(1, 1000)
                     if chanceToDieFromPoorHealth < 10 * 1 * 2 ** (person.getGeneralHealth().value[0]-2):
                         person.causeOfDeath = CauseOfDeath.INJURY
                         PF.deathProcedures(person, world)
-
-def toRemoveDisease(person, disease, world):
-
-    if disease[2] < 100:
-        disease[2] += round(100 / disease[0]["daysToCure"], 2)
-        if disease[2] >= 100:
-            disease[2] = 100  ######TODO TO COS JEST NIE TAK -> rozkminic te tablice
-            person.setInfections([infection for infection in person.getInfections() if not infection[0] == disease[0]])
-            person.setGeneralHelth(Enums.getGeneralHealthArray()[person.getGeneralHealth().value[0] - disease[0]['effectOnHealth'] + person.getHealthFromAge().value[0]])
-            person.addImmunityTo([disease, world.getDayOfTheYear()])
-            PLEH.gotImmunityTo(person, disease[0], world)
-            return disease
-
-def toRemoveInjury(person, injury, world):
-
-    if injury[2] < 100:
-        injury[2] += round(100 / injury[0]["daysToCure"], 2)
-        if injury[2] >= 100:
-            injury[2] = 100  ######TODO TO COS JEST NIE TAK -> rozkminic te tablice
-            person.setGeneralHelth(Enums.getGeneralHealthArray()[person.getGeneralHealth().value[0] - injury[0]['effectOnHealth'] + person.getHealthFromAge().value[0]])
-            return injury
-
 
 def loveMaking (world):
 
@@ -472,9 +450,9 @@ def settlementsPopulationManagement (world):
                             #         newTargetSettlement = newSettlement
 
                             #Migration Wave
-                            complexRandomMigrantsList = prepareMigration(settlement, newTargetSettlement, world)
-                            iniciateMigration(complexRandomMigrantsList, newTargetSettlement, world)
-                            splitFamiliesInMigration(world, region, province, newTargetSettlement, complexRandomMigrantsList)
+                            complexRandomMigrantsList = SF.prepareMigration(settlement, newTargetSettlement, world)
+                            SF.iniciateMigration(complexRandomMigrantsList, newTargetSettlement, world)
+                            SF.splitFamiliesInMigration(world, region, province, newTargetSettlement, complexRandomMigrantsList)
                     end1 = time.perf_counter()
                     start2 = time.perf_counter()
                     #Upgrading from Village to City
@@ -578,25 +556,25 @@ def settlementGoodsProduction(world):
                     ## MILITARY
                     if len(settlement.getMilitaryFeatures()[0].getWorkerList()) > 0:
                         flatRate = 3
-                        soldier = settlement.getMilitaryFeatures()[0].getWorkerList()[0]
-                        soldierModifier = 1
+                        for soldier in settlement.getMilitaryFeatures()[0].getWorkerList():
+                            soldierModifier = 1
 
-                        if Traits.LAZY in soldier.getTraits():
-                            soldierModifier *= 0.8
-                        if Traits.DILIGENT in soldier.getTraits():
-                            soldierModifier *= 1.2
-                        if Traits.GREEDY in soldier.getTraits():
-                            soldierModifier *= 0.9
-                        if Traits.GREGARIOUS in soldier.getTraits():
-                            soldierModifier *= 1.1
-                        if Traits.IMPATIENT in soldier.getTraits():
-                            soldierModifier *= 0.9
-                        if Traits.PATIENT in soldier.getTraits():
-                            soldierModifier *= 1.1
+                            if Traits.LAZY in soldier.getTraits():
+                                soldierModifier *= 0.8
+                            if Traits.DILIGENT in soldier.getTraits():
+                                soldierModifier *= 1.2
+                            if Traits.GREEDY in soldier.getTraits():
+                                soldierModifier *= 0.9
+                            if Traits.GREGARIOUS in soldier.getTraits():
+                                soldierModifier *= 1.1
+                            if Traits.IMPATIENT in soldier.getTraits():
+                                soldierModifier *= 0.9
+                            if Traits.PATIENT in soldier.getTraits():
+                                soldierModifier *= 1.1
 
-                        earnSkillXp(soldier, settlement.getMilitaryFeatures()[0], (soldierModifier * 100 - 100), world)
-                        soldier.changeFreeWealth(flatRate)
-                        settlement.changeFreeWealth(-flatRate)
+                            earnSkillXp(soldier, settlement.getMilitaryFeatures()[0], (soldierModifier * 100 - 100), world)
+                            soldier.changeFreeWealth(flatRate)
+                            settlement.changeFreeWealth(-flatRate)
 
 
                     ##  FOOD PRODUCTION
@@ -780,12 +758,9 @@ def settlementWorkersManagement(world):
                                 randomJob = Utils.randomRange(0, len(militaryFreeWorkplacesSpots) - 1)
 
                                 if newWorker.getSex() == Sexes.MALE:
-                                    hireEmployee(newWorker, militaryFreeWorkplacesSpots[randomJob][0], world)
+                                    SF.hireEmployee(newWorker, militaryFreeWorkplacesSpots[randomJob][0], world)
                                     unemployedWorkerList.remove(newWorker)
                                     del militaryFreeWorkplacesSpots[randomJob]
-                                else:
-                                    continue
-
 
                     #REST
                     if len(unemployedWorkerList) > 0:
@@ -840,7 +815,7 @@ def settlementWorkersManagement(world):
                                     newWorker = Utils.randomFromCollection(unemployedWorkerList)
                                     randomJob = Utils.randomRange(0, len(adminFreeWorkplacesSpots)-1)
                                     if adminFreeWorkplacesSpots[randomJob][0].getOccupationName() != 'Priest' or (adminFreeWorkplacesSpots[randomJob][0].getOccupationName() == 'Priest' and newWorker.getSex() == Sexes.MALE and newWorker.getSpouse() is None):
-                                        hireEmployee(newWorker, adminFreeWorkplacesSpots[randomJob][0], world)
+                                        SF.hireEmployee(newWorker, adminFreeWorkplacesSpots[randomJob][0], world)
                                         unemployedWorkerList.remove(newWorker)
                                         del adminFreeWorkplacesSpots[randomJob]
                                         weightedAdminJobs -= basicAdminJobWeight
@@ -851,7 +826,7 @@ def settlementWorkersManagement(world):
                                 elif len(foodFreeWorkplacesSpots) > 0 and randomJobSite <= weightedAdminJobs + weightedFoodJobs:
                                     newWorker = Utils.randomFromCollection(unemployedWorkerList)
                                     randomJob = Utils.randomRange(0, len(foodFreeWorkplacesSpots)-1)
-                                    hireEmployee(newWorker, foodFreeWorkplacesSpots[randomJob][0], world)
+                                    SF.hireEmployee(newWorker, foodFreeWorkplacesSpots[randomJob][0], world)
                                     unemployedWorkerList.remove(newWorker)
                                     del foodFreeWorkplacesSpots[randomJob]
                                     weightedFoodJobs -= basicFoodJobWeight
@@ -859,133 +834,16 @@ def settlementWorkersManagement(world):
                                 elif len(prodFreeWorkplacesSpots) > 0 and randomJobSite <= weightedAdminJobs + weightedFoodJobs + weightedProdJobs:
                                     newWorker = Utils.randomFromCollection(unemployedWorkerList)
                                     randomJob = Utils.randomRange(0, len(prodFreeWorkplacesSpots)-1)
-                                    hireEmployee(newWorker, prodFreeWorkplacesSpots[randomJob][0], world)
+                                    SF.hireEmployee(newWorker, prodFreeWorkplacesSpots[randomJob][0], world)
                                     unemployedWorkerList.remove(newWorker)
                                     del prodFreeWorkplacesSpots[randomJob]
                                     weightedProdJobs -= basicProdJobWeight
 
                     if settlement.getSettlementFoodProducedLastYear() <= 0:
-                        fireAllEmployees(settlement.getAdminFeatures()[0], world)
-                        fireAllEmployees(settlement.getMilitaryFeatures()[0], world)
+                        SF.fireAllEmployees(settlement.getAdminFeatures()[0], world)
+                        SF.fireAllEmployees(settlement.getMilitaryFeatures()[0], world)
                         for prodfeature in settlement.getProdFeatures():
-                            fireAllEmployees(prodfeature, world)
-
-
-
-def hireEmployee(employee, tile, world):
-
-    tile.addWorker(employee)
-    employee.setOccupation(tile)
-    employee.setOccupationName(tile.getOccupationName())
-    PLEH.foundEmpoyment(employee, world)
-
-    return
-
-def fireAllEmployees(tile, world):
-
-    for worker in tile.getWorkerList():
-        worker.getOccupation().removeWorker(worker)
-        worker.setOccupation(None)
-        worker.setOccupationName('')
-        PLEH.lostEmpoyment(worker, world)
-
-    return
-
-def prepareMigration(settlement, newTargetSettlement, world):
-
-    migrantFamilies = 0
-    if settlement.getSettlementType() == Settlements.TOWN:
-        mirgrationWave = Parameters.migrationWaveForTown
-    else:
-        mirgrationWave = Parameters.migrationWaveForVillage
-
-    randomMigrantsList = []
-    complexRandomMigrantList = []
-    # random x people with their alive children move to new Village
-    for migrantFamilies in range(mirgrationWave):
-        randomPerson = Utils.randomFromCollection(settlement.getResidents())
-        if randomPerson not in randomMigrantsList:
-            # for MINOR
-            if randomPerson.age < 15:
-                getRandomMigrantListForSingleRandomPerson(randomPerson, "Father", randomMigrantsList, settlement, world)
-                getRandomMigrantListForSingleRandomPerson(randomPerson, "Mother", randomMigrantsList, settlement, world)
-            else:
-                # for Adult
-                getRandomMigrantListForSingleRandomPerson(randomPerson, "Adult", randomMigrantsList, settlement, world)
-            if len(randomMigrantsList) > 0:
-                complexRandomMigrantList.append(randomMigrantsList)
-                migrantFamilies += 1
-                randomMigrantsList = []
-
-
-    return complexRandomMigrantList
-
-def splitFamiliesInMigration(world, region, province, newTargetSettlement, complexRandomMigrantsList):
-
-
-    for randomMigrantList in complexRandomMigrantsList:
-        chanceOfChangingLastName = Utils.randomRange(1, 100)
-        #won't change last name if only 1 person will be in migrant list whose culture sex is not to inherite
-        if (chanceOfChangingLastName < Parameters.chanceForChangingLastNameDuringMigration and
-                len(randomMigrantList) > 1 and
-                randomMigrantList[0].familyObjRef.aliveMemberNumber > 1 and
-                randomMigrantList[0].familyObjRef.getOriginCulture().getInheritanceBy() != randomMigrantList[0].sex):
-
-
-
-            chanceForRevingAncestralFamily = Utils.randomRange(1, 100)
-
-            if chanceForRevingAncestralFamily > 20:
-                newFamilyName = FNG.getNewLastNameBasedOnCulture(region.getRegionNumber())
-#                newFamilyName = FNG.getNewLastNameBasedOnRegion(region)
-                family = Family(newFamilyName)
-                family.setFoundingYear(world.getYear())
-                family.setOriginRegion(region)
-                family.setOriginProvince(province)
-                family.setOriginSettlement(newTargetSettlement)
-                family.setOriginCulture(randomMigrantList[0].familyObjRef.getOriginCulture())
-                family.setFamilyBranchedFrom(randomMigrantList[0].familyObjRef)
-                randomMigrantList[0].familyObjRef.addOffspringBranch(family)
-                world.addFamily(family)
-            else:
-                ancestralFamilies = randomMigrantList[0].getAncestralFamilies()
-                if len(ancestralFamilies) > 1:
-                    ancestralFamilies.pop(0)
-                    family = Utils.randomFromCollection(ancestralFamilies)
-                    newFamilyName = family.getFamilyName()
-                else:
-                    newFamilyName = FNG.getNewLastNameBasedOnCulture(region.getRegionNumber())
-#                    newFamilyName = FNG.getNewLastNameBasedOnRegion(region)
-                    family = Family(newFamilyName)
-                    family.setFoundingYear(world.getYear())
-                    family.setOriginRegion(region)
-                    family.setOriginProvince(province)
-                    family.setOriginSettlement(newTargetSettlement)
-                    family.setOriginCulture(randomMigrantList[0].familyObjRef.getOriginCulture())
-                    family.setFamilyBranchedFrom(randomMigrantList[0].familyObjRef)
-                    randomMigrantList[0].familyObjRef.addOffspringBranch(family)
-                    world.addFamily(family)
-
-            newHouse = HouseFunctions.getNewHouse()
-            newTargetSettlement.buildNewHouse(newHouse)
-            HouseFunctions.setHouseDurability(newHouse, Utils.randomRange(60, 90))
-
-            for person in randomMigrantList:
-
-                person.getAccommodation().removeHouseResident(person)
-                HouseFunctions.setNewHouseToPerson(person, newHouse)
-                newHouse.addHouseResident(person)
-
-                person.familyObjRef.removeFromFamily(person)
-                person.familyName = newFamilyName
-                person.lastName = newFamilyName
-                person.familyObjRef = family
-                person.setOriginFamilyObjectRef(family)
-                if family.getFemaleNumber() == 0 and family.getMaleNumber() == 0:
-                    family.setFoundedBy(person)
-                    #HouseFunctions.addNewOwner(person, newHouse)
-                family.addNewMember(person)
-                PLEH.changedLastName(person, world, person.getFamilyName())
+                            SF.fireAllEmployees(prodfeature, world)
 
 def crime(world):
 
@@ -1057,63 +915,6 @@ def moveFoodAndProduction(migrantSize, oldSettlement, newSettlement):
     if oldSettlement.getFreeFood() > foodPackages:
         oldSettlement.changeFreeFood(foodPackages)
         newSettlement.changeFreeFood(foodPackages)
-
-def iniciateMigration(complexMigrantList, settlementTarget, world):
-
-    for migrantList in complexMigrantList:
-        for migrant in migrantList:
-            PLEH.movedHome(migrant, migrant.getSettlement(), settlementTarget, world)
-            migrant.getSettlement().decreasePopulation()
-            migrant.getSettlement().removeResident(migrant)
-            migrant.setSettlement(settlementTarget)
-            settlementTarget.increasePopulation()
-            settlementTarget.addResident(migrant)
-            FF.fireSingleEmployee(migrant, world)
-
-
-def getRandomMigrantListForSingleRandomPerson(person, parent, randomMigrantsList, settlement, world):
-
-    getParent = ''
-    if person.getFather() is not None and person.getFather() != '' and person.getFather().lifeStatus != LifeStatus.DEAD:
-        if parent == "Father":
-            getParent = person.getFather()
-    if person.getFather() is not None and person.getMother() != '' and person.getMother().lifeStatus != LifeStatus.DEAD:
-        if parent == "Mother":
-            getParent = person.getMother()
-    if parent == "Adult":
-        getParent = person
-
-    if getParent != '':
-        if getParent not in randomMigrantsList:
-            # if newLastName != '':
-            #     getParent.lastName = newLastName
-            randomMigrantsList.append(getParent)
-
-        parentChildrensList = getParent.getAliveChildrenList()
-        for parentChildren in parentChildrensList:
-            if parentChildren.age < 15:
-                if parentChildren not in randomMigrantsList:
-                    randomMigrantsList.append(parentChildren)
-                    #PLEH.movedHome(parentChildren, settlement, world)
-
-        if getParent.spouse is not None:
-            if getParent.spouse not in randomMigrantsList:
-                randomMigrantsList.append(getParent.spouse)
-                #PLEH.movedHome(getParent.spouse, settlement, world)
-                # if newLastName != '':
-                #     getParent.lastName = newLastName
-
-            parentSpouseChildrensList = getParent.spouse.aliveChildren
-            for parentSpouseChildren in parentSpouseChildrensList:
-                if parentSpouseChildren.age < 15:
-                    if parentSpouseChildren not in randomMigrantsList:
-                        randomMigrantsList.append(parentSpouseChildren)
-                        #PLEH.movedHome(parentSpouseChildren, settlement, world)
-                        # if newLastName != '':
-                        #     getParent.lastName = newLastName
-
-
-
 
 def deathFromNegligence(person):
 
@@ -1218,9 +1019,13 @@ def raidingFunctions(settlement, world):
         settlement.setRaidedFlag()
         if len(randomTarget.getMilitary()) > 0:
             for defSoldier in randomTarget.getMilitary():
-                InfectionsFunctions.injureSomeone(defSoldier, world)
+                changeToGetWounded = Utils.randomRange(1, 100)
+                if changeToGetWounded < 95 - defSoldier.getSkills().getFighterSkill().getSkillLevel().value[0] * 6:
+                    InfectionsFunctions.injureSomeone(defSoldier, world)
         for soldier in settlement.getMilitary():
-            InfectionsFunctions.injureSomeone(soldier, world)
+            changeToGetWounded = Utils.randomRange(1, 100)
+            if changeToGetWounded < 95 - soldier.getSkills().getFighterSkill().getSkillLevel().value[0] * 6:
+                InfectionsFunctions.injureSomeone(soldier, world)
             PLEH.raided(soldier, randomTarget, world)
 
 

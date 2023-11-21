@@ -30,7 +30,7 @@ def randomFromCollectionWithWeight(collection):
 
     return element
 
-def randomFromFoundationDictionaryWithWeight(collection):
+def randomFromFileDictionaryWithWeight(collection):
 
     weightSum = 0
 
@@ -43,6 +43,22 @@ def randomFromFoundationDictionaryWithWeight(collection):
         if randValue <= value['chanceWeightModifier']:
             return collection[key]
         randValue -= value['chanceWeightModifier']
+
+    return None
+
+def randomFromFileDictionaryWithWeightInjuries(collection):
+
+    weightSum = 0
+
+    for item in collection:
+        weightSum += item[1]['chanceWeightModifier']
+
+    randValue = randint(1, weightSum)
+
+    for item in collection:
+        if randValue <= item[1]['chanceWeightModifier']:
+            return item
+        randValue -= item[1]['chanceWeightModifier']
 
     return None
 

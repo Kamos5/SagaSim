@@ -90,9 +90,41 @@ def offsetHealth(person, affliction, world):
 
 def injureSomeone(randomPerson, world, randomInjury = True):
     if randomInjury:
-        injury = Utils.randomFromCollection(world.getInjuries())[1]
+        injury = Utils.randomFromFileDictionaryWithWeightInjuries(world.getInjuries())[1]
     else:
-        injury = world.getInjuries()[0] #TODO ZDEFINIOWAC OBRAZENIA
+        injury = world.getInjuries()[0] ##TODO ZDEFINIOWAC OBRAZENIA
+    if injury == world.getInjuries()[0][1]:
+        world.organFailure += 1
+    if injury == world.getInjuries()[1][1]:
+        world.deepWounds += 1
+    if injury == world.getInjuries()[2][1]:
+        world.concussion += 1
+    if injury == world.getInjuries()[3][1]:
+        world.brokenBones += 1
+    if injury == world.getInjuries()[4][1]:
+        world.fleshWounds += 1
+
     randomPerson.addCurrentInjuries([injury, world.getDayOfTheYear(), 0])
     PLEH.gotInjured(randomPerson, injury, world)
     offsetHealth(randomPerson, injury, world)
+
+def toRemoveDisease(person, disease, world):
+
+    if disease[2] < 100:
+        disease[2] += round(100 / disease[0]["daysToCure"], 2)
+        if disease[2] >= 100:
+            disease[2] = 100  ######TODO TO COS JEST NIE TAK -> rozkminic te tablice
+            person.setInfections([infection for infection in person.getInfections() if not infection[0] == disease[0]])
+            person.setGeneralHelth(Enums.getGeneralHealthArray()[person.getGeneralHealth().value[0] - disease[0]['effectOnHealth'] + person.getHealthFromAge().value[0]])
+            person.addImmunityTo([disease, world.getDayOfTheYear()])
+            PLEH.gotImmunityTo(person, disease[0], world)
+            return disease
+
+def toRemoveInjury(person, injury, world):
+
+    if injury[2] < 100:
+        injury[2] += round(100 / injury[0]["daysToCure"], 2)
+        if injury[2] >= 100:
+            injury[2] = 100  ######TODO TO COS JEST NIE TAK -> rozkminic te tablice
+            person.setGeneralHelth(Enums.getGeneralHealthArray()[person.getGeneralHealth().value[0] - injury[0]['effectOnHealth'] + person.getHealthFromAge().value[0]])
+            return injury

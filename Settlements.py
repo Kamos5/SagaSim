@@ -377,7 +377,7 @@ class Settlements:
         for i in range(7):
             randomBasicFeature = Utils.randomRange(0, 4)
             feature = SF.createZones()[randomBasicFeature]
-            feature.setFoundationType(Utils.randomFromFoundationDictionaryWithWeight(FoundationTypes.foundations))
+            feature.setFoundationType(Utils.randomFromFileDictionaryWithWeight(FoundationTypes.foundations))
             #feature.setFoundationType(Utils.randomFromEnumCollectionWithWeights(FoundationTypes.FoundationEnums))
             feature.setFeatureNumber(i)
             self.addFoodFeature(feature)
@@ -390,7 +390,7 @@ class Settlements:
     def createUpdateVillageFeaturesForTown(self):
 
         feature = SF.createZones()[4]
-        feature.setFoundationType(Utils.randomFromFoundationDictionaryWithWeight(FoundationTypes.foundations))
+        feature.setFoundationType(Utils.randomFromFileDictionaryWithWeight(FoundationTypes.foundations))
         #feature.setFoundationType(Utils.randomFromEnumCollectionWithWeights(FoundationTypes.FoundationEnums))
         feature.setFeatureNumber(8)
         self.addFoodFeature(feature)
@@ -398,7 +398,7 @@ class Settlements:
         for i in range(15):
             randomBasicFeature = Utils.randomRange(5, 6)
             feature = SF.createZones()[randomBasicFeature]
-            feature.setFoundationType(Utils.randomFromFoundationDictionaryWithWeight(FoundationTypes.foundations))
+            feature.setFoundationType(Utils.randomFromFileDictionaryWithWeight(FoundationTypes.foundations))
             #feature.setFoundationType(Utils.randomFromEnumCollectionWithWeights(FoundationTypes.FoundationEnums))
             feature.setFeatureNumber(9+i)
             self.addProdFeature(feature)
