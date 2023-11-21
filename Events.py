@@ -196,7 +196,7 @@ def diseasesProgress(world):
         if person.getLifeStatus() == Enums.LifeStatus.ALIVE:
             person.setCurrentDiseases([disease for disease in person.getCurrentDiseases() if not toRemoveDisease(person, disease, world)])
             if person.getGeneralHealth().value[0] > 0:
-                if len(person.getCurrentDiseases) > 1:
+                if len(person.getCurrentDiseases()) > 1:
                     chanceToDieFromPoorHealth = Utils.randomRange(1, 1000)
                     if chanceToDieFromPoorHealth < 10 * 1 * 2 ** (person.getGeneralHealth().value[0]-2):
                         person.causeOfDeath = CauseOfDeath.SICKNESS
@@ -204,7 +204,7 @@ def diseasesProgress(world):
                         continue
             person.setCurrentInjuries([injury for injury in person.getCurrentInjuries() if not toRemoveInjury(person, injury, world)])
             if person.getGeneralHealth().value[0] > 1:
-                if len(person.getCurrentInjuries) > 0:
+                if len(person.getCurrentInjuries()) > 0:
                     chanceToDieFromPoorHealth = Utils.randomRange(1, 1000)
                     if chanceToDieFromPoorHealth < 10 * 1 * 2 ** (person.getGeneralHealth().value[0]-2):
                         person.causeOfDeath = CauseOfDeath.INJURY
