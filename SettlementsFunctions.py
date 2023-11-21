@@ -1,3 +1,4 @@
+import Enums
 import HouseFunctions
 import Parameters
 import Utils
@@ -210,5 +211,16 @@ def fireAllEmployees(tile, world):
         worker.setOccupation(None)
         worker.setOccupationName('')
         PLEH.lostEmpoyment(worker, world)
+
+    return
+
+def fireEmployeesWithPoorHealth(tile, world):
+
+    for worker in tile.getWorkerList():
+        if worker.getGeneralHealth().value[0] >= Enums.GeneralHealth.POOR.value[0]:
+            worker.getOccupation().removeWorker(worker)
+            worker.setOccupation(None)
+            worker.setOccupationName('')
+            PLEH.lostEmpoymentDueToHealth(worker, world)
 
     return

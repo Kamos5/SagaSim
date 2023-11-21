@@ -743,11 +743,20 @@ def settlementWorkersManagement(world):
 
                     unemployedWorkerList = settlement.getUnemployedResidentsList()
 
+                    #FIRE SICK PEOPLE
+                    for milTile in settlement.getMilitaryFeatures():
+                        SF.fireEmployeesWithPoorHealth(milTile, world)
+                    for adminTile in settlement.getAdminFeatures():
+                        SF.fireEmployeesWithPoorHealth(adminTile, world)
+                    for foodTile in settlement.getFoodFeatures():
+                        SF.fireEmployeesWithPoorHealth(foodTile, world)
+                    for prodTile in settlement.getProdFeatures():
+                        SF.fireEmployeesWithPoorHealth(prodTile, world)
 
                     #MILITARY
-                    if settlement.getEmploymentRate() >= 0.4 and len(unemployedWorkerList) > 0 and settlement.getFreeWealth() > 0:
+                    if settlement.getEmploymentRate() >= 0.3 and len(unemployedWorkerList) > 0 and settlement.getFreeWealth() > 0:
 
-                        if (Utils.randomRange(1, 100) > 0.6):
+                        if Utils.randomRange(1, 100) > 0.6:
                             militaryFreeWorkplacesSpots = []
                             for milTile in settlement.getMilitaryFeatures():
                                 for occupations in range(milTile.getFreeWorkersSlots()):

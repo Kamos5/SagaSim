@@ -111,7 +111,6 @@ def spouseMatchmaking (params):
 
     world = params[0]
     timeTable = params[1]
-
     validMaritalStatuses = {Enums.MaritalStatus.SINGLE, Enums.MaritalStatus.WIDOW, Enums.MaritalStatus.WIDOWER, Enums.MaritalStatus.DIVORCED}
 
     #CANT USE PERSON IN UNMARIED LIST BECAUSE OF STRANGE ERRORS CONNECTED WITH PREVIOUS SPOUS DYING IN THE SAME YEAR AND LOOP family.getUnmarried list NOT RECOGNIZING IT!!!
@@ -130,7 +129,7 @@ def spouseMatchmaking (params):
             end = time.perf_counter()
             findSpouseTime = end - start
             times += findSpouseTime
-            if len(availableSpouesesList) > 0 and random.random() < 0.05:
+            if len(availableSpouesesList) > 0 and random.random() < 0.03:
                 randomSpouse = Utils.randomFromCollection(availableSpouesesList)
                 if checkIfOccupationIsPriest(randomSpouse):
                     continue
@@ -188,6 +187,7 @@ def spouseMatchmaking (params):
                 # HouseFunctions.setNewHouseToPerson(spouseObj, newHouse)
                 # newHouse.addHouseResident(person)
                 # newHouse.addHouseResident(person.getSpouse())
+
 
     timeTable.extend([times])
     print("SposesSumTime: " + str(times))

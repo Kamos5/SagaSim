@@ -41,7 +41,7 @@ def killedByDuringCrime(victim, offender, world):
     else:
         offenderString = offender.getFirstName() + " " + offender.getLastName()
 
-    victim.lifeEvents.append(f'{victim.firstName} was killed by {offenderString} + " during crime {world.getDay()}/{world.getMonth().value[1]}/{world.getYear()}')
+    victim.lifeEvents.append(f'{victim.firstName} was killed by {offenderString} " during crime {world.getDay()}/{world.getMonth().value[1]}/{world.getYear()}')
 
 def gotInjured(person, injury, world):
 
@@ -100,6 +100,10 @@ def foundEmpoyment(person, world):
     person.lifeEvents.append(f'{person.getFirstName()} starts workings as {person.getOccupationName()} in the town of {person.getSettlement().getSettlementName()} on the {world.getDay()}/{world.getMonth().value[1]}/{world.getYear()}')
 
 def lostEmpoyment(person, world):
+
+    person.lifeEvents.append(f'{person.getFirstName()} lost job as {person.getOccupationName()} due to health related issues in the town of {person.getSettlement().getSettlementName()} on the {world.getDay()}/{world.getMonth().value[1]}/{world.getYear()}')
+
+def lostEmpoymentDueToHealth(person, world):
 
     person.lifeEvents.append(f'{person.getFirstName()} lost job as {person.getOccupationName()} in the town of {person.getSettlement().getSettlementName()} on the {world.getDay()}/{world.getMonth().value[1]}/{world.getYear()}')
 

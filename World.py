@@ -1,5 +1,7 @@
 import math
 
+import numpy
+
 import Enums
 import SettlementNameGenerator
 import Utils
@@ -233,6 +235,8 @@ class World:
 
         self.gameState = 0
 
+        self.deathAgeAdults = []
+
         self.season = Enums.Seasons.WINTER
 
     def getInitYear(self):
@@ -240,6 +244,12 @@ class World:
 
     def setInitYear(self, newYear):
         self.initYear = newYear
+
+    def getAverageDeathAge(self):
+        if len(self.deathAgeAdults) > 0:
+            return numpy.average(self.deathAgeAdults)
+        else:
+            return 0
 
     def getWorldMap(self):
         return self.worldMap

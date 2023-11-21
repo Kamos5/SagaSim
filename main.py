@@ -129,7 +129,7 @@ def running(world, manualOverride):
     # print(f'Concussion: {world.concussion}')
     # print(f'Broken: {world.brokenBones}')
     # print(f'Flesh: {world.fleshWounds}')
-
+    print("Death Age:  " + str(world.getAverageDeathAge()))
     return (timeTable)
 
 def newWorld(canvas):
