@@ -335,7 +335,7 @@ class InspectorScreen:
             self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding, self.lineHeight * self.writeLine + self.scroll_y))
             self.writeLine += 1
             for injury in object.getCurrentInjuries():
-                label = Label(str(injury[0]['name'] + " healed in: " + str(injury[2]) + "%"), 500, self.lineHeight, self.textFont)
+                label = Label(str(injury[0]['name'] + " healed in: " + str(round(injury[2], 2)) + "%"), 500, self.lineHeight, self.textFont)
                 self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding*2, self.lineHeight * self.writeLine + self.scroll_y))
                 self.writeLine += 1
 

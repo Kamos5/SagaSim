@@ -1,5 +1,6 @@
 
 import time
+import traceback
 
 import CultureNames
 import Events
@@ -203,7 +204,13 @@ def main(popBreakLimit=None):
                     canvas.navBarScreen.addPausedIndicator()
                 canvas.drawStuff(world, pausedPressed)
 
-                timeTable = running(world, manualOverride)
+                try:
+                    timeTable = running(world, manualOverride)
+                except Exception as e:
+                    print("ERROR")
+                    traceback.print_exc()
+                    pausedPressed = True
+
             tickStartTime = time.time() * 1000.0
 
             end = time.perf_counter()

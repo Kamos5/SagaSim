@@ -195,24 +195,27 @@ def diseasesProgress(world):
     for person in world.getAlivePeople():
         if person.getLifeStatus() == Enums.LifeStatus.ALIVE:
             person.setCurrentDiseases([disease for disease in person.getCurrentDiseases() if not toRemoveDisease(person, disease, world)])
-            if person.getGeneralHealth().value[0] > 1:
-                chanceToDieFromPoorHealth = Utils.randomRange(1, 100)
-                if chanceToDieFromPoorHealth < 2 * 2 ** (person.getGeneralHealth().value[0]-2):
-                    person.causeOfDeath = CauseOfDeath.SICKNESS
-                    PF.deathProcedures(person, world)
+            if person.getGeneralHealth().value[0] > 0:
+                if len(person.getCurrentDiseases) > 1:
+                    chanceToDieFromPoorHealth = Utils.randomRange(1, 1000)
+                    if chanceToDieFromPoorHealth < 10 * 1 * 2 ** (person.getGeneralHealth().value[0]-2):
+                        person.causeOfDeath = CauseOfDeath.SICKNESS
+                        PF.deathProcedures(person, world)
+                        continue
             person.setCurrentInjuries([injury for injury in person.getCurrentInjuries() if not toRemoveInjury(person, injury, world)])
             if person.getGeneralHealth().value[0] > 1:
-                chanceToDieFromPoorHealth = Utils.randomRange(1, 100)
-                if chanceToDieFromPoorHealth < 2 * 2 ** (person.getGeneralHealth().value[0]-2):
-                    person.causeOfDeath = CauseOfDeath.INJURY
-                    PF.deathProcedures(person, world)
+                if len(person.getCurrentInjuries) > 0:
+                    chanceToDieFromPoorHealth = Utils.randomRange(1, 1000)
+                    if chanceToDieFromPoorHealth < 10 * 1 * 2 ** (person.getGeneralHealth().value[0]-2):
+                        person.causeOfDeath = CauseOfDeath.INJURY
+                        PF.deathProcedures(person, world)
 
 def toRemoveDisease(person, disease, world):
 
     if disease[2] < 100:
-        disease[2] += round(100 / disease[0]["daysToCure"])
+        disease[2] += round(100 / disease[0]["daysToCure"], 2)
         if disease[2] >= 100:
-            disease[2] = 100  ######TO COS JEST NIE TAK -> rozkminic te tablice
+            disease[2] = 100  ######TODO TO COS JEST NIE TAK -> rozkminic te tablice
             person.setInfections([infection for infection in person.getInfections() if not infection[0] == disease[0]])
             person.setGeneralHelth(Enums.getGeneralHealthArray()[person.getGeneralHealth().value[0] - disease[0]['effectOnHealth'] + person.getHealthFromAge().value[0]])
             person.addImmunityTo([disease, world.getDayOfTheYear()])
@@ -222,9 +225,9 @@ def toRemoveDisease(person, disease, world):
 def toRemoveInjury(person, injury, world):
 
     if injury[2] < 100:
-        injury[2] += round(100 / injury[0]["daysToCure"])
+        injury[2] += round(100 / injury[0]["daysToCure"], 2)
         if injury[2] >= 100:
-            injury[2] = 100  ######TO COS JEST NIE TAK -> rozkminic te tablice
+            injury[2] = 100  ######TODO TO COS JEST NIE TAK -> rozkminic te tablice
             person.setGeneralHelth(Enums.getGeneralHealthArray()[person.getGeneralHealth().value[0] - injury[0]['effectOnHealth'] + person.getHealthFromAge().value[0]])
             return injury
 
