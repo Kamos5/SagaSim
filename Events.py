@@ -767,9 +767,9 @@ def settlementWorkersManagement(world):
 
 
                     #MILITARY
-                    if settlement.getEmploymentRate() >= 0.5 and len(unemployedWorkerList) > 0 and settlement.getFreeWealth() > 0:
+                    if settlement.getEmploymentRate() >= 0.4 and len(unemployedWorkerList) > 0 and settlement.getFreeWealth() > 0:
 
-                        if (Utils.randomRange(1, 100) > 0.7):
+                        if (Utils.randomRange(1, 100) > 0.6):
                             militaryFreeWorkplacesSpots = []
                             for milTile in settlement.getMilitaryFeatures():
                                 for occupations in range(milTile.getFreeWorkersSlots()):

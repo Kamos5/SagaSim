@@ -88,8 +88,11 @@ def offsetHealth(person, affliction, world):
     else:
         return False
 
-def injureSomeone(randomPerson, world):
-    randomInjury = Utils.randomFromCollection(world.getInjuries())[1]
-    randomPerson.addCurrentInjuries([randomInjury, world.getDayOfTheYear(), 0])
-    PLEH.gotInjured(randomPerson, randomInjury, world)
-    offsetHealth(randomPerson, randomInjury, world)
+def injureSomeone(randomPerson, world, randomInjury = True):
+    if randomInjury:
+        injury = Utils.randomFromCollection(world.getInjuries())[1]
+    else:
+        injury = world.getInjuries()[0] #TODO ZDEFINIOWAC OBRAZENIA
+    randomPerson.addCurrentInjuries([injury, world.getDayOfTheYear(), 0])
+    PLEH.gotInjured(randomPerson, injury, world)
+    offsetHealth(randomPerson, injury, world)
