@@ -841,7 +841,8 @@ def settlementWorkersManagement(world):
 
                     if settlement.getSettlementFoodProducedLastYear() <= 0:
                         SF.fireAllEmployees(settlement.getAdminFeatures()[0], world)
-                        SF.fireAllEmployees(settlement.getMilitaryFeatures()[0], world)
+                        for milFeature in settlement.getMilitaryFeatures():
+                            SF.fireAllEmployees(milFeature, world)
                         for prodfeature in settlement.getProdFeatures():
                             SF.fireAllEmployees(prodfeature, world)
 
@@ -1011,11 +1012,14 @@ def raidingFunctions(settlement, world):
     if len(settlement.getMilitary()) > 0:
         randomTarget = findTarget(settlement, world)
 
-        stolenAmount = round(randomTarget.getFreeFood() * 0.5, 2)
-        randomTarget.changeFreeFood(-stolenAmount)
-        settlement.changeFreeFood(stolenAmount)
-        SettlementLifeEventsHistory.raided(settlement, randomTarget, stolenAmount, world)
-        SettlementLifeEventsHistory.beenRaided(randomTarget, stolenAmount, world)
+        stolenFoodAmount = round(randomTarget.getFreeFood() * 0.4, 2)
+        randomTarget.changeFreeFood(-stolenFoodAmount)
+        settlement.changeFreeFood(stolenFoodAmount)
+        stolenWealthAmount = round(randomTarget.getFreeWealth() * 0.4, 2)
+        randomTarget.changeFreeWealth(-stolenWealthAmount)
+        settlement.changeFreeWealth(stolenWealthAmount)
+        SettlementLifeEventsHistory.raided(settlement, randomTarget, stolenFoodAmount, stolenWealthAmount, world)
+        SettlementLifeEventsHistory.beenRaided(randomTarget, stolenFoodAmount, stolenWealthAmount, world)
         settlement.setRaidedFlag()
         if len(randomTarget.getMilitary()) > 0:
             for defSoldier in randomTarget.getMilitary():

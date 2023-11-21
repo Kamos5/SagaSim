@@ -192,7 +192,7 @@
       "contagionChange": 0,
       "effectOnHealth": 2,
       "difficulty": 1,
-      "daysToCure": 21,
+      "daysToCure": 30,
       "type": "injury",
       "chanceWeightModifier": 30
     },
@@ -220,7 +220,7 @@
       "contagionChange": 0,
       "effectOnHealth": 1,
       "difficulty": 2,
-      "daysToCure": 40,
+      "daysToCure": 50,
       "type": "injury",
       "chanceWeightModifier": 60
     },

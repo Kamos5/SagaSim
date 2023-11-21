@@ -16,10 +16,12 @@ def FindAvailableSpouses (families, person):
                 # availableSpouses.extend(family.getUnmarriedFemalesList())
                 for eachFreeMember in family.getUnmarriedFemalesList():
                     availableSpouses.append(eachFreeMember)
+                    continue
             else:
                 # availableSpouses.extend(family.getUnmarriedMalesList())
                 for eachFreeMember in family.getUnmarriedMalesList():
                     availableSpouses.append(eachFreeMember)
+                    continue
 
     return availableSpouses
 
