@@ -38,13 +38,19 @@ class World:
         self.people = []
         self.alivePeople = []
         self.birthsPerYear = []
+        self.deathsPerYear = []
         self.birthsPerYearTemp = 0
+        self.deathsPerYearTemp = 0
         self.crimesPerYear = []
         self.crimesPerYearReduced = []
-        self.avarageLifeSpamHistory = []
+        self.averageLifeSpamHistory = []
         self.averageHeightHistory = []
         self.averageHeightMHistory = []
         self.averageHeightFHistory = []
+        self.birthsPerDay = []
+        self.deathsPerDay = []
+        self.birthsPerDayTemp = 0
+        self.deathsPerDayTemp = 0
 
         self.crimeHomicidePerYear = []
         self.crimeAssaultPerYear = []
@@ -73,6 +79,12 @@ class World:
         self.crimesPerYearNumberHistory = []
         self.familiesMembersNumberHistory = []
         self.peopleAliveHistory = []
+
+        self.deathsHistoryReduced = []
+        self.birthsHistoryReduced = []
+
+        self.deathsHistoryYearly = []
+        self.birthsHistoryYearly = []
 
         self.eyeColorBlackHistory = []
         self.eyeColorBrownHistory = []
@@ -176,10 +188,12 @@ class World:
         self.people = []
         self.alivePeople = []
         self.birthsPerYear = []
+        self.deathsPerYear = []
         self.birthsPerYearTemp = 0
+        self.deathsPerYearTemp = 0
         self.crimesPerYear = []
         self.crimesPerYearReduced = []
-        self.avarageLifeSpamHistory = []
+        self.averageLifeSpamHistory = []
         self.averageHeightHistory = []
         self.averageHeightMHistory = []
         self.averageHeightFHistory = []
@@ -211,6 +225,9 @@ class World:
         self.crimesPerYearNumberHistory = []
         self.familiesMembersNumberHistory = []
         self.peopleAliveHistory = []
+
+        self.deathsHistoryReduced = []
+        self.birthsHistoryReduced = []
 
         self.eyeColorBlackHistory = []
         self.eyeColorBrownHistory = []
@@ -316,6 +333,42 @@ class World:
 
     def resetBirthsPerYearTemp(self):
         self.birthsPerYearTemp = 0
+
+    def getDeathsPerYearTemp(self):
+        return self.deathsPerYearTemp
+
+    def setDeathsPerYearTemp(self, newDeaths):
+        self.deathsPerYearTemp = newDeaths
+
+    def increaseDeathsPerYearTemp(self):
+        self.deathsPerYearTemp += 1
+
+    def resetDeathsPerYearTemp(self):
+        self.deathsPerYearTemp = 0
+
+    def getBirthsPerDayTemp(self):
+        return self.birthsPerDayTemp
+
+    def setBirthsPerDayTemp(self, newBirths):
+        self.birthsPerDayTemp = newBirths
+
+    def increaseBirthsPerDayTemp(self):
+        self.birthsPerDayTemp += 1
+
+    def resetBirthsPerDayTemp(self):
+        self.birthsPerDayTemp = 0
+
+    def getDeathsPerDayTemp(self):
+        return self.deathsPerDayTemp
+
+    def setDeathsPerDayTemp(self, newDeaths):
+        self.deathsPerDayTemp = newDeaths
+
+    def increaseDeathsPerDayTemp(self):
+        self.deathsPerDayTemp += 1
+
+    def resetDeathsPerDayTemp(self):
+        self.deathsPerDayTemp = 0
 
     def getFamilies(self):
         return self.families
@@ -440,7 +493,9 @@ class World:
                 self.month = Enums.Months.JANUARY
                 self.increaseYear()
                 self.appendBirthsPerYear(self.birthsPerYearTemp)
+                self.appendDeathsPerYear(self.deathsPerYearTemp)
                 self.birthsPerYearTemp = 0
+                self.deathsPerYearTemp = 0
                 self.resetDayOfTheYear()
 
             self.resetDay()
@@ -547,6 +602,33 @@ class World:
 
     def appendBirthsPerYear(self, value):
         self.birthsPerYear.append(int(value))
+
+    def getDeathsPerYear(self):
+        return self.deathsPerYear
+
+    def setDeathsPerYear(self, newDeaths):
+        self.deathsPerYear = newDeaths
+
+    def appendDeathsPerYear(self, value):
+        self.deathsPerYear.append(value)
+
+    def getBirthsPerDay(self):
+        return self.birthsPerDay
+
+    def setBirthsPerDay(self, newBirths):
+        self.birthsPerDay = newBirths
+
+    def appendBirthsPerDay(self, value):
+        self.birthsPerDay.append(int(value))
+
+    def getDeathsPerDay(self):
+        return self.deathsPerDay
+
+    def setDeathsPerDay(self, newDeaths):
+        self.deathsPerDay = newDeaths
+
+    def appendDeathsPerDay(self, value):
+        self.deathsPerDay.append(value)
 
     def getSexualityHetero(self):
         return self.sexualityHeteroHistory
@@ -694,7 +776,10 @@ class World:
 
         self.countPersonStatistics()
 
-
+        self.appendBirthsPerDay(self.getBirthsPerDayTemp())
+        self.resetBirthsPerDayTemp()
+        self.appendDeathsPerDay(self.getDeathsPerDayTemp())
+        self.resetDeathsPerDayTemp()
 
     def countPersonStatistics(self):
 
@@ -773,6 +858,48 @@ class World:
                     yearIndex += 1
                     continue
 
+        return
+
+    def getDeadAlivePeopleNumberHistoryReduced(self):
+
+        self.deathsHistoryReduced = []
+        self.birthsHistoryReduced = []
+
+        modVariable = self.getModVariableForReducesHistory()
+
+        yearIndex = 1
+
+        for births, deaths in zip(self.birthsPerDay, self.deathsPerDay):
+            if modVariable < 2 or yearIndex % modVariable == 0:
+                self.deathsHistoryReduced.append(deaths)
+                self.birthsHistoryReduced.append(births)
+                yearIndex += 1
+            else:
+                yearIndex += 1
+                continue
+
+        return
+
+    def getDeadAlivePeopleNumberHistoryYearly(self):
+
+        self.deathsHistoryYearly = []
+        self.birthsHistoryYearly = []
+        yearIndex = 1 ####TODO FIX
+        for births, deaths in zip(self.birthsPerYear, self.deathsPerYear):
+            if yearIndex == 1:
+                if self.getInitYear() == self.getYear()-1:
+                    self.deathsHistoryYearly.append(self.getDeathsPerYearTemp())
+                    self.birthsHistoryYearly.append(self.getBirthsPerYearTemp())
+                else:
+                    self.deathsHistoryYearly.append(self.deathsPerYear[len(self.deathsPerYear)-1])
+                    self.birthsHistoryYearly.append(self.birthsPerYear[len(self.birthsPerYear)-1])
+            if yearIndex == len(self.birthsPerYear):
+                self.deathsHistoryYearly.append(self.getDeathsPerYearTemp())
+                self.birthsHistoryYearly.append(self.getBirthsPerYearTemp())
+            else:
+                self.deathsHistoryYearly.append(deaths)
+                self.birthsHistoryYearly.append(births)
+            yearIndex += 1
         return
 
     def countEyeColor(self):
@@ -921,10 +1048,10 @@ class World:
         return self.birthsPerYearNumberHistory
 
     def getAvarageLifeSpam(self):
-        return self.avarageLifeSpamHistory
+        return self.averageLifeSpamHistory
 
     def setAvarageLifeSpamHistory(self, newAvarageLifeSpamHistory):
-        self.avarageLifeSpamHistory = newAvarageLifeSpamHistory
+        self.averageLifeSpamHistory = newAvarageLifeSpamHistory
 
     def getAverageHeightHistory(self):
         return [self.averageHeightHistory, self.averageHeightMHistory, self.averageHeightFHistory]
@@ -958,6 +1085,18 @@ class World:
                 yearIndex += 1
                 continue
         return self.worldHistoryReduced
+
+
+    def getWorldYearHistoryYearly(self):
+
+        worldHistoryYearly = []
+        worldHistoryYearly.append(self.getInitYear())
+        for year in self.worldHistory:
+            if year[0:4] == '1/1/':
+                worldHistoryYearly.append(year[4:])
+            else:
+                continue
+        return worldHistoryYearly
 
     def setWorldYearHistoryReduced(self, newWorldHistoryReduced):
         self.worldHistoryReduced = newWorldHistoryReduced
@@ -1002,6 +1141,12 @@ class World:
 
     def setPeopleAliveHistory(self, newPeopleAliveHistory):
         self.peopleAliveHistory = newPeopleAliveHistory
+
+    def getDeathsBirthsPeopleNumberHistory(self):
+        return [self.deathsHistoryReduced, self.birthsHistoryReduced]
+
+    def getDeathsBirthsPeopleNumberHistoryYearly(self):
+        return [self.deathsHistoryYearly, self.birthsHistoryYearly]
 
     def getPeopleEyeColorsComplexArray(self):
         return [self.eyeColorBlackHistory, self.eyeColorBrownHistory, self.eyeColorAmberHistory, self.eyeColorHazelHistory, self.eyeColorGreenHistory, self.eyeColorBlueHistory, self.eyeColorGrayHistory]

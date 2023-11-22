@@ -81,6 +81,8 @@ def birthChild(world, parent1, parent2=None, trueParent1=None, trueParent2=None)
 
 def deathProcedures(person, world):
 
+    world.increaseDeathsPerYearTemp()
+    world.increaseDeathsPerDayTemp()
     if person.spouse is not None:
         person.spouse.addDeadSpouse(person)
         person.getSpouse().increaseHappiness(-40)

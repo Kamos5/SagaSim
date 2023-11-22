@@ -348,6 +348,7 @@ def birthPeopleNew (world):
                             child.getSettlement().addResident(child)
 
                             world.increaseBirthsPerYearTemp()
+                            world.increaseBirthsPerDayTemp()
 
                             # change of dying from childbirth (mother and child)
                             motherDeath, childdeath = deathChangeFromGivingBirth(person, child)

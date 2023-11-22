@@ -66,47 +66,54 @@ class PlotsScreen:
 
         self.plotsScreenSurfaceObjsRect.append([self.plotsScreenSurface.blit(self.plotsLabel.localSurface, (self.width * 0.05, self.getVerticalPositioning())), Button('globalPopulation')])
 
+        if isinstance(lastFocusObj, Button) and lastFocusObj.getButtonName() == 'aliveDeadRatio':
+            self.plotsLabel = Label2("Alive Dead Ratio", self.textFont, True, lastFocusObj.getButtonFlag())
+        else:
+            self.plotsLabel = Label2("Alive Dead Ratio", self.textFont, True)
+
+        self.plotsScreenSurfaceObjsRect.append([self.plotsScreenSurface.blit(self.plotsLabel.localSurface, (self.width * 0.15, self.getVerticalPositioning())), Button('aliveDeadRatio')])
+
         if isinstance(lastFocusObj, Button) and lastFocusObj.getButtonName() == 'eyes':
             self.plotsLabel = Label2("Eye Colour", self.textFont, True, lastFocusObj.getButtonFlag())
         else:
             self.plotsLabel = Label2("Eye Colour", self.textFont, True)
 
-        self.plotsScreenSurfaceObjsRect.append([self.plotsScreenSurface.blit(self.plotsLabel.localSurface, (self.width * 0.15, self.getVerticalPositioning())), Button('eyes')])
+        self.plotsScreenSurfaceObjsRect.append([self.plotsScreenSurface.blit(self.plotsLabel.localSurface, (self.width * 0.30, self.getVerticalPositioning())), Button('eyes')])
 
         if isinstance(lastFocusObj, Button) and lastFocusObj.getButtonName() == 'hairs':
             self.plotsLabel = Label2("Hair Colour", self.textFont, True, lastFocusObj.getButtonFlag())
         else:
             self.plotsLabel = Label2("Hair Colour", self.textFont, True)
 
-        self.plotsScreenSurfaceObjsRect.append([self.plotsScreenSurface.blit(self.plotsLabel.localSurface, (self.width * 0.25, self.getVerticalPositioning())), Button('hairs')])
+        self.plotsScreenSurfaceObjsRect.append([self.plotsScreenSurface.blit(self.plotsLabel.localSurface, (self.width * 0.40, self.getVerticalPositioning())), Button('hairs')])
 
         if isinstance(lastFocusObj, Button) and lastFocusObj.getButtonName() == 'crime':
             self.plotsLabel = Label2("Crime Levels", self.textFont, True, lastFocusObj.getButtonFlag())
         else:
             self.plotsLabel = Label2("Crime Levels", self.textFont, True)
 
-        self.plotsScreenSurfaceObjsRect.append([self.plotsScreenSurface.blit(self.plotsLabel.localSurface, (self.width * 0.35, self.getVerticalPositioning())), Button('crime')])
+        self.plotsScreenSurfaceObjsRect.append([self.plotsScreenSurface.blit(self.plotsLabel.localSurface, (self.width * 0.50, self.getVerticalPositioning())), Button('crime')])
 
         if isinstance(lastFocusObj, Button) and lastFocusObj.getButtonName() == 'sexuality':
             self.plotsLabel = Label2("Sexuality", self.textFont, True, lastFocusObj.getButtonFlag())
         else:
             self.plotsLabel = Label2("Sexuality", self.textFont, True)
 
-        self.plotsScreenSurfaceObjsRect.append([self.plotsScreenSurface.blit(self.plotsLabel.localSurface, (self.width * 0.45, self.getVerticalPositioning())), Button('sexuality')])
+        self.plotsScreenSurfaceObjsRect.append([self.plotsScreenSurface.blit(self.plotsLabel.localSurface, (self.width * 0.60, self.getVerticalPositioning())), Button('sexuality')])
 
         if isinstance(lastFocusObj, Button) and lastFocusObj.getButtonName() == 'sexuality%':
             self.plotsLabel = Label2("%", self.textFont, True, lastFocusObj.getButtonFlag())
         else:
             self.plotsLabel = Label2("%", self.textFont, True)
 
-        self.plotsScreenSurfaceObjsRect.append([self.plotsScreenSurface.blit(self.plotsLabel.localSurface, (self.width * 0.51, self.getVerticalPositioning())), Button('sexuality%')])
+        self.plotsScreenSurfaceObjsRect.append([self.plotsScreenSurface.blit(self.plotsLabel.localSurface, (self.width * 0.66, self.getVerticalPositioning())), Button('sexuality%')])
 
         if isinstance(lastFocusObj, Button) and lastFocusObj.getButtonName() == 'height':
             self.plotsLabel = Label2("Height", self.textFont, True, lastFocusObj.getButtonFlag())
         else:
             self.plotsLabel = Label2("Height", self.textFont, True)
 
-        self.plotsScreenSurfaceObjsRect.append([self.plotsScreenSurface.blit(self.plotsLabel.localSurface, (self.width * 0.55, self.getVerticalPositioning())), Button('height')])
+        self.plotsScreenSurfaceObjsRect.append([self.plotsScreenSurface.blit(self.plotsLabel.localSurface, (self.width * 0.70, self.getVerticalPositioning())), Button('height')])
 
         # if isinstance(lastFocusObj, Button) and lastFocusObj.getButtonName() == 'weather':
         #     self.plotsLabel = Label2("Weather", self.textFont, True, lastFocusObj.getButtonFlag())
@@ -133,6 +140,10 @@ class PlotsScreen:
         if yLabel == 'Global Population':
             worldYearHistoryParam = world.getWorldYearHistoryReduced()
 
+        if yLabel == 'Dead Alive Ratio':
+            # worldYearHistoryParam = world.getWorldYearHistoryReduced()
+            worldYearHistoryParam = world.getWorldYearHistoryYearly()
+
         if yLabel == 'Eye Colour in Population':
             worldYearHistoryParam = world.getWorldYearHistoryReduced()
 
@@ -157,6 +168,16 @@ class PlotsScreen:
             self.arrayLabelColor = [Parameters.globalPopulationArray[0][1]]
             self.arrayData = world.getAlivePeopleNumberHistory()
             self.yLabelTitle = 'Population'
+
+        elif isinstance(lastFocusObj, Button) and lastFocusObj.getButtonName() == 'aliveDeadRatio':
+            # world.getDeadAlivePeopleNumberHistoryReduced()
+            world.getDeadAlivePeopleNumberHistoryYearly()
+            self.titleLabel = 'Dead Alive Ratio'
+            self.arrayLabel = [Parameters.deadAliveColorArray[0][0], Parameters.deadAliveColorArray[1][0]]
+            self.arrayLabelColor = [Parameters.deadAliveColorArray[0][1], Parameters.deadAliveColorArray[1][1]]
+            # self.arrayData = world.getDeathsBirthsPeopleNumberHistory()
+            self.arrayData = world.getDeathsBirthsPeopleNumberHistoryYearly()
+            self.yLabelTitle = 'Ammount'
 
         elif isinstance(lastFocusObj, Button) and lastFocusObj.getButtonName() == 'eyes':
             world.countEyeColor()

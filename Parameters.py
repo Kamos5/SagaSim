@@ -50,6 +50,10 @@ crimeTheft = ['Theft', '#119999']
 crimeFailed = ['Crime Failed', '#666666']
 crimeColorArray = [crime, crimeHomicide, crimeAssault, crimeBurglary, crimeTheft, crimeFailed]
 
+deadColor = ['Deaths', '#000000']
+aliveColor = ['Births', '#336600']
+deadAliveColorArray = [deadColor, aliveColor]
+
 eyeColorBlack = ['Black', '#000000']
 eyeColorBrown = ['Brown', '#542604']
 eyeColorAmber = ['Amber', '#A36405']
