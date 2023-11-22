@@ -79,6 +79,8 @@ def divorces (world):
             if randomChance < abs(person.getSpouseRelation()):
                 person.changeMaritalStatus(Enums.MaritalStatus.DIVORCED)
                 person.spouse.changeMaritalStatus(Enums.MaritalStatus.DIVORCED)
+                person.increaseHappiness(-20)
+                person.getSpouse().increaseHappiness(-20)
                 PLEH.divorced(person, world)
                 PLEH.divorced(person.getSpouse(), world)
                 person.addExSpouse(person.getSpouse())
@@ -134,10 +136,12 @@ def spouseMatchmaking (params):
                 if checkIfOccupationIsPriest(randomSpouse):
                     continue
                 person.spouse = randomSpouse
-                spouseObj = person.spouse
+                spouseObj = person.getSpouse()
                 person.maritalStatus = Enums.MaritalStatus.MARRIED
                 spouseObj.spouse = person
                 spouseObj.maritalStatus = Enums.MaritalStatus.MARRIED
+                person.increaseHappiness(40)
+                spouseObj.increaseHappiness(40)
                 PLEH.married(person, world)
                 PLEH.married(spouseObj, world)
                 checkLDTraitsNumber(person)
@@ -254,5 +258,6 @@ def fireSingleEmployee(person, world):
         person.getOccupation().removeWorker(person)
         person.setOccupation(None)
         person.setOccupationName('')
+        person.increaseHappiness(-15)
         PLEH.lostEmpoyment(person, world)
 

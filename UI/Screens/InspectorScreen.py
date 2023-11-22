@@ -318,6 +318,12 @@ class InspectorScreen:
         label = Label("Age: " + str(object.getAge()), 500, self.lineHeight, self.textFont)
         self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding, self.lineHeight * self.writeLine + self.scroll_y))
         self.writeLine += 1
+        label = Label(f'Happiness: {object.getHappiness()}', 500, self.lineHeight, self.textFont)
+        self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding, self.lineHeight * self.writeLine + self.scroll_y))
+        self.writeLine += 1
+        label = Label(f'Happiness level: {object.getHappinessLevel().value[2]}', 500, self.lineHeight, self.textFont)
+        self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding, self.lineHeight * self.writeLine + self.scroll_y))
+        self.writeLine += 1
         label = Label(f'Life Status: {object.getLifeStatus().value}', 500, self.lineHeight, self.textFont)
         self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding, self.lineHeight * self.writeLine + self.scroll_y))
         label = Label("♥", 25, self.lineHeight, self.symbolFont, textColor=Colors.getColorBasedOnParam(object.getLifeStatus()))

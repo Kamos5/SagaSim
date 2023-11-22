@@ -423,6 +423,7 @@ class Settlements:
             newFeature.addWorker(worker)
             worker.setOccupation(newFeature)
             worker.setOccupationName(newFeature.getOccupationName())
+            worker.increaseHappiness(10)
             PLEH.gotPromotion(worker, world)
         for worker in workersToRemove:
             oldFeature.removeWorker(worker)

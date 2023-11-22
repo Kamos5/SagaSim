@@ -243,3 +243,13 @@ class Seasons(Enum):
     SPRING = 'Spring'
     SUMMER = 'Summer'
     FALL = 'Fall'
+
+class HappinessLevel(Enum):
+
+    ECSTATIC = 251, 300, 'Ecstatic'
+    VERYHAPPY = 151, 250, 'Very happy'
+    HAPPY = 51, 150, 'Happy'
+    CONTENT = -50, 50, 'Content'
+    SAD = -150, -51, 'Sad'
+    VERYSAD = -250, -151, 'Very sad'
+    DEPRESSED = -300, -251, 'Depressed'

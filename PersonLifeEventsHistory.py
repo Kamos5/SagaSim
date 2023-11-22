@@ -55,10 +55,12 @@ def beenBorn(person, world):
 
     if person.father is not None:
         fatherString = str(person.father.firstName)
+        person.getFather().increaseHappiness(25)
     else:
         fatherString = 'unknown father'
     if person.mother is not None:
         motherString = str(person.mother.firstName)
+        person.getMother().increaseHappiness(25)
     else:
         motherString = 'unknown mother'
 
@@ -99,11 +101,11 @@ def foundEmpoyment(person, world):
 
     person.lifeEvents.append(f'{person.getFirstName()} starts workings as {person.getOccupationName()} in the town of {person.getSettlement().getSettlementName()} on the {world.getDay()}/{world.getMonth().value[1]}/{world.getYear()}')
 
-def lostEmpoyment(person, world):
+def lostEmpoymentDueToHealth(person, world):
 
     person.lifeEvents.append(f'{person.getFirstName()} lost job as {person.getOccupationName()} due to health related issues in the town of {person.getSettlement().getSettlementName()} on the {world.getDay()}/{world.getMonth().value[1]}/{world.getYear()}')
 
-def lostEmpoymentDueToHealth(person, world):
+def lostEmpoyment(person, world):
 
     person.lifeEvents.append(f'{person.getFirstName()} lost job as {person.getOccupationName()} in the town of {person.getSettlement().getSettlementName()} on the {world.getDay()}/{world.getMonth().value[1]}/{world.getYear()}')
 
@@ -158,7 +160,11 @@ def celebratedBirthsday(person, world):
     for friend in person.getFriends():
         string += f'{friend.getFirstName()} {friend.getLastName()} '
 
-    person.lifeEvents.append(f'{person.getFirstName()} celebrated his birthsday with following friends: {string}on the {world.getDay()}/{world.getMonth().value[1]}/{world.getYear()}')
+    person.lifeEvents.append(f'{person.getFirstName()} celebrated his birthday with following friends: {string} on the {world.getDay()}/{world.getMonth().value[1]}/{world.getYear()}')
+
+def wentToSMBBirthsday(person, friend, world):
+
+    person.lifeEvents.append(f'{person.getFirstName()} celebrated {friend.getFirstName()} birthday on the {world.getDay()}/{world.getMonth().value[1]}/{world.getYear()}')
 
 def inheritFromParent(person, parent, ihneritance, world):
 

@@ -105,6 +105,7 @@ def injureSomeone(randomPerson, world, randomInjury = True):
         world.fleshWounds += 1
 
     randomPerson.addCurrentInjuries([injury, world.getDayOfTheYear(), 0])
+    randomPerson.increaseHappiness(-5)
     PLEH.gotInjured(randomPerson, injury, world)
     offsetHealth(randomPerson, injury, world)
 

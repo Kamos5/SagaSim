@@ -83,6 +83,7 @@ def deathProcedures(person, world):
 
     if person.spouse is not None:
         person.spouse.addDeadSpouse(person)
+        person.getSpouse().increaseHappiness(-40)
         person.getSpouse().setSpouseRelation(0)
         person.getSpouse().changeSpouseNumberOfLikedTraits(-person.getSpouse().getSpouseNumberOfLikedTraits())
         person.getSpouse().changeSpouseNumberOfDislikedTraits(-person.getSpouse().getSpouseNumberOfDislikedTraits())
@@ -114,8 +115,10 @@ def deathProcedures(person, world):
     PLEH.died(person, world)
 
     if person.age < 15:
+        person.getMother().increaseHappiness(-50)
         PLEH.lostChild(person.mother, person, world)
         if person.getFather() is not None:
+            person.getFather().increaseHappiness(-50)
             PLEH.lostChild(person.father, person, world)
     else:
         world.deathAgeAdults.append(person.getAge())
@@ -135,6 +138,7 @@ def deathProcedures(person, world):
         inheritance = person.getFreeWealth() / len(person.getAliveChildrenList())
         if inheritance > 0:
             child.changeFreeWealth(inheritance)
+            child.increaseHappiness(-30)
             PLEH.inheritFromParent(child, person, inheritance, world)
 
     #If no alive children city takes it all
@@ -152,16 +156,19 @@ def deathProcedures(person, world):
 
     for friend in person.getFriends():
         friend.removeFriend(person)
+        friend.increaseHappiness(-15)
         PLEH.lostFriend(friend, person, world)
         person.removeFriend(friend)
 
     for rival in person.getRivals():
         rival.removeRival(person)
+        rival.increaseHappiness(15)
         PLEH.lostRival(rival, person, world)
         person.removeRival(rival)
 
     for lover in person.getLovers():
         PLEH.lostLover(lover, person, world)
+        lover.increaseHappiness(-25)
         lover.removeLover(person)
         person.removeLover(lover)
 
@@ -237,7 +244,9 @@ def toBeLoverCounter(person):
 def checkAndAddPersonToLovers(person, lover, world):
     if lover not in person.getLovers():
         person.addLover(lover)
+        person.increaseHappiness(25)
         PLEH.gotLover(person, lover, world)
     if person not in lover.getLovers():
         lover.addLover(person)
+        person.increaseHappiness(25)
         PLEH.gotLover(lover, person, world)

@@ -88,6 +88,7 @@ class Person:
         self.familyTree = None
         self.yearOfDeath = ""
         self.happiness = 0
+        self.happinessLevel = Enums.HappinessLevel.CONTENT
         self.personalSexualityModifier = 1
         self.accommodation = None
         self.realEstate = []
@@ -518,8 +519,24 @@ class Person:
     def getHappiness(self):
         return self.happiness
 
-    def changeHappiness(self, newValue):
+    def setHappiness(self, newValue):
         self.happiness = newValue
+
+    def increaseHappiness(self, newValue):
+        self.happiness += newValue
+        if self.happiness > 300:
+            self.happiness = 300
+        if self.happiness < -300:
+            self.happiness = -300
+        for happinessLevel in Enums.HappinessLevel:
+            if happinessLevel.value[0] <= self.happiness <= happinessLevel.value[1]:
+                self.setHappinessLevel(happinessLevel)
+
+    def getHappinessLevel(self):
+        return self.happinessLevel
+
+    def setHappinessLevel(self, newValue):
+        self.happinessLevel = newValue
 
     def getImmunityTo(self):
         return self.immunityTo

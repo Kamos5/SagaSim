@@ -471,7 +471,7 @@ class Canvas:
             if person.getOccupation() is None and screenList.showUnemployedFlag:
                 screenList.addSettler(person, self.lastFocusObj)
                 continue
-            if len(person.getCurrentDiseases()) > 0 and screenList.showSickFlag:
+            if (len(person.getCurrentDiseases()) > 0 or len(person.getCurrentInjuries()) > 0) and screenList.showSickFlag:
                 screenList.addSettler(person, self.lastFocusObj)
                 continue
             if len(person.getLovers()) > 0 and screenList.showWithLoversFlag:
@@ -496,7 +496,7 @@ class Canvas:
             if person.getOccupation() is None and screenList.showUnemployedFlag:
                 screenList.addPerson(person, self.lastFocusObj)
                 continue
-            if len(person.getCurrentDiseases()) > 0 and screenList.showSickFlag:
+            if (len(person.getCurrentDiseases()) > 0 or len(person.getCurrentInjuries()) > 0) and screenList.showSickFlag:
                 screenList.addPerson(person, self.lastFocusObj)
                 continue
             if len(person.getLovers()) > 0 and screenList.showWithLoversFlag:

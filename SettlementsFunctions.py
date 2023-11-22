@@ -200,6 +200,7 @@ def hireEmployee(employee, tile, world):
     tile.addWorker(employee)
     employee.setOccupation(tile)
     employee.setOccupationName(tile.getOccupationName())
+    employee.increaseHappiness(15)
     PLEH.foundEmpoyment(employee, world)
 
     return
@@ -210,6 +211,7 @@ def fireAllEmployees(tile, world):
         worker.getOccupation().removeWorker(worker)
         worker.setOccupation(None)
         worker.setOccupationName('')
+        worker.increaseHappiness(-15)
         PLEH.lostEmpoyment(worker, world)
 
     return
@@ -221,6 +223,7 @@ def fireEmployeesWithPoorHealth(tile, world):
             worker.getOccupation().removeWorker(worker)
             worker.setOccupation(None)
             worker.setOccupationName('')
+            worker.increaseHappiness(-15)
             PLEH.lostEmpoymentDueToHealth(worker, world)
 
     return

@@ -21,6 +21,7 @@ def payForUpkeep (house):
     upkeepWasPaid = False
     for resident in house.getHouseResidents():
         upkeep = house.getHouseType().value.getHouseUpkeep()
+        resident.increaseHappiness(house.getHouseType().value.getHappinessModifier())
         if house.getHouseDurability() == 100 and resident.getFreeWealth() >= upkeep/2:
             resident.changeFreeWealth(-upkeep/2)
             upkeepWasPaid = True

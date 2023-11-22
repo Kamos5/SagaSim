@@ -35,6 +35,10 @@ def increaseAge (world):
 
                 if len(person.getFriends()) > 0:
                     PLEH.celebratedBirthsday(person, world)
+                    for friend in person.getFriends():
+                        person.increaseHappiness(1)
+                        friend.increaseHappiness(1)
+                        PLEH.wentToSMBBirthsday(friend, person, world)
 
                 if person.age < 15:
                     person.increaseHeight()
@@ -65,6 +69,7 @@ def increaseAge (world):
 
             if person.getSettlement().getFreeFood() <= 0:
                 chanceForStarvation = Utils.randomRange(1, 100)
+                person.increaseHappiness(-1)
                 if chanceForStarvation <= 1:
                     person.causeOfDeath = CauseOfDeath.STARVATION
                     PF.deathProcedures(person, world)
@@ -136,12 +141,14 @@ def infectionsSpread (world):
                                             diseases, disDates, disImmunity = zip(*person.getCurrentDiseases())
                                             if infection not in diseases:
                                                 person.addCurrentDiseases([infection, world.getDayOfTheYear(), 0])
+                                                person.increaseHappiness(-5)
                                                 PLEH.showingSymptomsOf(person, infection, world)
                                                 if InfectionsFunctions.offsetHealth(person, infection, world):
                                                     break
 
                                         else:
                                             person.addCurrentDiseases([infection, world.getDayOfTheYear(), 0])
+                                            person.increaseHappiness(-5)
                                             PLEH.showingSymptomsOf(person, infection, world)
                                             if InfectionsFunctions.offsetHealth(person, infection, world):
                                                 break
@@ -289,6 +296,9 @@ def birthPeopleNew (world):
                     person.setImpregnationMonth(None)
                     person.setPregnancyFather("")
                     person.setPregnancyTrueFather("")
+                    person.increaseHappiness(-50)
+                    if person.getSpouse() is not None:
+                        person.getSpouse().increaseHappiness(-50)
                     PLEH.miscarriage(person, world)
                     continue
 
@@ -353,6 +363,9 @@ def birthPeopleNew (world):
                         person.setIsPregnant(False)
                         person.setImpregnationMonth(None)
                         person.setPregnancyFather(None)
+                        person.increaseHappiness(-50)
+                        if person.getSpouse() is not None:
+                            person.getSpouse().increaseHappiness(-50)
                         PLEH.stillborn(person, world)
                         continue
 
@@ -677,14 +690,17 @@ def earnSkillXp(person, feature, modifier, world):
     if feature.getSkillUsed() == Enums.SkillNames.LABOR:
         gotBetter = person.getSkills().getLaborSkill().increaseSkillXp(round((100 + modifier) / 100, 2) * 7)
         if gotBetter:
+            person.increaseHappiness(5)
             PLEH.gotBetterSkillLevel(person, Enums.SkillNames.LABOR, gotBetter, world)
     if feature.getSkillUsed() == Enums.SkillNames.ADMIN:
         gotBetter = person.getSkills().getAdminSkill().increaseSkillXp(round((100 + modifier) / 100, 2) * 7)
         if gotBetter:
+            person.increaseHappiness(5)
             PLEH.gotBetterSkillLevel(person, Enums.SkillNames.ADMIN, gotBetter, world)
     if feature.getSkillUsed() == Enums.SkillNames.FIGHTER:
         gotBetter = person.getSkills().getFighterSkill().increaseSkillXp(round((100 + modifier) / 100, 2) * 7)
         if gotBetter:
+            person.increaseHappiness(5)
             PLEH.gotBetterSkillLevel(person, Enums.SkillNames.FIGHTER, gotBetter, world)
 
     return
@@ -880,34 +896,38 @@ def crime(world):
                     else:
                         PLEH.killedByDuringCrime(randomPerson, None, world)
                     PLEH.killedSMBDuringCrime(person, randomPerson, world)
-                    loot = randomPerson.getFreeWealth()
-                    randomPerson.setFreeWealth(loot / 2)
-                    person.changeFreeWealth(loot)
+                    if randomPerson.getFreeWealth() > 0:
+                        loot = randomPerson.getFreeWealth()
+                        randomPerson.setFreeWealth(loot / 2)
+                        person.changeFreeWealth(loot)
                     crimeLevel += 1
                     crimeHomicideTemp += 1
                     continue
                 if randomCrime < 30:
                     # print("Assault")
-                    loot = randomPerson.getFreeWealth()
-                    randomPerson.setFreeWealth(loot / 3)
-                    person.changeFreeWealth(loot)
+                    if randomPerson.getFreeWealth() > 0:
+                        loot = randomPerson.getFreeWealth()
+                        randomPerson.setFreeWealth(loot / 3)
+                        person.changeFreeWealth(loot)
                     InfectionsFunctions.injureSomeone(randomPerson, world)
                     crimeLevel += 1
                     crimeAssaultTemp += 1
                     continue
                 if randomCrime < 70:
                     # print("Burglary")
-                    loot = randomPerson.getFreeWealth()
-                    randomPerson.setFreeWealth(loot / 4)
-                    person.changeFreeWealth(loot)
+                    if randomPerson.getFreeWealth() > 0:
+                        loot = randomPerson.getFreeWealth()
+                        randomPerson.setFreeWealth(loot / 4)
+                        person.changeFreeWealth(loot)
                     crimeLevel += 1
                     crimeBurglaryTemp += 1
                     continue
                 if randomCrime < 90:
                     # print("Theft")
-                    loot = randomPerson.getFreeWealth()
-                    randomPerson.setFreeWealth(loot / 5)
-                    person.changeFreeWealth(loot)
+                    if randomPerson.getFreeWealth() > 0:
+                        loot = randomPerson.getFreeWealth()
+                        randomPerson.setFreeWealth(loot / 5)
+                        person.changeFreeWealth(loot)
                     crimeLevel += 1
                     crimeTheftTemp += 1
                     continue
@@ -1082,9 +1102,11 @@ def assosiatesFriendsAndFoes(world):
                             if person1LikenessIndicatorForPerson2 > 0 and person2LikenessIndicatorForPerson1 > 0:
                                 if fellowEmployee not in person.getFriends():
                                     person.addFriends(fellowEmployee)
+                                    person.increaseHappiness(20)
                                     PLEH.gotFriend(person, fellowEmployee, world)
                                 if person not in fellowEmployee.getFriends():
                                     fellowEmployee.addFriends(person)
+                                    person.increaseHappiness(20)
                                     PLEH.gotFriend(fellowEmployee, person, world)
 
                             person1DislikenessIndicatorForPerson2 = Utils.checkForDislikedTraisInPerson2(person, fellowEmployee)
@@ -1092,9 +1114,11 @@ def assosiatesFriendsAndFoes(world):
                             if person1DislikenessIndicatorForPerson2 > 0 and person2DislikenessIndicatorForPerson1 > 0:
                                 if fellowEmployee not in person.getFriends():
                                     person.addRivals(fellowEmployee)
+                                    person.increaseHappiness(-20)
                                     PLEH.gotRival(person, fellowEmployee, world)
                                 if person not in fellowEmployee.getFriends():
                                     fellowEmployee.addRivals(person)
+                                    person.increaseHappiness(-20)
                                     PLEH.gotRival(fellowEmployee, person, world)
 
 
