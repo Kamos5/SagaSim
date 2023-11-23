@@ -1,8 +1,5 @@
 import Enums
-import Utils
 import ProvinceNameGenerator as PNG
-from Settlements import Settlements
-import Parameters
 from WorldMapObjClass import WorldMapObjClass
 
 
@@ -26,6 +23,7 @@ class Region():
         self.provinces = []
         self.provincesInnerCords = (0, 0)
         self.outerProvincesBorders = set()
+        self.originalCultureUnited = False
 
     def getUIExpand(self):
         return self.uiExpand
@@ -82,9 +80,6 @@ class Region():
 
     def getRegionName(self):
         return self.regionName
-
-    def getSettlements(self):
-        return self.settlements
 
     def setDaysSinceWeatherChangeCounter(self, days):
         self.daysSinceLastWeatherChange = days
