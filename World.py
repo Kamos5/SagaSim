@@ -491,9 +491,9 @@ class World:
                 self.setSeason(Enums.Seasons.WINTER)
             else:
                 self.month = Enums.Months.JANUARY
-                self.increaseYear()
                 self.appendBirthsPerYear(self.birthsPerYearTemp)
                 self.appendDeathsPerYear(self.deathsPerYearTemp)
+                self.increaseYear()
                 self.birthsPerYearTemp = 0
                 self.deathsPerYearTemp = 0
                 self.resetDayOfTheYear()
@@ -884,21 +884,20 @@ class World:
 
         self.deathsHistoryYearly = []
         self.birthsHistoryYearly = []
-        yearIndex = 1 ####TODO FIX
+        yearIndex = 1
         for births, deaths in zip(self.birthsPerYear, self.deathsPerYear):
-            if yearIndex == 1:
-                if self.getInitYear() == self.getYear()-1:
-                    self.deathsHistoryYearly.append(self.getDeathsPerYearTemp())
-                    self.birthsHistoryYearly.append(self.getBirthsPerYearTemp())
-                else:
-                    self.deathsHistoryYearly.append(self.deathsPerYear[len(self.deathsPerYear)-1])
-                    self.birthsHistoryYearly.append(self.birthsPerYear[len(self.birthsPerYear)-1])
-            if yearIndex == len(self.birthsPerYear):
+            if len(self.birthsPerYear) == 1:
+                self.deathsHistoryYearly.append(0)
+                self.birthsHistoryYearly.append(0)
                 self.deathsHistoryYearly.append(self.getDeathsPerYearTemp())
                 self.birthsHistoryYearly.append(self.getBirthsPerYearTemp())
             else:
                 self.deathsHistoryYearly.append(deaths)
                 self.birthsHistoryYearly.append(births)
+                if yearIndex == len(self.birthsPerYear):
+                    self.deathsHistoryYearly.append(self.getDeathsPerYearTemp())
+                    self.birthsHistoryYearly.append(self.getBirthsPerYearTemp())
+
             yearIndex += 1
         return
 
