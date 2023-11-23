@@ -758,8 +758,6 @@ def settlementWorkersManagement(world):
                     basicFoodJobWeight = 1
                     basicProdJobWeight = 1
 
-                    unemployedWorkerList = settlement.getUnemployedResidentsList()
-
                     #FIRE SICK PEOPLE
                     for milTile in settlement.getMilitaryFeatures():
                         SF.fireEmployeesWithPoorHealth(milTile, world)
@@ -769,6 +767,8 @@ def settlementWorkersManagement(world):
                         SF.fireEmployeesWithPoorHealth(foodTile, world)
                     for prodTile in settlement.getProdFeatures():
                         SF.fireEmployeesWithPoorHealth(prodTile, world)
+
+                    unemployedWorkerList = settlement.getUnemployedResidentsList()
 
                     #MILITARY
                     if settlement.getEmploymentRate() >= 0.3 and len(unemployedWorkerList) > 0 and settlement.getFreeWealth() > 0:

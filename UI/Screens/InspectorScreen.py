@@ -134,6 +134,9 @@ class InspectorScreen:
         label = Label("Number of employed residents: " + str(len(object.getEmployedResidentsList())), 500, self.lineHeight, self.textFont)
         self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding, self.lineHeight * self.writeLine + self.scroll_y))
         self.writeLine += 1
+        label = Label("Number of unfit to work residents: " + str(len(object.getUnfitResidentsList())), 500, self.lineHeight, self.textFont)
+        self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding, self.lineHeight * self.writeLine + self.scroll_y))
+        self.writeLine += 1
         label = Label("Number of unemployed residents: " + str(len(object.getUnemployedResidentsList())), 500, self.lineHeight, self.textFont, True)
         self.inspectorScreenSurfaceObjsRect.append([self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding, self.lineHeight * self.writeLine + self.scroll_y)), object])
         self.writeLine += 1
@@ -358,7 +361,7 @@ class InspectorScreen:
             self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding, self.lineHeight * self.writeLine + self.scroll_y))
             self.writeLine += 1
             for disease in object.getCurrentDiseases():
-                label = Label(str(disease[0]['name'] + " immunity gained: " + str(disease[2]) + "%"), 500, self.lineHeight, self.textFont)
+                label = Label(str(disease[0]['name'] + " immunity gained: " + str(round(disease[2], 2)) + "%"), 500, self.lineHeight, self.textFont)
                 self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding*2, self.lineHeight * self.writeLine + self.scroll_y))
                 self.writeLine += 1
         if len(object.getImmunityTo()) > 0:

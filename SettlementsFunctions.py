@@ -220,10 +220,10 @@ def fireEmployeesWithPoorHealth(tile, world):
 
     for worker in tile.getWorkerList():
         if worker.getGeneralHealth().value[0] >= Enums.GeneralHealth.POOR.value[0]:
+            PLEH.lostEmpoymentDueToHealth(worker, world)
             worker.getOccupation().removeWorker(worker)
             worker.setOccupation(None)
             worker.setOccupationName('')
             worker.increaseHappiness(-15)
-            PLEH.lostEmpoymentDueToHealth(worker, world)
 
     return

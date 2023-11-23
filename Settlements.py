@@ -43,6 +43,7 @@ class Settlements:
         self.adminFeatures = []
         self.militaryFeatures = []
         self.unemployedRes = []
+        self.unfitRes = []
         self.employedRes = []
         self.providesTo = None
         self.providedFrom = []
@@ -329,12 +330,19 @@ class Settlements:
 
         return round(len(self.getEmployedResidentsList())/self.getCivilianWorkplaces(), 2)
 
+    def getUnfitResidentsList(self):
+
+        self.unfitRes = []
+        for res in self.getResidents():
+            if res.getGeneralHealth().value[0] >= Enums.GeneralHealth.POOR.value[0]:
+                self.unfitRes.append(res)
+        return self.unfitRes
+
     def getUnemployedResidentsList(self):
 
-        # TODO CHORZY LUDZIE NIE POWINNI BYC W PULI UNEMPLOYED
         self.unemployedRes = []
         for res in self.residents:
-            if res.getAge() >= 15 and res.getOccupation() is None and res not in self.unemployedRes and res.getAge() < 50: # and res.getGeneralHealth().value[0] < Enums.GeneralHealth.POOR.value[0]: # and res.getSex() == Enums.Sexes.MALE:
+            if res.getAge() >= 15 and res.getOccupation() is None and res not in self.unemployedRes and res.getAge() < 50 and res.getGeneralHealth().value[0] < Enums.GeneralHealth.POOR.value[0]: # and res.getSex() == Enums.Sexes.MALE:
                 self.unemployedRes.append(res)
         return self.unemployedRes
 
