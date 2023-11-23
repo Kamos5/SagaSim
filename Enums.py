@@ -253,3 +253,8 @@ class HappinessLevel(Enum):
     SAD = -150, -51, 'Sad'
     VERYSAD = -250, -151, 'Very sad'
     DEPRESSED = -300, -251, 'Depressed'
+
+class TechnologiesEnums(Enum):
+    # number, name, description, work required
+    UNITY = 0, 'Unity', 'We are the same people', 1000
+

@@ -185,6 +185,10 @@ class InspectorScreen:
         self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding, self.lineHeight * self.writeLine + self.scroll_y))
         self.writeLine += 1
 
+        label = Label(f'Current technology researched: {object.getRegion().getOriginalCulture().getTechnologiesInProgress()[0].value[1]} ({object.getRegion().getOriginalCulture().getPercentOfTechnologyInProgress()} %)', 500, self.lineHeight, self.textFont)
+        self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding, self.lineHeight * self.writeLine + self.scroll_y))
+        self.writeLine += 1
+
         label = Label("Features:", 500, self.lineHeight, self.textFont)
         self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding, self.lineHeight * self.writeLine + self.scroll_y))
         self.writeLine += 1

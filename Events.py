@@ -540,6 +540,9 @@ def settlementGoodsProduction(world):
                             flatRate = 5
                         if settlement.getAdminFeatures()[0].getName() == SFeat.getTownHall().getName():
                             flatRate = 7
+
+                        if settlement.getRegion().getOriginalCulture().getTechnologiesInProgress()[0] == Enums.TechnologiesEnums.UNITY:
+                            settlement.getRegion().getOriginalCulture().increaseTechnologiesInProgress(mayorModifier * 7)
                         mayor.changeFreeWealth(flatRate)
                         settlement.changeFreeWealth(-flatRate)
 
@@ -566,6 +569,8 @@ def settlementGoodsProduction(world):
                         priest.changeFreeWealth(flatRate)
                         settlement.changeFreeWealth(-flatRate)
 
+                        if settlement.getRegion().getOriginalCulture().getTechnologiesInProgress()[0] == Enums.TechnologiesEnums.UNITY:
+                            settlement.getRegion().getOriginalCulture().increaseTechnologiesInProgress(priestModifier * 7)
 
                     ## MILITARY
                     if len(settlement.getMilitaryFeatures()[0].getWorkerList()) > 0:

@@ -538,6 +538,7 @@ class World:
             regionNames = f'{regionNamesStrLowerFirst}'
             cultureColors = f'{cultureName}{colorsStr}'
             region = Region(RNG.randomRegionName(self.allNames[cultureName][cultureRegionNames][regionNames], regionsNumber))
+            region.setOriginalCulture(self.cultures[number])
             region.setRegionNumber(number)
             region.setRegionCulture(cultureName)
             region.setRegionColor(eval(self.allNames[cultureName][cultureColors]))

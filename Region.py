@@ -9,6 +9,7 @@ class Region():
         self.cultureNumber = 0
         self.regionNumber = 0
         self.regionName = regionName
+        self.originalCulture = None
         self.regionCulture = ''
         self.regionColor = (0, 0, 0)
         self.regionStartingCords = (0, 0)
@@ -23,13 +24,18 @@ class Region():
         self.provinces = []
         self.provincesInnerCords = (0, 0)
         self.outerProvincesBorders = set()
-        self.originalCultureUnited = False
 
     def getUIExpand(self):
         return self.uiExpand
 
     def setUIExpand(self, newValue):
         self.uiExpand = newValue
+
+    def setOriginalCulture(self, culture):
+        self.originalCulture = culture
+
+    def getOriginalCulture(self):
+        return self.originalCulture
 
     def setCultureNumber(self, number):
         self.cultureNumber = number
