@@ -860,7 +860,7 @@ class World:
 
         return
 
-    def getDeadAlivePeopleNumberHistoryReduced(self):
+    def getBirthsDeathsPeopleNumberHistoryReduced(self):
 
         self.deathsHistoryReduced = []
         self.birthsHistoryReduced = []
@@ -880,7 +880,7 @@ class World:
 
         return
 
-    def getDeadAlivePeopleNumberHistoryYearly(self):
+    def getBirthsDeathsPeopleNumberHistoryYearly(self):
 
         self.deathsHistoryYearly = []
         self.birthsHistoryYearly = []

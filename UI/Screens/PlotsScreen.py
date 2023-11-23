@@ -66,12 +66,12 @@ class PlotsScreen:
 
         self.plotsScreenSurfaceObjsRect.append([self.plotsScreenSurface.blit(self.plotsLabel.localSurface, (self.width * 0.05, self.getVerticalPositioning())), Button('globalPopulation')])
 
-        if isinstance(lastFocusObj, Button) and lastFocusObj.getButtonName() == 'aliveDeadRatio':
-            self.plotsLabel = Label2("Alive Dead Ratio", self.textFont, True, lastFocusObj.getButtonFlag())
+        if isinstance(lastFocusObj, Button) and lastFocusObj.getButtonName() == 'birthsDeathsRatio':
+            self.plotsLabel = Label2("Births to Deaths Ratio", self.textFont, True, lastFocusObj.getButtonFlag())
         else:
-            self.plotsLabel = Label2("Alive Dead Ratio", self.textFont, True)
+            self.plotsLabel = Label2("Births to Deaths Ratio", self.textFont, True)
 
-        self.plotsScreenSurfaceObjsRect.append([self.plotsScreenSurface.blit(self.plotsLabel.localSurface, (self.width * 0.15, self.getVerticalPositioning())), Button('aliveDeadRatio')])
+        self.plotsScreenSurfaceObjsRect.append([self.plotsScreenSurface.blit(self.plotsLabel.localSurface, (self.width * 0.15, self.getVerticalPositioning())), Button('birthsDeathsRatio')])
 
         if isinstance(lastFocusObj, Button) and lastFocusObj.getButtonName() == 'eyes':
             self.plotsLabel = Label2("Eye Colour", self.textFont, True, lastFocusObj.getButtonFlag())
@@ -169,13 +169,13 @@ class PlotsScreen:
             self.arrayData = world.getAlivePeopleNumberHistory()
             self.yLabelTitle = 'Population'
 
-        elif isinstance(lastFocusObj, Button) and lastFocusObj.getButtonName() == 'aliveDeadRatio':
-            # world.getDeadAlivePeopleNumberHistoryReduced()
-            world.getDeadAlivePeopleNumberHistoryYearly()
+        elif isinstance(lastFocusObj, Button) and lastFocusObj.getButtonName() == 'birthsDeathsRatio':
+            # world.getBirthsDeathsPeopleNumberHistoryReduced()
+            world.getBirthsDeathsPeopleNumberHistoryYearly()
             self.titleLabel = 'Dead Alive Ratio'
-            self.arrayLabel = [Parameters.deadAliveColorArray[0][0], Parameters.deadAliveColorArray[1][0]]
-            self.arrayLabelColor = [Parameters.deadAliveColorArray[0][1], Parameters.deadAliveColorArray[1][1]]
-            # self.arrayData = world.getDeathsBirthsPeopleNumberHistory()
+            self.arrayLabel = [Parameters.birthsDeathsColorArray[0][0], Parameters.birthsDeathsColorArray[1][0]]
+            self.arrayLabelColor = [Parameters.birthsDeathsColorArray[0][1], Parameters.birthsDeathsColorArray[1][1]]
+            # self.arrayData = world.getBirthsDeathsPeopleNumberHistory()
             self.arrayData = world.getDeathsBirthsPeopleNumberHistoryYearly()
             self.yLabelTitle = 'Ammount'
 

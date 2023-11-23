@@ -137,7 +137,8 @@ def deathProcedures(person, world):
 
     #wealth inheretance (to children only)
     for child in person.getAliveChildrenList():
-        inheritance = person.getFreeWealth() / len(person.getAliveChildrenList())
+        inheritance = round(person.getFreeWealth() / len(person.getAliveChildrenList()), 2)
+
         if inheritance > 0:
             child.changeFreeWealth(inheritance)
             child.increaseHappiness(-30)

@@ -14,7 +14,7 @@ chanceForMigration = 5
 provincesPerRegion = 5
 
 #growthAccelerationForKidsUpToAdulthood
-growthSpeed = 15
+growthSpeed = 0 #default 0
 
 settlementHighFoodFertilityModifier = 1.2   #default 1.2
 settlementNormalFoodFertilityModifier = 1.0 #default 1.0
@@ -52,7 +52,7 @@ crimeColorArray = [crime, crimeHomicide, crimeAssault, crimeBurglary, crimeTheft
 
 deadColor = ['Deaths', '#000000']
 aliveColor = ['Births', '#336600']
-deadAliveColorArray = [deadColor, aliveColor]
+birthsDeathsColorArray = [deadColor, aliveColor]
 
 eyeColorBlack = ['Black', '#000000']
 eyeColorBrown = ['Brown', '#542604']

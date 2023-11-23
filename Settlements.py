@@ -331,6 +331,7 @@ class Settlements:
 
     def getUnemployedResidentsList(self):
 
+        # TODO CHORZY LUDZIE NIE POWINNI BYC W PULI UNEMPLOYED
         self.unemployedRes = []
         for res in self.residents:
             if res.getAge() >= 15 and res.getOccupation() is None and res not in self.unemployedRes and res.getAge() < 50: # and res.getGeneralHealth().value[0] < Enums.GeneralHealth.POOR.value[0]: # and res.getSex() == Enums.Sexes.MALE:
