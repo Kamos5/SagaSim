@@ -99,6 +99,13 @@ class MainMenuScreen:
         self.mainMenuLabel6.changeColorOnHover(self.quitButton.getOnHover())
         self.mainMenuScreenSurfaceObjsRect.append([self.mainMenuScreenSurface.blit(self.mainMenuLabel6.localSurface, (self.mainMenuLabel6.centerElement(self.width), self.getVerticalPositioning())), self.quitButton])
 
+        self.writeLine += 8
+
+        self.mainMenuLabel7 = Label2(f'© 2023 by Zbigniew (Kamos5) Fietkiewicz', self.textFont, True, borderSize=2)
+        self.mainMenuLabel7.setActiveRectColor(10, 100, 10)
+        self.mainMenuLabel7.setActiveBorderColor(20, 20, 20)
+        self.mainMenuScreenSurface.blit(self.mainMenuLabel7.localSurface, (self.width * 6 // 8, self.height * 0.9))
+
 
     def getVerticalPositioning(self):
         return self.writeLine * (self.lineHeight + 4 * self.labelBoarderDefault + 4 * self.labelMarginVerticalDefault)
