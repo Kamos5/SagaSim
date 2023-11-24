@@ -48,6 +48,16 @@ class PlotsScreen:
         self.arrayData = []
         self.yLabelTitle = ''
 
+        self.globalPopulationButton = Button('globalPopulation')
+        self.birthsDeathsRatioButton = Button('birthsDeathsRatio')
+        self.eyesButton = Button('eyes')
+
+        self.hairsButton = Button('hairs')
+        self.crimeButton = Button('crime')
+        self.sexualityButton = Button('sexuality')
+        self.sexualityPercButton = Button('sexuality%')
+        self.heightButton = Button('height')
+
     def addHeaderPlot(self, lastFocusObj, world):
 
         self.writeLine += 1
@@ -59,61 +69,69 @@ class PlotsScreen:
 
         self.writeLine += 2
 
-        if isinstance(lastFocusObj, Button) and lastFocusObj.getButtonName() == 'globalPopulation':
+        if self.globalPopulationButton.getIsActive() and lastFocusObj == self.globalPopulationButton:
+        # if isinstance(lastFocusObj, Button) and lastFocusObj.getButtonName() == 'globalPopulation':
             self.plotsLabel = Label2("Population", self.textFont, True, lastFocusObj.getButtonFlag())
         else:
             self.plotsLabel = Label2("Population", self.textFont, True)
+        self.plotsLabel.changeColorOnHover(self.globalPopulationButton.getOnHover())
+        self.plotsScreenSurfaceObjsRect.append([self.plotsScreenSurface.blit(self.plotsLabel.localSurface, (self.width * 0.05, self.getVerticalPositioning())), self.globalPopulationButton])
 
-        self.plotsScreenSurfaceObjsRect.append([self.plotsScreenSurface.blit(self.plotsLabel.localSurface, (self.width * 0.05, self.getVerticalPositioning())), Button('globalPopulation')])
-
-        if isinstance(lastFocusObj, Button) and lastFocusObj.getButtonName() == 'birthsDeathsRatio':
+        if self.birthsDeathsRatioButton.getIsActive() and lastFocusObj == self.birthsDeathsRatioButton:
             self.plotsLabel = Label2("Births to Deaths Ratio", self.textFont, True, lastFocusObj.getButtonFlag())
         else:
             self.plotsLabel = Label2("Births to Deaths Ratio", self.textFont, True)
 
-        self.plotsScreenSurfaceObjsRect.append([self.plotsScreenSurface.blit(self.plotsLabel.localSurface, (self.width * 0.15, self.getVerticalPositioning())), Button('birthsDeathsRatio')])
+        self.plotsLabel.changeColorOnHover(self.birthsDeathsRatioButton.getOnHover())
+        self.plotsScreenSurfaceObjsRect.append([self.plotsScreenSurface.blit(self.plotsLabel.localSurface, (self.width * 0.15, self.getVerticalPositioning())), self.birthsDeathsRatioButton])
 
-        if isinstance(lastFocusObj, Button) and lastFocusObj.getButtonName() == 'eyes':
+        if self.eyesButton.getIsActive() and lastFocusObj == self.eyesButton:
             self.plotsLabel = Label2("Eye Colour", self.textFont, True, lastFocusObj.getButtonFlag())
         else:
             self.plotsLabel = Label2("Eye Colour", self.textFont, True)
 
-        self.plotsScreenSurfaceObjsRect.append([self.plotsScreenSurface.blit(self.plotsLabel.localSurface, (self.width * 0.30, self.getVerticalPositioning())), Button('eyes')])
+        self.plotsLabel.changeColorOnHover(self.eyesButton.getOnHover())
+        self.plotsScreenSurfaceObjsRect.append([self.plotsScreenSurface.blit(self.plotsLabel.localSurface, (self.width * 0.30, self.getVerticalPositioning())), self.eyesButton])
 
-        if isinstance(lastFocusObj, Button) and lastFocusObj.getButtonName() == 'hairs':
+        if self.hairsButton.getIsActive() and lastFocusObj == self.hairsButton:
             self.plotsLabel = Label2("Hair Colour", self.textFont, True, lastFocusObj.getButtonFlag())
         else:
             self.plotsLabel = Label2("Hair Colour", self.textFont, True)
 
-        self.plotsScreenSurfaceObjsRect.append([self.plotsScreenSurface.blit(self.plotsLabel.localSurface, (self.width * 0.40, self.getVerticalPositioning())), Button('hairs')])
+        self.plotsLabel.changeColorOnHover(self.hairsButton.getOnHover())
+        self.plotsScreenSurfaceObjsRect.append([self.plotsScreenSurface.blit(self.plotsLabel.localSurface, (self.width * 0.40, self.getVerticalPositioning())), self.hairsButton])
 
-        if isinstance(lastFocusObj, Button) and lastFocusObj.getButtonName() == 'crime':
+        if self.crimeButton.getIsActive() and lastFocusObj == self.crimeButton:
             self.plotsLabel = Label2("Crime Levels", self.textFont, True, lastFocusObj.getButtonFlag())
         else:
             self.plotsLabel = Label2("Crime Levels", self.textFont, True)
 
-        self.plotsScreenSurfaceObjsRect.append([self.plotsScreenSurface.blit(self.plotsLabel.localSurface, (self.width * 0.50, self.getVerticalPositioning())), Button('crime')])
+        self.plotsLabel.changeColorOnHover(self.crimeButton.getOnHover())
+        self.plotsScreenSurfaceObjsRect.append([self.plotsScreenSurface.blit(self.plotsLabel.localSurface, (self.width * 0.50, self.getVerticalPositioning())), self.crimeButton])
 
-        if isinstance(lastFocusObj, Button) and lastFocusObj.getButtonName() == 'sexuality':
+        if self.sexualityButton.getIsActive() and lastFocusObj == self.sexualityButton:
             self.plotsLabel = Label2("Sexuality", self.textFont, True, lastFocusObj.getButtonFlag())
         else:
             self.plotsLabel = Label2("Sexuality", self.textFont, True)
 
-        self.plotsScreenSurfaceObjsRect.append([self.plotsScreenSurface.blit(self.plotsLabel.localSurface, (self.width * 0.60, self.getVerticalPositioning())), Button('sexuality')])
+        self.plotsLabel.changeColorOnHover(self.sexualityButton.getOnHover())
+        self.plotsScreenSurfaceObjsRect.append([self.plotsScreenSurface.blit(self.plotsLabel.localSurface, (self.width * 0.60, self.getVerticalPositioning())), self.sexualityButton])
 
-        if isinstance(lastFocusObj, Button) and lastFocusObj.getButtonName() == 'sexuality%':
+        if self.sexualityPercButton.getIsActive() and lastFocusObj == self.sexualityPercButton:
             self.plotsLabel = Label2("%", self.textFont, True, lastFocusObj.getButtonFlag())
         else:
             self.plotsLabel = Label2("%", self.textFont, True)
 
-        self.plotsScreenSurfaceObjsRect.append([self.plotsScreenSurface.blit(self.plotsLabel.localSurface, (self.width * 0.66, self.getVerticalPositioning())), Button('sexuality%')])
+        self.plotsLabel.changeColorOnHover(self.sexualityPercButton.getOnHover())
+        self.plotsScreenSurfaceObjsRect.append([self.plotsScreenSurface.blit(self.plotsLabel.localSurface, (self.width * 0.66, self.getVerticalPositioning())), self.sexualityPercButton])
 
-        if isinstance(lastFocusObj, Button) and lastFocusObj.getButtonName() == 'height':
+        if self.heightButton.getIsActive() and lastFocusObj == self.heightButton:
             self.plotsLabel = Label2("Height", self.textFont, True, lastFocusObj.getButtonFlag())
         else:
             self.plotsLabel = Label2("Height", self.textFont, True)
 
-        self.plotsScreenSurfaceObjsRect.append([self.plotsScreenSurface.blit(self.plotsLabel.localSurface, (self.width * 0.70, self.getVerticalPositioning())), Button('height')])
+        self.plotsLabel.changeColorOnHover(self.heightButton.getOnHover())
+        self.plotsScreenSurfaceObjsRect.append([self.plotsScreenSurface.blit(self.plotsLabel.localSurface, (self.width * 0.70, self.getVerticalPositioning())), self.heightButton])
 
         # if isinstance(lastFocusObj, Button) and lastFocusObj.getButtonName() == 'weather':
         #     self.plotsLabel = Label2("Weather", self.textFont, True, lastFocusObj.getButtonFlag())

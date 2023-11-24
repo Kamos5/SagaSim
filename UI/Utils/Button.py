@@ -21,6 +21,12 @@ class Button:
     def changeActiveStatus(self):
         self.active = not self.active
 
+    def setActiveStatus(self):
+        self.active = True
+
+    def resetActiveStatus(self):
+        self.active = False
+
     def getIsActive(self):
         return self.active
 

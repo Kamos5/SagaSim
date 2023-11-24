@@ -382,15 +382,20 @@ class Canvas:
                             self.showDownTree = True
 
         if self.showPlots is True:
-            if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
-                for itemObjRect, itemObjRectScreen in zip(itemsObjRectArray, itemsObjRectScreensArray):
-                    itemsObj = itemObjRect
-                    mouseX, mouseY = pygame.mouse.get_pos()
-                    for itemObj in itemsObj:
-                        if itemObj[0].collidepoint([mouseX - itemObjRectScreen.screenPosX, mouseY - itemObjRectScreen.screenPosY]):
-                            self.focusObj.append(itemObj[1])
-                            if isinstance(itemObj[1], Button):
-                                itemObj[1].changeActiveStatus()
+            for itemObjRect, itemObjRectScreen in zip(itemsObjRectArray, itemsObjRectScreensArray):
+                itemsObj = itemObjRect
+                mouseX, mouseY = pygame.mouse.get_pos()
+                for itemObj in itemsObj:
+
+                    if isinstance(itemObj[1], Button):
+                        itemObj[1].resetOnHover()
+
+                    if itemObj[0].collidepoint([mouseX - itemObjRectScreen.screenPosX, mouseY - itemObjRectScreen.screenPosY]):
+                        if isinstance(itemObj[1], Button):
+                            itemObj[1].setOnHover()
+                            if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+                                self.focusObj.append(itemObj[1])
+                                itemObj[1].setActiveStatus()
                                 return True, pausedPressed, None
 
         if self.showWorldMap is True:
@@ -420,27 +425,27 @@ class Canvas:
         if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
             pos = pygame.mouse.get_pos()
             if len(self.navBarScreen.navBarScreenSurfaceObjsRect):
-                if self.navBarScreen.navBarScreenSurfaceObjsRect[0][0].collidepoint(pos) and not self.showFamilyScreen and not self.showHelp and not self.showWorldMap:
+                if self.navBarScreen.navBarScreenSurfaceObjsRect[0][0].collidepoint(pos) and not self.showPlots and not self.showFamilyScreen and not self.showHelp and not self.showWorldMap:
                     if not pausedPressed:
                         pausedPressed = True
                     self.showMenu = True
 
-                if self.navBarScreen.navBarScreenSurfaceObjsRect[1][0].collidepoint(pos) and not self.showFamilyScreen and not self.showHelp and not self.showWorldMap:
+                if self.navBarScreen.navBarScreenSurfaceObjsRect[1][0].collidepoint(pos) and not self.showPlots and not self.showFamilyScreen and not self.showHelp and not self.showWorldMap:
                     if not pausedPressed:
                         pausedPressed = True
                     self.showHelp = True
 
-                if self.navBarScreen.navBarScreenSurfaceObjsRect[2][0].collidepoint(pos) and not self.showFamilyScreen and not self.showHelp and not self.showWorldMap:
+                if self.navBarScreen.navBarScreenSurfaceObjsRect[2][0].collidepoint(pos) and not self.showPlots and not self.showFamilyScreen and not self.showHelp and not self.showWorldMap:
                     if not pausedPressed:
                         pausedPressed = True
                     self.showPlots = True
 
-                if self.navBarScreen.navBarScreenSurfaceObjsRect[3][0].collidepoint(pos) and not self.showFamilyScreen and not self.showHelp and not self.showWorldMap:
+                if self.navBarScreen.navBarScreenSurfaceObjsRect[3][0].collidepoint(pos) and not self.showPlots and not self.showFamilyScreen and not self.showHelp and not self.showWorldMap:
                     if not pausedPressed:
                         pausedPressed = True
                     self.showWorldMap = True
 
-                if self.navBarScreen.navBarScreenSurfaceObjsRect[4][0].collidepoint(pos) and not self.showFamilyScreen and not self.showHelp and not self.showWorldMap:
+                if self.navBarScreen.navBarScreenSurfaceObjsRect[4][0].collidepoint(pos) and not self.showPlots and not self.showFamilyScreen and not self.showHelp and not self.showWorldMap:
                     pausedPressed = not pausedPressed
 
             if pausedPressed == False:
