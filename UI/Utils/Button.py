@@ -7,6 +7,7 @@ class Button:
         self.buttonName = buttonName
         self.buttonCategory = buttonCategory
         self.active = False
+        self.onHover = False
 
     def getButtonName(self):
         return self.buttonName
@@ -22,3 +23,12 @@ class Button:
 
     def getIsActive(self):
         return self.active
+
+    def getOnHover(self):
+        return self.onHover
+
+    def setOnHover(self):
+        self.onHover = True
+
+    def resetOnHover(self):
+        self.onHover = False

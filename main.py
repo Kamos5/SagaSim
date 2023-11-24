@@ -224,9 +224,9 @@ def main(popBreakLimit=None):
             print("UITime: " + str(timeUI))
 
             pygame.display.update()
-            pygame.event.set_blocked(pygame.MOUSEMOTION)
-            for event in pygame.event.get():
 
+            # pygame.event.set_blocked(pygame.MOUSEMOTION)
+            for event in pygame.event.get():
                 pausedPressed = pygameEvents(event, canvas, pausedPressed, gameState)
                 while pausedPressed and gameState.isSimulationState():  #For Pausing and resuming
                     if canvas.showMenu:

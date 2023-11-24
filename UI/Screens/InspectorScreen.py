@@ -301,7 +301,7 @@ class InspectorScreen:
         self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding, self.lineHeight * self.writeLine + self.scroll_y))
 
         label = Label("☆☆☆", 50, self.lineHeight, self.symbolFont, True)
-        label.changeColorBasedOnFlag(object.isInFavorite)
+        label.changeColorBasedOnActive(object.isInFavorite)
         self.inspectorScreenSurfaceObjsRect.append([self.inspectorScreenSurface.blit(label.localSurface, (self.width-400, self.lineHeight * self.writeLine + self.scroll_y)), 'Favorite', object])
         self.writeLine += 1
 

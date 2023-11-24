@@ -285,41 +285,51 @@ class Canvas:
 
         for itemObjRect, itemObjRectScreen in zip(itemsObjRectArray, itemsObjRectScreensArray):
             itemsObj = itemObjRect
-            if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1 and self.showPlots is False and self.showHelp is False and self.showFamilyScreen is False and self.showWorldMap is False:
+            if self.showPlots is False and self.showHelp is False and self.showFamilyScreen is False and self.showWorldMap is False:
                 self.showDownTree = False
                 self.showUpTree = False
                 mouseX, mouseY = pygame.mouse.get_pos()
                 for itemObj in itemsObj:
-                    if isinstance(itemObj[1], TextField):
-                          itemObj[1].deactivate()
+
+                    if isinstance(itemObj[1], Button):
+                        itemObj[1].resetOnHover()
+
+                    if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+                        if isinstance(itemObj[1], TextField):
+                              itemObj[1].deactivate()
 
                     #To offset position on main screen
                     if itemObj[0].collidepoint([mouseX-itemObjRectScreen.screenPosX, mouseY-itemObjRectScreen.screenPosY]):
-
-                        if isinstance(itemObj[1], Button):
-                            self.listScreen.changeFamilyButtons(itemObj[1].getButtonName())
+                        if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+                            if isinstance(itemObj[1], Button):
+                                self.listScreen.changeFamilyButtons(itemObj[1].getButtonName())
 
                         if itemObj[1] == 'Favorite' and itemObj[2] not in self.favorites:
-                            self.favorites.append(itemObj[2])
-                            itemObj[2].isInFavorite = True
-                            return True, pausedPressed, None
+                            if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+                                self.favorites.append(itemObj[2])
+                                itemObj[2].isInFavorite = True
+                                return True, pausedPressed, None
                         if itemObj[1] == 'Favorite' and itemObj[2] in self.favorites:
-                            self.favorites.remove(itemObj[2])
-                            itemObj[2].isInFavorite = False
-                            return True, pausedPressed, None
+                            if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+                                self.favorites.remove(itemObj[2])
+                                itemObj[2].isInFavorite = False
+                                return True, pausedPressed, None
                         if itemObj[1] == 'showFamilies':
-                            self.showFamilies = not self.showFamilies
+                            if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+                                self.showFamilies = not self.showFamilies
                         if itemObj[1] == 'FamilyTree':
-                            if not pausedPressed:
-                                pausedPressed = True
-                            self.showFamilyObj = itemObj[2]
-                            self.showFamilyScreen = True
-                            return True, pausedPressed, None
-
-                        if itemObj[1] == 'New World':
-                            self.showMenu = False
-                            gameState.changeToInit()
-                            return False, True, None
+                            if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+                                if not pausedPressed:
+                                    pausedPressed = True
+                                self.showFamilyObj = itemObj[2]
+                                self.showFamilyScreen = True
+                                return True, pausedPressed, None
+                        if isinstance(itemObj[1], Button) and itemObj[1].getButtonName() == 'New World':
+                            itemObj[1].setOnHover()
+                            if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+                                self.showMenu = False
+                                gameState.changeToInit()
+                                return False, True, None
 
                         # if itemObj[1] == 'Save World':
                         #     self.showMenu = False
@@ -333,25 +343,32 @@ class Canvas:
                         #     gameState.changeToSimulation()
                         #     return False, True, worldObj
 
-                        if itemObj[1] == 'Continue':
-                            self.showMenu = False
-                            gameState.changeToSimulation()
-                            return False, True, None
+                        if isinstance(itemObj[1], Button) and itemObj[1].getButtonName() == 'Continue':
+                            itemObj[1].setOnHover()
+                            if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+                                self.showMenu = False
+                                gameState.changeToSimulation()
+                                return False, True, None
 
-                        if itemObj[1] == 'Quit':
-                            pygame.quit()
-                            exit()
+                        if isinstance(itemObj[1], Button) and itemObj[1].getButtonName() == 'Quit':
+                            itemObj[1].setOnHover()
+                            if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+                                pygame.quit()
+                                exit()
                         if hasattr(itemObj[1], 'getUIExpand'):
-                            itemObj[1].setUIExpand(not itemObj[1].getUIExpand())
-                        self.focusObj.append(itemObj[1])
+                            if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+                                itemObj[1].setUIExpand(not itemObj[1].getUIExpand())
 
-                        if isinstance(itemObj[1], Feature):
-                             self.focusObj.pop()
+                        if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+                            self.focusObj.append(itemObj[1])
 
-                        if isinstance(itemObj[1], TextField):
-                            itemObj[1].activate()
+                            if isinstance(itemObj[1], Feature):
+                                 self.focusObj.pop()
 
-                        return True, pausedPressed, None
+                            if isinstance(itemObj[1], TextField):
+                                itemObj[1].activate()
+
+                            return True, pausedPressed, None
 
             if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1 and self.showFamilyScreen is True:
                 mouseX, mouseY = pygame.mouse.get_pos()
@@ -384,7 +401,7 @@ class Canvas:
                     for itemObj in itemsObj:
                         if itemObj[0].collidepoint([mouseX - itemObjRectScreen.screenPosX, mouseY - itemObjRectScreen.screenPosY]):
                             if isinstance(itemObj[1], Settlements):
-                                print( "AAA")
+                                print("AAA")
 
             #burshSize
             if event.type == pygame.KEYDOWN:

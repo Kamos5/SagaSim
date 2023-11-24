@@ -73,11 +73,19 @@ class Label:
         size = font.getsize(text)
         return size
 
-    def changeColorBasedOnFlag(self, flag):
+    def changeColorBasedOnActive(self, flag):
         if flag:
             r, g, b = self.activeRectColorAlt
             self.textColor = 200, 200, 50
         else:
             r, g, b = self.inactiveRectColor
             self.textColor = 220, 220, 220
+        self.setActiveRectColor(r, g, b)
+
+    def changeColorOnHover(self, flag):
+        r, g, b = self.rectColor
+        if flag:
+            r, g, b = 200, 200, 200
+            self.textColor = 200, 200, 50
+
         self.setActiveRectColor(r, g, b)

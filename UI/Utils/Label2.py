@@ -84,7 +84,7 @@ class Label2:
         size = font.getsize(text)
         return size
 
-    def changeColorBasedOnFlag(self, flag):
+    def changeColorBasedOnActive(self, flag):
         if flag:
             r, g, b = self.activeRectColorAlt
             self.textColor = 200, 200, 50
@@ -95,3 +95,11 @@ class Label2:
 
     def centerElement(self, screenWidth):
         return screenWidth * 0.5 - (self.w / 2)
+
+    def changeColorOnHover(self, flag):
+        r, g, b = self.rectColor
+        if flag:
+            r, g, b = r+20, g+20, b+20
+            self.textColor = 200, 200, 50
+
+        self.setActiveRectColor(r, g, b)

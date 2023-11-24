@@ -1,5 +1,6 @@
 ﻿import pygame
 
+from UI.Utils.Button import Button
 from UI.Utils.Fonts import Fonts
 from UI.Utils.Label2 import Label2
 
@@ -32,6 +33,10 @@ class MainMenuScreen:
 
         self.temp = 0
 
+        self.newWorldButton = Button('New World')
+        self.continueButton = Button('Continue')
+        self.quitButton = Button('Quit')
+
     def showMainMenu(self, world):
 
         self.writeLine += 1
@@ -46,7 +51,8 @@ class MainMenuScreen:
         self.mainMenuLabel2 = Label2(f'New World', self.titleButtonFont, True, borderSize=3)
         self.mainMenuLabel2.setActiveRectColor(10, 50, 100)
         self.mainMenuLabel2.setActiveBorderColor(50, 50, 50)
-        self.mainMenuScreenSurfaceObjsRect.append([self.mainMenuScreenSurface.blit(self.mainMenuLabel2.localSurface, (self.mainMenuLabel2.centerElement(self.width), self.getVerticalPositioning())), 'New World'])
+        self.mainMenuLabel2.changeColorOnHover(self.newWorldButton.getOnHover())
+        self.mainMenuScreenSurfaceObjsRect.append([self.mainMenuScreenSurface.blit(self.mainMenuLabel2.localSurface, (self.mainMenuLabel2.centerElement(self.width), self.getVerticalPositioning())), self.newWorldButton])
 
         self.writeLine += 4
 
@@ -75,7 +81,8 @@ class MainMenuScreen:
             self.mainMenuLabel5 = Label2(f'Continue', self.titleButtonFont, True, borderSize=3)
             self.mainMenuLabel5.setActiveRectColor(100, 30, 100)
             self.mainMenuLabel5.setActiveBorderColor(50, 50, 50)
-            self.mainMenuScreenSurfaceObjsRect.append([self.mainMenuScreenSurface.blit(self.mainMenuLabel5.localSurface, (self.mainMenuLabel5.centerElement(self.width), self.getVerticalPositioning())), 'Continue'])
+            self.mainMenuLabel5.changeColorOnHover(self.continueButton.getOnHover())
+            self.mainMenuScreenSurfaceObjsRect.append([self.mainMenuScreenSurface.blit(self.mainMenuLabel5.localSurface, (self.mainMenuLabel5.centerElement(self.width), self.getVerticalPositioning())), self.continueButton])
 
 
         self.writeLine += 4
@@ -83,7 +90,8 @@ class MainMenuScreen:
         self.mainMenuLabel6 = Label2(f'Quit', self.titleButtonFont, True, borderSize=3)
         self.mainMenuLabel6.setActiveRectColor(100, 10, 10)
         self.mainMenuLabel6.setActiveBorderColor(50, 50, 50)
-        self.mainMenuScreenSurfaceObjsRect.append([self.mainMenuScreenSurface.blit(self.mainMenuLabel6.localSurface, (self.mainMenuLabel6.centerElement(self.width), self.getVerticalPositioning())), 'Quit'])
+        self.mainMenuLabel6.changeColorOnHover(self.quitButton.getOnHover())
+        self.mainMenuScreenSurfaceObjsRect.append([self.mainMenuScreenSurface.blit(self.mainMenuLabel6.localSurface, (self.mainMenuLabel6.centerElement(self.width), self.getVerticalPositioning())), self.quitButton])
 
 
     def getVerticalPositioning(self):
