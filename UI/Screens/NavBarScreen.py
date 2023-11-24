@@ -1,5 +1,6 @@
 import pygame
 
+from UI.Utils.Button import Button
 from UI.Utils.Fonts import Fonts
 from UI.Utils.Label import Label
 from UI.Utils.Label2 import Label2
@@ -29,6 +30,11 @@ class NavBarScreen:
         self.navBarScreenSurface = pygame.Surface([self.width, self.height - self.heightOffSet])
         self.navBarScreenSurfaceObjsRect = []
 
+        self.menuButton = Button('menu')
+        self.helpButton = Button('help')
+        self.plotsButton = Button('plots')
+        self.worldMapButton = Button("worldMap")
+        self.clockButton = Button("clock")
 
     def resetWriteLine(self):
 
@@ -47,12 +53,14 @@ class NavBarScreen:
         self.menuLabel = Label2("Menu", self.textFont, True, borderSize=1)
         self.menuLabel.setActiveRectColor(100, 100, 10)
         self.menuLabel.setActiveBorderColor(10, 100, 100)
-        self.navBarScreenSurfaceObjsRect.append([self.navBarScreenSurface.blit(self.menuLabel.localSurface, (50, self.heightOffSet)), 'Menu'])
+        self.menuLabel.changeColorOnHover(self.menuButton.getOnHover())
+        self.navBarScreenSurfaceObjsRect.append([self.navBarScreenSurface.blit(self.menuLabel.localSurface, (50, self.heightOffSet)), self.menuButton])
 
     def addHelpButton (self):
 
         self.helpLabel = Label2("Help", self.textFont, True, True, borderSize=1)
-        self.navBarScreenSurfaceObjsRect.append([self.navBarScreenSurface.blit(self.helpLabel.localSurface, (150, self.heightOffSet)), 'Help'])
+        self.helpLabel.changeColorOnHover(self.helpButton.getOnHover())
+        self.navBarScreenSurfaceObjsRect.append([self.navBarScreenSurface.blit(self.helpLabel.localSurface, (150, self.heightOffSet)), self.helpButton])
 
 
     def addPlotsButton (self):
@@ -60,14 +68,16 @@ class NavBarScreen:
         self.plotsLabel = Label2("Graphs", self.textFont, True, borderSize=1)
         self.plotsLabel.setActiveRectColor(20, 60, 20)
         self.plotsLabel.setActiveBorderColor(100, 10, 10)
-        self.navBarScreenSurfaceObjsRect.append([self.navBarScreenSurface.blit(self.plotsLabel.localSurface, (250, self.heightOffSet)), 'Plots'])
+        self.plotsLabel.changeColorOnHover(self.plotsButton.getOnHover())
+        self.navBarScreenSurfaceObjsRect.append([self.navBarScreenSurface.blit(self.plotsLabel.localSurface, (250, self.heightOffSet)), self.plotsButton])
 
     def addWorldMapButton (self):
 
         self.worldMapLabel = Label2("World Map", self.textFont, True, borderSize=1)
         self.worldMapLabel.setActiveRectColor(10, 10, 70)
         self.worldMapLabel.setActiveBorderColor(100, 100, 100)
-        self.navBarScreenSurfaceObjsRect.append([self.navBarScreenSurface.blit(self.worldMapLabel.localSurface, (350, self.heightOffSet)), 'worldMap'])
+        self.worldMapLabel.changeColorOnHover(self.worldMapButton.getOnHover())
+        self.navBarScreenSurfaceObjsRect.append([self.navBarScreenSurface.blit(self.worldMapLabel.localSurface, (350, self.heightOffSet)), self.worldMapButton])
 
 
     def addGameSpeedCounter(self, world):
@@ -85,7 +95,8 @@ class NavBarScreen:
     def addDateTimer(self, world):
 
         self.dateTimeLabel = Label2(f'{str(world.getDay())} / {str(world.getMonth().value[1])} / {str(world.getYear())}', self.textFont, True, borderSize=1, horizontalMargin=10)
-        self.navBarScreenSurfaceObjsRect.append([self.navBarScreenSurface.blit(self.dateTimeLabel.localSurface, (self.width * 0.80, self.heightOffSet)), 'Clock'])
+        self.dateTimeLabel.changeColorOnHover(self.clockButton.getOnHover())
+        self.navBarScreenSurfaceObjsRect.append([self.navBarScreenSurface.blit(self.dateTimeLabel.localSurface, (self.width * 0.80, self.heightOffSet)), self.clockButton])
 
     def addPausedIndicator(self):
 

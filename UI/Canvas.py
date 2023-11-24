@@ -422,36 +422,47 @@ class Canvas:
 
     def pauseHandle(self, event, pausedPressed):
 
-        if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
-            pos = pygame.mouse.get_pos()
-            if len(self.navBarScreen.navBarScreenSurfaceObjsRect):
-                if self.navBarScreen.navBarScreenSurfaceObjsRect[0][0].collidepoint(pos) and not self.showPlots and not self.showFamilyScreen and not self.showHelp and not self.showWorldMap:
+        for navBarObj in self.navBarScreen.navBarScreenSurfaceObjsRect:
+            navBarObj[1].resetOnHover()
+        pos = pygame.mouse.get_pos()
+        if len(self.navBarScreen.navBarScreenSurfaceObjsRect):
+            if self.navBarScreen.navBarScreenSurfaceObjsRect[0][0].collidepoint(pos) and not self.showPlots and not self.showFamilyScreen and not self.showHelp and not self.showWorldMap:
+                self.navBarScreen.navBarScreenSurfaceObjsRect[0][1].setOnHover()
+                if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                     if not pausedPressed:
                         pausedPressed = True
                     self.showMenu = True
 
-                if self.navBarScreen.navBarScreenSurfaceObjsRect[1][0].collidepoint(pos) and not self.showPlots and not self.showFamilyScreen and not self.showHelp and not self.showWorldMap:
+            if self.navBarScreen.navBarScreenSurfaceObjsRect[1][0].collidepoint(pos) and not self.showPlots and not self.showFamilyScreen and not self.showHelp and not self.showWorldMap:
+                self.navBarScreen.navBarScreenSurfaceObjsRect[1][1].setOnHover()
+                if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                     if not pausedPressed:
                         pausedPressed = True
                     self.showHelp = True
 
-                if self.navBarScreen.navBarScreenSurfaceObjsRect[2][0].collidepoint(pos) and not self.showPlots and not self.showFamilyScreen and not self.showHelp and not self.showWorldMap:
+            if self.navBarScreen.navBarScreenSurfaceObjsRect[2][0].collidepoint(pos) and not self.showPlots and not self.showFamilyScreen and not self.showHelp and not self.showWorldMap:
+                self.navBarScreen.navBarScreenSurfaceObjsRect[2][1].setOnHover()
+                if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                     if not pausedPressed:
                         pausedPressed = True
                     self.showPlots = True
 
-                if self.navBarScreen.navBarScreenSurfaceObjsRect[3][0].collidepoint(pos) and not self.showPlots and not self.showFamilyScreen and not self.showHelp and not self.showWorldMap:
+            if self.navBarScreen.navBarScreenSurfaceObjsRect[3][0].collidepoint(pos) and not self.showPlots and not self.showFamilyScreen and not self.showHelp and not self.showWorldMap:
+                self.navBarScreen.navBarScreenSurfaceObjsRect[3][1].setOnHover()
+                if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                     if not pausedPressed:
                         pausedPressed = True
                     self.showWorldMap = True
 
-                if self.navBarScreen.navBarScreenSurfaceObjsRect[4][0].collidepoint(pos) and not self.showPlots and not self.showFamilyScreen and not self.showHelp and not self.showWorldMap:
+            if self.navBarScreen.navBarScreenSurfaceObjsRect[4][0].collidepoint(pos) and not self.showPlots and not self.showFamilyScreen and not self.showHelp and not self.showWorldMap:
+                self.navBarScreen.navBarScreenSurfaceObjsRect[4][1].setOnHover()
+                if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                     pausedPressed = not pausedPressed
 
-            if pausedPressed == False:
-                self.showHelp = False
-                self.showPlots = False
-                self.showWorldMap = False
+        if pausedPressed == False:
+            self.showHelp = False
+            self.showPlots = False
+            self.showWorldMap = False
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_SPACE:
                 if not self.showFamilyScreen:
