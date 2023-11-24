@@ -13,14 +13,14 @@ class Label:
         self.h = h
         self.font = font
         self.inactiveRectColor = 20, 20, 60
-        self.activeRectColor = 100, 0, 0
+        self.activeRectColor = 100, 30, 30
         self.activeRectColorAlt = 10, 70, 10
         self.rectColor = self.inactiveRectColor
         self.textColor = textColor
         self.inactiveBorderColor = 200, 200, 200
         self.activeBorderColor = 75, 150, 150
         self.borderColor = self.inactiveBorderColor
-        self.clickableBorderColor = 0, 200, 0
+        self.clickableBorderColor = 20, 200, 20
         self.borderSize = borderSize
         self.focused = focused
         if not self.focused:
@@ -89,3 +89,12 @@ class Label:
             self.textColor = 200, 200, 50
 
         self.setActiveRectColor(r, g, b)
+
+    def makeTextGivenColor(self, r, g, b):
+        self.textColor = r, g, b
+
+        if self.focused:
+            r, g, b = self.textColor
+            self.textColor = (255-r, 255-g, 255-b)
+
+        self.set(self.text)

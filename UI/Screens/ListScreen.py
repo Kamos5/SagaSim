@@ -1,5 +1,6 @@
 import pygame
 
+import Enums
 from UI.Utils.Button import Button
 from UI.Utils.Fonts import Fonts
 from UI.Utils.Label import Label
@@ -125,6 +126,9 @@ class ListScreen:
             label = Label(f'{region.getRegionName()} ({(region.getCurrentTemperature())} °C)', 200, self.lineHeight, self.textFont, True, True)
         else:
             label = Label(f'{region.getRegionName()} ({(region.getCurrentTemperature())} °C)', 200, self.lineHeight, self.textFont, True)
+
+        r, g, b = region.getRegionColor()
+        label.makeTextGivenColor(r, g, b)
 
         self.listScreenSurfaceObjsRect.append([self.listScreenSurface.blit(label.localSurface, (self.width * 0.10, self.lineHeight * self.writeLine + self.scroll_y)), region])
 
@@ -256,6 +260,11 @@ class ListScreen:
 
         else:
             label = Label(text, 400, self.lineHeight, self.textFont, True)
+
+        # if person.getSex() == Enums.Sexes.MALE:
+        #     label.makeTextGivenColor(50, 150, 150)
+        # if person.getSex() == Enums.Sexes.FEMALE:
+        #     label.makeTextGivenColor(150, 50, 150)
 
         if self.textSearchField is not None:
             if self.textSearchField.getText().upper() in person.getLastName().upper() or self.textSearchField.getText().lower() in person.getLastName().lower() or self.textSearchField.getText().upper() in person.getFirstName().upper() or self.textSearchField.getText().lower() in person.getFirstName().lower():

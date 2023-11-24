@@ -156,7 +156,7 @@
         "Thornaby"]
       },
     "englishColors":
-      "(220,20,20)"
+      "(160,40,40)"
   },
   "norse": {
     "norseFamilyNames": {
@@ -305,7 +305,7 @@
         "Kvívi"]
       },
     "norseColors":
-      "(20,220,20)"
+      "(40,160,40)"
     },
   "slavic": {
     "slavicFamilyNames": {
@@ -536,7 +536,7 @@
         "Novgorod"]
       },
     "slavicColors":
-      "(20,20,220)"
+      "(40,40,160)"
     },
   "egyptian": {
     "egyptianFamilyNames": {
@@ -775,7 +775,7 @@
         "Zawty"]
       },
     "egyptianColors":
-      "(220,220,20)"
+      "(160,160,40)"
     },
     "roman": {
     "romanFamilyNames": {
@@ -1289,7 +1289,7 @@
         "Ragusium"]
       },
     "romanColors":
-      "(20,220,220)"
+      "(40,160,160)"
     },
   "generic": {
     "genericFamilyNames": {

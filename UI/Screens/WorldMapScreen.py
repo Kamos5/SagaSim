@@ -26,6 +26,7 @@ class WorldMapScreen:
         self.heightOffSet = heightOffSet
         self.font = Fonts()
         self.textFont = self.font.getPlotsFont()
+        self.symbolFont = self.font.symbolFont
         self.miniTextFont = self.font.getMiniFont()
         self.lineHeight = self.font.getPlotsLineHeight()
         self.scroll_y = 0
