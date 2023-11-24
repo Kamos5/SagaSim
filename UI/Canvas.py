@@ -165,6 +165,7 @@ class Canvas:
     def drawMainMenu(self, world):
 
         self.mainMenuScreen.cleanScreen()
+        self.mainMenuScreen.loadBackground(self.windowWidth, self.windowHeight)
         self.mainMenuScreen.showMainMenu(world)
         self.mainMenuScreenObj = self.screen.blit(self.mainMenuScreenSurface, (self.mainMenuPosX, self.mainMenuPosY))
         pygame.display.update()

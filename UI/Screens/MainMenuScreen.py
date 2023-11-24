@@ -9,7 +9,7 @@ class MainMenuScreen:
 
     def __init__(self, width, height, widthOffSet, heightOffSet, screenPosX, screenPosY):
     
-        self.screenColor = (50, 10, 50)
+        #self.screenColor = (50, 10, 50)
         self.writeLine = 0
         self.width = width
         self.height = height
@@ -36,6 +36,12 @@ class MainMenuScreen:
         self.newWorldButton = Button('New World')
         self.continueButton = Button('Continue')
         self.quitButton = Button('Quit')
+
+    def loadBackground(self, windowSizeX, windowsSizeY):
+
+        sagaSimImg = pygame.image.load('UI\sagasim.jpg')
+        sagaSimImg = pygame.transform.scale(sagaSimImg, (windowSizeX, windowsSizeY))
+        self.mainMenuScreenSurface.blit(sagaSimImg, (self.screenPosX, self.screenPosY))
 
     def showMainMenu(self, world):
 
@@ -102,7 +108,7 @@ class MainMenuScreen:
 
     def cleanScreen(self):
 
-        self.mainMenuScreenSurface.fill(self.screenColor, (0, 0, self.width, self.height))
+        #self.mainMenuScreenSurface.fill(self.screenColor, (0, 0, self.width, self.height))
         self.mainMenuScreenSurfaceObjsRect = []
         self.resetWriteLine()
 
