@@ -301,9 +301,6 @@ class Canvas:
 
                     #To offset position on main screen
                     if itemObj[0].collidepoint([mouseX-itemObjRectScreen.screenPosX, mouseY-itemObjRectScreen.screenPosY]):
-                        if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
-                            if isinstance(itemObj[1], Button):
-                                self.listScreen.changeFamilyButtons(itemObj[1].getButtonName())
 
                         if itemObj[1] == 'Favorite' and itemObj[2] not in self.favorites:
                             if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
@@ -325,6 +322,10 @@ class Canvas:
                                 self.showFamilyObj = itemObj[2]
                                 self.showFamilyScreen = True
                                 return True, pausedPressed, None
+
+                        if isinstance(itemObj[1], Button) and itemObj[1] in [self.listScreen.allButton, self.listScreen.familyAdultsButton, self.listScreen.familyKidsButton, self.listScreen.employedButton, self.listScreen.unemployedButton, self.listScreen.sickButton, self.listScreen.withLoversButton]:
+                            self.listScreen.changeFamilyButtons(itemObj[1], event)
+
                         if isinstance(itemObj[1], Button) and itemObj[1].getButtonName() == 'New World':
                             itemObj[1].setOnHover()
                             if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:

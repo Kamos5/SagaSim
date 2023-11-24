@@ -85,7 +85,7 @@ class Label:
     def changeColorOnHover(self, flag):
         r, g, b = self.rectColor
         if flag:
-            r, g, b = 200, 200, 200
+            r, g, b = r+20, g+20, b+20
             self.textColor = 200, 200, 50
 
         self.setActiveRectColor(r, g, b)
