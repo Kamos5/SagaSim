@@ -1,8 +1,5 @@
-import time
-
 import pygame
 
-import WorldFunctions
 from SettlementFeatures import Feature
 from Settlements import Settlements
 from UI.Screens.FamilyTreeScreen import FamilyTreeScreen
@@ -189,22 +186,24 @@ class Canvas:
 
         for region in world.getRegions():
             self.listScreen.addRegion(region, self.lastFocusObj)
-            if region.getUIExpand():
-                self.listScreen.addProvinces(region, self.lastFocusObj)
-                for province in region.getProvinces():
-                    self.listScreen.addProvince(province, self.lastFocusObj)
-                    for settlement in province.getSettlements():
-                        self.listScreen.addSettlement(settlement, self.lastFocusObj)
-                        if settlement.getUIExpand():
-                            self.filterBasedOnParamSettler(settlement.getResidents(), self.listScreen)
+            for listScreenButton in self.listScreen.getListScreenButtons():
+                if region.getRegionName() == listScreenButton.getButtonName() and listScreenButton.getIsActive():
+                    self.listScreen.addProvinces(region, self.lastFocusObj)
+                    for province in region.getProvinces():
+                        self.listScreen.addProvince(province, self.lastFocusObj)
+                        for settlement in province.getSettlements():
+                            self.listScreen.addSettlement(settlement, self.lastFocusObj)
+                            if settlement.getUIExpand():
+                                self.filterBasedOnParamSettler(settlement.getResidents(), self.listScreen)
 
         self.listScreen.addFamilies(world.getFamilies())
 
-        if self.showFamilies:
+        if self.listScreen.showFamiliesButton.getIsActive():
             for family in world.getFamilies():
-                self.listScreen.addFamily(family, self.lastFocusObj)
-                if family.getUIExpand():
-                    self.filterBasedOnParamPerson(family.getAliveMembersList(), self.listScreen)
+                self.listScreen.addFamily(family)
+                for listScreenButton in self.listScreen.getListScreenButtons():
+                    if family.getFamilyName() == listScreenButton.getButtonName() and listScreenButton.getIsActive():
+                        self.filterBasedOnParamPerson(family.getAliveMembersList(), self.listScreen)
 
         self.listScreen.addFavorites()
 
@@ -312,9 +311,7 @@ class Canvas:
                                 self.favorites.remove(itemObj[2])
                                 itemObj[2].isInFavorite = False
                                 return True, pausedPressed, None
-                        if itemObj[1] == 'showFamilies':
-                            if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
-                                self.showFamilies = not self.showFamilies
+
                         if itemObj[1] == 'FamilyTree':
                             if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                                 if not pausedPressed:
@@ -357,6 +354,12 @@ class Canvas:
                             if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                                 pygame.quit()
                                 exit()
+
+                        if isinstance(itemObj[1], Button) and itemObj[1] in self.listScreen.getListScreenButtons():
+                            itemObj[1].setOnHover()
+                            if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+                                itemObj[1].changeActiveStatus()
+
                         if hasattr(itemObj[1], 'getUIExpand'):
                             if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                                 itemObj[1].setUIExpand(not itemObj[1].getUIExpand())

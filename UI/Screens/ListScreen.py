@@ -44,6 +44,12 @@ class ListScreen:
         self.sickButton = Button('sick')
         self.withLoversButton = Button('withLovers')
 
+        self.showFamiliesButton = Button('showFamilies')
+
+        self.regionButton = None
+        self.familyButton = None
+        self.listScreenButtons = [self.showFamiliesButton]
+
     def getScroll_y(self):
 
         return self.scroll_y
@@ -151,15 +157,13 @@ class ListScreen:
 
     def addRegion(self, region, focusObj):
 
-        if focusObj == region:
-            label = Label(f'{region.getRegionName()} ({(region.getCurrentTemperature())} °C)', 200, self.lineHeight, self.textFont, True, True)
-        else:
-            label = Label(f'{region.getRegionName()} ({(region.getCurrentTemperature())} °C)', 200, self.lineHeight, self.textFont, True)
+        self.regionButton = self.makeNewMultiButton(self.getListScreenButtons(), region.getRegionName())
 
-        r, g, b = region.getRegionColor()
-        label.makeTextGivenColor(r, g, b)
+        self.label = Label(f'{region.getRegionName()} ({(region.getCurrentTemperature())} °C)', 200, self.lineHeight, self.textFont, True, False, textColor=region.getRegionColor())
 
-        self.listScreenSurfaceObjsRect.append([self.listScreenSurface.blit(label.localSurface, (self.width * 0.10, self.lineHeight * self.writeLine + self.scroll_y)), region])
+        self.label.changeColorOnHover(self.regionButton.getOnHover())
+
+        self.listScreenSurfaceObjsRect.append([self.listScreenSurface.blit(self.label.localSurface, (self.width * 0.10, self.lineHeight * self.writeLine + self.scroll_y)), self.regionButton])
 
         self.writeLine += 1
 
@@ -244,25 +248,30 @@ class ListScreen:
     def addFamilies(self, families):
 
         self.label = Label(f'Families: ({len(families)})', 300, self.lineHeight, self.textFont, True)
-        self.listScreenSurfaceObjsRect.append([self.listScreenSurface.blit(self.label.localSurface, (self.width * 0.05, self.lineHeight * self.writeLine + self.scroll_y)), 'showFamilies'])
+        self.label.changeColorOnHover(self.showFamiliesButton.getOnHover())
+        self.listScreenSurfaceObjsRect.append([self.listScreenSurface.blit(self.label.localSurface, (self.width * 0.05, self.lineHeight * self.writeLine + self.scroll_y)), self.showFamiliesButton])
 
         self.writeLine += 1
 
-    def addFamily(self, family, focusObj):
+    def addFamily(self, family):
 
         screenYPosition = self.lineHeight * self.writeLine + self.scroll_y
 
-        text = ''.join([str(family.getFamilyName()), " (", str(family.getAliveMemberNumber()), ")", " - ", " Origin: ", str(family.getOriginRegion().getRegionName())])
+        text1 = f'{family.getFamilyName()} ({family.getAliveMemberNumber()}) - Origin: '
+        text2 = f'{family.getOriginRegion().getRegionName()}'
+        textColor1 = [text1, None]
+        textColor2 = [text2, family.getOriginRegion().getRegionColor()]
 
-        if focusObj == family:
-            label = Label(text, 300, self.lineHeight, self.textFont, True, True)
-        else:
-            label = Label(text, 300, self.lineHeight, self.textFont, True)
+        self.familyButton = self.makeNewMultiButton(self.getListScreenButtons(), family.getFamilyName())
+
+        self.familyLabel = Label(text1, 300, self.lineHeight, self.textFont, True, multiColor=True, multiColorText=[textColor1, textColor2])
+
+        self.familyLabel.changeColorOnHover(self.familyButton.getOnHover())
 
         if self.height >= screenYPosition:
-
-            self.listScreenSurfaceObjsRect.append([self.listScreenSurface.blit(label.localSurface, (self.width * 0.10, self.lineHeight * self.writeLine + self.scroll_y)), family])
+            self.listScreenSurfaceObjsRect.append([self.listScreenSurface.blit(self.familyLabel.localSurface, (self.width * 0.10, self.lineHeight * self.writeLine + self.scroll_y)), self.familyButton])
             self.writeLine += 1
+
 
     def addDeadFamilyPeople(self, family, focusObj):
 
@@ -348,3 +357,16 @@ class ListScreen:
 
         self.writeLine += 1
 
+    def makeNewMultiButton(self, buttonsList, newButtonName, shouldBeActive=False):
+
+        for button in buttonsList:
+            if button.getButtonName() == newButtonName:
+                return button
+        newButton = Button(newButtonName)
+        buttonsList.append(newButton)
+        if shouldBeActive:
+            newButton.setActiveStatus()
+        return newButton
+
+    def getListScreenButtons(self):
+        return self.listScreenButtons
