@@ -6,6 +6,7 @@ class Button:
 
         self.buttonName = buttonName
         self.buttonCategory = buttonCategory
+        self.buttonObject = None
         self.active = False
         self.onHover = False
         self.highlight = False
@@ -15,6 +16,12 @@ class Button:
 
     def getButtonCategory(self):
         return self.buttonCategory
+
+    def getButtonObject(self):
+        return self.buttonObject
+
+    def setButtonObject(self, newObj):
+        self.buttonObject = newObj
 
     def getButtonFlag(self):
         return self.active

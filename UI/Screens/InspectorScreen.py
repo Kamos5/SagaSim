@@ -7,6 +7,7 @@ from Person import Person
 from Region import Region
 from Settlements import Settlements
 from UI.Utils import Colors
+from UI.Utils.Button import Button
 from UI.Utils.Fonts import Fonts
 from UI.Utils.Label import Label
 from UI.Utils.MultiLineSurface import MultiLineSurface
@@ -34,6 +35,10 @@ class InspectorScreen:
 
         self.inspectorScreenSurface = pygame.Surface([self.width, self.height - self.heightOffSet])
         self.inspectorScreenSurfaceObjsRect = []
+
+        self.favoriteButton = None
+        self.familyTreeButton = None
+        self.inspectorScreenButtons = []
 
     def getScroll_y(self):
 
@@ -300,9 +305,14 @@ class InspectorScreen:
         label = Label("Name: " + str(object.getFirstName()), 500, self.lineHeight, self.textFont)
         self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding, self.lineHeight * self.writeLine + self.scroll_y))
 
-        label = Label("☆☆☆", 50, self.lineHeight, self.symbolFont, True)
-        label.changeColorBasedOnActive(object.isInFavorite)
-        self.inspectorScreenSurfaceObjsRect.append([self.inspectorScreenSurface.blit(label.localSurface, (self.width-400, self.lineHeight * self.writeLine + self.scroll_y)), 'Favorite', object])
+        self.favoriteButton = self.makeNewMultiButton(self.inspectorScreenButtons, object)
+
+        self.favoriteLabel = Label("☆☆☆", 50, self.lineHeight, self.symbolFont, True)
+
+        self.favoriteLabel.changeColorBasedOnActive(self.favoriteButton.getIsActive())
+        self.favoriteLabel.changeColorOnHover(self.favoriteButton.getOnHover())
+
+        self.inspectorScreenSurfaceObjsRect.append([self.inspectorScreenSurface.blit(self.favoriteLabel.localSurface, (self.width-400, self.lineHeight * self.writeLine + self.scroll_y)), self.favoriteButton])
         self.writeLine += 1
 
         label = Label("Last name: " + str(object.getLastName()), 500, self.lineHeight, self.textFont)
@@ -310,9 +320,16 @@ class InspectorScreen:
         self.writeLine += 1
         label = Label("Family name: " + str(object.getFamilyName()), 500, self.lineHeight, self.textFont, True)
         self.inspectorScreenSurfaceObjsRect.append([self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding, self.lineHeight * self.writeLine + self.scroll_y)), object.getFamilyObjectRef()])
-        label = Label("Show family tree", 150, self.lineHeight, self.textFont, True)
-        self.inspectorScreenSurfaceObjsRect.append([self.inspectorScreenSurface.blit(label.localSurface, (self.width - 150, self.lineHeight * self.writeLine + self.scroll_y)), 'FamilyTree', object])
+
+        self.familyTreeLabel = Label("Show family tree", 150, self.lineHeight, self.textFont, True)
+
+        self.familyTreeButton = self.makeNewMultiButton(self.inspectorScreenButtons, 'familyTreeButton')
+        self.familyTreeButton.setButtonObject(object)
+        self.familyTreeLabel.changeColorOnHover(self.familyTreeButton.getOnHover())
+
+        self.inspectorScreenSurfaceObjsRect.append([self.inspectorScreenSurface.blit(self.familyTreeLabel.localSurface, (self.width - 150, self.lineHeight * self.writeLine + self.scroll_y)), self.familyTreeButton])
         self.writeLine += 1
+
         label = Label("Day of birth: " + str(object.getDayOfBirth()), 500, self.lineHeight, self.textFont)
         self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding, self.lineHeight * self.writeLine + self.scroll_y))
         self.writeLine += 1
@@ -569,3 +586,15 @@ class InspectorScreen:
             # label = Label(str(liveEvent), 700, self.lineHeight, self.textFont)
             # self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding*2, self.lineHeight * self.writeLine + self.scroll_y))
             # self.writeLine += 1
+
+
+    def makeNewMultiButton(self, buttonsList, newButtonName, shouldBeActive=False):
+
+        for button in buttonsList:
+            if button.getButtonName() == newButtonName:
+                return button
+        newButton = Button(newButtonName)
+        buttonsList.append(newButton)
+        if shouldBeActive:
+            newButton.setActiveStatus()
+        return newButton

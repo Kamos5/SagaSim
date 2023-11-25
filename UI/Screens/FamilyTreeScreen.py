@@ -1,6 +1,7 @@
 import pygame
 
 import Enums
+from UI.Utils.Button import Button
 from UI.Utils.Fonts import Fonts
 from UI.Utils.Label import Label
 
@@ -27,6 +28,11 @@ class FamilyTreeScreen:
         self.familyTreeScreenSurface = pygame.Surface([self.width, self.height - self.heightOffSet])
         self.familyTreeScreenSurfaceObjsRect = []
 
+        self.upTreeButton = Button('UpTree')
+        self.downTreeButton = Button('DownTree')
+
+        self.familyTreeScreenButtons = [self.upTreeButton, self.downTreeButton]
+
     def getScroll_y(self):
 
         return self.scroll_y
@@ -51,10 +57,13 @@ class FamilyTreeScreen:
 
         localLabelSize = 350
 
-        label = Label("Down Family Tree (from parent to child)", localLabelSize, self.lineHeight, self.textFont, True, showDownTree)
-        self.familyTreeScreenSurfaceObjsRect.append([self.familyTreeScreenSurface.blit(label.localSurface, (self.leftPadding, self.lineHeight * self.writeLine + self.scroll_y)), "DownTree"])
-        label = Label("Up Family Tree (from child to parent)", localLabelSize, self.lineHeight, self.textFont, True, showUpTree)
-        self.familyTreeScreenSurfaceObjsRect.append([self.familyTreeScreenSurface.blit(label.localSurface, (self.width - localLabelSize - self.rightPadding, self.lineHeight * self.writeLine + self.scroll_y)), "UpTree"])
+        self.downTreeLabel = Label("Down Family Tree (from parent to child)", localLabelSize, self.lineHeight, self.textFont, True, showDownTree)
+        self.downTreeLabel.changeColorOnHover(self.downTreeButton.getOnHover())
+        self.familyTreeScreenSurfaceObjsRect.append([self.familyTreeScreenSurface.blit(self.downTreeLabel.localSurface, (self.leftPadding, self.lineHeight * self.writeLine + self.scroll_y)), self.downTreeButton])
+
+        self.upTreeLabel = Label("Up Family Tree (from child to parent)", localLabelSize, self.lineHeight, self.textFont, True, showUpTree)
+        self.upTreeLabel.changeColorOnHover(self.upTreeButton.getOnHover())
+        self.familyTreeScreenSurfaceObjsRect.append([self.familyTreeScreenSurface.blit(self.upTreeLabel.localSurface, (self.width - localLabelSize - self.rightPadding, self.lineHeight * self.writeLine + self.scroll_y)), self.upTreeButton])
         self.writeLine += 3
 
         if showUpTree:

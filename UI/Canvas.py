@@ -302,29 +302,34 @@ class Canvas:
                     #To offset position on main screen
                     if itemObj[0].collidepoint([mouseX-itemObjRectScreen.screenPosX, mouseY-itemObjRectScreen.screenPosY]):
 
-                        if itemObj[1] == 'Favorite' and itemObj[2] not in self.favorites:
-                            if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
-                                self.favorites.append(itemObj[2])
-                                itemObj[2].isInFavorite = True
-                                return True, pausedPressed, None
-                        if itemObj[1] == 'Favorite' and itemObj[2] in self.favorites:
-                            if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
-                                self.favorites.remove(itemObj[2])
-                                itemObj[2].isInFavorite = False
-                                return True, pausedPressed, None
-
-                        if itemObj[1] == 'FamilyTree':
+                        if itemObj[1] == self.inspectorScreen.familyTreeButton:
+                            itemObj[1].setOnHover()
                             if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                                 if not pausedPressed:
                                     pausedPressed = True
-                                self.showFamilyObj = itemObj[2]
+                                self.showFamilyObj = itemObj[1].getButtonObject()
                                 self.showFamilyScreen = True
                                 return True, pausedPressed, None
+
+                        if itemObj[1] == self.inspectorScreen.favoriteButton:
+                            itemObj[1].setOnHover()
+                            if itemObj[1].getButtonName() not in self.favorites:
+                                if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+                                    self.favorites.append(itemObj[1].getButtonName())
+                                    itemObj[1].isInFavorite = True
+                                    itemObj[1].changeActiveStatus()
+                                    return True, pausedPressed, None
+                            if itemObj[1].getButtonName() in self.favorites:
+                                if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+                                    self.favorites.remove(itemObj[1].getButtonName())
+                                    itemObj[1].isInFavorite = False
+                                    itemObj[1].changeActiveStatus()
+                                    return True, pausedPressed, None
 
                         if isinstance(itemObj[1], Button) and itemObj[1] in [self.listScreen.allButton, self.listScreen.familyAdultsButton, self.listScreen.familyKidsButton, self.listScreen.employedButton, self.listScreen.unemployedButton, self.listScreen.sickButton, self.listScreen.withLoversButton]:
                             self.listScreen.changeFamilyButtons(itemObj[1], event)
 
-                        if isinstance(itemObj[1], Button) and itemObj[1].getButtonName() == 'New World':
+                        if isinstance(itemObj[1], Button) and itemObj[1] == self.mainMenuScreen.newWorldButton:
                             itemObj[1].setOnHover()
                             if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                                 self.showMenu = False
@@ -343,14 +348,14 @@ class Canvas:
                         #     gameState.changeToSimulation()
                         #     return False, True, worldObj
 
-                        if isinstance(itemObj[1], Button) and itemObj[1].getButtonName() == 'Continue':
+                        if isinstance(itemObj[1], Button) and itemObj[1] == self.mainMenuScreen.continueButton:
                             itemObj[1].setOnHover()
                             if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                                 self.showMenu = False
                                 gameState.changeToSimulation()
                                 return False, True, None
 
-                        if isinstance(itemObj[1], Button) and itemObj[1].getButtonName() == 'Quit':
+                        if isinstance(itemObj[1], Button) and itemObj[1] == self.mainMenuScreen.quitButton:
                             itemObj[1].setOnHover()
                             if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                                 pygame.quit()
@@ -376,16 +381,23 @@ class Canvas:
 
                             return True, pausedPressed, None
 
-            if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1 and self.showFamilyScreen is True:
+            if self.showFamilyScreen is True:
                 mouseX, mouseY = pygame.mouse.get_pos()
                 for itemObj in itemsObj:
-                    if itemObj[0].collidepoint([mouseX - itemObjRectScreen.screenPosX, mouseY - itemObjRectScreen.screenPosY]):
-                        if itemObj[1] == 'UpTree':
-                            self.showDownTree = False
-                            self.showUpTree = True
-                        if itemObj[1] == 'DownTree':
-                            self.showUpTree = False
-                            self.showDownTree = True
+                    if isinstance(itemObj[1], Button):
+                        itemObj[1].resetOnHover()
+
+                        if itemObj[0].collidepoint([mouseX - itemObjRectScreen.screenPosX, mouseY - itemObjRectScreen.screenPosY]):
+                            itemObj[1].setOnHover()
+                            if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1 and itemObj[1] == self.familyTreeScreen.upTreeButton:
+                                self.showDownTree = False
+                                self.showUpTree = True
+                                itemObj[1].changeActiveStatus()
+
+                            if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1 and itemObj[1] == self.familyTreeScreen.downTreeButton:
+                                self.showUpTree = False
+                                self.showDownTree = True
+                                itemObj[1].changeActiveStatus()
 
         if self.showPlots is True:
             for itemObjRect, itemObjRectScreen in zip(itemsObjRectArray, itemsObjRectScreensArray):
