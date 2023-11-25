@@ -75,20 +75,20 @@ class InspectorScreen:
 
     def addGeneralInspectorFields(self, object):
 
-        if isinstance(object, Region):
-            self.addInspectorForRegion(object)
+            if isinstance(object, Region):
+                self.addInspectorForRegion(object)
 
-        elif isinstance(object, Settlements):
-            self.addInspectorForSettlements(object)
+            elif isinstance(object, Settlements):
+                self.addInspectorForSettlements(object)
 
-        elif isinstance(object, Family):
-            self.addInspectorForFamily(object)
+            elif isinstance(object, Family):
+                self.addInspectorForFamily(object)
 
-        elif isinstance(object, Person):
-            self.addInspectorForPerson(object)
+            elif isinstance(object, Person):
+                self.addInspectorForPerson(object)
 
-        elif isinstance(object, House):
-            self.addInspectorForHouses(object)
+            elif isinstance(object, House):
+                self.addInspectorForHouses(object)
 
 
     def addInspectorForRegion(self, object):

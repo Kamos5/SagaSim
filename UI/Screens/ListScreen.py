@@ -47,6 +47,7 @@ class ListScreen:
         self.showFamiliesButton = Button('showFamilies')
 
         self.regionButton = None
+        self.settlementButton = None
         self.familyButton = None
         self.listScreenButtons = [self.showFamiliesButton]
 
@@ -185,14 +186,18 @@ class ListScreen:
 
     def addSettlement(self, settlement, focusObj):
 
+        self.settlementButton = self.makeNewMultiButton(self.getListScreenButtons(), settlement.getSettlementName())
+
         text = ''.join([str(settlement.getSettlementName()), " (", str(settlement.getSettlementType().value), ")", " - alive population (", str(settlement.getPopulation()), ")"])
 
         if focusObj == settlement:
-                label = Label(text, 400, self.lineHeight, self.textFont, True, True)
+            self.settlementLabel = Label(text, 400, self.lineHeight, self.textFont, True, True)
         else:
-            label = Label(text, 400, self.lineHeight, self.textFont, True)
+            self.settlementLabel = Label(text, 400, self.lineHeight, self.textFont, True)
 
-        self.listScreenSurfaceObjsRect.append([self.listScreenSurface.blit(label.localSurface, ((self.width * 0.25), self.lineHeight * self.writeLine + self.scroll_y)), settlement])
+        self.settlementLabel.changeColorOnHover(self.settlementButton.getOnHover())
+
+        self.listScreenSurfaceObjsRect.append([self.listScreenSurface.blit(self.settlementLabel.localSurface, ((self.width * 0.25), self.lineHeight * self.writeLine + self.scroll_y)), self.settlementButton])
 
         self.writeLine += 1
 
@@ -253,7 +258,7 @@ class ListScreen:
 
         self.writeLine += 1
 
-    def addFamily(self, family):
+    def addFamily(self, family, focusObj):
 
         screenYPosition = self.lineHeight * self.writeLine + self.scroll_y
 
@@ -264,7 +269,11 @@ class ListScreen:
 
         self.familyButton = self.makeNewMultiButton(self.getListScreenButtons(), family.getFamilyName())
 
-        self.familyLabel = Label(text1, 300, self.lineHeight, self.textFont, True, multiColor=True, multiColorText=[textColor1, textColor2])
+        if focusObj == family:
+            self.familyLabel = Label(text1, 300, self.lineHeight, self.textFont, True, True, multiColor=True, multiColorText=[textColor1, textColor2])
+        else:
+            self.familyLabel = Label(text1, 300, self.lineHeight, self.textFont, True, multiColor=True, multiColorText=[textColor1, textColor2])
+
 
         self.familyLabel.changeColorOnHover(self.familyButton.getOnHover())
 
@@ -298,20 +307,24 @@ class ListScreen:
         maritalStatus = str(person.maritalStatus.value)
         text = ''.join([firstName, " ",  occupationName, " ", lastName, " Age: ", age, " ", maritalStatus])
 
+        self.settlerButton = self.makeNewMultiButton(self.getListScreenButtons(), person)
+
         if focusObj == person:
-            label = Label(text, 400, self.lineHeight, self.textFont, True, True)
+            self.settlerLabel = Label(text, 400, self.lineHeight, self.textFont, True, True)
 
         else:
-            label = Label(text, 400, self.lineHeight, self.textFont, True)
+            self.settlerLabel = Label(text, 400, self.lineHeight, self.textFont, True)
 
         # if person.getSex() == Enums.Sexes.MALE:
         #     label.makeTextGivenColor(50, 150, 150)
         # if person.getSex() == Enums.Sexes.FEMALE:
         #     label.makeTextGivenColor(150, 50, 150)
 
+        self.settlerLabel.changeColorOnHover(self.settlerButton.getOnHover())
+
         if self.textSearchField is not None:
             if self.textSearchField.getText().upper() in person.getLastName().upper() or self.textSearchField.getText().lower() in person.getLastName().lower() or self.textSearchField.getText().upper() in person.getFirstName().upper() or self.textSearchField.getText().lower() in person.getFirstName().lower():
-                self.listScreenSurfaceObjsRect.append([self.listScreenSurface.blit(label.localSurface, (self.width * 0.30, self.lineHeight * self.writeLine + self.scroll_y)), person])
+                self.listScreenSurfaceObjsRect.append([self.listScreenSurface.blit(self.settlerLabel.localSurface, (self.width * 0.30, self.lineHeight * self.writeLine + self.scroll_y)), person])
 
                 self.writeLine += 1
 

@@ -8,6 +8,7 @@ class Button:
         self.buttonCategory = buttonCategory
         self.active = False
         self.onHover = False
+        self.highlight = False
 
     def getButtonName(self):
         return self.buttonName
@@ -38,3 +39,15 @@ class Button:
 
     def resetOnHover(self):
         self.onHover = False
+
+    def setHighlight(self):
+        self.highlight = True
+
+    def switchHighlight(self):
+        self.highlight = not self.highlight
+
+    def getHighlight(self):
+        return self.highlight
+
+    def resetHighlight(self):
+        self.highlight = False

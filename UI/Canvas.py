@@ -193,14 +193,15 @@ class Canvas:
                         self.listScreen.addProvince(province, self.lastFocusObj)
                         for settlement in province.getSettlements():
                             self.listScreen.addSettlement(settlement, self.lastFocusObj)
-                            if settlement.getUIExpand():
-                                self.filterBasedOnParamSettler(settlement.getResidents(), self.listScreen)
+                            for listScreenButton in self.listScreen.getListScreenButtons():
+                                if settlement.getSettlementName() == listScreenButton.getButtonName() and listScreenButton.getIsActive():
+                                    self.filterBasedOnParamSettler(settlement.getResidents(), self.listScreen)
 
         self.listScreen.addFamilies(world.getFamilies())
 
         if self.listScreen.showFamiliesButton.getIsActive():
             for family in world.getFamilies():
-                self.listScreen.addFamily(family)
+                self.listScreen.addFamily(family, self.lastFocusObj)
                 for listScreenButton in self.listScreen.getListScreenButtons():
                     if family.getFamilyName() == listScreenButton.getButtonName() and listScreenButton.getIsActive():
                         self.filterBasedOnParamPerson(family.getAliveMembersList(), self.listScreen)
