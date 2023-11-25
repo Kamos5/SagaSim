@@ -1,5 +1,9 @@
 from enum import Enum
 
+class Colours(Enum):
+
+    BLACK = (10, 10, 10)
+
 class Months (Enum):
 
     JANUARY = 1, 'January', 31, #31
@@ -58,11 +62,11 @@ class CauseOfDeath(Enum):
 
 class HairColor(Enum):
     BLACK = 5, 'black', (0, 0, 0)
-    BROWN = 4, 'brown', (84,38,4)
-    YELLOW = 3, 'yellow', (255,215,0)
-    RED = 2, 'red', (178,34,34)
-    WHITE = 1, 'white', (255,250,240)
-    GRAY = 0, 'gray', (166,166,166)
+    BROWN = 4, 'brown', (84, 38, 4)
+    YELLOW = 3, 'yellow', (255, 215, 0)
+    RED = 2, 'red', (178, 34, 34)
+    WHITE = 1, 'white', (255, 250, 240)
+    GRAY = 0, 'gray', (166, 166, 166)
 
 
 class EyeColor(Enum):

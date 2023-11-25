@@ -78,9 +78,9 @@ class Label2:
             if text[1] == None:
                 text[1] = self.textColor
             textSurface = self.font.render(text[0], True, text[1])
-            self.localSurface.blit(textSurface, (self.borderSize * 5+offset, self.y))
+            self.localSurface.blit(textSurface, (self.horizontalMargin+self.borderSize+offset, self.verticalMargin+self.borderSize))
             offset += textSurface.get_width()
-            newText += text[0] + ' '
+            newText += text[0] + ''
 
         self.text = newText.strip()
 

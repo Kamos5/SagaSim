@@ -1,5 +1,6 @@
 ﻿import pygame
 
+import Enums
 from UI.Utils.Button import Button
 from UI.Utils.Fonts import Fonts
 from UI.Utils.Label2 import Label2
@@ -54,7 +55,13 @@ class MainMenuScreen:
 
         self.writeLine += 5
 
-        self.mainMenuLabel2 = Label2(f'New World', self.titleButtonFont, True, borderSize=3)
+
+        text1 = f'N'
+        text2 = f'ew World'
+        textColor1 = [text1, (50, 150, 50)]
+        textColor2 = [text2, None]
+
+        self.mainMenuLabel2 = Label2(f'New World', self.titleButtonFont, True, borderSize=3, multiColor=True, multiColorText=[textColor1, textColor2])
         self.mainMenuLabel2.setActiveRectColor(10, 50, 100)
         self.mainMenuLabel2.setActiveBorderColor(50, 50, 50)
         self.mainMenuLabel2.changeColorOnHover(self.newWorldButton.getOnHover())
@@ -84,7 +91,12 @@ class MainMenuScreen:
 
             self.writeLine += 4
 
-            self.mainMenuLabel5 = Label2(f'Continue', self.titleButtonFont, True, borderSize=3)
+            text1 = f'C'
+            text2 = f'ontinue'
+            textColor1 = [text1, (50, 150, 50)]
+            textColor2 = [text2, None]
+
+            self.mainMenuLabel5 = Label2(f'Continue', self.titleButtonFont, True, borderSize=3, multiColor=True, multiColorText=[textColor1, textColor2])
             self.mainMenuLabel5.setActiveRectColor(100, 30, 100)
             self.mainMenuLabel5.setActiveBorderColor(50, 50, 50)
             self.mainMenuLabel5.changeColorOnHover(self.continueButton.getOnHover())
@@ -93,7 +105,12 @@ class MainMenuScreen:
 
         self.writeLine += 4
 
-        self.mainMenuLabel6 = Label2(f'Quit', self.titleButtonFont, True, borderSize=3)
+        text1 = f'Q'
+        text2 = f'uit'
+        textColor1 = [text1, (50, 150, 50)]
+        textColor2 = [text2, None]
+
+        self.mainMenuLabel6 = Label2(f'Quit', self.titleButtonFont, True, borderSize=3, multiColor=True, multiColorText=[textColor1, textColor2])
         self.mainMenuLabel6.setActiveRectColor(100, 10, 10)
         self.mainMenuLabel6.setActiveBorderColor(50, 50, 50)
         self.mainMenuLabel6.changeColorOnHover(self.quitButton.getOnHover())

@@ -381,6 +381,22 @@ class Canvas:
 
                             return True, pausedPressed, None
 
+            if self.showMenu:
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_n:
+                        self.showMenu = False
+                        gameState.changeToInit()
+                        return False, True, None
+
+                    if gameState.isMenuState() and event.key == pygame.K_c:
+                        self.showMenu = False
+                        gameState.changeToSimulation()
+                        return False, True, None
+
+                    if event.key == pygame.K_q:
+                        pygame.quit()
+                        exit()
+
             if self.showFamilyScreen is True:
                 mouseX, mouseY = pygame.mouse.get_pos()
                 for itemObj in itemsObj:
