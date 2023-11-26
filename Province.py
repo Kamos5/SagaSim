@@ -159,6 +159,9 @@ class Province:
 
         self.isIsland = isIsland
 
+    def getWorldMap(self):
+        return self.worldMap
+
     def getSettlementFromIndex(self, index):
         return self.settlements[index]
 

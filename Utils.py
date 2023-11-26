@@ -572,31 +572,34 @@ def checkForDislikedTraisInPerson2(person, person2):
 
     return dislikedTraites
 
-def getTemperatureBasedOnDay(day):
+def getTemperatureBasedOnDay(day, climateOffsetModifier=0):
 
     daysInYear = 365
 
     offSetForStartingDay = 112
 
-    basicMinTemperature = -10
+    basicMinTemperature = 10
     basicMaxTemperature = 30
 
-    noiseLevel = 3
+    # <0,1> - based on cordX: lower the colder
+    climateOffset = -1 * (1 - climateOffsetModifier) * 20   # <0,20>
+
+    noiseLevel = 5
 
     dayInRads = (day-offSetForStartingDay) * 360 / daysInYear
 
     rawResult = math.sin(math.radians(dayInRads))  # <-1;1>
 
     rawResultNormalized = (rawResult + 1) / 2  # <0;1>
-    basicMaxTemperatureNormalized = basicMaxTemperature - basicMinTemperature  # <40>
+    basicMaxTemperatureNormalized = basicMaxTemperature - basicMinTemperature  # <20>
 
-    properTemperatureNormalized = rawResultNormalized * basicMaxTemperatureNormalized   # <0;40>
+    properTemperatureNormalized = rawResultNormalized * basicMaxTemperatureNormalized   # <0;20>
 
-    idealTemperature = properTemperatureNormalized + basicMinTemperature  # <-10;30>
+    idealTemperature = properTemperatureNormalized + basicMinTemperature  # <10;30>
 
-    noiseOffset = randomRange(-noiseLevel, noiseLevel)  # <-3;3>
+    noiseOffset = randomRange(-noiseLevel, noiseLevel)  # <-5;5>
 
-    endTemperature = round(idealTemperature + noiseOffset)  # <-13;33>
+    endTemperature = round(idealTemperature + noiseOffset + climateOffset)  # <-15;35>
 
     return endTemperature
 

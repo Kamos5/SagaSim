@@ -566,6 +566,8 @@ class World:
                 notClear = True
                 settlementCord = (0, 0, 0)
                 while notClear:
+
+                    # TODO TU JEST JAKIŚ BŁĄD IndexError: list index out of range przy generacji (pewnie prowincji nie ma, sprawdzić)
                     settlementCord = Utils.randomFromCollection(list(newSettlement.getProvince().getInnerCords()))
                     if settlementCord not in newSettlement.getProvince().getCordsUsed():
                         notClear = False
@@ -763,8 +765,9 @@ class World:
                         province.setWeather(seasonWeathers.EXTREME)
                         province.resetDaysSinceWeatherChange()
                         weatherEvent(province, self)
-
-                province.setCurrentTemperature(Utils.getTemperatureBasedOnDay(self.getDayOfTheYear()) + province.getWeather().value[4])
+                middleCordX,middleCordY = province.getMiddleCords()
+                print(f'{province.getName()} {round(middleCordY / province.getWorldMap().getHeight(), 2)}')
+                province.setCurrentTemperature(Utils.getTemperatureBasedOnDay(self.getDayOfTheYear(), climateOffsetModifier=round(middleCordY / province.getWorldMap().getHeight(), 2)) + province.getWeather().value[4])
 
     def makeHistory(self):
 
