@@ -191,11 +191,13 @@ class Canvas:
                     self.listScreen.addProvinces(region, self.lastFocusObj)
                     for province in region.getProvinces():
                         self.listScreen.addProvince(province, self.lastFocusObj)
-                        for settlement in province.getSettlements():
-                            self.listScreen.addSettlement(settlement, self.lastFocusObj)
-                            for listScreenButton in self.listScreen.getListScreenButtons():
-                                if settlement.getSettlementName() == listScreenButton.getButtonName() and listScreenButton.getIsActive():
-                                    self.filterBasedOnParamSettler(settlement.getResidents(), self.listScreen)
+                        for listScreenButton in self.listScreen.getListScreenButtons():
+                            if province == listScreenButton.getButtonName() and listScreenButton.getIsActive():
+                                for settlement in province.getSettlements():
+                                    self.listScreen.addSettlement(settlement, self.lastFocusObj)
+                                    for listScreenButton in self.listScreen.getListScreenButtons():
+                                        if settlement.getSettlementName() == listScreenButton.getButtonName() and listScreenButton.getIsActive():
+                                            self.filterBasedOnParamSettler(settlement.getResidents(), self.listScreen)
 
         self.listScreen.addFamilies(world.getFamilies())
 
@@ -359,7 +361,10 @@ class Canvas:
                                 itemObj[1].setUIExpand(not itemObj[1].getUIExpand())
 
                         if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
-                            self.focusObj.append(itemObj[1])
+                            if isinstance(itemObj[1], Button):
+                                self.focusObj.append(itemObj[1].getButtonName())
+                            else:
+                                self.focusObj.append(itemObj[1])
 
                             if isinstance(itemObj[1], Feature):
                                  self.focusObj.pop()

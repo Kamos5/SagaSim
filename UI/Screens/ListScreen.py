@@ -47,6 +47,7 @@ class ListScreen:
         self.showFamiliesButton = Button('showFamilies')
 
         self.regionButton = None
+        self.provinceButton = None
         self.settlementButton = None
         self.familyButton = None
         self.listScreenButtons = [self.showFamiliesButton]
@@ -178,9 +179,13 @@ class ListScreen:
 
     def addProvince(self, province, focusObj):
 
-        label = Label(f'{province.getName()} ({(province.getCurrentTemperature())} °C)', 200, self.lineHeight, self.textFont)
+        self.provinceButton = self.makeNewMultiButton(self.getListScreenButtons(), province)
 
-        self.listScreenSurface.blit(label.localSurface, (self.width * 0.20, self.lineHeight * self.writeLine + self.scroll_y))
+        self.provinceLabel = Label(f'{province.getName()} ({(province.getCurrentTemperature())} °C)', 200, self.lineHeight, self.textFont)
+
+        self.provinceLabel.changeColorOnHover(self.provinceButton.getOnHover())
+
+        self.listScreenSurfaceObjsRect.append([self.listScreenSurface.blit(self.provinceLabel.localSurface, (self.width * 0.20, self.lineHeight * self.writeLine + self.scroll_y)), self.provinceButton])
 
         self.writeLine += 1
 

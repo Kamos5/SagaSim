@@ -4,6 +4,7 @@ import Enums
 from Family import Family
 from House import House
 from Person import Person
+from Province import Province
 from Region import Region
 from Settlements import Settlements
 from UI.Utils import Colors
@@ -83,6 +84,9 @@ class InspectorScreen:
             if isinstance(object, Region):
                 self.addInspectorForRegion(object)
 
+            if isinstance(object, Province):
+                self.addInspectorForProvince(object)
+
             elif isinstance(object, Settlements):
                 self.addInspectorForSettlements(object)
 
@@ -115,6 +119,27 @@ class InspectorScreen:
                 label = Label("Settlements name: " + settlement.getSettlementName(), 500, self.lineHeight, self.textFont, True)
                 self.inspectorScreenSurfaceObjsRect.append([self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding*4, self.lineHeight * self.writeLine + self.scroll_y)), settlement])
                 self.writeLine += 1
+
+        self.writeLine = SingleLineSurface("Events:", 500, self.lineHeight, self.textFont, self.leftPadding, self.lineHeight * self.writeLine + self.scroll_y, self.inspectorScreenSurface, self.writeLine)
+        for liveEvent in object.getEvent():
+
+            self.writeLine = MultiLineSurface(str(liveEvent), 500, self.lineHeight, self.textFont, self.leftPadding*2, self.lineHeight * self.writeLine + self.scroll_y, self.inspectorScreenSurface, self.writeLine)
+
+    def addInspectorForProvince(self, object):
+
+        label = Label("Province name: " + object.getName(), 500, self.lineHeight, self.textFont)
+        self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding*2, self.lineHeight * self.writeLine + self.scroll_y))
+        self.writeLine += 1
+        label = Label("Last weather: " + object.getWeather().value[0], 500, self.lineHeight, self.textFont)
+        self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding * 2, self.lineHeight * self.writeLine + self.scroll_y))
+        self.writeLine += 1
+        label = Label("Settlements:", 500, self.lineHeight, self.textFont)
+        self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding*2, self.lineHeight * self.writeLine + self.scroll_y))
+        self.writeLine += 1
+        for settlement in object.getSettlements():
+            label = Label("Settlements name: " + settlement.getSettlementName(), 500, self.lineHeight, self.textFont, True)
+            self.inspectorScreenSurfaceObjsRect.append([self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding*4, self.lineHeight * self.writeLine + self.scroll_y)), settlement])
+            self.writeLine += 1
 
         self.writeLine = SingleLineSurface("Events:", 500, self.lineHeight, self.textFont, self.leftPadding, self.lineHeight * self.writeLine + self.scroll_y, self.inspectorScreenSurface, self.writeLine)
         for liveEvent in object.getEvent():
