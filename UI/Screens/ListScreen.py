@@ -160,7 +160,7 @@ class ListScreen:
 
         self.regionButton = self.makeNewMultiButton(self.getListScreenButtons(), region.getRegionName())
 
-        self.label = Label(f'{region.getRegionName()} ({(region.getCurrentTemperature())} °C)', 200, self.lineHeight, self.textFont, True, False, textColor=region.getRegionColor())
+        self.label = Label(f'{region.getRegionName()}', 200, self.lineHeight, self.textFont, True, False, textColor=region.getRegionColor())
 
         self.label.changeColorOnHover(self.regionButton.getOnHover())
 
@@ -178,7 +178,7 @@ class ListScreen:
 
     def addProvince(self, province, focusObj):
 
-        label = Label(f'{province.getName()}', 200, self.lineHeight, self.textFont)
+        label = Label(f'{province.getName()} ({(province.getCurrentTemperature())} °C)', 200, self.lineHeight, self.textFont)
 
         self.listScreenSurface.blit(label.localSurface, (self.width * 0.20, self.lineHeight * self.writeLine + self.scroll_y))
 

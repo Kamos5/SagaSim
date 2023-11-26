@@ -46,6 +46,10 @@ class Region():
     def getWeather(self):
         return self.weather
 
+    def setWeather(self, newWeater):
+        self.weatherHistory.append(newWeater.value[1])
+        self.weather = newWeater
+
     def getRegionCulture(self):
         return self.regionCulture
 
@@ -57,10 +61,6 @@ class Region():
 
     def setRegionNumber(self, number):
         self.regionNumber = number
-
-    def setWeather(self, newWeater):
-        self.weatherHistory.append(newWeater.value[1])
-        self.weather = newWeater
 
     def setRegionColor(self, color):
         self.regionColor = color

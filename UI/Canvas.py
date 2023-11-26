@@ -336,18 +336,6 @@ class Canvas:
                                 gameState.changeToInit()
                                 return False, True, None
 
-                        # if itemObj[1] == 'Save World':
-                        #     self.showMenu = False
-                        #     WorldFunctions.saveWorld(worldObj)
-                        #     gameState.changeToSimulation()
-                        #     return False, True, None
-                        #
-                        # if itemObj[1] == 'Load World':
-                        #     self.showMenu = False
-                        #     WorldFunctions.loadWorld(worldObj)
-                        #     gameState.changeToSimulation()
-                        #     return False, True, worldObj
-
                         if isinstance(itemObj[1], Button) and itemObj[1] == self.mainMenuScreen.continueButton:
                             itemObj[1].setOnHover()
                             if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:

@@ -11,7 +11,7 @@ from PersonLifeEventsHistory import adulthoodReached
 from Region import Region
 import RegionNameGenerator as RNG
 import Parameters
-from RegionLifeEventsHistory import weatherEvent
+from ProvinceLifeEventsHistory import weatherEvent
 from WorldMap import WorldMap
 from WorldMapObjClass import WorldMapObjClass
 
@@ -731,40 +731,40 @@ class World:
 
         seasonWeathers = Enums.weatherStatus.NORMAL
         for region in self.getRegions():
+            for province in region.getProvinces():
+                province.increaseDaysSinceWeatherChangeCounter()
 
-            region.increaseDaysSinceWeatherChangeCounter()
+                if (self.getMonth() == Enums.Months.DECEMBER) | (self.getMonth() == Enums.Months.JANUARY) | (self.getMonth() == Enums.Months.FEBRUARY):
+                    seasonWeathers = Enums.weatherBlizzard
+                if (self.getMonth() == Enums.Months.MARCH) | (self.getMonth() == Enums.Months.APRIL) | (self.getMonth() == Enums.Months.MAY):
+                    seasonWeathers = Enums.weatherFloods
+                if (self.getMonth() == Enums.Months.JUNE) | (self.getMonth() == Enums.Months.JULY) | (self.getMonth() == Enums.Months.AUGUST):
+                    seasonWeathers = Enums.weatherDroughts
+                if (self.getMonth() == Enums.Months.SEPTEMBER) | (self.getMonth() == Enums.Months.OCTOBER) | (self.getMonth() == Enums.Months.NOVEMBER):
+                    seasonWeathers = Enums.weatherWildFire
 
-            if (self.getMonth() == Enums.Months.DECEMBER) | (self.getMonth() == Enums.Months.JANUARY) | (self.getMonth() == Enums.Months.FEBRUARY):
-                seasonWeathers = Enums.weatherBlizzard
-            if (self.getMonth() == Enums.Months.MARCH) | (self.getMonth() == Enums.Months.APRIL) | (self.getMonth() == Enums.Months.MAY):
-                seasonWeathers = Enums.weatherFloods
-            if (self.getMonth() == Enums.Months.JUNE) | (self.getMonth() == Enums.Months.JULY) | (self.getMonth() == Enums.Months.AUGUST):
-                seasonWeathers = Enums.weatherDroughts
-            if (self.getMonth() == Enums.Months.SEPTEMBER) | (self.getMonth() == Enums.Months.OCTOBER) | (self.getMonth() == Enums.Months.NOVEMBER):
-                seasonWeathers = Enums.weatherWildFire
+                if province.getDaysSinceWeatherChange() >= province.getWeather().value[3]:
+                    weatherPattern = Utils.randomRange(0, 10000)
+                    if weatherPattern <= 9950:
+                        province.setWeather(Enums.weatherStatus.NORMAL)
+                    elif 9980 >= weatherPattern > 9950:
+                        province.setWeather(seasonWeathers.MILD)
+                        province.resetDaysSinceWeatherChange()
+                        weatherEvent(province, self)
+                    elif 9995 >= weatherPattern > 9980:
+                        province.setWeather(seasonWeathers.MEDIUM)
+                        province.resetDaysSinceWeatherChange()
+                        weatherEvent(province, self)
+                    elif 9998 >= weatherPattern > 9995:
+                        province.setWeather(seasonWeathers.STRONG)
+                        province.resetDaysSinceWeatherChange()
+                        weatherEvent(province, self)
+                    else:
+                        province.setWeather(seasonWeathers.EXTREME)
+                        province.resetDaysSinceWeatherChange()
+                        weatherEvent(province, self)
 
-            if region.getDaysSinceWeatherChange() >= region.getWeather().value[3]:
-                weatherPattern = Utils.randomRange(0, 10000)
-                if weatherPattern <= 9950:
-                    region.setWeather(Enums.weatherStatus.NORMAL)
-                elif 9980 >= weatherPattern > 9950:
-                    region.setWeather(seasonWeathers.MILD)
-                    region.resetDaysSinceWeatherChange()
-                    weatherEvent(region, self)
-                elif 9995 >= weatherPattern > 9980:
-                    region.setWeather(seasonWeathers.MEDIUM)
-                    region.resetDaysSinceWeatherChange()
-                    weatherEvent(region, self)
-                elif 9998 >= weatherPattern > 9995:
-                    region.setWeather(seasonWeathers.STRONG)
-                    region.resetDaysSinceWeatherChange()
-                    weatherEvent(region, self)
-                else:
-                    region.setWeather(seasonWeathers.EXTREME)
-                    region.resetDaysSinceWeatherChange()
-                    weatherEvent(region, self)
-
-            region.setCurrentTemperature(Utils.getTemperatureBasedOnDay(self.getDayOfTheYear()) + region.getWeather().value[4])
+                province.setCurrentTemperature(Utils.getTemperatureBasedOnDay(self.getDayOfTheYear()) + province.getWeather().value[4])
 
     def makeHistory(self):
 

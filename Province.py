@@ -25,6 +25,12 @@ class Province:
         self.isIsland = False
         self.worldMap = worldMap
         self.cordsUsed = set()
+        self.weather = Enums.weatherStatus.NORMAL
+        self.daysSinceLastWeatherChange = 0
+        self.events = []
+        self.weatherHistory = []
+        self.currentTemperature = 0
+        self.temperatureHistory = []
 
     def setName(self, name):
         self.name = name
@@ -249,3 +255,46 @@ class Province:
         self.activeSettlements -= 1
     def setActiveSettlements(self, newActiveSettlements):
         self.activeSettlements = newActiveSettlements
+
+    def getWeather(self):
+        return self.weather
+
+    def setWeather(self, newWeater):
+        self.weatherHistory.append(newWeater.value[1])
+        self.weather = newWeater
+
+    def setDaysSinceWeatherChangeCounter(self, days):
+        self.daysSinceLastWeatherChange = days
+
+    def increaseDaysSinceWeatherChangeCounter(self):
+        self.daysSinceLastWeatherChange += 1
+
+    def decreaseDaysSinceWeatherChangeCounter(self):
+
+        if self.daysSinceLastWeatherChange > 0:
+            self.daysSinceLastWeatherChange -= 1
+
+    def getDaysSinceWeatherChange(self):
+        return self.daysSinceLastWeatherChange
+
+    def resetDaysSinceWeatherChange(self):
+        self.daysSinceLastWeatherChange = 0
+
+    def getWeatherHistory(self):
+        return self.weatherHistory
+
+    def getEvent(self):
+        return self.events
+
+    def getCurrentTemperature(self):
+        return self.currentTemperature
+
+    def setCurrentTemperature(self, newTemp):
+        self.currentTemperature = newTemp
+        self.addendTemperatureHistory(newTemp)
+
+    def getTemperatureHistory(self):
+        return self.temperatureHistory
+
+    def addendTemperatureHistory(self, temp):
+        self.temperatureHistory.append(temp)
