@@ -196,7 +196,7 @@ class Canvas:
                                 for settlement in province.getSettlements():
                                     self.listScreen.addSettlement(settlement, self.lastFocusObj)
                                     for listScreenButton in self.listScreen.getListScreenButtons():
-                                        if settlement.getSettlementName() == listScreenButton.getButtonName() and listScreenButton.getIsActive():
+                                        if settlement == listScreenButton.getButtonName() and listScreenButton.getIsActive():
                                             self.filterBasedOnParamSettler(settlement.getResidents(), self.listScreen)
 
         self.listScreen.addFamilies(world.getFamilies())

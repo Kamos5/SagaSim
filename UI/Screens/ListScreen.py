@@ -181,8 +181,10 @@ class ListScreen:
 
         self.provinceButton = self.makeNewMultiButton(self.getListScreenButtons(), province)
 
-        self.provinceLabel = Label(f'{province.getName()} ({(province.getCurrentTemperature())} °C)', 200, self.lineHeight, self.textFont)
-
+        if focusObj == province:
+            self.provinceLabel = Label(f'{province.getName()} ({(province.getCurrentTemperature())} °C)', 200, self.lineHeight, self.textFont, True, True)
+        else:
+            self.provinceLabel = Label(f'{province.getName()} ({(province.getCurrentTemperature())} °C)', 200, self.lineHeight, self.textFont, True)
         self.provinceLabel.changeColorOnHover(self.provinceButton.getOnHover())
 
         self.listScreenSurfaceObjsRect.append([self.listScreenSurface.blit(self.provinceLabel.localSurface, (self.width * 0.20, self.lineHeight * self.writeLine + self.scroll_y)), self.provinceButton])
@@ -191,7 +193,7 @@ class ListScreen:
 
     def addSettlement(self, settlement, focusObj):
 
-        self.settlementButton = self.makeNewMultiButton(self.getListScreenButtons(), settlement.getSettlementName())
+        self.settlementButton = self.makeNewMultiButton(self.getListScreenButtons(), settlement)
 
         text = ''.join([str(settlement.getSettlementName()), " (", str(settlement.getSettlementType().value), ")", " - alive population (", str(settlement.getPopulation()), ")"])
 
