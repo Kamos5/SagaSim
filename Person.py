@@ -98,7 +98,6 @@ class Person:
         self.currentDiseases = []
         self.currentInjuries = []
         self.infections = []
-        self.isInFavorite = False
         self.skills = Skills.Skills()
         pass
 

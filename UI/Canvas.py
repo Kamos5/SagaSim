@@ -191,12 +191,12 @@ class Canvas:
                     self.listScreen.addProvinces(region, self.lastFocusObj)
                     for province in region.getProvinces():
                         self.listScreen.addProvince(province, self.lastFocusObj)
-                        for listScreenButton in self.listScreen.getListScreenButtons():
-                            if province == listScreenButton.getButtonName() and listScreenButton.getIsActive():
+                        for listScreenButton2 in self.listScreen.getListScreenButtons():
+                            if province == listScreenButton2.getButtonName() and listScreenButton2.getIsActive():
                                 for settlement in province.getSettlements():
                                     self.listScreen.addSettlement(settlement, self.lastFocusObj)
-                                    for listScreenButton in self.listScreen.getListScreenButtons():
-                                        if settlement == listScreenButton.getButtonName() and listScreenButton.getIsActive():
+                                    for listScreenButton3 in self.listScreen.getListScreenButtons():
+                                        if settlement == listScreenButton3.getButtonName() and listScreenButton3.getIsActive():
                                             self.filterBasedOnParamSettler(settlement.getResidents(), self.listScreen)
 
         self.listScreen.addFamilies(world.getFamilies())
@@ -303,7 +303,6 @@ class Canvas:
 
                     #To offset position on main screen
                     if itemObj[0].collidepoint([mouseX-itemObjRectScreen.screenPosX, mouseY-itemObjRectScreen.screenPosY]):
-
                         if itemObj[1] == self.inspectorScreen.familyTreeButton:
                             itemObj[1].setOnHover()
                             if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
@@ -315,16 +314,13 @@ class Canvas:
 
                         if itemObj[1] == self.inspectorScreen.favoriteButton:
                             itemObj[1].setOnHover()
-                            if itemObj[1].getButtonName() not in self.favorites:
-                                if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+                            if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+                                if itemObj[1].getButtonName() not in self.favorites:
                                     self.favorites.append(itemObj[1].getButtonName())
-                                    itemObj[1].isInFavorite = True
                                     itemObj[1].changeActiveStatus()
                                     return True, pausedPressed, None
-                            if itemObj[1].getButtonName() in self.favorites:
-                                if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+                                if itemObj[1].getButtonName() in self.favorites:
                                     self.favorites.remove(itemObj[1].getButtonName())
-                                    itemObj[1].isInFavorite = False
                                     itemObj[1].changeActiveStatus()
                                     return True, pausedPressed, None
 
@@ -350,7 +346,6 @@ class Canvas:
                             if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                                 pygame.quit()
                                 exit()
-
                         if isinstance(itemObj[1], Button) and itemObj[1] in self.listScreen.getListScreenButtons():
                             itemObj[1].setOnHover()
                             if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
@@ -373,7 +368,6 @@ class Canvas:
                                 itemObj[1].activate()
 
                             return True, pausedPressed, None
-
             if self.showMenu:
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_n:

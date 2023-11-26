@@ -50,6 +50,9 @@ class ListScreen:
         self.provinceButton = None
         self.settlementButton = None
         self.familyButton = None
+        self.settlerButton = None
+        self.personButton = None
+        self.favoriteButton = None
         self.listScreenButtons = [self.showFamiliesButton]
 
     def getScroll_y(self):
@@ -315,7 +318,6 @@ class ListScreen:
         text = ''.join([firstName, " ",  occupationName, " ", lastName, " Age: ", age, " ", maritalStatus])
 
         self.settlerButton = self.makeNewMultiButton(self.getListScreenButtons(), person)
-
         if focusObj == person:
             self.settlerLabel = Label(text, 400, self.lineHeight, self.textFont, True, True)
 
@@ -331,7 +333,7 @@ class ListScreen:
 
         if self.textSearchField is not None:
             if self.textSearchField.getText().upper() in person.getLastName().upper() or self.textSearchField.getText().lower() in person.getLastName().lower() or self.textSearchField.getText().upper() in person.getFirstName().upper() or self.textSearchField.getText().lower() in person.getFirstName().lower():
-                self.listScreenSurfaceObjsRect.append([self.listScreenSurface.blit(self.settlerLabel.localSurface, (self.width * 0.30, self.lineHeight * self.writeLine + self.scroll_y)), person])
+                self.listScreenSurfaceObjsRect.append([self.listScreenSurface.blit(self.settlerLabel.localSurface, (self.width * 0.30, self.lineHeight * self.writeLine + self.scroll_y)), self.settlerButton])
 
                 self.writeLine += 1
 
@@ -343,15 +345,18 @@ class ListScreen:
         maritalStatus = str(person.maritalStatus.value)
         text = ''.join([firstName, " ", lastName, " Age: ", age, " ", maritalStatus])
 
+        self.personButton = self.makeNewMultiButton(self.getListScreenButtons(), person)
         if focusObj == person:
-            label = Label(text, 400, self.lineHeight, self.textFont, True, True)
+            self.personLabel = Label(text, 400, self.lineHeight, self.textFont, True, True)
 
         else:
-            label = Label(text, 400, self.lineHeight, self.textFont, True)
+            self.personLabel = Label(text, 400, self.lineHeight, self.textFont, True)
+
+        self.personLabel.changeColorOnHover(self.personButton.getOnHover())
 
         if self.textSearchField is not None:
             if self.textSearchField.getText().upper() in person.getLastName().upper() or self.textSearchField.getText().lower() in person.getLastName().lower() or self.textSearchField.getText().upper() in person.getFirstName().upper() or self.textSearchField.getText().lower() in person.getFirstName().lower():
-                self.listScreenSurfaceObjsRect.append([self.listScreenSurface.blit(label.localSurface, (self.width * 0.15, self.lineHeight * self.writeLine + self.scroll_y)), person])
+                self.listScreenSurfaceObjsRect.append([self.listScreenSurface.blit(self.personLabel.localSurface, (self.width * 0.15, self.lineHeight * self.writeLine + self.scroll_y)), self.personButton])
 
                 self.writeLine += 1
 
@@ -367,13 +372,16 @@ class ListScreen:
         lastName = str(object.getLastName())
         text = ''.join([firstName, " ", lastName])
 
+        self.favoriteButton = self.makeNewMultiButton(self.getListScreenButtons(), object)
         if lastFocusedObj == object:
-            label = Label(text, 400, self.lineHeight, self.textFont, True, True)
+            self.favoriteLabel = Label(text, 400, self.lineHeight, self.textFont, True, True)
 
         else:
-            label = Label(text, 400, self.lineHeight, self.textFont, True)
+            self.favoriteLabel = Label(text, 400, self.lineHeight, self.textFont, True)
 
-        self.listScreenSurfaceObjsRect.append([self.listScreenSurface.blit(label.localSurface, (self.width * 0.10, self.lineHeight * self.writeLine + self.scroll_y)), object])
+        self.favoriteLabel.changeColorOnHover(self.favoriteButton.getOnHover())
+
+        self.listScreenSurfaceObjsRect.append([self.listScreenSurface.blit(self.favoriteLabel.localSurface, (self.width * 0.10, self.lineHeight * self.writeLine + self.scroll_y)), self.favoriteButton])
 
         self.writeLine += 1
 
