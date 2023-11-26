@@ -187,7 +187,7 @@ class Canvas:
         for region in world.getRegions():
             self.listScreen.addRegion(region, self.lastFocusObj)
             for listScreenButton in self.listScreen.getListScreenButtons():
-                if region.getRegionName() == listScreenButton.getButtonName() and listScreenButton.getIsActive():
+                if region == listScreenButton.getButtonName() and listScreenButton.getIsActive():
                     self.listScreen.addProvinces(region, self.lastFocusObj)
                     for province in region.getProvinces():
                         self.listScreen.addProvince(province, self.lastFocusObj)

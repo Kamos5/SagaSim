@@ -105,25 +105,10 @@ class InspectorScreen:
         label = Label("Region name: " + object.getRegionName(), 500, self.lineHeight, self.textFont)
         self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding*2, self.lineHeight * self.writeLine + self.scroll_y))
         self.writeLine += 1
-        label = Label("Last weather: " + object.getWeather().value[0], 500, self.lineHeight, self.textFont)
-        self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding * 2, self.lineHeight * self.writeLine + self.scroll_y))
-        self.writeLine += 1
-        label = Label("Settlements:", 500, self.lineHeight, self.textFont)
-        self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding*2, self.lineHeight * self.writeLine + self.scroll_y))
-        self.writeLine += 1
         for province in object.getProvinces():
             label = Label(f'{province.getName()}', 500, self.lineHeight, self.textFont, False)
             self.inspectorScreenSurfaceObjsRect.append([self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding * 3, self.lineHeight * self.writeLine + self.scroll_y)), province])
             self.writeLine += 1
-            for settlement in province.getSettlements():
-                label = Label("Settlements name: " + settlement.getSettlementName(), 500, self.lineHeight, self.textFont, True)
-                self.inspectorScreenSurfaceObjsRect.append([self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding*4, self.lineHeight * self.writeLine + self.scroll_y)), settlement])
-                self.writeLine += 1
-
-        self.writeLine = SingleLineSurface("Events:", 500, self.lineHeight, self.textFont, self.leftPadding, self.lineHeight * self.writeLine + self.scroll_y, self.inspectorScreenSurface, self.writeLine)
-        for liveEvent in object.getEvent():
-
-            self.writeLine = MultiLineSurface(str(liveEvent), 500, self.lineHeight, self.textFont, self.leftPadding*2, self.lineHeight * self.writeLine + self.scroll_y, self.inspectorScreenSurface, self.writeLine)
 
     def addInspectorForProvince(self, object):
 

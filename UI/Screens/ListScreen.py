@@ -159,7 +159,7 @@ class ListScreen:
 
     def addRegion(self, region, focusObj):
 
-        self.regionButton = self.makeNewMultiButton(self.getListScreenButtons(), region.getRegionName())
+        self.regionButton = self.makeNewMultiButton(self.getListScreenButtons(), region)
 
         self.label = Label(f'{region.getRegionName()}', 200, self.lineHeight, self.textFont, True, False, textColor=region.getRegionColor())
 
