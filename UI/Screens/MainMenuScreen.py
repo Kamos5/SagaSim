@@ -35,6 +35,8 @@ class MainMenuScreen:
         self.temp = 0
 
         self.newWorldButton = Button('New World')
+        self.saveWorldButton = Button('New World')
+        self.loadWorldButton = Button('New World')
         self.continueButton = Button('Continue')
         self.quitButton = Button('Quit')
 
@@ -74,7 +76,8 @@ class MainMenuScreen:
         # Grayout
         self.mainMenuLabel3.setActiveRectColor(50, 50, 50)
         self.mainMenuLabel3.setActiveBorderColor(50, 50, 50)
-        self.mainMenuScreenSurfaceObjsRect.append([self.mainMenuScreenSurface.blit(self.mainMenuLabel3.localSurface, (self.mainMenuLabel3.centerElement(self.width), self.getVerticalPositioning())), 'Load World'])
+        self.mainMenuLabel3.changeColorOnHover(self.loadWorldButton.getOnHover())
+        self.mainMenuScreenSurfaceObjsRect.append([self.mainMenuScreenSurface.blit(self.mainMenuLabel3.localSurface, (self.mainMenuLabel3.centerElement(self.width), self.getVerticalPositioning())), self.loadWorldButton])
 
         if world.getGameState().getGameState() != 0:
 
@@ -85,7 +88,8 @@ class MainMenuScreen:
             #Grayout
             self.mainMenuLabel4.setActiveRectColor(50, 50, 50)
             self.mainMenuLabel4.setActiveBorderColor(50, 50, 50)
-            self.mainMenuScreenSurfaceObjsRect.append([self.mainMenuScreenSurface.blit(self.mainMenuLabel4.localSurface, (self.mainMenuLabel4.centerElement(self.width), self.getVerticalPositioning())), 'Save World'])
+            self.mainMenuLabel4.changeColorOnHover(self.saveWorldButton.getOnHover())
+            self.mainMenuScreenSurfaceObjsRect.append([self.mainMenuScreenSurface.blit(self.mainMenuLabel4.localSurface, (self.mainMenuLabel4.centerElement(self.width), self.getVerticalPositioning())), self.saveWorldButton])
 
         if world.getGameState().getGameState() != 0:
 
