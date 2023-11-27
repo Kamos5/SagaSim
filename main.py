@@ -181,7 +181,7 @@ def main(popBreakLimit=None):
         pTime = 1000 / pCount
 
         start = time.perf_counter()
-
+        timeTable = 0
         #GameLogic
         tickCurrentTime = time.time() * 1000.0
         if tickCurrentTime - tickStartTime >= pTime:
@@ -221,7 +221,11 @@ def main(popBreakLimit=None):
 
             end = time.perf_counter()
             timeUI = end - start
-            print("UITime: " + str(timeUI))
+            if gameState.isSimulationState(): #TODO FIX
+                print("SIM TIME: " + str(timeTable[len(timeTable)-1]) + " " + str(round(timeTable[len(timeTable)-1] / timeUI, 2)) + "%")
+                print("UI TIME: " + str(timeUI - timeTable[len(timeTable)-1]) + " " + str(round(timeUI - timeTable[len(timeTable)-1] / timeUI, 2)) + "%")
+                print("WITH UI Time: " + str(timeUI))
+
 
             pygame.display.update()
 

@@ -264,7 +264,7 @@ class World:
 
     def getAverageDeathAge(self):
         if len(self.deathAgeAdults) > 0:
-            return numpy.average(self.deathAgeAdults)
+            return round(numpy.average(self.deathAgeAdults), 2)
         else:
             return 0
 
