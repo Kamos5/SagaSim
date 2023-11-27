@@ -766,7 +766,7 @@ class World:
                         province.resetDaysSinceWeatherChange()
                         weatherEvent(province, self)
                 middleCordX,middleCordY = province.getMiddleCords()
-                print(f'{province.getName()} {round(middleCordY / province.getWorldMap().getHeight(), 2)}')
+                # print(f'{province.getName()} {round(middleCordY / province.getWorldMap().getHeight(), 2)}')
                 province.setCurrentTemperature(Utils.getTemperatureBasedOnDay(self.getDayOfTheYear(), climateOffsetModifier=round(middleCordY / province.getWorldMap().getHeight(), 2)) + province.getWeather().value[4])
 
     def makeHistory(self):

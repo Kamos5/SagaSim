@@ -2,6 +2,7 @@ import time
 
 import pygame
 
+import SettlementFeatures
 from SettlementFeatures import Feature
 from Settlements import Settlements
 from UI.Screens.FamilyTreeScreen import FamilyTreeScreen
@@ -206,7 +207,7 @@ class Canvas:
             for family in world.getFamilies():
                 self.listScreen.addFamily(family, self.lastFocusObj)
                 for listScreenButton in self.listScreen.getListScreenButtons():
-                    if family.getFamilyName() == listScreenButton.getButtonName() and listScreenButton.getIsActive():
+                    if family == listScreenButton.getButtonName() and listScreenButton.getIsActive():
                         self.filterBasedOnParamPerson(family.getAliveMembersList(), self.listScreen)
 
         self.listScreen.addFavorites()
@@ -347,10 +348,13 @@ class Canvas:
                             if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                                 pygame.quit()
                                 exit()
+
                         if isinstance(itemObj[1], Button) and itemObj[1] in self.listScreen.getListScreenButtons():
                             itemObj[1].setOnHover()
                             if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                                 itemObj[1].changeActiveStatus()
+                                if itemObj[1] == self.listScreen.showFamiliesButton:
+                                    return True, pausedPressed, None
 
                         if isinstance(itemObj[1], Button) and itemObj[1] in self.inspectorScreen.getInspectorScreenButtons():
                             itemObj[1].setOnHover()
@@ -358,8 +362,8 @@ class Canvas:
                                 itemObj[1].changeActiveStatus()
                                 if itemObj[1] == self.inspectorScreen.unemployedResidentsButton:
                                     return True, pausedPressed, None
-#ERROR TODO FIX
-                                return True, pausedPressed, None
+                                if isinstance(itemObj[1].getButtonName(), SettlementFeatures.Feature):
+                                    return True, pausedPressed, None
 
                         if hasattr(itemObj[1], 'getUIExpand'):
                             if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:

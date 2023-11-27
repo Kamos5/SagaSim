@@ -53,7 +53,7 @@ class ListScreen:
         self.settlerButton = None
         self.personButton = None
         self.favoriteButton = None
-        self.listScreenButtons = [self.showFamiliesButton]
+        self.listScreenButtons = []
 
     def getScroll_y(self):
 
@@ -187,6 +187,7 @@ class ListScreen:
             self.provinceLabel = Label(f'{province.getName()} ({(province.getCurrentTemperature())} °C)', 200, self.lineHeight, self.textFont, True, True)
         else:
             self.provinceLabel = Label(f'{province.getName()} ({(province.getCurrentTemperature())} °C)', 200, self.lineHeight, self.textFont, True)
+
         self.provinceLabel.changeColorOnHover(self.provinceButton.getOnHover())
 
         self.listScreenSurfaceObjsRect.append([self.listScreenSurface.blit(self.provinceLabel.localSurface, (self.width * 0.20, self.lineHeight * self.writeLine + self.scroll_y)), self.provinceButton])
@@ -261,6 +262,7 @@ class ListScreen:
 
     def addFamilies(self, families):
 
+        self.showFamiliesButton = self.makeNewMultiButton(self.getListScreenButtons(), 'families')
         self.familiesLabel = Label(f'Families: ({len(families)})', 300, self.lineHeight, self.textFont, True)
         self.familiesLabel.changeColorOnHover(self.showFamiliesButton.getOnHover())
         self.listScreenSurfaceObjsRect.append([self.listScreenSurface.blit(self.familiesLabel.localSurface, (self.width * 0.05, self.lineHeight * self.writeLine + self.scroll_y)), self.showFamiliesButton])
@@ -276,13 +278,12 @@ class ListScreen:
         textColor1 = [text1, None]
         textColor2 = [text2, family.getOriginRegion().getRegionColor()]
 
-        self.familyButton = self.makeNewMultiButton(self.getListScreenButtons(), family.getFamilyName())
+        self.familyButton = self.makeNewMultiButton(self.getListScreenButtons(), family, 'family')
 
         if focusObj == family:
             self.familyLabel = Label(text1, 300, self.lineHeight, self.textFont, True, True, multiColor=True, multiColorText=[textColor1, textColor2])
         else:
             self.familyLabel = Label(text1, 300, self.lineHeight, self.textFont, True, multiColor=True, multiColorText=[textColor1, textColor2])
-
 
         self.familyLabel.changeColorOnHover(self.familyButton.getOnHover())
 
