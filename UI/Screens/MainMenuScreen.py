@@ -40,7 +40,7 @@ class MainMenuScreen:
 
     def loadBackground(self, windowSizeX, windowsSizeY):
 
-        sagaSimImg = pygame.image.load('UI\sagasim.jpg')
+        sagaSimImg = pygame.image.load('inputFiles\sagasim.jpg')
         sagaSimImg = pygame.transform.scale(sagaSimImg, (windowSizeX, windowsSizeY))
         self.mainMenuScreenSurface.blit(sagaSimImg, (self.screenPosX, self.screenPosY))
 
