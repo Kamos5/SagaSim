@@ -64,7 +64,6 @@ class ListScreen:
         self.scroll_y = newValue
 
     def resetWriteLine(self):
-
         self.writeLine = 1
 
     def cleanScreen(self):
@@ -345,7 +344,7 @@ class ListScreen:
         maritalStatus = str(person.maritalStatus.value)
         text = ''.join([firstName, " ", lastName, " Age: ", age, " ", maritalStatus])
 
-        self.personButton = self.makeNewMultiButton(self.getListScreenButtons(), person)
+        self.personButton = self.makeNewMultiButton(self.getListScreenButtons(), person, 'personList')
         if focusObj == person:
             self.personLabel = Label(text, 400, self.lineHeight, self.textFont, True, True)
 
@@ -372,7 +371,7 @@ class ListScreen:
         lastName = str(object.getLastName())
         text = ''.join([firstName, " ", lastName])
 
-        self.favoriteButton = self.makeNewMultiButton(self.getListScreenButtons(), object)
+        self.favoriteButton = self.makeNewMultiButton(self.getListScreenButtons(), object, 'favoriteList')
         if lastFocusedObj == object:
             self.favoriteLabel = Label(text, 400, self.lineHeight, self.textFont, True, True)
 
@@ -385,12 +384,12 @@ class ListScreen:
 
         self.writeLine += 1
 
-    def makeNewMultiButton(self, buttonsList, newButtonName, shouldBeActive=False):
+    def makeNewMultiButton(self, buttonsList, newButtonName, newButtonName2= '',shouldBeActive=False):
 
         for button in buttonsList:
-            if button.getButtonName() == newButtonName:
+            if button.getButtonName() == newButtonName and button.getButtonName2() == newButtonName2:
                 return button
-        newButton = Button(newButtonName)
+        newButton = Button(newButtonName, newButtonName2)
         buttonsList.append(newButton)
         if shouldBeActive:
             newButton.setActiveStatus()

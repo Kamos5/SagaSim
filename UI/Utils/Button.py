@@ -2,9 +2,12 @@
 
 class Button:
 
-    def __init__(self, buttonName, buttonCategory = ''):
+    def __init__(self, buttonName, buttonName2='', buttonCategory = ''):
 
+        #First identifier mostly object sometimes string where no object (look for buttons in plotscreen)
         self.buttonName = buttonName
+        #Second idenrifier only string  in object + string where same object is shown
+        self.buttonName2 = buttonName2
         self.buttonCategory = buttonCategory
         self.buttonObject = None
         self.active = False
@@ -13,6 +16,9 @@ class Button:
 
     def getButtonName(self):
         return self.buttonName
+
+    def getButtonName2(self):
+        return self.buttonName2
 
     def getButtonCategory(self):
         return self.buttonCategory

@@ -333,8 +333,7 @@ class InspectorScreen:
 
         self.familyTreeLabel = Label("Show family tree", 150, self.lineHeight, self.textFont, True)
 
-        self.familyTreeButton = self.makeNewMultiButton(self.inspectorScreenButtons, 'familyTreeButton')
-        self.familyTreeButton.setButtonObject(object)
+        self.familyTreeButton = self.makeNewMultiButton(self.inspectorScreenButtons, object, 'familyTreeButton')
         self.familyTreeLabel.changeColorOnHover(self.familyTreeButton.getOnHover())
 
         self.inspectorScreenSurfaceObjsRect.append([self.inspectorScreenSurface.blit(self.familyTreeLabel.localSurface, (self.width - 150, self.lineHeight * self.writeLine + self.scroll_y)), self.familyTreeButton])
@@ -598,12 +597,12 @@ class InspectorScreen:
             # self.writeLine += 1
 
 
-    def makeNewMultiButton(self, buttonsList, newButtonName, shouldBeActive=False):
+    def makeNewMultiButton(self, buttonsList, newButtonName, newButtonName2= '',shouldBeActive=False):
 
         for button in buttonsList:
-            if button.getButtonName() == newButtonName:
+            if button.getButtonName() == newButtonName and button.getButtonName2() == newButtonName2:
                 return button
-        newButton = Button(newButtonName)
+        newButton = Button(newButtonName, newButtonName2)
         buttonsList.append(newButton)
         if shouldBeActive:
             newButton.setActiveStatus()

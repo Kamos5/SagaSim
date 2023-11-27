@@ -1,3 +1,5 @@
+import time
+
 import pygame
 
 from SettlementFeatures import Feature
@@ -200,7 +202,6 @@ class Canvas:
                                             self.filterBasedOnParamSettler(settlement.getResidents(), self.listScreen)
 
         self.listScreen.addFamilies(world.getFamilies())
-
         if self.listScreen.showFamiliesButton.getIsActive():
             for family in world.getFamilies():
                 self.listScreen.addFamily(family, self.lastFocusObj)
