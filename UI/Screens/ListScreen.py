@@ -163,11 +163,11 @@ class ListScreen:
 
         self.regionButton = self.makeNewMultiButton(self.getListScreenButtons(), region)
 
-        self.label = Label(f'{region.getRegionName()}', 200, self.lineHeight, self.textFont, True, False, textColor=region.getRegionColor())
+        self.regionLabel = Label(f'{region.getRegionName()}', 200, self.lineHeight, self.textFont, True, False, textColor=region.getRegionColor())
 
-        self.label.changeColorOnHover(self.regionButton.getOnHover())
+        self.regionLabel.changeColorOnHover(self.regionButton.getOnHover())
 
-        self.listScreenSurfaceObjsRect.append([self.listScreenSurface.blit(self.label.localSurface, (self.width * 0.10, self.lineHeight * self.writeLine + self.scroll_y)), self.regionButton])
+        self.listScreenSurfaceObjsRect.append([self.listScreenSurface.blit(self.regionLabel.localSurface, (self.width * 0.10, self.lineHeight * self.writeLine + self.scroll_y)), self.regionButton])
 
         self.writeLine += 1
 
@@ -261,9 +261,9 @@ class ListScreen:
 
     def addFamilies(self, families):
 
-        self.label = Label(f'Families: ({len(families)})', 300, self.lineHeight, self.textFont, True)
-        self.label.changeColorOnHover(self.showFamiliesButton.getOnHover())
-        self.listScreenSurfaceObjsRect.append([self.listScreenSurface.blit(self.label.localSurface, (self.width * 0.05, self.lineHeight * self.writeLine + self.scroll_y)), self.showFamiliesButton])
+        self.familiesLabel = Label(f'Families: ({len(families)})', 300, self.lineHeight, self.textFont, True)
+        self.familiesLabel.changeColorOnHover(self.showFamiliesButton.getOnHover())
+        self.listScreenSurfaceObjsRect.append([self.listScreenSurface.blit(self.familiesLabel.localSurface, (self.width * 0.05, self.lineHeight * self.writeLine + self.scroll_y)), self.showFamiliesButton])
 
         self.writeLine += 1
 

@@ -352,6 +352,15 @@ class Canvas:
                             if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                                 itemObj[1].changeActiveStatus()
 
+                        if isinstance(itemObj[1], Button) and itemObj[1] in self.inspectorScreen.getInspectorScreenButtons():
+                            itemObj[1].setOnHover()
+                            if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+                                itemObj[1].changeActiveStatus()
+                                if itemObj[1] == self.inspectorScreen.unemployedResidentsButton:
+                                    return True, pausedPressed, None
+#ERROR TODO FIX
+                                return True, pausedPressed, None
+
                         if hasattr(itemObj[1], 'getUIExpand'):
                             if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                                 itemObj[1].setUIExpand(not itemObj[1].getUIExpand())

@@ -39,6 +39,15 @@ class InspectorScreen:
 
         self.favoriteButton = None
         self.familyTreeButton = None
+        self.provinceInRegionButton = None
+        self.settlementInProvinceButton = None
+        self.providesToButton = None
+        self.unemployedResidentsButton = None
+        self.unemployedResidentsPerson = None
+        self.adminFeatureButton = None
+        self.milFeatureButton = None
+        self.prodFeatureButton = None
+        self.foodFeatureButton = None
         self.inspectorScreenButtons = []
 
     def getScroll_y(self):
@@ -106,8 +115,13 @@ class InspectorScreen:
         self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding*2, self.lineHeight * self.writeLine + self.scroll_y))
         self.writeLine += 1
         for province in object.getProvinces():
-            label = Label(f'{province.getName()}', 500, self.lineHeight, self.textFont, False)
-            self.inspectorScreenSurfaceObjsRect.append([self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding * 3, self.lineHeight * self.writeLine + self.scroll_y)), province])
+
+            self.provinceInRegionButton = self.makeNewMultiButton(self.inspectorScreenButtons, province, 'provinceInRegion')
+            self.provinceInRegionLabel = Label(f'{province.getName()}', 500, self.lineHeight, self.textFont, True)
+
+            self.provinceInRegionLabel.changeColorOnHover(self.provinceInRegionButton.getOnHover())
+
+            self.inspectorScreenSurfaceObjsRect.append([self.inspectorScreenSurface.blit(self.provinceInRegionLabel.localSurface, (self.leftPadding * 3, self.lineHeight * self.writeLine + self.scroll_y)), self.provinceInRegionButton])
             self.writeLine += 1
 
     def addInspectorForProvince(self, object):
@@ -122,8 +136,13 @@ class InspectorScreen:
         self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding*2, self.lineHeight * self.writeLine + self.scroll_y))
         self.writeLine += 1
         for settlement in object.getSettlements():
-            label = Label("Settlements name: " + settlement.getSettlementName(), 500, self.lineHeight, self.textFont, True)
-            self.inspectorScreenSurfaceObjsRect.append([self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding*4, self.lineHeight * self.writeLine + self.scroll_y)), settlement])
+
+            self.settlementInProvinceButton = self.makeNewMultiButton(self.inspectorScreenButtons, settlement, 'settlementInProvince')
+            self.settlementInProvinceLabel = Label("Settlements name: " + settlement.getSettlementName(), 500, self.lineHeight, self.textFont, True)
+
+            self.settlementInProvinceLabel.changeColorOnHover(self.settlementInProvinceButton.getOnHover())
+
+            self.inspectorScreenSurfaceObjsRect.append([self.inspectorScreenSurface.blit(self.settlementInProvinceLabel.localSurface, (self.leftPadding*4, self.lineHeight * self.writeLine + self.scroll_y)), self.settlementInProvinceButton])
             self.writeLine += 1
 
         self.writeLine = SingleLineSurface("Events:", 500, self.lineHeight, self.textFont, self.leftPadding, self.lineHeight * self.writeLine + self.scroll_y, self.inspectorScreenSurface, self.writeLine)
@@ -143,8 +162,13 @@ class InspectorScreen:
         self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding, self.lineHeight * self.writeLine + self.scroll_y))
         self.writeLine += 1
         if object.getProvision() is not None:
-            label = Label("Provides to: " + str(object.getProvision().getSettlementName()), 500, self.lineHeight, self.textFont, True)
-            self.inspectorScreenSurfaceObjsRect.append([self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding, self.lineHeight * self.writeLine + self.scroll_y)), object.getProvision()])
+
+            self.providesToButton = self.makeNewMultiButton(self.inspectorScreenButtons, object.getProvision(), 'providesTo')
+            self.providesToLabel = Label("Provides to: " + str(object.getProvision().getSettlementName()), 500, self.lineHeight, self.textFont, True)
+
+            self.providesToLabel.changeColorOnHover(self.providesToButton.getOnHover())
+
+            self.inspectorScreenSurfaceObjsRect.append([self.inspectorScreenSurface.blit(self.providesToLabel.localSurface, (self.leftPadding, self.lineHeight * self.writeLine + self.scroll_y)), self.providesToButton])
             self.writeLine += 1
         label = Label("Number of employed residents: " + str(len(object.getEmployedResidentsList())), 500, self.lineHeight, self.textFont)
         self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding, self.lineHeight * self.writeLine + self.scroll_y))
@@ -152,14 +176,26 @@ class InspectorScreen:
         label = Label("Number of unfit to work residents: " + str(len(object.getUnfitResidentsList())), 500, self.lineHeight, self.textFont)
         self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding, self.lineHeight * self.writeLine + self.scroll_y))
         self.writeLine += 1
-        label = Label("Number of unemployed residents: " + str(len(object.getUnemployedResidentsList())), 500, self.lineHeight, self.textFont, True)
-        self.inspectorScreenSurfaceObjsRect.append([self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding, self.lineHeight * self.writeLine + self.scroll_y)), object])
+
+        self.unemployedResidentsButton = self.makeNewMultiButton(self.inspectorScreenButtons, object, 'unemployedResidents')
+        self.unemployedResidenstLabel = Label("Number of unemployed residents: " + str(len(object.getUnemployedResidentsList())), 500, self.lineHeight, self.textFont, True)
+
+        self.unemployedResidenstLabel.changeColorOnHover(self.unemployedResidentsButton.getOnHover())
+
+        self.inspectorScreenSurfaceObjsRect.append([self.inspectorScreenSurface.blit(self.unemployedResidenstLabel.localSurface, (self.leftPadding, self.lineHeight * self.writeLine + self.scroll_y)), self.unemployedResidentsButton])
         self.writeLine += 1
-        if object.getUIExpand():
+
+        if self.unemployedResidentsButton.getIsActive():
             for worker in object.getUnemployedResidentsList():
-                label = Label(str(worker.getFirstName() + " " + str(worker.getLastName())), 500, self.lineHeight, self.textFont, True)
-                self.inspectorScreenSurfaceObjsRect.append([self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding * 3, self.lineHeight * self.writeLine + self.scroll_y)), worker])
+
+                self.unemployedResidentsPerson = self.makeNewMultiButton(self.inspectorScreenButtons, worker, 'unemployedPerson')
+                self.unemployedPersonLabel = Label(str(worker.getFirstName() + " " + str(worker.getLastName())), 500, self.lineHeight, self.textFont, True)
+
+                self.unemployedPersonLabel.changeColorOnHover(self.unemployedResidentsPerson.getOnHover())
+
+                self.inspectorScreenSurfaceObjsRect.append([self.inspectorScreenSurface.blit(self.unemployedPersonLabel.localSurface, (self.leftPadding * 3, self.lineHeight * self.writeLine + self.scroll_y)), self.unemployedResidentsPerson])
                 self.writeLine += 1
+
         label = Label(f'Number of civilian workplaces: {object.getCivilianWorkplaces()}', 500, self.lineHeight, self.textFont)
         self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding, self.lineHeight * self.writeLine + self.scroll_y))
         self.writeLine += 1
@@ -209,10 +245,14 @@ class InspectorScreen:
         self.writeLine += 1
 
         for feature in object.getAdminFeatures():
-            label = Label(f"Admin feature: {feature.getName()} < {feature.getFoundationType()['name']} ({feature.getWorkerListNumber()} / {feature.getMaxWorkersNumber()} )>", 500, self.lineHeight, self.textFont, True)
-            self.inspectorScreenSurfaceObjsRect.append([self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding*2, self.lineHeight * self.writeLine + self.scroll_y)), feature])
+
+            self.adminFeatureButton = self.makeNewMultiButton(self.inspectorScreenButtons, feature, 'adminfeature')
+            self.adminFeatureLabel = Label(f"Admin feature: {feature.getName()} < {feature.getFoundationType()['name']} ({feature.getWorkerListNumber()} / {feature.getMaxWorkersNumber()} )>", 500, self.lineHeight, self.textFont, True)
+            self.adminFeatureLabel.changeColorOnHover(self.adminFeatureButton.getOnHover())
+
+            self.inspectorScreenSurfaceObjsRect.append([self.inspectorScreenSurface.blit(self.adminFeatureLabel.localSurface, (self.leftPadding*2, self.lineHeight * self.writeLine + self.scroll_y)), self.adminFeatureButton])
             self.writeLine += 1
-            if feature.getUIExpand():
+            if self.adminFeatureButton.getIsActive():
                 for worker in feature.getWorkerList():
                     label = Label(str(worker.getFirstName() + " " + str(worker.getLastName())), 500, self.lineHeight, self.textFont, True)
                     self.inspectorScreenSurfaceObjsRect.append([self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding*3, self.lineHeight * self.writeLine + self.scroll_y)), worker])
@@ -607,3 +647,6 @@ class InspectorScreen:
         if shouldBeActive:
             newButton.setActiveStatus()
         return newButton
+
+    def getInspectorScreenButtons(self):
+        return self.inspectorScreenButtons

@@ -375,7 +375,7 @@ class Settlements:
         adminFeature = SF.createAdminZones()[0]
         adminFeature.setFoundationType(FoundationTypes.foundations['medium'])#FoundationTypes.FoundationEnums.MEDIUM)
         self.addAdminFeature(adminFeature)
-        adminFeature = SF.createAdminZones()[2]
+        adminFeature = SF.createAdminZones()[3]
         adminFeature.setFoundationType(FoundationTypes.foundations['medium'])#FoundationTypes.FoundationEnums.MEDIUM)
         self.addAdminFeature(adminFeature)
 
