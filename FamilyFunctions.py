@@ -121,7 +121,7 @@ def spouseMatchmaking (params):
 
     for person in world.getAlivePeople():
 
-        if person.lifeStatus == Enums.LifeStatus.ALIVE and person.age >= 15 and person.spouse is None and validMaritalStatuses:
+        if person.spouse is None and validMaritalStatuses and person.age >= 15 and person.lifeStatus == Enums.LifeStatus.ALIVE:
 
             if checkIfOccupationIsPriest(person):
                 continue

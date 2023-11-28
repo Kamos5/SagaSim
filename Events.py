@@ -1094,7 +1094,9 @@ def findTarget(settlement, world):
     return randomTarget
 
 def assosiatesFriendsAndFoes(world):
-
+    times1 = 0
+    times2 = 0
+    start1 = time.perf_counter()
     for region in world.getRegions():
         for province in region.getProvinces():
             for settlement in province.getSettlements():
@@ -1127,7 +1129,8 @@ def assosiatesFriendsAndFoes(world):
                                     person.increaseHappiness(-20)
                                     PLEH.gotRival(fellowEmployee, person, world)
 
-
+    end1 = time.perf_counter()
+    start2 = time.perf_counter()
     for person in world.getAlivePeople():
         personFriends = person.getFriends()
         if len(personFriends) > 0:
@@ -1140,3 +1143,9 @@ def assosiatesFriendsAndFoes(world):
                         PF.checkAndAddPersonToLovers(person, friendSpouse, world)
 
 
+    end2 = time.perf_counter()
+    times1 = end1 - start1
+    times2 = end2 - start2
+
+    print("Times1: " + str(times1))
+    print("Times2: " + str(times2))

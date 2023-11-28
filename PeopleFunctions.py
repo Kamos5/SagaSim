@@ -194,10 +194,10 @@ def canBeLover(person1, person2):
     if person1 == person2:
         return False
 
-    if person1.getSexuality() == 'homo' and person2.getSexuality() == person1.getSexuality() and person2.getSex() == person1.getSex():
+    if person1.getSexuality() == 'homo' and person2.getSex() == person1.getSex():
         return True
 
-    if person1.getSexuality() == 'hetero' and person2.getSexuality() == person2.getSexuality() and person1.getSex() != person2.getSex():
+    if person1.getSexuality() == 'hetero' and person1.getSex() != person2.getSex():
         if toBeLoverCounter(person1) > 0 and toBeLoverCounter(person2) > 0:
             return True
         else:
