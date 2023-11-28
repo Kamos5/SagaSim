@@ -1,6 +1,7 @@
-﻿import pygame
+﻿
+import pygame
 
-import Enums
+from UI.Misc.FloatingRune import FloatingRune
 from UI.Utils.Button import Button
 from UI.Utils.Fonts import Fonts
 from UI.Utils.Label2 import Label2
@@ -32,7 +33,20 @@ class MainMenuScreen:
         self.mainMenuScreenSurface = pygame.Surface([self.width, self.height - self.heightOffSet])
         self.mainMenuScreenSurfaceObjsRect = []
 
-        self.temp = 0
+        self.runes = []
+        self.floatingRune1 = FloatingRune(self.width, self.height, imageUrl='random')
+        self.floatingRune2 = FloatingRune(self.width, self.height, imageUrl='random')
+        self.floatingRune3 = FloatingRune(self.width, self.height, imageUrl='random')
+        self.floatingRune4 = FloatingRune(self.width, self.height, imageUrl='random')
+        self.floatingRune5 = FloatingRune(self.width, self.height, imageUrl='random')
+        self.floatingRune6 = FloatingRune(self.width, self.height, imageUrl='random')
+        self.floatingRune7 = FloatingRune(self.width, self.height, imageUrl='random')
+        self.floatingRune8 = FloatingRune(self.width, self.height, imageUrl='random')
+        self.floatingRune9 = FloatingRune(self.width, self.height, imageUrl='random')
+        self.floatingRune10 = FloatingRune(self.width, self.height, imageUrl='random')
+
+
+        self.runes = [self.floatingRune1, self.floatingRune2, self.floatingRune3, self.floatingRune4, self.floatingRune5, self.floatingRune6, self.floatingRune7, self.floatingRune8, self.floatingRune9, self.floatingRune10]
 
         self.newWorldButton = Button('New World')
         self.saveWorldButton = Button('New World')
@@ -40,11 +54,24 @@ class MainMenuScreen:
         self.continueButton = Button('Continue')
         self.quitButton = Button('Quit')
 
+        self.rotation = 0
+    def moveAndAddRunesToScreen(self, runes):
+
+        for rune in runes:
+            rune.movement()
+            self.mainMenuScreenSurface.blit(rune.getImage(), rune.getPositions())
+
     def loadBackground(self, windowSizeX, windowsSizeY):
 
         sagaSimImg = pygame.image.load('inputFiles\sagasim.jpg')
         sagaSimImg = pygame.transform.scale(sagaSimImg, (windowSizeX, windowsSizeY))
         self.mainMenuScreenSurface.blit(sagaSimImg, (self.screenPosX, self.screenPosY))
+        #
+        # sagaSimImg = pygame.transform.rotate(sagaSimImg, self.rotation)
+        # new_rect = sagaSimImg.get_rect(center=sagaSimImg.get_rect(center=(windowSizeX // 2, windowsSizeY // 2)).center)
+        #
+        # self.rotation += 1
+        self.moveAndAddRunesToScreen(self.runes)
 
     def showMainMenu(self, world):
 
