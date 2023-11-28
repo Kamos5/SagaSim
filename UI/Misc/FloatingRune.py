@@ -5,7 +5,7 @@ import Utils
 
 class FloatingRune:
 
-    def __init__(self, screenWidth, screenHeight, imageUrl = None, startingXCord = -1, startingYCord=-1, startingHorizontalDirection = False, startingVerticalDirection=False, speed=5):
+    def __init__(self, screenWidth, screenHeight, imageUrl = None, startingXCord = -1, startingYCord=-1, startingHorizontalDirection = False, startingVerticalDirection=False, speed=5, randomDirections = True):
 
         if imageUrl is not None:
             if imageUrl == 'random':
@@ -29,8 +29,12 @@ class FloatingRune:
 
         self.xPosOffset = 0
         self.yPosOffset = 0
-        self.horizontalDirection = startingHorizontalDirection  #false left, true right
-        self.verticalDirection = startingVerticalDirection  #false up, true down
+        if randomDirections:
+            self.horizontalDirection = Utils.randomBool()
+            self.verticalDirection = Utils.randomBool()
+        else:
+            self.horizontalDirection = startingHorizontalDirection  #false left, true right
+            self.verticalDirection = startingVerticalDirection  #false up, true down
         self.speed = speed
         self.maxXWidth = screenWidth-self.imageXSize
         self.maxYWidth = screenHeight-self.imageYSize

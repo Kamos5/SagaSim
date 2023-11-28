@@ -1,4 +1,5 @@
 import math
+import random
 import time
 from random import randint, choice
 
@@ -9,6 +10,8 @@ def randomRange(min, max):
     returnVal = randint(min, max)
     return returnVal
 
+def randomBool():
+    return bool(random.getrandbits(1))
 
 def randomFromCollection(collection):
 
