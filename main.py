@@ -221,9 +221,9 @@ def main(popBreakLimit=None):
 
             end = time.perf_counter()
             timeUI = end - start
-            if gameState.isSimulationState(): #TODO FIX
+            if gameState.isSimulationState():
                 print("SIM TIME: " + str(timeTable[len(timeTable)-1]) + " " + str(round(timeTable[len(timeTable)-1] / timeUI, 2)) + "%")
-                print("UI TIME: " + str(timeUI - timeTable[len(timeTable)-1]) + " " + str(round(timeUI - timeTable[len(timeTable)-1] / timeUI, 2)) + "%")
+                print("UI TIME: " + str(timeUI - timeTable[len(timeTable)-1]) + " " + str(round((timeUI - timeTable[len(timeTable)-1]) / timeUI, 2)) + "%")
                 print("WITH UI Time: " + str(timeUI))
 
 
@@ -493,8 +493,6 @@ def pygameEvents(event, canvas, pausedPressed, gameState):
 
     # Pause from mousclick on Time
     pausedPressed = canvas.pauseHandle(event, pausedPressed)
-    #
-    # canvas.refreshScreen(world, canvas.listScreen.getScroll_y(), canvas.inspectorScreen.getScroll_y(), canvas.familyTreeScreen.getScroll_y(), isPausedPressed = pausedPressed)
     return pausedPressed
 
 def callMain (popBreakLimit):
