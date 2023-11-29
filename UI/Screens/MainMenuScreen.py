@@ -55,9 +55,9 @@ class MainMenuScreen:
         self.floatingRune19 = FloatingRune(self.width, self.height, imageUrl='random')
         self.floatingRune20 = FloatingRune(self.width, self.height, imageUrl='random')
 
-        self.runes = [self.floatingRune1, self.floatingRune2, self.floatingRune3, self.floatingRune4, self.floatingRune5, self.floatingRune6, self.floatingRune7, self.floatingRune8, self.floatingRune9, self.floatingRune10,
-                      self.floatingRune11, self.floatingRune12, self.floatingRune13, self.floatingRune14, self.floatingRune15, self.floatingRune16, self.floatingRune17, self.floatingRune18, self.floatingRune19, self.floatingRune20]
-        # self.runes = [self.floatingRune1, self.floatingRune2]
+        # self.runes = [self.floatingRune1, self.floatingRune2, self.floatingRune3, self.floatingRune4, self.floatingRune5, self.floatingRune6, self.floatingRune7, self.floatingRune8, self.floatingRune9, self.floatingRune10,
+        #               self.floatingRune11, self.floatingRune12, self.floatingRune13, self.floatingRune14, self.floatingRune15, self.floatingRune16, self.floatingRune17, self.floatingRune18, self.floatingRune19, self.floatingRune20]
+        self.runes = [self.floatingRune1, self.floatingRune2]
 
         self.newWorldButton = Button('New World')
         self.saveWorldButton = Button('New World')

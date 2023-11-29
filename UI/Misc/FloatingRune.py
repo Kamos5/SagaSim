@@ -22,10 +22,12 @@ class FloatingRune:
             self.startingXPos = startingXCord
         else:
             self.startingXPos = Utils.randomRange(0, screenWidth-self.imageXSize)
+            self.startingXPos = Utils.randomRange(150, 200)
         if startingXCord > -1:
             self.startingYPos = startingYCord
         else:
             self.startingYPos = Utils.randomRange(0, screenHeight-self.imageYSize)
+            self.startingYPos = Utils.randomRange(150, 200)
         self.xPosOffset = 0
         self.yPosOffset = 0
         if randomDirections:
@@ -39,6 +41,8 @@ class FloatingRune:
         self.maxYWidth = screenHeight-self.imageYSize
         self.xPos = self.startingXPos + self.xPosOffset
         self.yPos = self.startingYPos + self.yPosOffset
+
+        self.originalColorsSet = False
 
     def getImageXSize(self):
         return self.imageXSize
@@ -131,29 +135,29 @@ class FloatingRune:
                     rune.changeHorizontalDirection()
                     switchtedHor = True
 
-        # up
-        isAllowed, conflictWith = self.checkUp(runes)
-        if isAllowed and not self.getVerticalDirection():
-            self.increaseYPosOffset(-self.getSpeed())
-            self.updateXYPos()
-        else:
-            if not self.getVerticalDirection() and not switchtedVer and not switchtedHor:
-                self.changeVerticalDirection()
-                for rune in conflictWith:
-                    rune.changeVerticalDirection()
-                    switchtedVer = True
-
-        # down
-        isAllowed, conflictWith = self.checkDown(runes)
-        if isAllowed and self.getVerticalDirection():
-            self.increaseYPosOffset(self.getSpeed())
-            self.updateXYPos()
-        else:
-            if self.getVerticalDirection() and not switchtedVer and not switchtedHor:
-                self.changeVerticalDirection()
-                for rune in conflictWith:
-                    rune.changeVerticalDirection()
-                    switchtedVer = True
+        # # up
+        # isAllowed, conflictWith = self.checkUp(runes)
+        # if isAllowed and not self.getVerticalDirection():
+        #     self.increaseYPosOffset(-self.getSpeed())
+        #     self.updateXYPos()
+        # else:
+        #     if not self.getVerticalDirection() and not switchtedVer and not switchtedHor:
+        #         self.changeVerticalDirection()
+        #         for rune in conflictWith:
+        #             rune.changeVerticalDirection()
+        #             switchtedVer = True
+        #
+        # # down
+        # isAllowed, conflictWith = self.checkDown(runes)
+        # if isAllowed and self.getVerticalDirection():
+        #     self.increaseYPosOffset(self.getSpeed())
+        #     self.updateXYPos()
+        # else:
+        #     if self.getVerticalDirection() and not switchtedVer and not switchtedHor:
+        #         self.changeVerticalDirection()
+        #         for rune in conflictWith:
+        #             rune.changeVerticalDirection()
+        #             switchtedVer = True
 
         # if self.getStartingXPos() + self.getXPosOffset() > 0 and not self.getHorizontalDirection():
         #     self.increaseXPosOffset(-self.getSpeed())
@@ -192,10 +196,18 @@ class FloatingRune:
                 runeXPos, runeYPos = rune.getPositions()
                 #moving left
                 if not self.getHorizontalDirection():
-                    if selfXPos - self.getSpeed() >= runeXPos + rune.getImageXSize() or (selfYPos > runeYPos + rune.getImageYSize() or selfYPos + self.getImageYSize() < runeYPos) or selfXPos + self.imageXSize < runeXPos:
+                    if selfXPos - self.getSpeed() > runeXPos + rune.getImageXSize() or (selfYPos > runeYPos + rune.getImageYSize() or selfYPos + self.getImageYSize() < runeYPos) or selfXPos + self.imageXSize < runeXPos:
                         isAllowed &= True
-                    elif (selfXPos <= runeXPos + rune.getImageXSize() and selfXPos >= runeXPos) or (selfXPos + self.getImageXSize() >= runeXPos and selfXPos + self.getImageXSize() <= runeXPos + rune.getImageXSize()):
-                        isAllowed &= True
+                    elif ((selfXPos <= runeXPos + rune.getImageXSize() and selfXPos >= runeXPos and selfYPos >= runeYPos and selfYPos <= runeYPos + rune.getImageYSize()) or
+                        (selfXPos + self.getImageXSize() >= runeXPos and selfXPos + self.getImageXSize() <= runeXPos + rune.getImageXSize() and selfYPos >= runeYPos and selfYPos <= runeYPos + rune.getImageYSize())):
+                        if runeXPos + rune.getImageXSize() - selfXPos >= selfXPos + rune.getImageXSize() - runeXPos:
+                            self.xPosOffset -= 1
+                        else:
+                            self.xPosOffset -= 1
+
+                        print(self)
+                        print(rune)
+                        print('Inside')
                     else:
                         isAllowed &= False
                         conflictWith.append(rune)
@@ -217,8 +229,17 @@ class FloatingRune:
                 if self.getHorizontalDirection():
                     if selfXPos + self.getImageXSize() + self.getSpeed() < runeXPos or (selfYPos > runeYPos + rune.getImageYSize() or selfYPos + self.getImageYSize() < runeYPos) or selfXPos > runeXPos + rune.imageXSize:
                         isAllowed &= True
-                    elif (selfXPos <= runeXPos + rune.getImageXSize() and selfXPos >= runeXPos) or (selfXPos + self.getImageXSize() >= runeXPos and selfXPos + self.getImageXSize() <= runeXPos + rune.getImageXSize()):
-                        isAllowed &= True
+                    elif ((selfXPos <= runeXPos + rune.getImageXSize() and selfXPos >= runeXPos and selfYPos >= runeYPos and selfYPos <= runeYPos + rune.getImageYSize()) or
+                          (selfXPos + self.getImageXSize() >= runeXPos and selfXPos + self.getImageXSize() <= runeXPos + rune.getImageXSize() and selfYPos >= runeYPos and selfYPos <= runeYPos + rune.getImageYSize())):
+                        if runeXPos + rune.getImageXSize() - selfXPos >= selfXPos + rune.getImageXSize() - runeXPos:
+                            self.xPosOffset -= 1
+                        else:
+                            self.xPosOffset -= 1
+                        print(self)
+                        print(rune)
+                        print('Inside2')
+                    # elif (selfXPos <= runeXPos + rune.getImageXSize() and selfXPos >= runeXPos) or (selfXPos + self.getImageXSize() >= runeXPos and selfXPos + self.getImageXSize() <= runeXPos + rune.getImageXSize()):
+                    #     isAllowed &= True
                     else:
                         isAllowed &= False
                         conflictWith.append(rune)
@@ -238,10 +259,10 @@ class FloatingRune:
                 runeXPos, runeYPos = rune.getPositions()
                 # moving Up
                 if not self.getVerticalDirection():
-                    if selfYPos - self.getSpeed() >= runeYPos + rune.getImageYSize() or (selfXPos > runeXPos + rune.getImageXSize() or selfXPos + self.getImageXSize() < runeXPos) or selfYPos + self.imageYSize < runeYPos:
+                    if selfYPos - self.getSpeed() > runeYPos + rune.getImageYSize() or (selfXPos > runeXPos + rune.getImageXSize() or selfXPos + self.getImageXSize() < runeXPos) or selfYPos + self.imageYSize < runeYPos:
                         isAllowed &= True
-                    elif (selfYPos <= runeYPos + rune.getImageYSize() and selfYPos >= runeYPos) or (selfYPos + self.getImageYSize() >= runeYPos and selfYPos + self.getImageYSize() <= runeYPos + rune.getImageYSize()):
-                        isAllowed &= True
+                    # elif (selfYPos <= runeYPos + rune.getImageYSize() and selfYPos >= runeYPos) or (selfYPos + self.getImageYSize() >= runeYPos and selfYPos + self.getImageYSize() <= runeYPos + rune.getImageYSize()):
+                    #     isAllowed &= True
                     else:
                         isAllowed &= False
                         conflictWith.append(rune)
@@ -263,8 +284,8 @@ class FloatingRune:
                 if self.getVerticalDirection():
                     if selfYPos + self.getImageYSize() + self.getSpeed() < runeYPos or (selfXPos > runeXPos + rune.getImageXSize() or selfXPos + self.getImageXSize() < runeXPos) or selfYPos > runeYPos + rune.imageYSize:
                         isAllowed &= True
-                    elif (selfYPos <= runeYPos + rune.getImageYSize() and selfYPos >= runeYPos) or (selfYPos + self.getImageYSize() >= runeYPos and selfYPos + self.getImageYSize() <= runeYPos + rune.getImageYSize()):
-                        isAllowed &= True
+                    # elif (selfYPos <= runeYPos + rune.getImageYSize() and selfYPos >= runeYPos) or (selfYPos + self.getImageYSize() >= runeYPos and selfYPos + self.getImageYSize() <= runeYPos + rune.getImageYSize()):
+                    #     isAllowed &= True
                     else:
                         isAllowed &= False
                         conflictWith.append(rune)
