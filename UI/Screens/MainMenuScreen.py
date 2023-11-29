@@ -44,9 +44,20 @@ class MainMenuScreen:
         self.floatingRune8 = FloatingRune(self.width, self.height, imageUrl='random')
         self.floatingRune9 = FloatingRune(self.width, self.height, imageUrl='random')
         self.floatingRune10 = FloatingRune(self.width, self.height, imageUrl='random')
+        self.floatingRune11 = FloatingRune(self.width, self.height, imageUrl='random')
+        self.floatingRune12 = FloatingRune(self.width, self.height, imageUrl='random')
+        self.floatingRune13 = FloatingRune(self.width, self.height, imageUrl='random')
+        self.floatingRune14 = FloatingRune(self.width, self.height, imageUrl='random')
+        self.floatingRune15 = FloatingRune(self.width, self.height, imageUrl='random')
+        self.floatingRune16 = FloatingRune(self.width, self.height, imageUrl='random')
+        self.floatingRune17 = FloatingRune(self.width, self.height, imageUrl='random')
+        self.floatingRune18 = FloatingRune(self.width, self.height, imageUrl='random')
+        self.floatingRune19 = FloatingRune(self.width, self.height, imageUrl='random')
+        self.floatingRune20 = FloatingRune(self.width, self.height, imageUrl='random')
 
-
-        self.runes = [self.floatingRune1, self.floatingRune2, self.floatingRune3, self.floatingRune4, self.floatingRune5, self.floatingRune6, self.floatingRune7, self.floatingRune8, self.floatingRune9, self.floatingRune10]
+        self.runes = [self.floatingRune1, self.floatingRune2, self.floatingRune3, self.floatingRune4, self.floatingRune5, self.floatingRune6, self.floatingRune7, self.floatingRune8, self.floatingRune9, self.floatingRune10,
+                      self.floatingRune11, self.floatingRune12, self.floatingRune13, self.floatingRune14, self.floatingRune15, self.floatingRune16, self.floatingRune17, self.floatingRune18, self.floatingRune19, self.floatingRune20]
+        # self.runes = [self.floatingRune1, self.floatingRune2]
 
         self.newWorldButton = Button('New World')
         self.saveWorldButton = Button('New World')
@@ -58,7 +69,7 @@ class MainMenuScreen:
     def moveAndAddRunesToScreen(self, runes):
 
         for rune in runes:
-            rune.movement()
+            rune.movement(runes)
             self.mainMenuScreenSurface.blit(rune.getImage(), rune.getPositions())
 
     def loadBackground(self, windowSizeX, windowsSizeY):
