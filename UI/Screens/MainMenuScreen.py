@@ -54,10 +54,22 @@ class MainMenuScreen:
         self.floatingRune18 = FloatingRune(self.width, self.height, imageUrl='random')
         self.floatingRune19 = FloatingRune(self.width, self.height, imageUrl='random')
         self.floatingRune20 = FloatingRune(self.width, self.height, imageUrl='random')
+        self.floatingRune20 = FloatingRune(self.width, self.height, imageUrl='random')
+        self.floatingRune21 = FloatingRune(self.width, self.height, imageUrl='random')
+        self.floatingRune22 = FloatingRune(self.width, self.height, imageUrl='random')
+        self.floatingRune23 = FloatingRune(self.width, self.height, imageUrl='random')
+        self.floatingRune24 = FloatingRune(self.width, self.height, imageUrl='random')
+        self.floatingRune25 = FloatingRune(self.width, self.height, imageUrl='random')
+        self.floatingRune26 = FloatingRune(self.width, self.height, imageUrl='random')
+        self.floatingRune27 = FloatingRune(self.width, self.height, imageUrl='random')
+        self.floatingRune28 = FloatingRune(self.width, self.height, imageUrl='random')
+        self.floatingRune29 = FloatingRune(self.width, self.height, imageUrl='random')
+        self.floatingRune30 = FloatingRune(self.width, self.height, imageUrl='random')
 
-        # self.runes = [self.floatingRune1, self.floatingRune2, self.floatingRune3, self.floatingRune4, self.floatingRune5, self.floatingRune6, self.floatingRune7, self.floatingRune8, self.floatingRune9, self.floatingRune10,
-        #               self.floatingRune11, self.floatingRune12, self.floatingRune13, self.floatingRune14, self.floatingRune15, self.floatingRune16, self.floatingRune17, self.floatingRune18, self.floatingRune19, self.floatingRune20]
-        self.runes = [self.floatingRune1, self.floatingRune2]
+        self.runes = [self.floatingRune1, self.floatingRune2, self.floatingRune3, self.floatingRune4, self.floatingRune5, self.floatingRune6, self.floatingRune7, self.floatingRune8, self.floatingRune9, self.floatingRune10,
+                      self.floatingRune11, self.floatingRune12, self.floatingRune13, self.floatingRune14, self.floatingRune15, self.floatingRune16, self.floatingRune17, self.floatingRune18, self.floatingRune19, self.floatingRune20,
+                      self.floatingRune21, self.floatingRune22, self.floatingRune23, self.floatingRune24, self.floatingRune25, self.floatingRune26, self.floatingRune27, self.floatingRune28, self.floatingRune29, self.floatingRune30]
+        # self.runes = [self.floatingRune1, self.floatingRune2]
 
         self.newWorldButton = Button('New World')
         self.saveWorldButton = Button('New World')
