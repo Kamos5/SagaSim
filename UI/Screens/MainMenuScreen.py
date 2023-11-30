@@ -54,7 +54,6 @@ class MainMenuScreen:
         self.floatingRune18 = FloatingRune(self.width, self.height, imageUrl='random')
         self.floatingRune19 = FloatingRune(self.width, self.height, imageUrl='random')
         self.floatingRune20 = FloatingRune(self.width, self.height, imageUrl='random')
-        self.floatingRune20 = FloatingRune(self.width, self.height, imageUrl='random')
         self.floatingRune21 = FloatingRune(self.width, self.height, imageUrl='random')
         self.floatingRune22 = FloatingRune(self.width, self.height, imageUrl='random')
         self.floatingRune23 = FloatingRune(self.width, self.height, imageUrl='random')
