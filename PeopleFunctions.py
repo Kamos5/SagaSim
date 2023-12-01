@@ -64,7 +64,7 @@ def birthChild(world, parent1, parent2=None, trueParent1=None, trueParent2=None)
 
     immunities = []
     for immunity in parent1.getImmunityTo():
-        chanceToInheritImmunity = Utils.randomRange(1,2)
+        chanceToInheritImmunity = Utils.randomRange(1, 2)
         if chanceToInheritImmunity == 1:
             immunities.append(immunity)
 

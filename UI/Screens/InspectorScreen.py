@@ -45,10 +45,12 @@ class InspectorScreen:
         self.unemployedResidentsButton = None
         self.unemployedResidentsPerson = None
         self.adminFeatureButton = None
+        self.servicesFeatureButton = None
         self.milFeatureButton = None
         self.prodFeatureButton = None
         self.foodFeatureButton = None
         self.adminFeatureWorkerButton = None
+        self.servicesFeatureWorkerButton = None
         self.milFeatureWorkerButton = None
         self.prodFeatureWorkerButton = None
         self.foodFeatureWorkerButton = None
@@ -281,6 +283,23 @@ class InspectorScreen:
                     self.adminWorkerLabel.changeColorOnHover(self.adminFeatureWorkerButton.getOnHover())
 
                     self.inspectorScreenSurfaceObjsRect.append([self.inspectorScreenSurface.blit(self.adminWorkerLabel.localSurface, (self.leftPadding*3, self.lineHeight * self.writeLine + self.scroll_y)), self.adminFeatureWorkerButton])
+                    self.writeLine += 1
+
+        for feature in object.getServicesFeatures():
+
+            self.servicesFeatureButton = self.makeNewMultiButton(self.inspectorScreenButtons, feature, 'servicesFeature')
+            self.servicesFeatureLabel = Label(f"Services feature: {feature.getName()} < ({feature.getWorkerListNumber()} / {feature.getMaxWorkersNumber()} )>", 500, self.lineHeight, self.textFont, True)
+            self.servicesFeatureLabel.changeColorOnHover(self.servicesFeatureButton.getOnHover())
+
+            self.inspectorScreenSurfaceObjsRect.append([self.inspectorScreenSurface.blit(self.servicesFeatureLabel.localSurface, (self.leftPadding*2, self.lineHeight * self.writeLine + self.scroll_y)), self.servicesFeatureButton])
+            self.writeLine += 1
+            if self.servicesFeatureButton.getIsActive():
+                for worker in feature.getWorkerList():
+                    self.servicesFeatureWorkerButton = self.makeNewMultiButton(self.inspectorScreenButtons, worker, 'servicesWorkerFeature')
+                    self.servicesWorkerLabel = Label(str(worker.getFirstName() + " " + str(worker.getLastName())), 500, self.lineHeight, self.textFont, True)
+                    self.servicesWorkerLabel.changeColorOnHover(self.servicesFeatureWorkerButton.getOnHover())
+
+                    self.inspectorScreenSurfaceObjsRect.append([self.inspectorScreenSurface.blit(self.adminWorkerLabel.localSurface, (self.leftPadding*3, self.lineHeight * self.writeLine + self.scroll_y)), self.servicesFeatureWorkerButton])
                     self.writeLine += 1
 
         for feature in object.getMilitaryFeatures():

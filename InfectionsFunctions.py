@@ -114,11 +114,14 @@ def toRemoveDisease(person, disease, world):
     if disease[2] < 100:
         disease[2] += round(100 / disease[0]["daysToCure"], 2)
         if disease[2] >= 100:
-            disease[2] = 100  ######TODO TO COS JEST NIE TAK -> rozkminic te tablice
+            disease[2] = 100
             person.setInfections([infection for infection in person.getInfections() if not infection[0] == disease[0]])
             person.setGeneralHelth(Enums.getGeneralHealthArray()[person.getGeneralHealth().value[0] - disease[0]['effectOnHealth'] + person.getHealthFromAge().value[0]])
-            person.addImmunityTo([disease, world.getDayOfTheYear()])
-            PLEH.gotImmunityTo(person, disease[0], world)
+            if disease[0]['canGetImmunity']:
+                #TODO WYLACZYC IMMUNITY AFTER immunityLongevity!!!
+                person.addImmunityTo([disease, world.getDayOfTheYear(), world.getYear()])
+                PLEH.gotImmunityTo(person, disease[0], world)
+            PLEH.gotHealedFromDisease(person, disease[0], world)
             return disease
 
 def toRemoveInjury(person, injury, world):

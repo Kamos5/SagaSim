@@ -10,7 +10,9 @@
       "effectOnHealth": 2,
       "difficulty": 1,
       "daysToCure": 20,
-      "type": "sickness"
+      "type": "sickness",
+      "canGetImmunity": true,
+      "immunityLongevity": 30000
     },
   "pneumonia":
     {
@@ -23,7 +25,9 @@
       "effectOnHealth": 1,
       "difficulty": 1,
       "daysToCure": 30,
-      "type": "sickness"
+      "type": "sickness",
+      "canGetImmunity": false,
+      "immunityLongevity": 0
     },
   "tuberculosis":
     {
@@ -36,7 +40,9 @@
       "effectOnHealth": 1,
       "difficulty": 1,
       "daysToCure": 180,
-      "type": "sickness"
+      "type": "sickness",
+      "canGetImmunity": true,
+      "immunityLongevity": 1000
     },
   "leprosy":
     {
@@ -49,7 +55,9 @@
       "effectOnHealth": 1,
       "difficulty": 1,
       "daysToCure": 10000000000,
-      "type": "sickness"
+      "type": "sickness",
+      "canGetImmunity": false,
+      "immunityLongevity": 0
     },
   "dysentry":
     {
@@ -62,7 +70,9 @@
       "effectOnHealth": 2,
       "difficulty": 1,
       "daysToCure": 5,
-      "type": "sickness"
+      "type": "sickness",
+      "canGetImmunity": false,
+      "immunityLongevity": 0
     },
   "malaria":
     {
@@ -75,7 +85,9 @@
       "effectOnHealth": 1,
       "difficulty": 1,
       "daysToCure": 10000000000,
-      "type": "sickness"
+      "type": "sickness",
+      "canGetImmunity": true,
+      "immunityLongevity": 1500
     },
   "diphtheria":
     {
@@ -88,7 +100,9 @@
       "effectOnHealth": 2,
       "difficulty": 1,
       "daysToCure": 21,
-      "type": "sickness"
+      "type": "sickness",
+      "canGetImmunity": true,
+      "immunityLongevity": 3500
     },
   "flu":
     {
@@ -101,7 +115,9 @@
       "effectOnHealth": 1,
       "difficulty": 1,
       "daysToCure": 7,
-      "type": "sickness"
+      "type": "sickness",
+      "canGetImmunity": true,
+      "immunityLongevity": 365
     },
   "typhoid":
     {
@@ -114,7 +130,9 @@
       "effectOnHealth": 2,
       "difficulty": 1,
       "daysToCure": 60,
-      "type": "sickness"
+      "type": "sickness",
+      "canGetImmunity": true,
+      "immunityLongevity": 1000
     },
   "smallpox":
     {
@@ -127,7 +145,9 @@
       "effectOnHealth": 2,
       "difficulty": 1,
       "daysToCure": 10000000,
-      "type": "sickness"
+      "type": "sickness",
+      "canGetImmunity": true,
+      "immunityLongevity": 1800
     },
   "cholera":
     {
@@ -140,7 +160,9 @@
       "effectOnHealth": 2,
       "difficulty": 1,
       "daysToCure": 10000000,
-      "type": "sickness"
+      "type": "sickness",
+      "canGetImmunity": true,
+      "immunityLongevity": 3000
     },
   "anthrax":
     {
@@ -153,7 +175,9 @@
       "effectOnHealth": 3,
       "difficulty": 1,
       "daysToCure": 60,
-      "type": "sickness"
+      "type": "sickness",
+      "canGetImmunity": true,
+      "immunityLongevity": 5000
     },
   "commonCold":
     {
@@ -166,7 +190,9 @@
       "effectOnHealth": 1,
       "difficulty": 1,
       "daysToCure": 7,
-      "type": "sickness"
+      "type": "sickness",
+      "canGetImmunity": false,
+      "immunityLongevity": 0
     },
     "organFailure":
     {

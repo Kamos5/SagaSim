@@ -42,6 +42,7 @@ class Settlements:
         self.prodFeatures = []
         self.adminFeatures = []
         self.militaryFeatures = []
+        self.servicesFeatures = []
         self.unemployedRes = []
         self.unfitRes = []
         self.employedRes = []
@@ -131,6 +132,15 @@ class Settlements:
 
     def removeAdminFeature(self, feature):
         self.adminFeatures.remove(feature)
+
+    def getServicesFeatures(self):
+        return self.servicesFeatures
+
+    def addServicesFeature(self, newFeature):
+        self.servicesFeatures.append(newFeature)
+
+    def removeServicesFeature(self, feature):
+        self.servicesFeatures.remove(feature)
 
     def getMilitaryFeatures(self):
         return self.militaryFeatures
@@ -378,6 +388,10 @@ class Settlements:
         adminFeature = SF.createAdminZones()[3]
         adminFeature.setFoundationType(FoundationTypes.foundations['medium'])#FoundationTypes.FoundationEnums.MEDIUM)
         self.addAdminFeature(adminFeature)
+
+        servicesFeature = SF.createServicesZones()[0]
+        servicesFeature.setFoundationType(FoundationTypes.foundations['none'])#FoundationTypes.FoundationEnums.None)
+        self.addServicesFeature(servicesFeature)
 
         militaryFeature = SF.createMilitaryZones()[0]
         militaryFeature.setFoundationType(FoundationTypes.foundations['none'])#FoundationTypes.FoundationEnums.None)

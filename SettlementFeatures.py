@@ -19,6 +19,7 @@ class FeatureTypes(Enum):
     PRODTYPE = FeatureType("Production type", "produces production resource")
     ADMINTYPE = FeatureType("Administrative type", "administering stuff")
     MILITARYTYPE = FeatureType("Military type", "fending of bad people")
+    SERVICETYPE = FeatureType("Service type", "providing services for a fee")
     MISC = FeatureType("Misc type", "random type")
     # POORSOIL = FundationType("Poor Soil", "Soil here is very poor.", 80)
     # GOODSOIL = FundationType("Good Soil", "Soil here is quite good.", 100)
@@ -246,7 +247,8 @@ def getArcherHut():
     return Feature(FeatureTypes.MILITARYTYPE, 0, 10, 'Archer\'s Hut', 'Place for people with flying sharp sticks', 'Archer', skillUsed=Enums.SkillNames.FIGHTER)
 def getSwordsmansGuild():
     return Feature(FeatureTypes.MILITARYTYPE, 0, 10, 'Swordsman\'sGuild', 'Place from where people with big metal sticks are coming from', 'Swordsman', skillUsed=Enums.SkillNames.FIGHTER)
-
+def getMedicusTent():
+    return Feature(FeatureTypes.MILITARYTYPE, 0, 1, 'Medicus Tent', 'Place of two crossed sticks and snake', 'Medicus', skillUsed=Enums.SkillNames.LABOR)
 def createZones():
 
     zones = []
@@ -273,6 +275,14 @@ def createZones():
     zones.append(getNewLeadMine())
     zones.append(getNewCopperMine())
     zones.append(getNewSilverMine())
+
+    return zones
+
+def createServicesZones():
+
+    zones = []
+
+    zones.append(getMedicusTent())
 
     return zones
 
