@@ -157,6 +157,10 @@ def main(popBreakLimit=None):
     windowHeight = 768
     #pygame init stuff
     pygame.init()
+    gameIcon = pygame.image.load('inputFiles/runes/brown.png')
+    pygame.display.set_icon(gameIcon)
+    pygame.display.set_caption('Saga Simulator')
+
     fps = 60
     clock = pygame.time.Clock()
 

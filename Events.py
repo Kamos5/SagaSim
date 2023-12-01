@@ -108,7 +108,7 @@ def infectionsSpread (world):
                                 if len(person.getImmunityTo()) > 0:
                                     isImmune = False
                                     for immunityTo in person.getImmunityTo():
-                                        if not randomInfection == immunityTo[0][0]:
+                                        if randomInfection == immunityTo[0][0]:
                                             isImmune = True
                                             break
                                     if not isImmune:

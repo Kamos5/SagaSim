@@ -110,6 +110,7 @@ class FloatingRune:
         switchtedHor = False
         switchtedVer = False
 
+        #TODO runes are sometimes chaning direction when meeting from bottom to top from left to right to left
 
         # left
         isAllowed, conflictWith = self.checkLeft(runes)
@@ -157,6 +158,7 @@ class FloatingRune:
                 for rune in conflictWith:
                     rune.changeVerticalDirection()
                     switchtedVer = True
+
 
     def checkLeft(self, runes):
         isAllowed = True
