@@ -587,7 +587,7 @@ def getTemperatureBasedOnDay(day, climateOffsetModifier=0):
     # <0,1> - based on cordX: lower the colder
     climateOffset = -1 * (1 - climateOffsetModifier) * 20   # <0,20>
 
-    noiseLevel = 5
+    noiseLevel = 3
 
     dayInRads = (day-offSetForStartingDay) * 360 / daysInYear
 
@@ -600,9 +600,9 @@ def getTemperatureBasedOnDay(day, climateOffsetModifier=0):
 
     idealTemperature = properTemperatureNormalized + basicMinTemperature  # <10;30>
 
-    noiseOffset = randomRange(-noiseLevel, noiseLevel)  # <-5;5>
+    noiseOffset = randomRange(-noiseLevel, noiseLevel)  # <-3;3>
 
-    endTemperature = round(idealTemperature + noiseOffset + climateOffset)  # <-15;35>
+    endTemperature = round(idealTemperature + noiseOffset + climateOffset)  # <-13;33>
 
     return endTemperature
 
