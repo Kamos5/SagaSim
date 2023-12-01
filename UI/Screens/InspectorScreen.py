@@ -38,6 +38,7 @@ class InspectorScreen:
         self.inspectorScreenSurfaceObjsRect = []
 
         self.favoriteButton = None
+        self.previousButton = None
         self.familyTreeButton = None
         self.provinceInRegionButton = None
         self.settlementInProvinceButton = None
@@ -96,6 +97,10 @@ class InspectorScreen:
 
     def addInspectorLabel(self):
 
+        self.previousButton = self.makeNewMultiButton(self.inspectorScreenButtons, 'previousButton')
+        self.previousLabel = Label("↶", 50, self.lineHeight, self.symbolFont, True)
+        self.previousLabel.changeColorOnHover(self.previousButton.getOnHover())
+        self.inspectorScreenSurfaceObjsRect.append([self.inspectorScreenSurface.blit(self.previousLabel.localSurface, (self.leftPadding / 2, self.lineHeight * self.writeLine + self.scroll_y)), self.previousButton])
         label = Label("Inspector: ", 100, self.lineHeight, self.textFont)
         self.inspectorScreenSurface.blit(label.localSurface, (self.leftPadding, self.lineHeight * self.writeLine + self.scroll_y))
         self.writeLine += 1

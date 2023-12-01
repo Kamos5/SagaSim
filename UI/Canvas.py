@@ -305,6 +305,11 @@ class Canvas:
 
                     #To offset position on main screen
                     if itemObj[0].collidepoint([mouseX-itemObjRectScreen.screenPosX, mouseY-itemObjRectScreen.screenPosY]):
+                        if itemObj[1] == self.inspectorScreen.previousButton:
+                            if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+                                if len(self.focusObj) > 1:
+                                    self.focusObj.pop(len(self.focusObj) - 1)
+                                    return True, pausedPressed, None
                         if itemObj[1] == self.inspectorScreen.familyTreeButton:
                             itemObj[1].setOnHover()
                             if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
