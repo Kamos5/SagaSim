@@ -22,7 +22,7 @@ class DropDownList:
         self.clickableBorderColor = 0, 200, 0
         self.borderSize = borderSize
         self.focused = focused
-
+        self.dropDownClicked = True
         fontW, fontH = font.size(text)
 
         self.horizontalMargin = horizontalMargin
@@ -65,7 +65,7 @@ class DropDownList:
         else:
             self.setMultiColor(multiColorText)
 
-        self.clicked = False
+
 
     def set(self, text):
         if not self.onlyText:
@@ -91,7 +91,7 @@ class DropDownList:
         self.arrowSurface = self.font.render(self.arrowText, True, (20, 20, 20))
         self.localSurface.blit(self.arrowSurface, (dropButtonXCord + (self.arrowH // 3), dropButtonYCord))
 
-        if self.clicked:
+        if self.dropDownClicked:
             counter = 1
             for data in self.objectList:
                 self.border = pygame.draw.rect(self.localSurface, (200, 200, 200), (dropButtonXCord + dropButtonHeight * counter, dropButtonYCord, dropButtonWidth, dropButtonHeight))
