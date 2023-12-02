@@ -23,6 +23,7 @@
     def isMenuState(self):
         return self.getGameState() == 1
 
+
     def isMenuState(self):
         return 0 <= self.state < 100
 

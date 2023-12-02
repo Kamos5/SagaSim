@@ -166,7 +166,10 @@ class Canvas:
 
         self.mainMenuScreen.cleanScreen()
         self.mainMenuScreen.loadBackground(self.windowWidth, self.windowHeight)
-        self.mainMenuScreen.showMainMenu(world)
+        if self.mainMenuScreen.showMenuFlag:
+            self.mainMenuScreen.showMainMenu(world)
+        if self.mainMenuScreen.showNamingMenuFlag:
+            self.mainMenuScreen.showNamingMenu(world)
         self.mainMenuScreenObj = self.screen.blit(self.mainMenuScreenSurface, (self.mainMenuPosX, self.mainMenuPosY))
         pygame.display.update()
 
@@ -248,7 +251,10 @@ class Canvas:
 
         if self.showMenu:
             self.mainMenuScreen.cleanScreen()
-            self.mainMenuScreen.showMainMenu(world)
+            if self.mainMenuScreen.showMenuFlag:
+                self.mainMenuScreen.showMainMenu(world)
+            if self.mainMenuScreen.showNamingMenuFlag:
+                self.mainMenuScreen.showNamingMenu(world)
 
         if not self.showMenu:
             self.listScreen.setScroll_y(listScroll_y)
@@ -337,8 +343,19 @@ class Canvas:
                         if isinstance(itemObj[1], Button) and itemObj[1] == self.mainMenuScreen.newWorldButton:
                             itemObj[1].setOnHover()
                             if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+                                self.mainMenuScreen.setNamingMenuFlag()
+
+                        if isinstance(itemObj[1], Button) and itemObj[1] == self.mainMenuScreen.quickStartButton:
+                            itemObj[1].setOnHover()
+                            if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                                 self.showMenu = False
                                 gameState.changeToInit()
+                                return False, True, None
+
+                        if isinstance(itemObj[1], Button) and itemObj[1] == self.mainMenuScreen.returnButton:
+                            itemObj[1].setOnHover()
+                            if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+                                self.mainMenuScreen.setMenuFlag()
                                 return False, True, None
 
                         if isinstance(itemObj[1], Button) and itemObj[1] == self.mainMenuScreen.continueButton:
@@ -390,18 +407,31 @@ class Canvas:
             if self.showMenu:
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_n:
-                        self.showMenu = False
-                        gameState.changeToInit()
-                        return False, True, None
+                        if self.mainMenuScreen.showMenuFlag:
+                            # self.showMenu = False
+                            self.mainMenuScreen.setNamingMenuFlag()
+                            # gameState.changeToInit()
+                            return False, True, None
+                        else:
+                            continue
+
 
                     if gameState.isMenuState() and event.key == pygame.K_c:
                         self.showMenu = False
                         gameState.changeToSimulation()
                         return False, True, None
 
+                    if event.key == pygame.K_s:
+                        if self.mainMenuScreen.showNamingMenuFlag:
+                            self.showMenu = False
+                            gameState.changeToInit()
+                            return False, True, None
+                        else:
+                            continue
+
                     if event.key == pygame.K_q:
-                        pygame.quit()
-                        exit()
+                            pygame.quit()
+                            exit()
 
             if self.showFamilyScreen is True:
                 mouseX, mouseY = pygame.mouse.get_pos()
@@ -448,16 +478,16 @@ class Canvas:
                             if isinstance(itemObj[1], Settlements):
                                 print("AAA")
 
-            #burshSize
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_a:
-                    self.worldMapScreen.makeBrushBigger()
-                if event.key == pygame.K_s:
-                    self.worldMapScreen.changeBrushColor(1)
-                if event.key == pygame.K_z:
-                    self.worldMapScreen.makeBrushSmaller()
-                if event.key == pygame.K_x:
-                    self.worldMapScreen.changeBrushColor(3)
+            # #burshSize
+            # if event.type == pygame.KEYDOWN:
+            #     if event.key == pygame.K_a:
+            #         self.worldMapScreen.makeBrushBigger()
+            #     if event.key == pygame.K_s:
+            #         self.worldMapScreen.changeBrushColor(1)
+            #     if event.key == pygame.K_z:
+            #         self.worldMapScreen.makeBrushSmaller()
+            #     if event.key == pygame.K_x:
+            #         self.worldMapScreen.changeBrushColor(3)
         return False, pausedPressed, None
 
     def pauseHandle(self, event, pausedPressed):

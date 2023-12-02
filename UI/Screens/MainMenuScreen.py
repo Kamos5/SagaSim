@@ -3,6 +3,7 @@ import pygame
 
 from UI.Misc.FloatingRune import FloatingRune
 from UI.Utils.Button import Button
+from UI.Utils.DropDownList import DropDownList
 from UI.Utils.Fonts import Fonts
 from UI.Utils.Label2 import Label2
 
@@ -20,6 +21,7 @@ class MainMenuScreen:
         self.font = Fonts()
         self.titleFont = self.font.getTitleFont()
         self.titleButtonFont = self.font.getTitleButtonFont()
+        self.titleSmallButtonFont = self.font.getTitleSmallButtonFont()
         self.textFont = self.font.getFont1()
         self.miniTextFont = self.font.getFont2()
         self.lineHeight = self.font.getMainMenuLineHeight()
@@ -27,8 +29,8 @@ class MainMenuScreen:
         self.screenPosX = screenPosX
         self.screenPosY = screenPosY
         self.labelBoarderDefault = 1
-        self.labelMarginHorizontalDefault = 2
-        self.labelMarginVerticalDefault = 2
+        self.labelMarginHorizontalDefault = 5
+        self.labelMarginVerticalDefault = 5
 
         self.mainMenuScreenSurface = pygame.Surface([self.width, self.height - self.heightOffSet])
         self.mainMenuScreenSurfaceObjsRect = []
@@ -71,10 +73,17 @@ class MainMenuScreen:
         # self.runes = [self.floatingRune1, self.floatingRune2]
 
         self.newWorldButton = Button('New World')
-        self.saveWorldButton = Button('New World')
-        self.loadWorldButton = Button('New World')
+        self.saveWorldButton = Button('Save World')
+        self.loadWorldButton = Button('Load World')
         self.continueButton = Button('Continue')
+        self.quickStartButton = Button('Quick Start')
+        self.dropDownCultureButton = Button('Drop Culture Down')
+        self.dropDownRegionButton = Button('Drop Region Down')
         self.quitButton = Button('Quit')
+        self.returnButton = Button('Return')
+
+        self.showNamingMenuFlag = False
+        self.showMenuFlag = True
 
         self.rotation = 0
     def moveAndAddRunesToScreen(self, runes):
@@ -94,6 +103,80 @@ class MainMenuScreen:
         #
         # self.rotation += 1
         self.moveAndAddRunesToScreen(self.runes)
+
+    def showNamingMenu(self, world):
+
+        self.writeLine += 1
+
+        self.mainMenuLabel = Label2(f'Saga Simulator', self.titleFont, False, borderSize=1)
+        self.mainMenuLabel.setActiveRectColor(150, 50, 150)
+        self.mainMenuLabel.setActiveBorderColor(10, 10, 100)
+        self.mainMenuScreenSurface.blit(self.mainMenuLabel.localSurface, (self.mainMenuLabel.centerElement(self.width), self.getVerticalPositioning()))
+
+        self.writeLine += 2
+
+        text1 = f'Quick '
+        text2 = f'S'
+        text3 = f'tart'
+        textColor1 = [text1, None]
+        textColor2 = [text2, (50, 150, 50)]
+        textColor3 = [text3, None]
+
+        self.quickStartLabel = Label2(f'Quick Start', self.titleSmallButtonFont, True, borderSize=3, multiColor=True, multiColorText=[textColor1, textColor2, textColor3])
+        self.quickStartLabel.setActiveRectColor(40, 100, 40)
+        self.quickStartLabel.setActiveBorderColor(50, 50, 50)
+        self.quickStartLabel.changeColorOnHover(self.quickStartButton.getOnHover())
+        self.mainMenuScreenSurfaceObjsRect.append([self.mainMenuScreenSurface.blit(self.quickStartLabel.localSurface, (self.quickStartLabel.centerElement(self.width), self.getVerticalPositioning())), self.quickStartButton])
+
+        self.writeLine += 2
+
+        self.dropDownCultureLabel = Label2(f'Pick Culture', self.titleSmallButtonFont, True, borderSize=2, maxWidth=250)
+        self.dropDownCultureLabel.setActiveRectColor(10, 50, 100)
+        self.dropDownCultureLabel.setActiveBorderColor(50, 50, 50)
+        self.dropDownCultureLabel.changeColorOnHover(self.dropDownCultureButton.getOnHover())
+        self.mainMenuScreenSurface.blit(self.dropDownCultureLabel.localSurface, (self.width // 6, self.getVerticalPositioning()))
+
+        self.dropDownRegionLabel = Label2(f'Pick region name', self.titleSmallButtonFont, True, borderSize=2, maxWidth=250)
+        self.dropDownRegionLabel.setActiveRectColor(10, 50, 100)
+        self.dropDownRegionLabel.setActiveBorderColor(50, 50, 50)
+        self.dropDownRegionLabel.changeColorOnHover(self.dropDownRegionButton.getOnHover())
+        self.mainMenuScreenSurface.blit(self.dropDownRegionLabel.localSurface, (2 * self.width // 6, self.getVerticalPositioning()))
+
+        self.writeLine += 1
+
+        self.dropDownCultureSelectLabel = DropDownList(f'-Select-', self.titleSmallButtonFont, True, borderSize=2, maxWidth=250, objectList=world.getCultures())
+        self.dropDownCultureSelectLabel.setActiveRectColor(10, 50, 100)
+        self.dropDownCultureSelectLabel.setActiveBorderColor(150, 150, 150)
+        self.dropDownCultureSelectLabel.changeColorOnHover(self.dropDownCultureButton.getOnHover())
+        self.mainMenuScreenSurfaceObjsRect.append([self.mainMenuScreenSurface.blit(self.dropDownCultureSelectLabel.localSurface, (self.width // 6, self.getVerticalPositioning())), self.dropDownCultureButton])
+
+        self.dropDownRegionSelectLabel = DropDownList(f'-Select-', self.titleSmallButtonFont, True, borderSize=2, maxWidth=250)
+        self.dropDownRegionSelectLabel.setActiveRectColor(10, 50, 100)
+        self.dropDownRegionSelectLabel.setActiveBorderColor(150, 150, 150)
+        self.dropDownRegionSelectLabel.changeColorOnHover(self.dropDownRegionButton.getOnHover())
+        self.mainMenuScreenSurfaceObjsRect.append([self.mainMenuScreenSurface.blit(self.dropDownRegionSelectLabel.localSurface, (2 * self.width // 6, self.getVerticalPositioning())), self.dropDownRegionButton])
+
+        self.writeLine += 10
+
+        text1 = f'R'
+        text2 = f'eturn'
+        textColor1 = [text1, (50, 150, 50)]
+        textColor2 = [text2, None]
+        self.returnLabel = Label2(f'Return', self.titleSmallButtonFont, True, borderSize=3, multiColor=True, multiColorText=[textColor1, textColor2])
+        self.returnLabel.setActiveRectColor(100, 40, 40)
+        self.returnLabel.setActiveBorderColor(50, 50, 50)
+        self.returnLabel.changeColorOnHover(self.returnButton.getOnHover())
+        self.mainMenuScreenSurfaceObjsRect.append([self.mainMenuScreenSurface.blit(self.returnLabel.localSurface, (self.returnLabel.centerElement(self.width), self.getVerticalPositioning())), self.returnButton])
+
+        return
+
+    def setMenuFlag(self):
+        self.showMenuFlag = True
+        self.showNamingMenuFlag = False
+
+    def setNamingMenuFlag(self):
+        self.showMenuFlag = False
+        self.showNamingMenuFlag = True
 
     def showMainMenu(self, world):
 

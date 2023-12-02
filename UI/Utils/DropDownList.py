@@ -1,29 +1,16 @@
 import pygame
 from PIL import ImageFont
 
+from UI.Utils.Button import Button
+from UI.Utils.Label2 import Label2
 
-class Label2:
 
-    def __init__(self, text, font, clickable=False, focused=False, maxWidth = -1, horizontalMargin = 2, verticalMargin = 2, borderSize=1, onlyText = False, fontColor = (220, 220, 220), multiColor=False, multiColorText=[]):
+class DropDownList:
 
-        self.onlyText = onlyText
-        fontW, fontH = font.size(text)
-        self.horizontalMargin = horizontalMargin
-        self.verticalMargin = verticalMargin
-        w = fontW + 2 * borderSize + 2 * self.horizontalMargin
-        if maxWidth > -1:
-            w = maxWidth
-        h = fontH + 2 * borderSize + 2 * self.verticalMargin
-        if not self.onlyText:
-            self.localSurface = pygame.Surface([w, h])
-        else:
-            self.localSurface = pygame.Surface([w, h], pygame.SRCALPHA)
-        self.x = 0
-        self.y = 0
-        self.w = w
-        self.h = h
+    def __init__(self, text, font, clickable=False, focused=False, maxWidth = -1, horizontalMargin = 2, verticalMargin = 2, borderSize=1, onlyText = False, fontColor = (220, 220, 220), multiColor=False, multiColorText=[], objectList = []):
 
         self.font = font
+        self.objectList = objectList
         self.inactiveRectColor = 20, 20, 60
         self.activeRectColor = 100, 30, 30
         self.activeRectColorAlt = 10, 70, 10
@@ -35,6 +22,30 @@ class Label2:
         self.clickableBorderColor = 0, 200, 0
         self.borderSize = borderSize
         self.focused = focused
+
+        fontW, fontH = font.size(text)
+
+        self.horizontalMargin = horizontalMargin
+        self.verticalMargin = verticalMargin
+        h = fontH + 2 * borderSize + 2 * self.verticalMargin
+
+        self.arrowText = f'↓'
+        self.arrowW, self.arrowH = h, h
+        self.onlyText = onlyText
+
+        w = fontW + 2 * borderSize + 2 * self.horizontalMargin + self.arrowW
+        if maxWidth > -1:
+            w = maxWidth
+
+        if not self.onlyText:
+            self.localSurface = pygame.Surface([w, h])
+        else:
+            self.localSurface = pygame.Surface([w, h], pygame.SRCALPHA)
+        self.x = 0
+        self.y = 0
+        self.w = w
+        self.h = h
+
         if not self.focused:
             self.rectColor = self.inactiveRectColor
             if clickable:
@@ -54,9 +65,12 @@ class Label2:
         else:
             self.setMultiColor(multiColorText)
 
+        self.clicked = False
+
     def set(self, text):
         if not self.onlyText:
             self.addRect()
+            self.addDropButton()
         self.addText(text)
 
     def setMultiColor(self, multiColorText):
@@ -66,6 +80,23 @@ class Label2:
     def addRect(self):
         self.border = pygame.draw.rect(self.localSurface, self.borderColor, (self.x, self.y, self.w, self.h))
         self.rect = pygame.draw.rect(self.localSurface, self.rectColor, (self.x + self.borderSize, self.y + self.borderSize, self.w - 2 * self.borderSize, self.h - 2 * self.borderSize))
+
+    def addDropButton(self):
+
+        dropButtonXCord = self.w - 1 * self.horizontalMargin - self.arrowW
+        dropButtonYCord = self.verticalMargin + self.borderSize
+        dropButtonWidth = self.arrowW - 2 * self.borderSize
+        dropButtonHeight =self.arrowH - 2 * self.borderSize - 2 * self.verticalMargin
+        self.border = pygame.draw.rect(self.localSurface, (200, 200, 200), (dropButtonXCord, dropButtonYCord, dropButtonWidth, dropButtonHeight))
+        self.arrowSurface = self.font.render(self.arrowText, True, (20, 20, 20))
+        self.localSurface.blit(self.arrowSurface, (dropButtonXCord + (self.arrowH // 3), dropButtonYCord))
+
+        if self.clicked:
+            counter = 1
+            for data in self.objectList:
+                self.border = pygame.draw.rect(self.localSurface, (200, 200, 200), (dropButtonXCord + dropButtonHeight * counter, dropButtonYCord, dropButtonWidth, dropButtonHeight))
+                counter += 1
+
 
     def addText(self, text):
         textSurface = self.font.render(text, True, self.textColor)

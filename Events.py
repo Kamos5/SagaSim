@@ -572,6 +572,12 @@ def settlementGoodsProduction(world):
                         if settlement.getRegion().getOriginalCulture().getTechnologiesInProgress()[0] == Enums.TechnologiesEnums.UNITY:
                             settlement.getRegion().getOriginalCulture().increaseTechnologiesInProgress(priestModifier * 7)
 
+                    ## SERVICES
+                    if len(settlement.getServicesFeatures()[0].getWorkerList()) > 0:
+                        for specialist in settlement.getServicesFeatures()[0].getWorkerList():
+                            rate = specialist.getSkills().getLaborSkill().getSkillLevel().value[0]
+                            # for settlement.getSick()
+
                     ## MILITARY
                     if len(settlement.getMilitaryFeatures()[0].getWorkerList()) > 0:
                         flatRate = 3

@@ -8,7 +8,8 @@ class Fonts:
         self.lineHeight = 22
         self.fontSize = 16
         self.titleFontSize = 50
-        self.titleBuutonFontSize = 40
+        self.titleButtonFontSize = 40
+        self.titleSmallButtonFontSize = 30
         self.fontMiniSize = 14
         self.generalFont = "segoeui"
         self.symbolFont = "segoeuisymbol"
@@ -16,11 +17,12 @@ class Fonts:
         self.helpLineHeight = 25
         self.plotsFontSize = 22
         self.plotsLineHeight = 25
-        self.mainMenuLineHeight = 30
+        self.mainMenuLineHeight = 25
         self.font1 = pygame.font.SysFont(self.generalFont, self.fontSize)
         self.font2 = pygame.font.SysFont(self.generalFont, self.fontSize)
         self.fontTitle = pygame.font.SysFont(self.generalFont, self.titleFontSize)
-        self.titleButtonFont = pygame.font.SysFont(self.generalFont, self.titleBuutonFontSize)
+        self.titleButtonFont = pygame.font.SysFont(self.generalFont, self.titleButtonFontSize)
+        self.titleSmallButtonFont = pygame.font.SysFont(self.generalFont, self.titleSmallButtonFontSize)
         self.miniFont = pygame.font.SysFont(self.generalFont, self.fontMiniSize)
         self.symbolFont = pygame.font.SysFont(self.symbolFont, self.fontSize)
         self.helpFont = pygame.font.SysFont(self.generalFont, self.helpFontSize)
@@ -37,6 +39,9 @@ class Fonts:
 
     def getTitleButtonFont(self):
         return self.titleButtonFont
+
+    def getTitleSmallButtonFont(self):
+        return self.titleSmallButtonFont
 
     def getMiniFont(self):
         return self.miniFont
