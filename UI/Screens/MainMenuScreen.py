@@ -208,8 +208,6 @@ class MainMenuScreen:
             if self.dropDownCultureSelectLabel.getText() != '-Select-':
                 self.regionNames = world.getAllNames()[self.dropDownCultureSelectLabel.getText()][f'{self.dropDownCultureSelectLabel.getText()}RegionNames']['regionNames']
                 for data in self.regionNames:
-                    if counter == len(self.regionNames):
-                        continue
 
                     self.dropDownMultiRegionButton = self.makeNewMultiButton(self.dropDownDynamicRegionList, data, 'region')
                     self.dropDownRegionChoiceLabel = Label2(f'{data}', self.titleSmallButtonFont, True, borderSize=2, maxWidth=250)
@@ -235,8 +233,6 @@ class MainMenuScreen:
             if self.dropDownCultureSelectLabel.getText() != '-Select-':
                 self.provinceNames = world.getAllNames()[self.dropDownCultureSelectLabel.getText()][f'{self.dropDownCultureSelectLabel.getText()}ProvinceNames']['provinceNames']
                 for data in self.provinceNames:
-                    if counter == len(self.provinceNames):
-                        continue
 
                     self.dropDownMultiProvinceButton = self.makeNewMultiButton(self.dropDownDynamicProvinceList, data, 'province')
                     self.dropDownProvinceChoiceLabel = Label2(f'{data}', self.titleSmallButtonFont, True, borderSize=2, maxWidth=250)
