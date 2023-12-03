@@ -15,6 +15,7 @@ from UI.Screens.ListScreen import ListScreen
 from UI.Screens.NavBarScreen import NavBarScreen
 from UI.Screens.PlotsScreen import PlotsScreen
 from UI.Utils.Button import Button
+from UI.Utils.DropDownList import DropDownList
 from UI.Utils.TextField import TextField
 
 
@@ -302,9 +303,10 @@ class Canvas:
                 mouseX, mouseY = pygame.mouse.get_pos()
                 for itemObj in itemsObj:
 
-                    # if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
-                    #     self.mainMenuScreen.dropDownCultureButton.resetActiveStatus()
-                    #     self.mainMenuScreen.dropDownRegionButton.resetActiveStatus()
+                    if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+                        self.mainMenuScreen.dropDownCultureButton.resetActiveStatus()
+                        self.mainMenuScreen.dropDownRegionButton.resetActiveStatus()
+                        self.mainMenuScreen.dropDownProvinceButton.resetActiveStatus()
 
                     if isinstance(itemObj[1], Button):
                         itemObj[1].resetOnHover()
@@ -342,10 +344,9 @@ class Canvas:
                                     itemObj[1].changeActiveStatus()
                                     return True, pausedPressed, None
 
-                        if itemObj[1] == self.mainMenuScreen.dropDownCultureButton or itemObj[1] == self.mainMenuScreen.dropDownRegionButton:
+                        if itemObj[1] == self.mainMenuScreen.dropDownCultureButton or itemObj[1] == self.mainMenuScreen.dropDownRegionButton or itemObj[1] == self.mainMenuScreen.dropDownProvinceButton:
                             itemObj[1].setOnHover()
                             if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
-                                print("ASD")
                                 itemObj[1].changeActiveStatus()
 
                         if isinstance(itemObj[1], Button) and itemObj[1] in [self.listScreen.allButton, self.listScreen.familyAdultsButton, self.listScreen.familyKidsButton, self.listScreen.employedButton, self.listScreen.unemployedButton, self.listScreen.sickButton, self.listScreen.withLoversButton]:
@@ -397,6 +398,11 @@ class Canvas:
                             itemObj[1].setOnHover()
                             if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                                 self.mainMenuScreen.dropDownRegionSelectLabel.set(itemObj[1].getButtonName())
+
+                        if isinstance(itemObj[1], Button) and itemObj[1] in self.mainMenuScreen.getDropDownDynamicProvinceButtons():
+                            itemObj[1].setOnHover()
+                            if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+                                self.mainMenuScreen.dropDownProvinceSelectLabel.set(itemObj[1].getButtonName())
 
                         if isinstance(itemObj[1], Button) and itemObj[1] in self.inspectorScreen.getInspectorScreenButtons():
                             itemObj[1].setOnHover()

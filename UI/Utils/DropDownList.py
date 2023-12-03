@@ -137,9 +137,6 @@ class DropDownList:
         else:
             self.setMultiColor(self.multiColorText)
 
-    def setActiveListRectColor(self, r, g, b):
-        self.listRectColor = (r, g, b)
-
     def setInactiveRectColor(self, r, g, b):
         self.rectColor = (r, g, b)
         if not self.multiColor:
@@ -183,16 +180,10 @@ class DropDownList:
         if flag:
             r, g, b = r+20, g+20, b+20
             self.textColor = 200, 200, 50
+        else:
+            self.textColor = 220, 220, 220
 
         self.setActiveRectColor(r, g, b)
-
-    def changeListColorOnHover(self, flag):
-        r, g, b = self.listRectColor
-        if flag:
-            r, g, b = 200, 200, 250
-            self.textColor = 200, 200, 50
-
-        self.setActiveListRectColor(r, g, b)
 
     def makeTextGivenColor(self, r, g, b):
         self.textColor = r, g, b
