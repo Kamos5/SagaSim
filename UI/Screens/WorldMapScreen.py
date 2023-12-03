@@ -90,7 +90,7 @@ class WorldMapScreen:
 
         self.writeLine += 1
 
-        self.mapLabel = Label2("World Map:", self.textFont, False, True, 2)
+        self.mapLabel = Label2("World Map:", self.textFont, False, True)
         self.mapLabel.setActiveRectColor(20, 20, 20)
         self.mapLabel.setActiveBorderColor(100, 100, 100)
 

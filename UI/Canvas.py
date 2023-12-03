@@ -307,6 +307,7 @@ class Canvas:
                         self.mainMenuScreen.dropDownCultureButton.resetActiveStatus()
                         self.mainMenuScreen.dropDownRegionButton.resetActiveStatus()
                         self.mainMenuScreen.dropDownProvinceButton.resetActiveStatus()
+                        self.mainMenuScreen.dropDownSettlementButton.resetActiveStatus()
 
                     if isinstance(itemObj[1], Button):
                         itemObj[1].resetOnHover()
@@ -344,7 +345,7 @@ class Canvas:
                                     itemObj[1].changeActiveStatus()
                                     return True, pausedPressed, None
 
-                        if itemObj[1] == self.mainMenuScreen.dropDownCultureButton or itemObj[1] == self.mainMenuScreen.dropDownRegionButton or itemObj[1] == self.mainMenuScreen.dropDownProvinceButton:
+                        if itemObj[1] == self.mainMenuScreen.dropDownCultureButton or itemObj[1] == self.mainMenuScreen.dropDownRegionButton or itemObj[1] == self.mainMenuScreen.dropDownProvinceButton or itemObj[1] == self.mainMenuScreen.dropDownSettlementButton:
                             itemObj[1].setOnHover()
                             if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                                 itemObj[1].changeActiveStatus()
@@ -403,6 +404,11 @@ class Canvas:
                             itemObj[1].setOnHover()
                             if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                                 self.mainMenuScreen.dropDownProvinceSelectLabel.set(itemObj[1].getButtonName())
+
+                        if isinstance(itemObj[1], Button) and itemObj[1] in self.mainMenuScreen.getDropDownDynamicSettlementButtons():
+                            itemObj[1].setOnHover()
+                            if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+                                self.mainMenuScreen.dropDownSettlementSelectLabel.set(itemObj[1].getButtonName())
 
                         if isinstance(itemObj[1], Button) and itemObj[1] in self.inspectorScreen.getInspectorScreenButtons():
                             itemObj[1].setOnHover()
