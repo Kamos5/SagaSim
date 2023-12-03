@@ -7,14 +7,14 @@ from UI.Utils.Label2 import Label2
 
 class DropDownList:
 
-    def __init__(self, text, font, clickable=False, focused=False, maxWidth = -1, horizontalMargin = 2, verticalMargin = 2, borderSize=1, onlyText = False, fontColor = (220, 220, 220), multiColor=False, multiColorText=[], objectList = []):
+    def __init__(self, text, font, clickable=False, focused=False, maxWidth = -1, horizontalMargin = 2, verticalMargin = 2, borderSize=1, onlyText = False, fontColor = (220, 220, 220), multiColor=False, multiColorText=[], clicked=False):
 
         self.font = font
-        self.objectList = objectList
         self.inactiveRectColor = 20, 20, 60
         self.activeRectColor = 100, 30, 30
         self.activeRectColorAlt = 10, 70, 10
         self.rectColor = self.inactiveRectColor
+        self.listRectColor = 80, 80, 80
         self.textColor = fontColor
         self.inactiveBorderColor = 200, 200, 200
         self.activeBorderColor = 75, 150, 150
@@ -22,7 +22,7 @@ class DropDownList:
         self.clickableBorderColor = 0, 200, 0
         self.borderSize = borderSize
         self.focused = focused
-        self.dropDownClicked = True
+        self.dropDownClicked = clicked
         fontW, fontH = font.size(text)
 
         self.horizontalMargin = horizontalMargin
@@ -30,6 +30,8 @@ class DropDownList:
         h = fontH + 2 * borderSize + 2 * self.verticalMargin
 
         self.arrowText = f'↓'
+        self.arrowTextDown = f'↓'
+        self.arrowTextUp = f'↑'
         self.arrowW, self.arrowH = h, h
         self.onlyText = onlyText
 
@@ -41,6 +43,8 @@ class DropDownList:
             self.localSurface = pygame.Surface([w, h])
         else:
             self.localSurface = pygame.Surface([w, h], pygame.SRCALPHA)
+
+        self.dropDownSurface = pygame.Surface([w, h])
         self.x = 0
         self.y = 0
         self.w = w
@@ -65,7 +69,16 @@ class DropDownList:
         else:
             self.setMultiColor(multiColorText)
 
+    def changeDropDownClicked(self, newValue):
 
+        if newValue == True:
+            self.arrowText = self.arrowTextUp
+        else:
+            self.arrowText = self.arrowTextDown
+        self.dropDownClicked = newValue
+
+    def switchDropDownClicked(self):
+        self.dropDownClicked = not self.dropDownClicked
 
     def set(self, text):
         if not self.onlyText:
@@ -86,17 +99,11 @@ class DropDownList:
         dropButtonXCord = self.w - 1 * self.horizontalMargin - self.arrowW
         dropButtonYCord = self.verticalMargin + self.borderSize
         dropButtonWidth = self.arrowW - 2 * self.borderSize
-        dropButtonHeight =self.arrowH - 2 * self.borderSize - 2 * self.verticalMargin
-        self.border = pygame.draw.rect(self.localSurface, (200, 200, 200), (dropButtonXCord, dropButtonYCord, dropButtonWidth, dropButtonHeight))
+        dropButtonHeight = self.arrowH - 2 * self.borderSize - 2 * self.verticalMargin
+
+        self.arrowBorder = pygame.draw.rect(self.localSurface, (200, 200, 200), (dropButtonXCord, dropButtonYCord, dropButtonWidth, dropButtonHeight))
         self.arrowSurface = self.font.render(self.arrowText, True, (20, 20, 20))
         self.localSurface.blit(self.arrowSurface, (dropButtonXCord + (self.arrowH // 3), dropButtonYCord))
-
-        if self.dropDownClicked:
-            counter = 1
-            for data in self.objectList:
-                self.border = pygame.draw.rect(self.localSurface, (200, 200, 200), (dropButtonXCord + dropButtonHeight * counter, dropButtonYCord, dropButtonWidth, dropButtonHeight))
-                counter += 1
-
 
     def addText(self, text):
         textSurface = self.font.render(text, True, self.textColor)
@@ -129,6 +136,9 @@ class DropDownList:
             self.set(self.text)
         else:
             self.setMultiColor(self.multiColorText)
+
+    def setActiveListRectColor(self, r, g, b):
+        self.listRectColor = (r, g, b)
 
     def setInactiveRectColor(self, r, g, b):
         self.rectColor = (r, g, b)
@@ -176,6 +186,14 @@ class DropDownList:
 
         self.setActiveRectColor(r, g, b)
 
+    def changeListColorOnHover(self, flag):
+        r, g, b = self.listRectColor
+        if flag:
+            r, g, b = 200, 200, 250
+            self.textColor = 200, 200, 50
+
+        self.setActiveListRectColor(r, g, b)
+
     def makeTextGivenColor(self, r, g, b):
         self.textColor = r, g, b
 
@@ -184,3 +202,14 @@ class DropDownList:
             self.textColor = (255-r, 255-g, 255-b)
 
         self.set(self.text)
+
+    def makeNewMultiButton(self, buttonsList, newButtonName, newButtonName2= '',shouldBeActive=False):
+
+        for button in buttonsList:
+            if button.getButtonName() == newButtonName and button.getButtonName2() == newButtonName2:
+                return button
+        newButton = Button(newButtonName, newButtonName2)
+        buttonsList.append(newButton)
+        if shouldBeActive:
+            newButton.setActiveStatus()
+        return newButton

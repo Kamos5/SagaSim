@@ -135,9 +135,6 @@ def running(world, manualOverride):
 def newWorld(canvas):
 
     world.reset()
-    names = CultureNames.foundations
-    world.setAllNames(names)
-    world.setCultures(list(names.keys()))
     world.generateRegionsNames(Parameters.startingNumberOfRegions)
     ProvinceNameGenerator.makeListsForProvinceNames(world)
     world.getWorldMap().generateProvinces(canvas)
@@ -175,6 +172,10 @@ def main(popBreakLimit=None):
 
     canvas = Canvas.Canvas()
     gameState = GameState()
+
+    names = CultureNames.foundations
+    world.setAllNames(names)
+    world.setCultures(list(names.keys()))
 
     world.updateAlive()
     world.setGameState(gameState)

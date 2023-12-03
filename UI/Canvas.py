@@ -302,6 +302,10 @@ class Canvas:
                 mouseX, mouseY = pygame.mouse.get_pos()
                 for itemObj in itemsObj:
 
+                    # if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+                    #     self.mainMenuScreen.dropDownCultureButton.resetActiveStatus()
+                    #     self.mainMenuScreen.dropDownRegionButton.resetActiveStatus()
+
                     if isinstance(itemObj[1], Button):
                         itemObj[1].resetOnHover()
 
@@ -311,6 +315,7 @@ class Canvas:
 
                     #To offset position on main screen
                     if itemObj[0].collidepoint([mouseX-itemObjRectScreen.screenPosX, mouseY-itemObjRectScreen.screenPosY]):
+
                         if itemObj[1] == self.inspectorScreen.previousButton:
                             if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                                 if len(self.focusObj) > 1:
@@ -336,6 +341,12 @@ class Canvas:
                                     self.favorites.remove(itemObj[1].getButtonName())
                                     itemObj[1].changeActiveStatus()
                                     return True, pausedPressed, None
+
+                        if itemObj[1] == self.mainMenuScreen.dropDownCultureButton or itemObj[1] == self.mainMenuScreen.dropDownRegionButton:
+                            itemObj[1].setOnHover()
+                            if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+                                print("ASD")
+                                itemObj[1].changeActiveStatus()
 
                         if isinstance(itemObj[1], Button) and itemObj[1] in [self.listScreen.allButton, self.listScreen.familyAdultsButton, self.listScreen.familyKidsButton, self.listScreen.employedButton, self.listScreen.unemployedButton, self.listScreen.sickButton, self.listScreen.withLoversButton]:
                             self.listScreen.changeFamilyButtons(itemObj[1], event)
@@ -377,6 +388,15 @@ class Canvas:
                                 itemObj[1].changeActiveStatus()
                                 if itemObj[1] == self.listScreen.showFamiliesButton:
                                     return True, pausedPressed, None
+
+                        if isinstance(itemObj[1], Button) and itemObj[1] in self.mainMenuScreen.getDropDownDynamicCultureButtons():
+                            itemObj[1].setOnHover()
+                            if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+                                self.mainMenuScreen.dropDownCultureSelectLabel.set(itemObj[1].getButtonName().getCultureName())
+                        if isinstance(itemObj[1], Button) and itemObj[1] in self.mainMenuScreen.getDropDownDynamicRegionButtons():
+                            itemObj[1].setOnHover()
+                            if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+                                self.mainMenuScreen.dropDownRegionSelectLabel.set(itemObj[1].getButtonName())
 
                         if isinstance(itemObj[1], Button) and itemObj[1] in self.inspectorScreen.getInspectorScreenButtons():
                             itemObj[1].setOnHover()
