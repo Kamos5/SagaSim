@@ -144,7 +144,7 @@ def splitFamiliesInMigration(world, region, province, newTargetSettlement, compl
             chanceForRevingAncestralFamily = Utils.randomRange(1, 100)
 
             if chanceForRevingAncestralFamily > 20:
-                newFamilyName = FNG.getNewLastNameBasedOnCulture(region.getRegionNumber())
+                newFamilyName = FNG.getNewLastNameBasedOnCulture(region, world=world)
 #                newFamilyName = FNG.getNewLastNameBasedOnRegion(region)
                 family = Family(newFamilyName)
                 family.setFoundingYear(world.getYear())
@@ -162,7 +162,7 @@ def splitFamiliesInMigration(world, region, province, newTargetSettlement, compl
                     family = Utils.randomFromCollection(ancestralFamilies)
                     newFamilyName = family.getFamilyName()
                 else:
-                    newFamilyName = FNG.getNewLastNameBasedOnCulture(region.getRegionNumber())
+                    newFamilyName = FNG.getNewLastNameBasedOnCulture(region, world=world)
 #                    newFamilyName = FNG.getNewLastNameBasedOnRegion(region)
                     family = Family(newFamilyName)
                     family.setFoundingYear(world.getYear())

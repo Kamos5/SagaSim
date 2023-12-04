@@ -7,21 +7,18 @@ def Init(world):
 
     startingSettlements = Parameters.startingSettlementsPerProvince
     families = []
-    FamilyNameGenerator.makeListsForLastNames(world)
-    NameGenerator.makeListsForFirstNames(world)
 
-    for region in range(Parameters.startingNumberOfRegions):
-        regionObj = world.getRegionFromIndex(region)
+    for region in world.getRegions():
         for familyNumber in range(Parameters.startingNumberOfFamiliesPerRegion):
-            familyName = FamilyNameGenerator.getNewLastNameBasedOnCulture(regionNumber=region)
+            familyName = FamilyNameGenerator.getNewLastNameBasedOnCulture(culture=region.getOriginalCulture(), world=world)
             # familyName = FamilyNameGenerator.getNewLastNameBasedOnRegion(world.getRegionFromIndex(region))
             family = Family(familyName)
             family.setFoundingYear(world.getYear())
-            family.setOriginRegion(regionObj)
-            provinceObj = regionObj.getProvinces()[0]
+            family.setOriginRegion(region)
+            provinceObj = region.getProvinces()[0]
             family.setOriginProvince(provinceObj)
             family.setOriginSettlement(provinceObj.getSettlementFromIndex(familyNumber % startingSettlements))
-            family.setOriginCulture(world.cultures[region])
+            family.setOriginCulture(region.getOriginalCulture())
             families.append(family)
 
     return families

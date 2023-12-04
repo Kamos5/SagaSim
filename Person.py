@@ -101,12 +101,12 @@ class Person:
         self.skills = Skills.Skills()
         pass
 
-    def setInitValues(self, familyName, yearOfBirth, age, randomLifespan, sex, hairColor, hairColorGen1, hairColorGen2, eyeColor, eyeColorGen1, eyeColorGen2, skinColor, skinColorGen1, skinColorGen2, familyObj):
+    def setInitValues(self, familyName, yearOfBirth, age, randomLifespan, sex, hairColor, hairColorGen1, hairColorGen2, eyeColor, eyeColorGen1, eyeColorGen2, skinColor, skinColorGen1, skinColorGen2, familyObj, world):
 
         if sex == Sexes.MALE:
-            self.firstName = NameGenerator.getRandomMNameForRegion(familyObj.getOriginRegion().getRegionNumber())
+            self.firstName = NameGenerator.getRandomMNameForCulture(familyObj.getOriginRegion().getOriginalCulture(), world)
         else:
-            self.firstName = NameGenerator.getRandomFNameForRegion(familyObj.getOriginRegion().getRegionNumber())
+            self.firstName = NameGenerator.getRandomFNameForCulture(familyObj.getOriginRegion().getOriginalCulture(), world)
 
         self.familyName = familyName
         self.lastName = familyObj.familyName

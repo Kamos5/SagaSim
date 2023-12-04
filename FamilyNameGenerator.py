@@ -250,28 +250,18 @@ def makeListsForLastNames(world):
         cultureFamilyNames = f'{cultureName}{familyNamesStr}'
         copyNamesList.append(list(world.allNames[cultureName][cultureFamilyNames][familyNamesStrLowerFirst]))
 
-def getNewLastNameBasedOnCulture(regionNumber = 0):
+def getNewLastNameBasedOnCulture(culture = None, world = None):
 
-    namesList = copyNamesList[regionNumber]
+    cultureFamilyNames = f'{culture.getCultureName()}{familyNamesStr}'
+    namesList = (list(world.allNames[culture.getCultureName()][cultureFamilyNames][familyNamesStrLowerFirst]))
     choice = ''
-
-    if namesList is None:
-        if regionNumber == 0:
-            choice = getInitEnglishName()
-        elif regionNumber == 1:
-            choice = getInitNorseName()
-        elif regionNumber == 2:
-            choice = getInitSlavicName()
-        elif regionNumber == 3:
-            choice = getInitEgyptName()
+    if len(namesList) > 0:
+        choice = randomChoice(namesList)
+        namesList.remove(choice)
     else:
-        if len(namesList) > 0:
-            choice = randomChoice(namesList)
-            namesList.remove(choice)
-        else:
-            global namesPicked
-            namesPicked += 1
-            choice = f'Generic Family Name {namesPicked}'
+        global namesPicked
+        namesPicked += 1
+        choice = f'Generic Family Name {namesPicked}'
 
     return choice
 

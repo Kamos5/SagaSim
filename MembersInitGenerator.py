@@ -28,7 +28,7 @@ def Init(families, world):
             skinColor = setUpSkinColorsToFamilies(family)
             skinColorGen1 = [skinColor, 0]
             skinColorGen2 = [skinColor, 0]
-            member.setInitValues(family.familyName, world.getYear(), randomAge, randomLifespan, sex, hairColor, hairColorGen1, hairColorGen2, eyeColor, eyeColorGen1, eyeColorGen2, skinColor, skinColorGen1, skinColorGen2, family)
+            member.setInitValues(family.familyName, world.getYear(), randomAge, randomLifespan, sex, hairColor, hairColorGen1, hairColorGen2, eyeColor, eyeColorGen1, eyeColorGen2, skinColor, skinColorGen1, skinColorGen2, family, world)
 
             member.addTrait(Utils.randomTrait(member))
             member.addTrait(Utils.randomTrait(member))

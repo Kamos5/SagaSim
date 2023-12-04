@@ -3,6 +3,8 @@ from random import choice
 import Utils
 from RegionNameGenerator import englishRegionNames, norseRegionNames, slavicRegionNames, egyptRegionNames
 
+namesPicked = 0
+
 maleEnglishNameList = [
     'Adam',
     'Alvin',
@@ -317,54 +319,36 @@ def makeListsForFirstNames(world):
             cultureFamilyNames = f'female{firstNamesStrUpperFirst}{firstNamesStr}'
             copyNamesFList.append(list(world.allNames[cultureName][cultureFamilyNames][firstNamesStrLowerFirst]))
 
-def getRandomMNameForRegion(regionNumber = 0):
+def getRandomMNameForCulture(culture = None, world = None):
 
-    namesList = []
+    firstNamesStrUpperFirst = culture.getCultureName()[0].upper() + culture.getCultureName()[1:]
+    cultureFamilyNames = f'male{firstNamesStrUpperFirst}{firstNamesStr}'
+    namesList = list(world.allNames[culture.getCultureName()][cultureFamilyNames][firstNamesStrLowerFirst])
     choice = ''
 
-    if copyNamesMList is None:
-        if regionNumber == 0:
-            choice = randomEnglishMName()
-        elif regionNumber == 1:
-            choice = randomNorseMName()
-        elif regionNumber == 2:
-            choice = randomSlavicMName()
-        elif regionNumber == 3:
-            choice = randomEgyptianMName()
+    if len(namesList) > 0:
+        choice = Utils.randomFromCollection(namesList)
     else:
-        namesList = copyNamesMList[regionNumber]
-        if len(namesList) > 0:
-            choice = Utils.randomFromCollection(namesList)
-        else:
-            global namesPicked
-            namesPicked += 1
-            choice = f'Generic Male Name'
+        global namesPicked
+        namesPicked += 1
+        choice = f'Generic Male Name'
 
     return choice
 
 
-def getRandomFNameForRegion(regionNumber = 0):
+def getRandomFNameForCulture(culture = None, world=None):
 
-    namesList = []
+    firstNamesStrUpperFirst = culture.getCultureName()[0].upper() + culture.getCultureName()[1:]
+    cultureFamilyNames = f'female{firstNamesStrUpperFirst}{firstNamesStr}'
+    namesList = list(world.allNames[culture.getCultureName()][cultureFamilyNames][firstNamesStrLowerFirst])
     choice = ''
 
-    if copyNamesFList is None:
-        if regionNumber == 0:
-            choice = randomEnglishFName()
-        elif regionNumber == 1:
-            choice = randomNorseFName()
-        elif regionNumber == 2:
-            choice = randomSlavicFName()
-        elif regionNumber == 3:
-            choice = randomEgyptianFName()
+    if len(namesList) > 0:
+        choice = Utils.randomFromCollection(namesList)
     else:
-        namesList = copyNamesFList[regionNumber]
-        if len(namesList) > 0:
-            choice = Utils.randomFromCollection(namesList)
-        else:
-            global namesPicked
-            namesPicked += 1
-            choice = f'Generic Female Name'
+        global namesPicked
+        namesPicked += 1
+        choice = f'Generic Female Name'
 
     return choice
 

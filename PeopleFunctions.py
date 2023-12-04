@@ -38,9 +38,9 @@ def birthChild(world, parent1, parent2=None, trueParent1=None, trueParent2=None)
 
     for number in range(numberOfChildren):
         if sex == Sexes.MALE:
-            firstName.append(NameGenerator.getRandomMNameForRegion(parent1.getSettlement().getRegion().getRegionNumber()))
+            firstName.append(NameGenerator.getRandomMNameForCulture(parent1.getSettlement().getRegion().getRegionNumber(), world=world))
         else:
-            firstName.append(NameGenerator.getRandomFNameForRegion(parent1.getSettlement().getRegion().getRegionNumber()))
+            firstName.append(NameGenerator.getRandomFNameForCulture(parent1.getSettlement().getRegion().getRegionNumber(), world=world))
 
     lifespan = Utils.geneticRandomFromValues(trueParent1.lifespan, trueParent2.lifespan)
 
