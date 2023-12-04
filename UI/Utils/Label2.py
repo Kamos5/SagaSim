@@ -148,8 +148,4 @@ class Label2:
     def makeTextGivenColor(self, r, g, b):
         self.textColor = r, g, b
 
-        if self.focused:
-            r, g, b = self.textColor
-            self.textColor = (255-r, 255-g, 255-b)
-
         self.set(self.text)

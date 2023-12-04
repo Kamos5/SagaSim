@@ -1,6 +1,7 @@
 ﻿
 import pygame
 
+import Enums
 from UI.Misc.FloatingRune import FloatingRune
 from UI.Utils.Button import Button
 from UI.Utils.DropDownList import DropDownList
@@ -33,6 +34,7 @@ class MainMenuScreen:
         self.labelMarginHorizontalDefault = 5
         self.labelMarginVerticalDefault = 5
 
+        self.dropDownLabelWidth = 200
         self.mainMenuScreenSurface = pygame.Surface([self.width, self.height - self.heightOffSet])
         self.mainMenuScreenSurfaceObjsRect = []
 
@@ -78,12 +80,16 @@ class MainMenuScreen:
         self.loadWorldButton = Button('Load World')
         self.continueButton = Button('Continue')
         self.quickStartButton = Button('Quick Start')
+        self.createWorldButton = Button('Create World')
         self.dropDownCultureButton = Button('Drop Culture Down')
         self.dropDownRegionButton = Button('Drop Region Down')
         self.dropDownProvinceButton = Button('Drop Province Down')
         self.dropDownSettlementButton = Button('Drop Settlement Down')
-        self.dropDownFamilyButton = Button('Drop Family Name Down')
+        self.dropDownFamilyNameButton = Button('Drop Family Name Down')
+        self.dropDownGenderButton = Button('Drop Gender Down')
         self.dropDownFirstNameButton = Button('Drop First Name Down')
+        self.dropDownButtonList = [self.dropDownCultureButton, self.dropDownRegionButton, self.dropDownProvinceButton, self.dropDownSettlementButton, self.dropDownFamilyNameButton, self.dropDownGenderButton, self.dropDownFirstNameButton]
+
         self.quitButton = Button('Quit')
         self.returnButton = Button('Return')
         self.showNamingMenuFlag = False
@@ -93,21 +99,29 @@ class MainMenuScreen:
         self.dropDownMultiProvinceButton = None
         self.dropDownMultiSettlementButton = None
         self.dropDownMultiFamilyNameButton = None
+        self.dropDownMultiGenderButton = None
         self.dropDownMultiFirstNameButton = None
 
-        self.dropDownCultureSelectLabel = DropDownList(f'-Select-', self.titleSmallerButtonFont, True, borderSize=2, maxWidth=250)
-        self.dropDownRegionSelectLabel = DropDownList(f'-Select-', self.titleSmallerButtonFont, True, borderSize=2, maxWidth=250)
-        self.dropDownProvinceSelectLabel = DropDownList(f'-Select-', self.titleSmallerButtonFont, True, borderSize=2, maxWidth=250)
-        self.dropDownSettlementSelectLabel = DropDownList(f'-Select-', self.titleSmallerButtonFont, True, borderSize=2, maxWidth=250)
-        self.dropDownFamilyNameSelectLabel = DropDownList(f'-Select-', self.titleSmallerButtonFont, True, borderSize=2, maxWidth=250)
-        self.dropDownFirstNameSelectLabel = DropDownList(f'-Select-', self.titleSmallerButtonFont, True, borderSize=2, maxWidth=250)
+        self.dropDownCultureSelectLabel = DropDownList(self.titleSmallerButtonFont, True, borderSize=2, maxWidth=self.dropDownLabelWidth)
+        self.dropDownRegionSelectLabel = DropDownList(self.titleSmallerButtonFont, True, borderSize=2, maxWidth=self.dropDownLabelWidth)
+        self.dropDownProvinceSelectLabel = DropDownList(self.titleSmallerButtonFont, True, borderSize=2, maxWidth=self.dropDownLabelWidth)
+        self.dropDownSettlementSelectLabel = DropDownList(self.titleSmallerButtonFont, True, borderSize=2, maxWidth=self.dropDownLabelWidth)
+        self.dropDownFamilyNameSelectLabel = DropDownList(self.titleSmallerButtonFont, True, borderSize=2, maxWidth=self.dropDownLabelWidth)
+        self.dropDownGenderSelectLabel = DropDownList(self.titleSmallerButtonFont, True, borderSize=2, maxWidth=self.dropDownLabelWidth)
+        self.dropDownFirstNameSelectLabel = DropDownList(self.titleSmallerButtonFont, True, borderSize=2, maxWidth=self.dropDownLabelWidth)
+        self.formSelectedLabels = [self.dropDownCultureSelectLabel, self.dropDownRegionSelectLabel, self.dropDownProvinceSelectLabel, self.dropDownSettlementSelectLabel, self.dropDownFamilyNameSelectLabel, self.dropDownGenderSelectLabel, self.dropDownFirstNameSelectLabel]
         self.defaultTextForDropDown = "-Select-"
         self.regionNames = None
+        self.provinceNames = None
+        self.familyNames = None
+        self.genders = None
+        self.firstNames = None
         self.dropDownDynamicCultureList = []
         self.dropDownDynamicRegionList = []
         self.dropDownDynamicProvinceList = []
         self.dropDownDynamicSettlementList = []
         self.dropDownDynamicFamilyNameList = []
+        self.dropDownDynamicGenderList = []
         self.dropDownDynamicFirstNameList = []
 
 
@@ -141,6 +155,16 @@ class MainMenuScreen:
 
         self.writeLine += 2
 
+        text1 = f'R'
+        text2 = f'eturn'
+        textColor1 = [text1, (50, 150, 50)]
+        textColor2 = [text2, None]
+        self.returnLabel = Label2(f'Return', self.titleSmallButtonFont, True, borderSize=3, multiColor=True, multiColorText=[textColor1, textColor2])
+        self.returnLabel.setActiveRectColor(100, 40, 40)
+        self.returnLabel.setActiveBorderColor(50, 50, 50)
+        self.returnLabel.changeColorOnHover(self.returnButton.getOnHover())
+        self.mainMenuScreenSurfaceObjsRect.append([self.mainMenuScreenSurface.blit(self.returnLabel.localSurface, (self.returnLabel.centerElement(self.width) - 2 * self.width //6, self.getVerticalPositioning())), self.returnButton])
+
         text1 = f'Quick '
         text2 = f'S'
         text3 = f'tart'
@@ -154,60 +178,102 @@ class MainMenuScreen:
         self.quickStartLabel.changeColorOnHover(self.quickStartButton.getOnHover())
         self.mainMenuScreenSurfaceObjsRect.append([self.mainMenuScreenSurface.blit(self.quickStartLabel.localSurface, (self.quickStartLabel.centerElement(self.width), self.getVerticalPositioning())), self.quickStartButton])
 
-        text1 = f'R'
-        text2 = f'eturn'
-        textColor1 = [text1, (50, 150, 50)]
-        textColor2 = [text2, None]
-        self.returnLabel = Label2(f'Return', self.titleSmallButtonFont, True, borderSize=3, multiColor=True, multiColorText=[textColor1, textColor2])
-        self.returnLabel.setActiveRectColor(100, 40, 40)
-        self.returnLabel.setActiveBorderColor(50, 50, 50)
-        self.returnLabel.changeColorOnHover(self.returnButton.getOnHover())
-        self.mainMenuScreenSurfaceObjsRect.append([self.mainMenuScreenSurface.blit(self.returnLabel.localSurface, (1 * self.width //6, self.getVerticalPositioning())), self.returnButton])
+
+        self.createWorldLabel = Label2(f'Create World', self.titleSmallButtonFont, True, borderSize=3)
+        self.createWorldLabel.setActiveRectColor(150, 150, 40)
+        self.createWorldLabel.setActiveBorderColor(50, 50, 50)
+        self.createWorldLabel.changeColorOnHover(self.createWorldButton.getOnHover())
+        self.mainMenuScreenSurfaceObjsRect.append([self.mainMenuScreenSurface.blit(self.createWorldLabel.localSurface, (self.createWorldLabel.centerElement(self.width) + 2 * self.width //6, self.getVerticalPositioning())), self.createWorldButton])
 
         self.writeLine += 2
 
-        self.dropDownCultureLabel = Label2(f'Pick Culture', self.titleSmallerButtonFont, True, borderSize=2, maxWidth=250)
+        self.dropDownCultureLabel = Label2(f'Pick Culture', self.titleSmallerButtonFont, True, borderSize=2, maxWidth=self.dropDownLabelWidth)
         self.dropDownCultureLabel.setActiveRectColor(10, 50, 100)
         self.dropDownCultureLabel.setActiveBorderColor(50, 50, 50)
         self.mainMenuScreenSurface.blit(self.dropDownCultureLabel.localSurface, (self.width // 6, self.getVerticalPositioning()))
 
-        self.dropDownRegionLabel = Label2(f'Pick region', self.titleSmallerButtonFont, True, borderSize=2, maxWidth=250)
+        self.dropDownRegionLabel = Label2(f'Pick region', self.titleSmallerButtonFont, True, borderSize=2, maxWidth=self.dropDownLabelWidth)
         self.dropDownRegionLabel.setActiveRectColor(10, 50, 100)
         self.dropDownRegionLabel.setActiveBorderColor(50, 50, 50)
         self.mainMenuScreenSurface.blit(self.dropDownRegionLabel.localSurface, (2 * self.width // 6, self.getVerticalPositioning()))
 
-        self.dropDownProvinceLabel = Label2(f'Pick province', self.titleSmallerButtonFont, True, borderSize=2, maxWidth=250)
+        self.dropDownProvinceLabel = Label2(f'Pick province', self.titleSmallerButtonFont, True, borderSize=2, maxWidth=self.dropDownLabelWidth)
         self.dropDownProvinceLabel.setActiveRectColor(10, 50, 100)
         self.dropDownProvinceLabel.setActiveBorderColor(50, 50, 50)
         self.mainMenuScreenSurface.blit(self.dropDownProvinceLabel.localSurface, (3 * self.width // 6, self.getVerticalPositioning()))
 
-        self.dropDownSettlementLabel = Label2(f'Pick settlement', self.titleSmallerButtonFont, True, borderSize=2, maxWidth=250)
+        self.dropDownSettlementLabel = Label2(f'Pick settlement', self.titleSmallerButtonFont, True, borderSize=2, maxWidth=self.dropDownLabelWidth)
         self.dropDownSettlementLabel.setActiveRectColor(10, 50, 100)
         self.dropDownSettlementLabel.setActiveBorderColor(50, 50, 50)
         self.mainMenuScreenSurface.blit(self.dropDownSettlementLabel.localSurface, (4 * self.width // 6, self.getVerticalPositioning()))
 
         self.writeLine += 5
 
-        self.dropDownFamilyNameLabel = Label2(f'Pick Family', self.titleSmallerButtonFont, True, borderSize=2, maxWidth=250)
+        self.dropDownFamilyNameLabel = Label2(f'Pick Family', self.titleSmallerButtonFont, True, borderSize=2, maxWidth=self.dropDownLabelWidth)
         self.dropDownFamilyNameLabel.setActiveRectColor(10, 50, 100)
         self.dropDownFamilyNameLabel.setActiveBorderColor(50, 50, 50)
         self.mainMenuScreenSurface.blit(self.dropDownFamilyNameLabel.localSurface, (2 * self.width // 8, self.getVerticalPositioning()))
 
-        self.dropDownFirstNameLabel = Label2(f'Pick Name', self.titleSmallerButtonFont, True, borderSize=2, maxWidth=250)
+        self.dropDownFamilyNameSelectLabel.changeDropDownClicked(self.dropDownFamilyNameButton.getIsActive())
+        self.dropDownFamilyNameSelectLabel.setActiveRectColor(10, 50, 100)
+        self.dropDownFamilyNameSelectLabel.setActiveBorderColor(150, 150, 150)
+        self.dropDownFamilyNameSelectLabel.changeColorOnHover(self.dropDownFamilyNameButton.getOnHover())
+
+        self.dropDownGenderLabel = Label2(f'Pick Gender', self.titleSmallerButtonFont, True, borderSize=2, maxWidth=self.dropDownLabelWidth)
+        self.dropDownGenderLabel.setActiveRectColor(10, 50, 100)
+        self.dropDownGenderLabel.setActiveBorderColor(50, 50, 50)
+
+        self.mainMenuScreenSurface.blit(self.dropDownGenderLabel.localSurface, (3.5 * self.width // 8, self.getVerticalPositioning()))
+
+        self.dropDownGenderSelectLabel.changeDropDownClicked(self.dropDownGenderButton.getIsActive())
+        self.dropDownGenderSelectLabel.setActiveRectColor(10, 50, 100)
+        self.dropDownGenderSelectLabel.setActiveBorderColor(150, 150, 150)
+        self.dropDownGenderSelectLabel.changeColorOnHover(self.dropDownGenderButton.getOnHover())
+
+        self.dropDownFirstNameLabel = Label2(f'Pick Name', self.titleSmallerButtonFont, True, borderSize=2, maxWidth=self.dropDownLabelWidth)
         self.dropDownFirstNameLabel.setActiveRectColor(10, 50, 100)
         self.dropDownFirstNameLabel.setActiveBorderColor(50, 50, 50)
+
         self.mainMenuScreenSurface.blit(self.dropDownFirstNameLabel.localSurface, (5 * self.width // 8, self.getVerticalPositioning()))
 
-        self.writeLine -= 5
+        self.dropDownFirstNameSelectLabel.changeDropDownClicked(self.dropDownFirstNameButton.getIsActive())
+        self.dropDownFirstNameSelectLabel.setActiveRectColor(10, 50, 100)
+        self.dropDownFirstNameSelectLabel.setActiveBorderColor(150, 150, 150)
+        self.dropDownFirstNameSelectLabel.changeColorOnHover(self.dropDownFirstNameButton.getOnHover())
+
         self.writeLine += 1
 
-        self.dropDownCultureSelectLabel.changeDropDownClicked(self.dropDownCultureButton.getIsActive())
+        xPosition = (3.5 * self.width // 8)
+        self.mainMenuScreenSurfaceObjsRect.append([self.mainMenuScreenSurface.blit(self.dropDownGenderSelectLabel.localSurface, (xPosition, self.getVerticalPositioning())), self.dropDownGenderButton])
 
+        if self.dropDownGenderSelectLabel.dropDownClicked:
+            self.genders = [Enums.Sexes["MALE"].name, Enums.Sexes["FEMALE"].name]
+            self.dropDownGenderSelectLabel.addOptions(dataList=self.genders, identifierString='gender', vericalOffset=self.getVerticalPositioning(), horizontalOffset=xPosition, screenSurface=self.mainMenuScreenSurface, screenSurfaceObjRect=self.mainMenuScreenSurfaceObjsRect, dynamicDropDownList=self.dropDownDynamicGenderList)
+
+        xPosition = 2 * self.width // 8
+        self.mainMenuScreenSurfaceObjsRect.append([self.mainMenuScreenSurface.blit(self.dropDownFamilyNameSelectLabel.localSurface, (xPosition, self.getVerticalPositioning())), self.dropDownFamilyNameButton])
+
+        if self.dropDownFamilyNameSelectLabel.dropDownClicked:
+            if self.dropDownCultureSelectLabel.getText() != '-Select-':
+
+                self.familyNames = world.getAllNames()[self.dropDownCultureSelectLabel.getText()][f'{self.dropDownCultureSelectLabel.getText()}FamilyNames']['familyNames']
+                self.dropDownFamilyNameSelectLabel.addOptions(dataList=self.familyNames, identifierString='family', vericalOffset=self.getVerticalPositioning(), horizontalOffset=xPosition, screenSurface=self.mainMenuScreenSurface, screenSurfaceObjRect=self.mainMenuScreenSurfaceObjsRect, dynamicDropDownList=self.dropDownDynamicFamilyNameList)
+
+        xPosition = 5 * self.width // 8
+        self.mainMenuScreenSurfaceObjsRect.append([self.mainMenuScreenSurface.blit(self.dropDownFirstNameSelectLabel.localSurface, (xPosition, self.getVerticalPositioning())), self.dropDownFirstNameButton])
+
+        if self.dropDownFirstNameSelectLabel.dropDownClicked:
+            if self.dropDownCultureSelectLabel.getText() != '-Select-' and (self.dropDownGenderSelectLabel.getText() == 'MALE' or self.dropDownGenderSelectLabel.getText() == 'FEMALE'):
+                self.firstNames = world.getAllNames()[self.dropDownCultureSelectLabel.getText()][f'{self.dropDownGenderSelectLabel.getText().lower()}{self.dropDownCultureSelectLabel.getText().capitalize()}Names']['names']
+                self.dropDownFamilyNameSelectLabel.addOptions(dataList=self.firstNames, identifierString='firstNames', vericalOffset=self.getVerticalPositioning(), horizontalOffset=xPosition, screenSurface=self.mainMenuScreenSurface, screenSurfaceObjRect=self.mainMenuScreenSurfaceObjsRect, dynamicDropDownList=self.dropDownDynamicFirstNameList)
+
+        self.writeLine -= 5
+
+        self.dropDownCultureSelectLabel.changeDropDownClicked(self.dropDownCultureButton.getIsActive())
         self.dropDownCultureSelectLabel.setActiveRectColor(10, 50, 100)
         self.dropDownCultureSelectLabel.setActiveBorderColor(150, 150, 150)
         self.dropDownCultureSelectLabel.changeColorOnHover(self.dropDownCultureButton.getOnHover())
 
-        self.mainMenuScreenSurface.blit(self.dropDownCultureSelectLabel.dropDownSurface, (self.width // 6, self.getVerticalPositioning()))
         self.mainMenuScreenSurfaceObjsRect.append([self.mainMenuScreenSurface.blit(self.dropDownCultureSelectLabel.localSurface, (self.width // 6, self.getVerticalPositioning())), self.dropDownCultureButton])
 
         if self.dropDownCultureSelectLabel.dropDownClicked:
@@ -217,10 +283,9 @@ class MainMenuScreen:
                     continue
 
                 self.dropDownMultiCultureButton = self.makeNewMultiButton(self.dropDownDynamicCultureList, data, 'culture')
-                self.dropDownCultureChoiceLabel = Label2(f'{data.getCultureName()}', self.titleSmallerButtonFont, True, borderSize=2, maxWidth=250)
+                self.dropDownCultureChoiceLabel = Label2(f'{data.getCultureName()}', self.titleSmallerButtonFont, True, borderSize=2, maxWidth=self.dropDownLabelWidth)
                 self.dropDownCultureChoiceLabel.setActiveRectColor(20, 20, 20)
                 self.dropDownCultureChoiceLabel.setActiveBorderColor(200, 200, 200)
-                self.mainMenuScreenSurface.blit(self.dropDownCultureChoiceLabel.localSurface, (self.width // 6, self.getVerticalPositioning() + self.dropDownCultureLabel.h * counter))
                 self.dropDownCultureChoiceLabel.changeColorOnHover(self.dropDownMultiCultureButton.getOnHover())
                 self.mainMenuScreenSurfaceObjsRect.append([self.mainMenuScreenSurface.blit(self.dropDownCultureChoiceLabel.localSurface, (self.width // 6, self.getVerticalPositioning() + self.dropDownCultureLabel.h * counter)), self.dropDownMultiCultureButton])
 
@@ -231,57 +296,27 @@ class MainMenuScreen:
         self.dropDownRegionSelectLabel.setActiveBorderColor(150, 150, 150)
         self.dropDownRegionSelectLabel.changeColorOnHover(self.dropDownRegionButton.getOnHover())
 
-        self.mainMenuScreenSurface.blit(self.dropDownRegionSelectLabel.dropDownSurface, (2 * self.width // 6, self.getVerticalPositioning()))
-
-        self.mainMenuScreenSurfaceObjsRect.append([self.mainMenuScreenSurface.blit(self.dropDownRegionSelectLabel.localSurface, (2 * self.width // 6, self.getVerticalPositioning())), self.dropDownRegionButton])
+        xPosition = 2 * self.width // 6
+        self.mainMenuScreenSurfaceObjsRect.append([self.mainMenuScreenSurface.blit(self.dropDownRegionSelectLabel.localSurface, (xPosition, self.getVerticalPositioning())), self.dropDownRegionButton])
 
         if self.dropDownRegionSelectLabel.dropDownClicked:
-            counter = 1
+
             if self.dropDownCultureSelectLabel.getText() != '-Select-':
                 self.regionNames = world.getAllNames()[self.dropDownCultureSelectLabel.getText()][f'{self.dropDownCultureSelectLabel.getText()}RegionNames']['regionNames']
-                for data in self.regionNames:
-
-                    self.dropDownMultiRegionButton = self.makeNewMultiButton(self.dropDownDynamicRegionList, data, 'region')
-                    self.dropDownRegionChoiceLabel = Label2(f'{data}', self.titleSmallerButtonFont, True, borderSize=2, maxWidth=250)
-                    self.dropDownRegionChoiceLabel.setActiveRectColor(20, 20, 20)
-                    self.dropDownRegionChoiceLabel.setActiveBorderColor(200, 200, 200)
-                    self.mainMenuScreenSurface.blit(self.dropDownRegionChoiceLabel.localSurface, (2 * self.width // 6, self.getVerticalPositioning() + self.dropDownRegionLabel.h * counter))
-                    self.dropDownRegionChoiceLabel.changeColorOnHover(self.dropDownMultiRegionButton.getOnHover())
-                    self.mainMenuScreenSurfaceObjsRect.append([self.mainMenuScreenSurface.blit(self.dropDownRegionChoiceLabel.localSurface, (2 * self.width // 6, self.getVerticalPositioning() + self.dropDownRegionLabel.h * counter)), self.dropDownMultiRegionButton])
-
-                    counter += 1
+                self.dropDownRegionSelectLabel.addOptions(dataList=self.regionNames, identifierString='region', vericalOffset=self.getVerticalPositioning(), horizontalOffset=xPosition, screenSurface=self.mainMenuScreenSurface, screenSurfaceObjRect=self.mainMenuScreenSurfaceObjsRect, dynamicDropDownList=self.dropDownDynamicRegionList)
 
         self.dropDownProvinceSelectLabel.changeDropDownClicked(self.dropDownProvinceButton.getIsActive())
         self.dropDownProvinceSelectLabel.setActiveRectColor(10, 50, 100)
         self.dropDownProvinceSelectLabel.setActiveBorderColor(150, 150, 150)
         self.dropDownProvinceSelectLabel.changeColorOnHover(self.dropDownProvinceButton.getOnHover())
 
-        self.mainMenuScreenSurface.blit(self.dropDownProvinceSelectLabel.dropDownSurface, (3 * self.width // 6, self.getVerticalPositioning()))
-
-        self.mainMenuScreenSurfaceObjsRect.append([self.mainMenuScreenSurface.blit(self.dropDownProvinceSelectLabel.localSurface, (3 * self.width // 6, self.getVerticalPositioning())), self.dropDownProvinceButton])
+        xPosition = 3 * self.width // 6
+        self.mainMenuScreenSurfaceObjsRect.append([self.mainMenuScreenSurface.blit(self.dropDownProvinceSelectLabel.localSurface, (xPosition, self.getVerticalPositioning())), self.dropDownProvinceButton])
 
         if self.dropDownProvinceSelectLabel.dropDownClicked:
-            counter = 1
-
             if self.dropDownCultureSelectLabel.getText() != '-Select-':
-                xCord = 3 * self.width // 6
                 self.provinceNames = world.getAllNames()[self.dropDownCultureSelectLabel.getText()][f'{self.dropDownCultureSelectLabel.getText()}ProvinceNames']['provinceNames']
-                for data in self.provinceNames:
-                    yCord = self.getVerticalPositioning() + self.dropDownProvinceLabel.h * counter
-                    if yCord + self.dropDownProvinceLabel.h >= self.mainMenuScreenSurface.get_height():
-                        counter = 1
-                        xCord += 250
-                        yCord = self.getVerticalPositioning() + self.dropDownProvinceLabel.h * counter
-
-                    self.dropDownMultiProvinceButton = self.makeNewMultiButton(self.dropDownDynamicProvinceList, data, 'province')
-                    self.dropDownProvinceChoiceLabel = Label2(f'{data}', self.titleSmallerButtonFont, True, borderSize=2, maxWidth=250)
-                    self.dropDownProvinceChoiceLabel.setActiveRectColor(20, 20, 20)
-                    self.dropDownProvinceChoiceLabel.setActiveBorderColor(200, 200, 200)
-
-                    self.mainMenuScreenSurface.blit(self.dropDownProvinceChoiceLabel.localSurface, (xCord, yCord))
-                    self.dropDownProvinceChoiceLabel.changeColorOnHover(self.dropDownMultiProvinceButton.getOnHover())
-                    self.mainMenuScreenSurfaceObjsRect.append([self.mainMenuScreenSurface.blit(self.dropDownProvinceChoiceLabel.localSurface, (xCord, yCord)), self.dropDownMultiProvinceButton])
-                    counter += 1
+                self.dropDownRegionSelectLabel.addOptions(dataList=self.provinceNames, identifierString='province', vericalOffset=self.getVerticalPositioning(), horizontalOffset=xPosition, screenSurface=self.mainMenuScreenSurface, screenSurfaceObjRect=self.mainMenuScreenSurfaceObjsRect, dynamicDropDownList=self.dropDownDynamicProvinceList)
 
 
         self.dropDownSettlementSelectLabel.changeDropDownClicked(self.dropDownSettlementButton.getIsActive())
@@ -289,34 +324,14 @@ class MainMenuScreen:
         self.dropDownSettlementSelectLabel.setActiveBorderColor(150, 150, 150)
         self.dropDownSettlementSelectLabel.changeColorOnHover(self.dropDownSettlementButton.getOnHover())
 
-        self.mainMenuScreenSurface.blit(self.dropDownSettlementSelectLabel.dropDownSurface, (4 * self.width // 6, self.getVerticalPositioning()))
-
-        self.mainMenuScreenSurfaceObjsRect.append([self.mainMenuScreenSurface.blit(self.dropDownSettlementSelectLabel.localSurface, (4 * self.width // 6, self.getVerticalPositioning())), self.dropDownSettlementButton])
+        xPosition = 4 * self.width // 6
+        self.mainMenuScreenSurfaceObjsRect.append([self.mainMenuScreenSurface.blit(self.dropDownSettlementSelectLabel.localSurface, (xPosition, self.getVerticalPositioning())), self.dropDownSettlementButton])
 
         if self.dropDownSettlementSelectLabel.dropDownClicked:
-            counter = 1
 
             if self.dropDownCultureSelectLabel.getText() != '-Select-':
-                xCord = 4 * self.width // 6
                 self.settlementsNames = world.getAllNames()[self.dropDownCultureSelectLabel.getText()][f'{self.dropDownCultureSelectLabel.getText()}SettlementsNames']['settlementsNames']
-                for data in self.settlementsNames:
-                    yCord = self.getVerticalPositioning() + self.dropDownProvinceLabel.h * counter
-                    if yCord + self.dropDownProvinceLabel.h >= self.mainMenuScreenSurface.get_height():
-                        counter = 1
-                        xCord += 250
-                        yCord = self.getVerticalPositioning() + self.dropDownProvinceLabel.h * counter
-
-                    self.dropDownMultiSettlementButton = self.makeNewMultiButton(self.dropDownDynamicSettlementList, data, 'settlement')
-                    self.dropDownSettlementChoiceLabel = Label2(f'{data}', self.titleSmallerButtonFont, True, borderSize=2, maxWidth=250)
-                    self.dropDownSettlementChoiceLabel.setActiveRectColor(20, 20, 20)
-                    self.dropDownSettlementChoiceLabel.setActiveBorderColor(200, 200, 200)
-
-                    self.mainMenuScreenSurface.blit(self.dropDownSettlementChoiceLabel.localSurface, (xCord, yCord))
-                    self.dropDownSettlementChoiceLabel.changeColorOnHover(self.dropDownMultiSettlementButton.getOnHover())
-                    self.mainMenuScreenSurfaceObjsRect.append([self.mainMenuScreenSurface.blit(self.dropDownSettlementChoiceLabel.localSurface, (xCord, yCord)), self.dropDownMultiSettlementButton])
-                    counter += 1
-
-
+                self.dropDownRegionSelectLabel.addOptions(dataList=self.settlementsNames, identifierString='settlement', vericalOffset=self.getVerticalPositioning(), horizontalOffset=xPosition, screenSurface=self.mainMenuScreenSurface, screenSurfaceObjRect=self.mainMenuScreenSurfaceObjsRect, dynamicDropDownList=self.dropDownDynamicSettlementList)
         self.writeLine += 10
 
         return
@@ -448,3 +463,22 @@ class MainMenuScreen:
 
     def getDropDownDynamicSettlementButtons(self):
         return self.dropDownDynamicSettlementList
+
+    def getDropDownDynamicFamilyNameButtons(self):
+        return self.dropDownDynamicFamilyNameList
+
+    def getDropDownDynamicGenderButtons(self):
+        return self.dropDownDynamicGenderList
+
+    def getDropDownDynamicFirstNameButtons(self):
+        return self.dropDownDynamicFirstNameList
+
+    def getChosenNames(self):
+        returnedList = []
+        for label in self.formSelectedLabels:
+            chosenText = label.getText()
+            if chosenText == '-Select-':
+                chosenText = ''
+            returnedList.append(chosenText)
+        return returnedList
+

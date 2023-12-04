@@ -132,8 +132,9 @@ def running(world, manualOverride):
     print("Death Age:  " + str(world.getAverageDeathAge()))
     return (timeTable)
 
-def newWorld(canvas):
+def newWorld(canvas, chosenNames):
 
+    print(chosenNames)
     world.reset()
     names = CultureNames.foundations
     world.setAllNames(names)
@@ -201,7 +202,7 @@ def main(popBreakLimit=None):
             # VisualLogic
 
             if gameState.isInitState():
-                newWorld(canvas)
+                newWorld(canvas, gameState.getChosenNames())
                 world.updateAlive()
                 gameState.changeToSimulation()
                 world.setGameState(gameState)

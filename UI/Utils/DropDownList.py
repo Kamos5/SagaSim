@@ -7,7 +7,7 @@ from UI.Utils.Label2 import Label2
 
 class DropDownList:
 
-    def __init__(self, text, font, clickable=False, focused=False, maxWidth = -1, horizontalMargin = 2, verticalMargin = 2, borderSize=1, onlyText = False, fontColor = (220, 220, 220), multiColor=False, multiColorText=[], clicked=False):
+    def __init__(self, font, clickable=False, focused=False, maxWidth = -1, horizontalMargin = 2, verticalMargin = 2, borderSize=1, onlyText = False, fontColor = (220, 220, 220), multiColor=False, multiColorText=[], clicked=False, text="-Select-"):
 
         self.font = font
         self.inactiveRectColor = 20, 20, 60
@@ -29,6 +29,7 @@ class DropDownList:
         self.verticalMargin = verticalMargin
         h = fontH + 2 * borderSize + 2 * self.verticalMargin
 
+        self.defaultText = '-Select-'
         self.arrowText = f'↓'
         self.arrowTextDown = f'↓'
         self.arrowTextUp = f'↑'
@@ -68,6 +69,9 @@ class DropDownList:
             self.set(text)
         else:
             self.setMultiColor(multiColorText)
+
+    def resetChoice(self):
+        self.set(self.defaultText)
 
     def changeDropDownClicked(self, newValue):
 
@@ -204,3 +208,34 @@ class DropDownList:
         if shouldBeActive:
             newButton.setActiveStatus()
         return newButton
+
+    def addOptions(self, dataList, identifierString, vericalOffset, horizontalOffset, screenSurface, screenSurfaceObjRect, dynamicDropDownList):
+
+        counter = 1
+        xCord = horizontalOffset
+
+        maxRowsUnderLabel = ((screenSurface.get_height() - (vericalOffset + self.h)) // self.h)
+        maxColumnsToRightLabel = ((screenSurface.get_width() - horizontalOffset) // self.w)
+        maxColumnsLabel = screenSurface.get_width() // self.w
+
+        if maxRowsUnderLabel * maxColumnsToRightLabel < len(dataList):
+            newXCord = int(len(dataList) / (maxRowsUnderLabel)) + (len(dataList) / (maxRowsUnderLabel) > 0)
+            xCord = (screenSurface.get_width() - (newXCord * self.w)) // 2
+
+        if maxColumnsLabel * maxRowsUnderLabel <= len(dataList):
+            vericalOffset = 0
+
+        for data in dataList:
+            if counter > maxRowsUnderLabel:
+                counter = 1
+                xCord += self.w
+            yCord = vericalOffset + self.h * counter
+
+            self.dropDownMultiProvinceButton = self.makeNewMultiButton(dynamicDropDownList, data, identifierString)
+            self.dropDownChoiceLabel = Label2(f'{data}', self.font, True, borderSize=2, maxWidth=self.w)
+            self.dropDownChoiceLabel.setActiveRectColor(20, 20, 20)
+            self.dropDownChoiceLabel.setActiveBorderColor(200, 200, 200)
+
+            self.dropDownChoiceLabel.changeColorOnHover(self.dropDownMultiProvinceButton.getOnHover())
+            screenSurfaceObjRect.append([screenSurface.blit(self.dropDownChoiceLabel.localSurface, (xCord, yCord)), self.dropDownMultiProvinceButton])
+            counter += 1

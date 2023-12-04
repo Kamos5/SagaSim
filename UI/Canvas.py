@@ -308,6 +308,9 @@ class Canvas:
                         self.mainMenuScreen.dropDownRegionButton.resetActiveStatus()
                         self.mainMenuScreen.dropDownProvinceButton.resetActiveStatus()
                         self.mainMenuScreen.dropDownSettlementButton.resetActiveStatus()
+                        self.mainMenuScreen.dropDownFamilyNameButton.resetActiveStatus()
+                        self.mainMenuScreen.dropDownGenderButton.resetActiveStatus()
+                        self.mainMenuScreen.dropDownFirstNameButton.resetActiveStatus()
 
                     if isinstance(itemObj[1], Button):
                         itemObj[1].resetOnHover()
@@ -345,44 +348,61 @@ class Canvas:
                                     itemObj[1].changeActiveStatus()
                                     return True, pausedPressed, None
 
-                        if itemObj[1] == self.mainMenuScreen.dropDownCultureButton or itemObj[1] == self.mainMenuScreen.dropDownRegionButton or itemObj[1] == self.mainMenuScreen.dropDownProvinceButton or itemObj[1] == self.mainMenuScreen.dropDownSettlementButton:
+                        if itemObj[1] == self.mainMenuScreen.dropDownCultureButton or itemObj[1] == self.mainMenuScreen.dropDownRegionButton or itemObj[1] == self.mainMenuScreen.dropDownProvinceButton or itemObj[1] == self.mainMenuScreen.dropDownSettlementButton or itemObj[1] == self.mainMenuScreen.dropDownFamilyNameButton or itemObj[1] == self.mainMenuScreen.dropDownGenderButton or itemObj[1] == self.mainMenuScreen.dropDownFirstNameButton:
                             itemObj[1].setOnHover()
                             if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                                 itemObj[1].changeActiveStatus()
+                                return True, pausedPressed, None
 
                         if isinstance(itemObj[1], Button) and itemObj[1] in [self.listScreen.allButton, self.listScreen.familyAdultsButton, self.listScreen.familyKidsButton, self.listScreen.employedButton, self.listScreen.unemployedButton, self.listScreen.sickButton, self.listScreen.withLoversButton]:
                             self.listScreen.changeFamilyButtons(itemObj[1], event)
 
-                        if isinstance(itemObj[1], Button) and itemObj[1] == self.mainMenuScreen.newWorldButton:
-                            itemObj[1].setOnHover()
-                            if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
-                                self.mainMenuScreen.setNamingMenuFlag()
+                        buttonClicked = False
+                        for button in self.mainMenuScreen.dropDownButtonList:
+                            if button.getIsActive():
+                                buttonClicked = True
+                        if not buttonClicked:  ##TODO FIX NIE DZIALA NAJLEPIEJ
 
-                        if isinstance(itemObj[1], Button) and itemObj[1] == self.mainMenuScreen.quickStartButton:
-                            itemObj[1].setOnHover()
-                            if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
-                                self.showMenu = False
-                                gameState.changeToInit()
-                                return False, True, None
+                            if isinstance(itemObj[1], Button) and itemObj[1] == self.mainMenuScreen.newWorldButton:
 
-                        if isinstance(itemObj[1], Button) and itemObj[1] == self.mainMenuScreen.returnButton:
-                            itemObj[1].setOnHover()
-                            if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
-                                self.mainMenuScreen.setMenuFlag()
-                                return False, True, None
+                                itemObj[1].setOnHover()
+                                if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+                                    self.mainMenuScreen.setNamingMenuFlag()
 
-                        if isinstance(itemObj[1], Button) and itemObj[1] == self.mainMenuScreen.continueButton:
-                            itemObj[1].setOnHover()
-                            if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
-                                self.showMenu = False
-                                gameState.changeToSimulation()
-                                return False, True, None
+                            if isinstance(itemObj[1], Button) and itemObj[1] == self.mainMenuScreen.quickStartButton:
+                                itemObj[1].setOnHover()
+                                if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+                                    self.showMenu = False
+                                    gameState.changeToInit()
+                                    self.mainMenuScreen.setMenuFlag()
+                                    return False, True, None
 
-                        if isinstance(itemObj[1], Button) and itemObj[1] == self.mainMenuScreen.quitButton:
-                            itemObj[1].setOnHover()
-                            if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
-                                pygame.quit()
-                                exit()
+                            if isinstance(itemObj[1], Button) and itemObj[1] == self.mainMenuScreen.createWorldButton:
+                                itemObj[1].setOnHover()
+                                if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+                                    self.showMenu = False
+                                    gameState.changeToInit(self.mainMenuScreen.getChosenNames())
+                                    self.mainMenuScreen.setMenuFlag()
+                                    return False, True, None
+
+                            if isinstance(itemObj[1], Button) and itemObj[1] == self.mainMenuScreen.returnButton:
+                                itemObj[1].setOnHover()
+                                if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+                                    self.mainMenuScreen.setMenuFlag()
+                                    return False, True, None
+
+                            if isinstance(itemObj[1], Button) and itemObj[1] == self.mainMenuScreen.continueButton:
+                                itemObj[1].setOnHover()
+                                if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+                                    self.showMenu = False
+                                    gameState.changeToSimulation()
+                                    return False, True, None
+
+                            if isinstance(itemObj[1], Button) and itemObj[1] == self.mainMenuScreen.quitButton:
+                                itemObj[1].setOnHover()
+                                if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+                                    pygame.quit()
+                                    exit()
 
                         if isinstance(itemObj[1], Button) and itemObj[1] in self.listScreen.getListScreenButtons():
                             itemObj[1].setOnHover()
@@ -395,6 +415,12 @@ class Canvas:
                             itemObj[1].setOnHover()
                             if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                                 self.mainMenuScreen.dropDownCultureSelectLabel.set(itemObj[1].getButtonName().getCultureName())
+                                self.mainMenuScreen.dropDownRegionSelectLabel.resetChoice()
+                                self.mainMenuScreen.dropDownProvinceSelectLabel.resetChoice()
+                                self.mainMenuScreen.dropDownSettlementSelectLabel.resetChoice()
+                                self.mainMenuScreen.dropDownFamilyNameSelectLabel.resetChoice()
+                                self.mainMenuScreen.dropDownFirstNameSelectLabel.resetChoice()
+
                         if isinstance(itemObj[1], Button) and itemObj[1] in self.mainMenuScreen.getDropDownDynamicRegionButtons():
                             itemObj[1].setOnHover()
                             if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
@@ -409,6 +435,21 @@ class Canvas:
                             itemObj[1].setOnHover()
                             if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                                 self.mainMenuScreen.dropDownSettlementSelectLabel.set(itemObj[1].getButtonName())
+
+                        if isinstance(itemObj[1], Button) and itemObj[1] in self.mainMenuScreen.getDropDownDynamicFamilyNameButtons():
+                            itemObj[1].setOnHover()
+                            if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+                                self.mainMenuScreen.dropDownFamilyNameSelectLabel.set(itemObj[1].getButtonName())
+
+                        if isinstance(itemObj[1], Button) and itemObj[1] in self.mainMenuScreen.getDropDownDynamicGenderButtons():
+                            itemObj[1].setOnHover()
+                            if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+                                self.mainMenuScreen.dropDownGenderSelectLabel.set(itemObj[1].getButtonName())
+
+                        if isinstance(itemObj[1], Button) and itemObj[1] in self.mainMenuScreen.getDropDownDynamicFirstNameButtons():
+                            itemObj[1].setOnHover()
+                            if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+                                self.mainMenuScreen.dropDownFirstNameSelectLabel.set(itemObj[1].getButtonName())
 
                         if isinstance(itemObj[1], Button) and itemObj[1] in self.inspectorScreen.getInspectorScreenButtons():
                             itemObj[1].setOnHover()

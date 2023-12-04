@@ -6,13 +6,14 @@
 
 
         self.state = 0
-
+        self.chosenNames = []
 
     def getGameState(self):
         return self.state
 
-    def changeToInit(self):
+    def changeToInit(self, namesList =[]):
         self.state = 100
+        self.chosenNames = namesList
 
     def changeToSimulation(self):
         self.state = 101
@@ -32,3 +33,6 @@
 
     def isInitState(self):
         return self.state == 100
+
+    def getChosenNames(self):
+        return self.chosenNames
