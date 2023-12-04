@@ -7,13 +7,15 @@ import Utils
 
 people = []
 
-def Init(families, world):
+def Init(families, world, chosenSex, chosenName):
 
     seed(SystemRandom().random())
 
+    familyCounter = 1
     for family in families:
         randomNumber = Utils.randomRange(6, 8)
 
+        personCounter = 1
         for number in range(randomNumber):
             member = PersonObj()
             sex = InitRandomSex(family, number)
@@ -28,7 +30,14 @@ def Init(families, world):
             skinColor = setUpSkinColorsToFamilies(family)
             skinColorGen1 = [skinColor, 0]
             skinColorGen2 = [skinColor, 0]
-            member.setInitValues(family.familyName, world.getYear(), randomAge, randomLifespan, sex, hairColor, hairColorGen1, hairColorGen2, eyeColor, eyeColorGen1, eyeColorGen2, skinColor, skinColorGen1, skinColorGen2, family, world)
+            if familyCounter == 1 and personCounter == 1:
+                if chosenSex == 'MALE':
+                    sex = Sexes.MALE
+                else:
+                    sex = Sexes.FEMALE
+                member.setInitValues(family.familyName, world.getYear(), randomAge, randomLifespan, sex, hairColor, hairColorGen1, hairColorGen2, eyeColor, eyeColorGen1, eyeColorGen2, skinColor, skinColorGen1, skinColorGen2, family, world, chosenName)
+            else:
+                member.setInitValues(family.familyName, world.getYear(), randomAge, randomLifespan, sex, hairColor, hairColorGen1, hairColorGen2, eyeColor, eyeColorGen1, eyeColorGen2, skinColor, skinColorGen1, skinColorGen2, family, world)
 
             member.addTrait(Utils.randomTrait(member))
             member.addTrait(Utils.randomTrait(member))
@@ -53,7 +62,8 @@ def Init(families, world):
                 family.setFoundedBy(member)
             family.addNewMember(member)
             people.append(member)
-
+            personCounter += 1
+        familyCounter += 1
     return people
 
 

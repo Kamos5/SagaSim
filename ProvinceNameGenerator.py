@@ -24,11 +24,17 @@ def makeListsForProvinceNames(world):
 
 
 
-def randomProvinceName (regionNumber =0):
+def randomProvinceName (regionNumber =0, chosenName = ''):
 
     namesList = copyProvinceNamesList[regionNumber]
-    choice = ''
     global namesPicked
+    if chosenName != '':
+        choice = chosenName
+        namesList.remove(choice)
+        namesPicked += 1
+        return choice
+    choice = ''
+
     if namesList is None:
 
         namesPicked += 1

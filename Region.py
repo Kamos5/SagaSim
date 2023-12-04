@@ -304,7 +304,12 @@ class Region():
         mean1 = sum(elt[1] for elt in provinceInnerCordsList) // len(provinceInnerCordsList)
         self.provincesInnerCords = (mean0, mean1)
 
-    def generateNamesForProvinces(self):
+    def generateNamesForProvinces(self, chosenName =''):
 
+        counter = 1
         for province in self.getProvinces():
-            province.setName(PNG.randomProvinceName(self.getRegionNumber()))
+            if counter == 1:
+                province.setName(PNG.randomProvinceName(self.getRegionNumber(), chosenName))
+            else:
+                province.setName(PNG.randomProvinceName(self.getRegionNumber()))
+            counter +=1

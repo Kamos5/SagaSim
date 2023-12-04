@@ -27,16 +27,16 @@ from World import World as World
 world = World()
 timeTesterFlag = False
 
-def initFamilies():
+def initFamilies(chosenName):
 
-    families = FIG.Init(world)
+    families = FIG.Init(world, chosenName)
 
     return families
 
 
-def initPeople(families):
+def initPeople(families, chosenSex, chosenName):
 
-    people = MIG.Init(families, world)
+    people = MIG.Init(families, world, chosenSex, chosenName)
 
     for family in families:
         MIG.initInitMarrieges(family)
@@ -140,13 +140,14 @@ def newWorld(canvas, chosenNames):
     world.setAllNames(names)
     world.setCultures(list(names.keys()), chosenNames[0])
     
-    world.generateRegionsNames(Parameters.startingNumberOfRegions)
+    world.generateRegionsNames(Parameters.startingNumberOfRegions, chosenNames[1])
     ProvinceNameGenerator.makeListsForProvinceNames(world)
     world.getWorldMap().generateProvinces(canvas)
-    world.pickRandomProvincesForRegions()
-    world.generateSettlements(world)
-    world.setFamilies(initFamilies())
-    world.setPeople(initPeople(world.getFamilies()))
+    world.pickRandomProvincesForRegions(chosenNames[0], chosenNames[1], chosenNames[2])
+    world.generateSettlements(world, chosenNames[0], chosenNames[1], chosenNames[3])
+    world.setFamilies(initFamilies(chosenNames[4]))
+    world.setPeople(initPeople(world.getFamilies(), chosenNames[5], chosenNames[6]))
+    canvas.favorites.append(world.getPeople()[0])
     world.diseases = InfectionsFunctions.getDiseases(list(IOtools.loadFiles('affliction').items()))
     world.injures = InfectionsFunctions.getInjuries(list(IOtools.loadFiles('affliction').items()))
 

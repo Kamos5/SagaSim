@@ -192,10 +192,16 @@ def makeListsForSettlementsNames(world):
         cultureSettlementsNames = f'{cultureName}{settlementsNamesStr}'
         copySettlementsNamesList.append(list(world.allNames[cultureName][cultureSettlementsNames][settlementsNamesStrLowerFirst]))
 
-def randomSettlementsName (culture = None, rebuildOldSettlement = False, world=None):
+def randomSettlementsName (culture = None, rebuildOldSettlement = False, world=None, chosenName=''):
 
     cultureSettlementsNames = f'{culture.getCultureName()}{settlementsNamesStr}'
     namesList = list(world.allNames[culture.getCultureName()][cultureSettlementsNames][settlementsNamesStrLowerFirst])
+
+    if chosenName != '':
+        choice = chosenName
+        namesList.remove(choice)
+        return choice
+
     choice = ''
     if len(namesList) > 0:
         choice = randomChoice(namesList)

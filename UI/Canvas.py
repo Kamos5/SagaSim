@@ -313,6 +313,9 @@ class Canvas:
                         self.mainMenuScreen.dropDownFirstNameButton.resetActiveStatus()
 
                     if isinstance(itemObj[1], Button):
+                        if itemObj[1].getButtonName() in self.favorites and not itemObj[1].getIsActive():
+                            itemObj[1].setActiveStatus()
+
                         itemObj[1].resetOnHover()
 
                     if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
@@ -338,6 +341,7 @@ class Canvas:
 
                         if itemObj[1] == self.inspectorScreen.favoriteButton:
                             itemObj[1].setOnHover()
+
                             if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                                 if itemObj[1].getButtonName() not in self.favorites:
                                     self.favorites.append(itemObj[1].getButtonName())

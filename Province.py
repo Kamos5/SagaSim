@@ -203,8 +203,8 @@ class Province:
         else:
             return False
 
-    def addInitSettlement(self, region, world):
-        newSettlement = Settlements(region.getOriginalCulture(), world.getYear(), world=world)
+    def addInitSettlement(self, region, world, chosenName=''):
+        newSettlement = Settlements(region.getOriginalCulture(), world.getYear(), world=world, chosenName=chosenName)
         self.settlements.append(newSettlement)
         newSettlement.maxPopulation = Parameters.baseVillageSize
 

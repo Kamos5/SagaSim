@@ -523,7 +523,7 @@ class World:
     def setGameState(self, newGameState):
         self.gameState = newGameState
 
-    def generateRegionsNames(self, regionsNumber = 5):
+    def generateRegionsNames(self, regionsNumber = 5, regionChosen = ''):
 
         startingSet = 0
 
@@ -541,11 +541,14 @@ class World:
         counter = 1
         for loadedCulture in self.cultures:
             if counter <= regionsNumber:
+                regionNames = f'{regionNamesStrLowerFirst}'
                 cultureName = loadedCulture.getCultureName()
                 cultureRegionNames = f'{cultureName}{regionNamesStr}'
-                regionNames = f'{regionNamesStrLowerFirst}'
                 cultureColors = f'{cultureName}{colorsStr}'
-                region = Region(RNG.randomRegionName(self.allNames[cultureName][cultureRegionNames][regionNames], regionsNumber))
+                if counter == 1 and regionChosen != '':
+                    region = Region(regionChosen)
+                else:
+                    region = Region(RNG.randomRegionName(self.allNames[cultureName][cultureRegionNames][regionNames], regionsNumber))
                 region.setOriginalCulture(loadedCulture)
                 region.setRegionNumber(counter-1)
                 region.setRegionCulture(cultureName)
@@ -563,12 +566,17 @@ class World:
             print()
 
 
-    def generateSettlements(self, world):
+    def generateSettlements(self, world, chosenCulture, chosenRegion, chosenName):
+        regionCounter = 1
         for region in self.regions:
             townInitList = []
             cordsUsed = []
             for i in range(self.settlementsInitNumber):
-                newSettlement = region.getProvinces()[0].addInitSettlement(region, world)
+                if (i == 0 and region.getRegionName() == chosenRegion) or (i == 0 and regionCounter == 1 and region.getOriginalCulture().getCultureName() == chosenCulture):
+                    newSettlement = region.getProvinces()[0].addInitSettlement(region, world, chosenName)
+                else:
+                    newSettlement = region.getProvinces()[0].addInitSettlement(region, world)
+
                 newSettlement.setRegion(region)
                 newSettlement.setProvince(region.getProvinces()[0])
                 notClear = True
@@ -594,7 +602,7 @@ class World:
                 else:
                     newSettlement.changeSettlementType(Settlements.VILLAGE)
                     newSettlement.setProvision(Utils.randomFromCollection(townInitList))
-
+            regionCounter += 1
 
     def getRegionFromIndex(self, index):
         return self.regions[index]
@@ -1178,7 +1186,7 @@ class World:
 
         return modVariable
 
-    def pickRandomProvincesForRegions(self):
+    def pickRandomProvincesForRegions(self, chosenCulture = '', chosenRegionName = '', chosenProvinceName = ''):
 
         provincesUsed = set()
         provincesNotUsed = set()
@@ -1243,8 +1251,13 @@ class World:
         if len(provincesNotUsed) > 0:
             self.reshuffleProvincesInRegions(self.getRegions(), provincesUsed, provincesNotUsed)
 
+        counter = 0
         for region in self.regions:
-            region.generateNamesForProvinces()
+            if region.getRegionName() == chosenRegionName or (counter == 0 and region.getOriginalCulture().getCultureName() == chosenCulture):
+                region.generateNamesForProvinces(chosenProvinceName)
+                counter += 1
+            else:
+                region.generateNamesForProvinces()
 
         for region in self.regions:
             region.generateRegionalProvincesMap(self)

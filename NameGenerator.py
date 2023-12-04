@@ -319,11 +319,15 @@ def makeListsForFirstNames(world):
             cultureFamilyNames = f'female{firstNamesStrUpperFirst}{firstNamesStr}'
             copyNamesFList.append(list(world.allNames[cultureName][cultureFamilyNames][firstNamesStrLowerFirst]))
 
-def getRandomMNameForCulture(culture = None, world = None):
+def getRandomMNameForCulture(culture = None, world = None, chosenName = ''):
 
     firstNamesStrUpperFirst = culture.getCultureName()[0].upper() + culture.getCultureName()[1:]
     cultureFamilyNames = f'male{firstNamesStrUpperFirst}{firstNamesStr}'
     namesList = list(world.allNames[culture.getCultureName()][cultureFamilyNames][firstNamesStrLowerFirst])
+
+    if chosenName != '':
+        choice = chosenName
+        return choice
     choice = ''
 
     if len(namesList) > 0:
@@ -336,11 +340,15 @@ def getRandomMNameForCulture(culture = None, world = None):
     return choice
 
 
-def getRandomFNameForCulture(culture = None, world=None):
+def getRandomFNameForCulture(culture = None, world=None, chosenName = ''):
 
     firstNamesStrUpperFirst = culture.getCultureName()[0].upper() + culture.getCultureName()[1:]
     cultureFamilyNames = f'female{firstNamesStrUpperFirst}{firstNamesStr}'
     namesList = list(world.allNames[culture.getCultureName()][cultureFamilyNames][firstNamesStrLowerFirst])
+
+    if chosenName != '':
+        choice = chosenName
+        return choice
     choice = ''
 
     if len(namesList) > 0:
