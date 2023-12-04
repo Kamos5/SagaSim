@@ -138,13 +138,13 @@ def newWorld(canvas, chosenNames):
     world.reset()
     names = CultureNames.foundations
     world.setAllNames(names)
-    world.setCultures(list(names.keys()))
+    world.setCultures(list(names.keys()), chosenNames[0])
     
     world.generateRegionsNames(Parameters.startingNumberOfRegions)
     ProvinceNameGenerator.makeListsForProvinceNames(world)
     world.getWorldMap().generateProvinces(canvas)
     world.pickRandomProvincesForRegions()
-    world.generateSettlements()
+    world.generateSettlements(world)
     world.setFamilies(initFamilies())
     world.setPeople(initPeople(world.getFamilies()))
     world.diseases = InfectionsFunctions.getDiseases(list(IOtools.loadFiles('affliction').items()))

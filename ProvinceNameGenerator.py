@@ -14,13 +14,13 @@ copyProvinceSeaNamesList = []
 
 def makeListsForProvinceNames(world):
 
-    for cultureName in world.allNames:
-        provinceSettlementsNames = f'{cultureName}{provinceNamesStr}'
-        copyProvinceNamesList.append(list(world.allNames[cultureName][provinceSettlementsNames][provinceNamesStrLowerFirst]))
+    for culture in world.getCultures():
+        provinceSettlementsNames = f'{culture.getCultureName()}{provinceNamesStr}'
+        copyProvinceNamesList.append(list(world.allNames[culture.getCultureName()][provinceSettlementsNames][provinceNamesStrLowerFirst]))
 
-        if cultureName == 'generic':
-            provinceSeaNames = f'{cultureName}{provinceSeaNamesStr}'
-            copyProvinceSeaNamesList.extend(list(world.allNames[cultureName][provinceSeaNames][provinceSeaNamesStrLowerFirst]))
+        if culture.getCultureName() == 'generic':
+            provinceSeaNames = f'{culture.getCultureName()}{provinceSeaNamesStr}'
+            copyProvinceSeaNamesList.extend(list(world.allNames[culture.getCultureName()][provinceSeaNames][provinceSeaNamesStrLowerFirst]))
 
 
 

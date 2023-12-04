@@ -280,9 +280,15 @@ class World:
     def getAllNames(self):
         return self.allNames
 
-    def setCultures(self, cultures):
-        for culture in cultures:
-            self.cultures.append(Culture(culture))
+    def setCultures(self, cultures, customCulture=''):
+        if customCulture == '':
+            for culture in cultures:
+                self.cultures.append(Culture(culture))
+        else:
+            self.cultures.append(Culture(customCulture))
+            for culture in cultures:
+                if culture != customCulture:
+                    self.cultures.append(Culture(culture))
 
     def getCultures(self):
         return self.cultures
@@ -532,17 +538,20 @@ class World:
         regionNamesStrLowerFirst = regionNamesStr[0].lower() + regionNamesStr[1:]
         colorsStr = 'Colors'
 
-        for number in range(regionsNumber):
-            cultureName = self.cultures[number].getCultureName()
-            cultureRegionNames = f'{cultureName}{regionNamesStr}'
-            regionNames = f'{regionNamesStrLowerFirst}'
-            cultureColors = f'{cultureName}{colorsStr}'
-            region = Region(RNG.randomRegionName(self.allNames[cultureName][cultureRegionNames][regionNames], regionsNumber))
-            region.setOriginalCulture(self.cultures[number])
-            region.setRegionNumber(number)
-            region.setRegionCulture(cultureName)
-            region.setRegionColor(eval(self.allNames[cultureName][cultureColors]))
-            self.regions.append(region)
+        counter = 1
+        for loadedCulture in self.cultures:
+            if counter <= regionsNumber:
+                cultureName = loadedCulture.getCultureName()
+                cultureRegionNames = f'{cultureName}{regionNamesStr}'
+                regionNames = f'{regionNamesStrLowerFirst}'
+                cultureColors = f'{cultureName}{colorsStr}'
+                region = Region(RNG.randomRegionName(self.allNames[cultureName][cultureRegionNames][regionNames], regionsNumber))
+                region.setOriginalCulture(loadedCulture)
+                region.setRegionNumber(counter-1)
+                region.setRegionCulture(cultureName)
+                region.setRegionColor(eval(self.allNames[cultureName][cultureColors]))
+                self.regions.append(region)
+                counter += 1
 
     def generateProvinceNames(self, region):
 
@@ -554,13 +563,12 @@ class World:
             print()
 
 
-    def generateSettlements(self):
-        SettlementNameGenerator.makeListsForSettlementsNames(self)
+    def generateSettlements(self, world):
         for region in self.regions:
             townInitList = []
             cordsUsed = []
             for i in range(self.settlementsInitNumber):
-                newSettlement = region.getProvinces()[0].addInitSettlement(self, region)
+                newSettlement = region.getProvinces()[0].addInitSettlement(region, world)
                 newSettlement.setRegion(region)
                 newSettlement.setProvince(region.getProvinces()[0])
                 notClear = True

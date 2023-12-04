@@ -6,12 +6,12 @@
 
 
         self.state = 0
-        self.chosenNames = []
+        self.chosenNames = ['','','','','','','']
 
     def getGameState(self):
         return self.state
 
-    def changeToInit(self, namesList =[]):
+    def changeToInit(self, namesList =['','','','','','','']):
         self.state = 100
         self.chosenNames = namesList
 

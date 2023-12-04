@@ -169,7 +169,7 @@ class Province:
         return self.settlements
 
     def addSettlement(self, world):
-        newSettlement = Settlements(self.getRegion().getRegionNumber(), world.getYear())
+        newSettlement = Settlements(self.getRegion().getOriginalCulture(), world.getYear(), world=world)
         newSettlement.setRegion(self.getRegion())
         newSettlement.setProvince(self)
         notClear = True
@@ -203,8 +203,8 @@ class Province:
         else:
             return False
 
-    def addInitSettlement(self, world, region):
-        newSettlement = Settlements(region.getRegionNumber(), world.getYear())
+    def addInitSettlement(self, region, world):
+        newSettlement = Settlements(region.getOriginalCulture(), world.getYear(), world=world)
         self.settlements.append(newSettlement)
         newSettlement.maxPopulation = Parameters.baseVillageSize
 

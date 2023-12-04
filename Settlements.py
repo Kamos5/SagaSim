@@ -12,10 +12,10 @@ def takeFeatureNumber(elem):
 
 class Settlements:
 
-    def __init__(self, regionNumber, year=Parameters.startingYear, rebuildFlag = False):
+    def __init__(self, cultureName, year=Parameters.startingYear, rebuildFlag = False, world=None):
         self.settlementType = Enums.Settlements.VILLAGE
 
-        self.name = SNG.randomSettlementsName(regionNumber=regionNumber, rebuildOldSettlement=rebuildFlag)
+        self.name = SNG.randomSettlementsName(culture=cultureName, rebuildOldSettlement=rebuildFlag, world=world)
 
         self.region = None
         self.province = None
