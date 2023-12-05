@@ -240,7 +240,7 @@ class Canvas:
             self.plotsScreenObj = self.screen.blit(self.plotsScreenSurface, (self.plotsPosX, self.plotsPosY))
 
         if self.showFamilyScreen:
-            self.familyTreeScreen.addTree(self.showFamilyObj, self.showUpTree, self.showDownTree)
+            self.familyTreeScreen.addTree(self.lastFocusObj, self.showUpTree, self.showDownTree)
             self.familyTreeScreenObj = self.screen.blit(self.familyTreeScreenSurface, (self.familyTreePosX, self.familyTreePosY))
 
         if isPausedPressed:
