@@ -10,6 +10,7 @@ from House import House
 class Person:
 
     def __init__(self):
+        self.playerCharacter = False;
         self.title = ''
         self.firstName = ''
         self.secondName = ''
@@ -202,6 +203,21 @@ class Person:
 
     def getFirstName(self):
         return self.firstName
+
+    def getPlayerCharacter(self):
+        return self.playerCharacter
+
+    def setPlayerCharacter(self):
+        self.playerCharacter = True
+
+    def resetPlayerCharacter(self):
+        self.playerCharacter = False
+
+    def getTitle(self):
+        return self.title
+
+    def setTitle(self, newTitle):
+        self.title = newTitle
 
     def getLastName(self):
         return self.lastName

@@ -259,6 +259,7 @@ class HappinessLevel(Enum):
     DEPRESSED = -300, -251, 'Depressed'
 
 class TechnologiesEnums(Enum):
-    # number, name, description, work required
+    # number, name, description, work required, technologiesrequired
     UNITY = 0, 'Unity', 'We are the same people', 1000
+    FEUDALISM = 1, 'Feudalism', 'We are not all made equal', 1200, [UNITY]
 
