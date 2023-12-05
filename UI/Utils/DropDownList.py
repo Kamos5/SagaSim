@@ -7,7 +7,7 @@ from UI.Utils.Label2 import Label2
 
 class DropDownList:
 
-    def __init__(self, font, clickable=False, focused=False, maxWidth = -1, horizontalMargin = 2, verticalMargin = 2, borderSize=1, onlyText = False, fontColor = (220, 220, 220), multiColor=False, multiColorText=[], clicked=False, text="-Select-"):
+    def __init__(self, font, clickable=False, focused=False, maxWidth = -1, horizontalMargin = 15, verticalMargin = 2, borderSize=1, onlyText = False, fontColor = (220, 220, 220), multiColor=False, multiColorText=[], clicked=False, text="-Select-"):
 
         self.font = font
         self.inactiveRectColor = 20, 20, 60
@@ -100,7 +100,7 @@ class DropDownList:
 
     def addDropButton(self):
 
-        dropButtonXCord = self.w - 1 * self.horizontalMargin - self.arrowW
+        dropButtonXCord = self.w - 0 * self.horizontalMargin - self.arrowW
         dropButtonYCord = self.verticalMargin + self.borderSize
         dropButtonWidth = self.arrowW - 2 * self.borderSize
         dropButtonHeight = self.arrowH - 2 * self.borderSize - 2 * self.verticalMargin

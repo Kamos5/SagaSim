@@ -124,7 +124,6 @@ class MainMenuScreen:
         self.dropDownDynamicGenderList = []
         self.dropDownDynamicFirstNameList = []
 
-
         self.rotation = 0
     def moveAndAddRunesToScreen(self, runes):
 
@@ -148,7 +147,7 @@ class MainMenuScreen:
 
         self.writeLine += 1
 
-        self.mainMenuLabel = Label2(f'Saga Simulator', self.titleFont, False, borderSize=1)
+        self.mainMenuLabel = Label2(f'Saga Simulator', self.titleFont, False, borderSize=3, roundedEdges=True)
         self.mainMenuLabel.setActiveRectColor(150, 50, 150)
         self.mainMenuLabel.setActiveBorderColor(10, 10, 100)
         self.mainMenuScreenSurface.blit(self.mainMenuLabel.localSurface, (self.mainMenuLabel.centerElement(self.width), self.getVerticalPositioning()))
@@ -348,7 +347,7 @@ class MainMenuScreen:
 
         self.writeLine += 1
 
-        self.mainMenuLabel = Label2(f'Saga Simulator', self.titleFont, False, borderSize=1)
+        self.mainMenuLabel = Label2(f'Saga Simulator', self.titleFont, False, borderSize=3, roundedEdges=True)
         self.mainMenuLabel.setActiveRectColor(150, 50, 150)
         self.mainMenuLabel.setActiveBorderColor(10, 10, 100)
         self.mainMenuScreenSurface.blit(self.mainMenuLabel.localSurface, (self.mainMenuLabel.centerElement(self.width), self.getVerticalPositioning()))
@@ -361,7 +360,7 @@ class MainMenuScreen:
         textColor1 = [text1, (50, 150, 50)]
         textColor2 = [text2, None]
 
-        self.mainMenuLabel2 = Label2(f'New World', self.titleButtonFont, True, borderSize=3, multiColor=True, multiColorText=[textColor1, textColor2])
+        self.mainMenuLabel2 = Label2(f'New World', self.titleButtonFont, True, borderSize=3, multiColor=True, multiColorText=[textColor1, textColor2], roundedEdges=True)
         self.mainMenuLabel2.setActiveRectColor(10, 50, 100)
         self.mainMenuLabel2.setActiveBorderColor(50, 50, 50)
         self.mainMenuLabel2.changeColorOnHover(self.newWorldButton.getOnHover())
@@ -369,7 +368,7 @@ class MainMenuScreen:
 
         self.writeLine += 4
 
-        self.mainMenuLabel3 = Label2(f'Load World', self.titleButtonFont, True, borderSize=3)
+        self.mainMenuLabel3 = Label2(f'Load World', self.titleButtonFont, True, borderSize=3, roundedEdges=True)
         self.mainMenuLabel3.setActiveRectColor(100, 100, 10)
         # Grayout
         self.mainMenuLabel3.setActiveRectColor(50, 50, 50)
@@ -381,7 +380,7 @@ class MainMenuScreen:
 
             self.writeLine += 4
 
-            self.mainMenuLabel4 = Label2(f'Save World', self.titleButtonFont, True, borderSize=3)
+            self.mainMenuLabel4 = Label2(f'Save World', self.titleButtonFont, True, borderSize=3, roundedEdges=True)
             self.mainMenuLabel4.setActiveRectColor(30, 100, 30)
             #Grayout
             self.mainMenuLabel4.setActiveRectColor(50, 50, 50)
@@ -398,7 +397,7 @@ class MainMenuScreen:
             textColor1 = [text1, (50, 150, 50)]
             textColor2 = [text2, None]
 
-            self.mainMenuLabel5 = Label2(f'Continue', self.titleButtonFont, True, borderSize=3, multiColor=True, multiColorText=[textColor1, textColor2])
+            self.mainMenuLabel5 = Label2(f'Continue', self.titleButtonFont, True, borderSize=3, multiColor=True, multiColorText=[textColor1, textColor2], roundedEdges=True)
             self.mainMenuLabel5.setActiveRectColor(100, 30, 100)
             self.mainMenuLabel5.setActiveBorderColor(50, 50, 50)
             self.mainMenuLabel5.changeColorOnHover(self.continueButton.getOnHover())
@@ -412,7 +411,7 @@ class MainMenuScreen:
         textColor1 = [text1, (50, 150, 50)]
         textColor2 = [text2, None]
 
-        self.mainMenuLabel6 = Label2(f'Quit', self.titleButtonFont, True, borderSize=3, multiColor=True, multiColorText=[textColor1, textColor2])
+        self.mainMenuLabel6 = Label2(f'Quit', self.titleButtonFont, True, borderSize=3, multiColor=True, multiColorText=[textColor1, textColor2], roundedEdges=True)
         self.mainMenuLabel6.setActiveRectColor(100, 10, 10)
         self.mainMenuLabel6.setActiveBorderColor(50, 50, 50)
         self.mainMenuLabel6.changeColorOnHover(self.quitButton.getOnHover())

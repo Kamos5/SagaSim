@@ -4,7 +4,7 @@ from PIL import ImageFont
 
 class Label2:
 
-    def __init__(self, text, font, clickable=False, focused=False, maxWidth = -1, horizontalMargin = 2, verticalMargin = 2, borderSize=1, onlyText = False, fontColor = (220, 220, 220), multiColor=False, multiColorText=[]):
+    def __init__(self, text, font, clickable=False, focused=False, maxWidth = -1, horizontalMargin = 15, verticalMargin = 2, borderSize=1, onlyText = False, fontColor = (220, 220, 220), multiColor=False, multiColorText=[], roundedEdges=False):
 
         self.onlyText = onlyText
         fontW, fontH = font.size(text)
@@ -15,7 +15,7 @@ class Label2:
             w = maxWidth
         h = fontH + 2 * borderSize + 2 * self.verticalMargin
         if not self.onlyText:
-            self.localSurface = pygame.Surface([w, h])
+            self.localSurface = pygame.Surface([w, h], pygame.SRCALPHA)
         else:
             self.localSurface = pygame.Surface([w, h], pygame.SRCALPHA)
         self.x = 0
@@ -35,6 +35,7 @@ class Label2:
         self.clickableBorderColor = 0, 200, 0
         self.borderSize = borderSize
         self.focused = focused
+        self.roundedEdges = roundedEdges
         if not self.focused:
             self.rectColor = self.inactiveRectColor
             if clickable:
@@ -64,8 +65,14 @@ class Label2:
         self.addMultiColorText(multiColorText)
 
     def addRect(self):
-        self.border = pygame.draw.rect(self.localSurface, self.borderColor, (self.x, self.y, self.w, self.h))
-        self.rect = pygame.draw.rect(self.localSurface, self.rectColor, (self.x + self.borderSize, self.y + self.borderSize, self.w - 2 * self.borderSize, self.h - 2 * self.borderSize))
+        if self.roundedEdges:
+            self.border = pygame.draw.rect(self.localSurface, self.borderColor, (self.x, self.y, self.w, self.h), 0, 20, 20, 20, 20)
+        else:
+            self.border = pygame.draw.rect(self.localSurface, self.borderColor, (self.x, self.y, self.w, self.h))
+        if self.roundedEdges:
+            self.rect = pygame.draw.rect(self.localSurface, self.rectColor, (self.x + self.borderSize, self.y + self.borderSize, self.w - 2 * self.borderSize, self.h - 2 * self.borderSize), 0, 20, 20, 20, 20)
+        else:
+            self.rect = pygame.draw.rect(self.localSurface, self.rectColor, (self.x + self.borderSize, self.y + self.borderSize, self.w - 2 * self.borderSize, self.h - 2 * self.borderSize))
 
     def addText(self, text):
         textSurface = self.font.render(text, True, self.textColor)
