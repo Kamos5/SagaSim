@@ -10,8 +10,9 @@ from House import House
 class Person:
 
     def __init__(self):
-        self.playerCharacter = False;
+        self.playerCharacter = False
         self.title = ''
+        self.originalTitle = ''
         self.firstName = ''
         self.secondName = ''
         self.lastName = ''
@@ -218,6 +219,12 @@ class Person:
 
     def setTitle(self, newTitle):
         self.title = newTitle
+
+    def getOriginalTitle(self):
+        return self.originalTitle
+
+    def setOriginalTitle(self, newTitle):
+        self.originalTitle = newTitle
 
     def getLastName(self):
         return self.lastName

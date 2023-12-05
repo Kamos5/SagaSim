@@ -263,3 +263,7 @@ class TechnologiesEnums(Enum):
     UNITY = 0, 'Unity', 'We are the same people', 1000
     FEUDALISM = 1, 'Feudalism', 'We are not all made equal', 1200, [UNITY]
 
+class Titles(Enum):
+    PEASANT = 0, 'Peasant', 'Simple man for simple times'
+    NOBLEMAN = 1, 'Nobleman', 'Man with honor given by Grace'
+    CLERIC = 2, 'Cleric', 'The Vox Caster of the God'
