@@ -24,6 +24,8 @@ class Canvas:
     windowWidth = 1920 # 1366
     windowHeight = 1080 # 768
 
+    addToFavoriteOnStart = False
+    addedToFavorite = False
     drawObject = None
 
     def __init__(self):
@@ -313,8 +315,11 @@ class Canvas:
                         self.mainMenuScreen.dropDownFirstNameButton.resetActiveStatus()
 
                     if isinstance(itemObj[1], Button):
-                        if itemObj[1].getButtonName() in self.favorites and not itemObj[1].getIsActive():
-                            itemObj[1].setActiveStatus()
+
+                        if self.addToFavoriteOnStart and not self.addedToFavorite:
+                            if itemObj[1].getButtonName() in self.favorites and not itemObj[1].getIsActive():
+                                itemObj[1].setActiveStatus()
+                                self.addedToFavorite = True
 
                         itemObj[1].resetOnHover()
 

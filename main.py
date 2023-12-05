@@ -134,7 +134,6 @@ def running(world, manualOverride):
 
 def newWorld(canvas, chosenNames):
 
-    print(chosenNames)
     world.reset()
     names = CultureNames.foundations
     world.setAllNames(names)
@@ -147,7 +146,10 @@ def newWorld(canvas, chosenNames):
     world.generateSettlements(world, chosenNames[0], chosenNames[1], chosenNames[3])
     world.setFamilies(initFamilies(chosenNames[4]))
     world.setPeople(initPeople(world.getFamilies(), chosenNames[5], chosenNames[6]))
-    canvas.favorites.append(world.getPeople()[0])
+    if chosenNames[0] != '' or chosenNames[1] != '' or chosenNames[2] != '' or chosenNames[3] != '' or chosenNames[4] != '' or chosenNames[5] != '' or chosenNames[6] != '':
+        canvas.favorites.append(world.getPeople()[0])
+        canvas.addToFavoriteOnStart = True
+
     world.diseases = InfectionsFunctions.getDiseases(list(IOtools.loadFiles('affliction').items()))
     world.injures = InfectionsFunctions.getInjuries(list(IOtools.loadFiles('affliction').items()))
 
