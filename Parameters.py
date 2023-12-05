@@ -14,7 +14,7 @@ chanceForMigration = 5
 provincesPerRegion = 5
 
 #growthAccelerationForKidsUpToAdulthood
-growthSpeed = 17 #default 0
+growthSpeed = 0 #default 0
 
 settlementHighFoodFertilityModifier = 1.2   #default 1.2
 settlementNormalFoodFertilityModifier = 1.0 #default 1.0

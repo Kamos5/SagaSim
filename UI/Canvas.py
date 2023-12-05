@@ -317,7 +317,7 @@ class Canvas:
                     if isinstance(itemObj[1], Button):
 
                         if self.addToFavoriteOnStart and not self.addedToFavorite:
-                            if itemObj[1].getButtonName() in self.favorites and not itemObj[1].getIsActive():
+                            if itemObj[1].getButtonName() in self.favorites and not itemObj[1].getIsActive() and itemObj[1] == self.inspectorScreen.favoriteButton:
                                 itemObj[1].setActiveStatus()
                                 self.addedToFavorite = True
 
