@@ -627,10 +627,10 @@ class Canvas:
                 if self.showFamilyScreen:
                     self.showFamilyScreen = False
                     self.familyTreeScreen.setScroll_y(0)
-            if pausedPressed == False:
-                self.showMenu = False
-                self.showHelp = False
-                self.showPlots = False
+            # if pausedPressed == False:
+            #     self.showMenu = False
+            #     self.showHelp = False
+            #     self.showPlots = False
                 #self.showWorldMap = False
             if event.key == pygame.K_q and not self.showHelp and not self.showPlots and not self.showWorldMap and not self.showFamilyScreen:
                 exit()

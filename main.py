@@ -316,7 +316,6 @@ def pygameEvents(event, canvas, pausedPressed, gameState):
                     canvas.refreshScreen(world, canvas.listScreen.getScroll_y(), canvas.inspectorScreen.getScroll_y(), scroll_y, isPausedPressed=pausedPressed)
 
     if event.type == pygame.KEYDOWN:
-
         pCount = world.getGameSpeed()
         if event.key == pygame.K_KP_PLUS or event.key == pygame.K_PERIOD:
             if pCount == 1:
