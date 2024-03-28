@@ -80,6 +80,7 @@ def iniciateMigration(complexMigrantList, settlementTarget, world):
     for migrantList in complexMigrantList:
         for migrant in migrantList:
             PLEH.movedHome(migrant, migrant.getSettlement(), settlementTarget, world)
+            FF.fireSingleEmployee(migrant, world)
             migrant.getSettlement().decreasePopulation()
             migrant.getSettlement().removeResident(migrant)
             migrant.setSettlement(settlementTarget)

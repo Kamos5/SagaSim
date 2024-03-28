@@ -212,13 +212,13 @@ def movingMarriedCoupleToNewHouse(person, newHouse, world):
     if person.getSex() == Sexes.FEMALE:
 
         if person.getSettlement() != person.getSpouse().getSettlement():
+            fireSingleEmployee(person, world)
             person.getSettlement().decreasePopulation()
             person.getSettlement().removeResident(person)
             person.setSettlement(person.spouse.getSettlement())
             person.getSettlement().increasePopulation()
             person.getSettlement().addResident(person)
             person.getSpouse().getSettlement().buildNewHouse(newHouse)
-            fireSingleEmployee(person, world)
 
         # parentChildrensList = person.getAliveChildrenList()
         # for parentChild in parentChildrensList:
